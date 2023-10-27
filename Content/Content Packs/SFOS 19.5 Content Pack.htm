@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Sophos XG/XGS is a network security solution designed to provide comprehensive protection for networks against various threats including malware, viruses, ransomware, phishing, and more. It combines multiple security features into a single platform, offering both traditional firewall capabilities and advanced security functionality.</p>
+        <h2>Requirements</h2>
+        <ul>
+            <li>
+                <p>The pack has been tested with SFOS (Sophos Firewall Software) version 19.5. If testing compatibility with older versions, please note that the older SFOS 17.x (released in Dec 2019) uses different field names for some log types. While the pack can still parse all the fields, certain dashboards and categorizations may not function correctly due to these variations in field names. Firewall XG and XGS are fully supported.</p>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <p>A Graylog server with a valid enterprise license running Graylog version 5.0.3 or later is required.</p>
+            </li>
+        </ul>
+        <h2>Supported Logs/Event IDs</h2>
+        <ul>
+            <li>
+                <p>All 37 SFOS log types for SFOS 19.5 are supported.</p>
+            </li>
+        </ul>
+        <h2>Stream Configuration</h2>
+        <p>This technology pack includes one stream:</p>
+        <ul>
+            <li>
+                <p>"Illuminate:Sophos Messages"</p>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint:</b><span style="font-weight: normal;"> If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any </span>stream<span style="font-weight: normal;"> rules configured for this stream. </span></div>
+            </section>
+        </p>
+        <h2>Index Set Configuration</h2>
+        <p>This technology pack includes one index set definition:</p>
+        <ul>
+            <li>
+                <p>"Sophos Device Log Messages"</p>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation. </div>
+            </section>
+        </p>
+        <h2>Log Example</h2>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">device"SFW" date=2023-04-20 time=13:26:37 timezone="IST" device_name="XGS5w" device_id=SFTest180a log_id=010202601001 log_type="Firewall" log_component="Invalid Traffic" log_subtype="Denied" status="Deny" priority=Information duration=0 fw_rule_id=0 policy_type=0 user_name="" user_gp="" iap=0 ips_policy_id=0 appfilter_policy_id=0 application="none" application_risk=0 application_technology="MS" application_category="" in_interface="" out_interface="" src_mac= src_ip=10.10.32.19 src_country_code= dst_ip=18.18.18.18 dst_country_code= protocol="UDP" src_port=1353 dst_port=0 sent_pkts=0 recv_pkts=0 sent_bytes=0 recv_bytes=0 tran_src_ip=tran_src_port=0 tran_dst_ip= tran_dst_port=0 srczonetype="" srczone="" dstzonetype="" dstzone="" dir_disp="" connid="" vconnid="" hb_health="No Heartbeat" message="Invalid UDP destination." appresolvedby="Signature"</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <h3>Sophos XG/XGS Firewall Configuration for Syslog</h3>
+        <p>To enable Sophos Syslog output, Graylog requires a Syslog UDP input. Follow these steps to set up a Syslog output:</p>
+        <ol>
+            <li>
+                <p>Navigate to <i>System Services</i>. </p>
+            </li>
+            <li>
+                <p>Select <i>Log Settings</i> on your Sophos GUI.</p>
+            </li>
+        </ol>
+        <p>Choose the "Standard Syslog format" for optimal compatibility and functionality. Although the legacy "Device standard format" may work, it offers fewer or different fields. It is also important to note that selecting the legacy format may result in GIM errors in some cases.</p>
+        <h2>What is Provided</h2>
+        <ul>
+            <li>
+                <p>Rules to normalize and enrich SFOS (Sophos Firewall Software) log messages</p>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <p>Dashboards</p>
+            </li>
+        </ul>
+        <h2>Sophos XG/XGS Firewall Message Processing</h2>
+        <p>The Illuminate processing of Sophos XG/XGS Firewall log messages provides the following:</p>
+        <ul>
+            <li>
+                <p>Extraction of fields, normalization, and enrichment of SFOS log messages.</p>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <p>GIM Categorization of the following messages:</p>
+            </li>
+        </ul>
+        <table style="mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');width: 930px;" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <col style="width: 299px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col style="width: 320px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col style="width: 311px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><b>Vendor Event Component</b>
+                    </th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><b>GIM Event Type Code</b>
+                    </th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1" style="text-align: center;"><b>GIM Event Type</b>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DHCP Server</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">299999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DHCP Default Event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Firewall Rule</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000<br /></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Network Connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Invalid Traffic</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Network Connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Heartbeat</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Network Connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ICMP Redirection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Network Connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ICMP ERROR MESSAGE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Network Connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Fragmented Traffic</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Network Connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Invalid Fragmented Traffic</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Network Connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Local ACL</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Network Connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DoS Attack</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Network Connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Source Routed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Network Connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">MAC Filter</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Network Connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">IPMAC Filter</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Network Connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">IP Spoof</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Network Connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Virtual Host</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Network Connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">GUI</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">229999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Audit Event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">My Account Authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Firewall Authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">100000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Anomaly</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">179999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Alert Message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Signatures</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">179999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Alert Message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Web Application Firewall</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">180200</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">HTTP Communication</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&#160;</p>
+        <table style="mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');width: 929px;" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <col style="width: 298px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col style="width: 320px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><b>Vendor Event Subtype</b>
+                    </th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><b>GIM Event Type Code</b>
+                    </th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1"><b>GIM Event Type</b>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ATP</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">179999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">	Alert Message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Virus	</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">179999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">	Alert Message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Content Filtering</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Network Connection</td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>

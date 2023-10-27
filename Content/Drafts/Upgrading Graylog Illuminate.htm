@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>This guide assumes you are upgrading an existing installation of Graylog Illuminate version 2.0.0 or later; if you are performing a fresh installation of Illuminate, refer to the <a href="Installing Graylog Illuminate.htm">Installing Graylog Illuminate guide</a>. It also does not cover upgrading Illuminate from versions 1.x to 2.0.0. Please refer to <a href="../Content Packs/Upgrading to Illuminate 2.0.x.html">Upgrading to Illuminate 2.0.x</a> before starting this guide. </p>
+        <h2>Prerequisites</h2>
+        <ul>
+            <li>
+                <p>A Graylog server running at least version 5.0.0.</p>
+            </li>
+            <li>
+                <p>A valid Operations or Security license.</p>
+            </li>
+            <li>
+                <p>Administrator access to the Graylog server.</p>
+            </li>
+            <li>
+                <p>The Graylog server backend must be able to communicate with <code class="linecode">https://contenthub.graylog.cloud</code> on port 443 in order to use in-app Illuminate download functionality.</p>
+            </li>
+            <li>
+                <p>Illuminate 2.0.0 or greater installed and activated.</p>
+            </li>
+        </ul>
+        <h2>Upgrade Illuminate</h2>
+        <p>There are currently two methods of upgrading Graylog Illuminate. The following section will describe upgrading directly via the Graylog interface, which is the preferred method as of Graylog 5.1; however, if your Graylog server cannot access the public internet, then you will need to complete <a href="../Content Packs/Upgrading Illuminate Bundle Manually.htm">a manual upgrade</a> using a release file obtained from <a href="https://go2.graylog.org/contact-sales">your sales representative</a>. </p>
+        <p>
+            <section class="warningBox">
+                <div class="title" style="font-weight: normal;"><b>Warning</b>:&#160;Users running Graylog with a free Operations license are unable to utilize the following Illuminate upgrade method and must employ <a href="../Content Packs/Upgrading Illuminate Bundle Manually.htm">the manual method of upgrading</a> if possible.</div>
+            </section>
+        </p>
+        <h3>Upgrading Illuminate In Graylog</h3>
+        <p>1. When a new Illuminate version is available, you will receive a notification in your Graylog interface.</p>
+        <p>
+            <img src="../Resources/Images/Upgrading Graylog Illuminate/upgrade_illuminate_notification.png" />
+        </p>
+        <p>2. Navigate to the Illuminate page by selecting <i>Enterprise</i> &gt; <i>Illuminate</i>.</p>
+        <p>3. You will see a notification at the top right of the screen indicating that a new Illuminate bundle is ready to install. You may select <i>Install</i> from this menu, or you can navigate to the <i>Install Another Bundle</i> link located beneath the Illuminate Bundle Version drop-down menu. (If you do not wish to upgrade at this time, you may select <i>Skip Version</i>. This will also remove the notification from your top menu.)&#160;</p>
+        <p>
+            <img src="../Resources/Images/Installing Graylog Illuminate/install_illuminate_graylog.png" />
+        </p>
+        <p>4. On this menu select the Illuminate version you wish to install and click the <i>Download &amp; Install</i> button. (You may also wish to preview the available versions by selecting them from the side navigation and reviewing the attached changelogs.)&#160;</p>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;Only Illuminate versions 3.3.0+ are available via this download service.</div>
+            </section>
+        </p>
+        <p>
+            <img src="../Resources/Images/Installing Graylog Illuminate/install_illuminate_download_and_install.png" />
+        </p>
+        <p>5. Confirm your installation by selecting <i>Confirm</i> on the pop-up menu to begin the installation process.</p>
+        <p>6. Once complete you will receive a notification that Illuminate has been successfully installed.</p>
+        <h2>Activating Illuminate Packs</h2>
+        <p>As of Graylog 5.1 all Illuminate packs will be delivered within the initial installation bundle and will be updated upon upgrading your core Illuminate version as described above. To select additional Illuminate packs for activation after upgrading Illuminate:</p>
+        <p>1. Navigate to <i>Enterprise</i> &gt; <i>Illuminate</i>.</p>
+        <p>2. Browse through the list of packs provided by Illuminate using the controls near the bottom of the page, selecting any packs you wish to activate.</p>
+        <p>3. When you have selected all of your chosen packs, click <i> Enable Selected</i> on the upper right of the Illuminate packs list window.</p>
+        <h2>Core Extension Packs Updates Notice</h2>
+        <h3>About the Anomaly Detection Add-on Pack</h3>
+        <p>Upon upgrading please note that active anomaly detectors from an older version of the Anomaly Detection Add-on Pack will need to be reenabled once the new version of the pack has been enabled.</p>
+        <h3>About the Geolocation and Autonomous System (AS) Packs</h3>
+        <p>Two technology packs support geolocation and ASN enrichment: one supporting MaxMind city and AS databases and another supporting IPinfo city and AS databases.</p>
+        <p>
+            <section class="warningBox">
+                <div class="title" style="font-weight: normal;"><b>Warning</b>:&#160;We recommend that you activate only one of these packs. As they both provide similar functionality, enabling both will increase the computational cost of processing messages with no benefit.</div>
+            </section>
+        </p>
+        <h3>Illuminate Geolocation and AS Deprecation Notice</h3>
+        <p><b>The Graylog Illuminate Geolocation and AS enrichment processing packs are deprecated and will be removed from a future version of Graylog Illuminate.</b> The functionality of these packs is replaced by the Geolocation Processor. Instead of using the Illuminate Geolocation Processor packs, please instead configure the Geolocation Processor, making sure to verify the <i>Enforce default Graylog schema</i> option is selected.</p>
+        <h2>Spotlight Updates Notice</h2>
+        <p>As of Graylog Illuminate 3.3.0, all Spotlight content is now contained in the Illuminate bundle. Any Spotlight content packs that were previously installed will now be detected and upgraded automatically when the new bundle is activated. There are two Spotlight packs to note when upgrading from a version prior to Graylog Illuminate 3.3.0, which did not contain Spotlight pack entries:</p>
+        <h3>"Message Summary Updates rev. 2" (Security Customers Only)</h3>
+        <p>This pack updates an existing content pack that is installed in Graylog by default. All customers with a Security license should enable this Spotlight pack the first time they install Graylog Illuminate 3.3.0 or greater. Any future upgrades to this Spotlight pack will be automatic after it has been enabled initially.</p>
+        <h3>"Event Definitions Rollup"</h3>
+        <p>This Spotlight pack contains a collection of previously released event definitions. Those who have previously installed the Illuminate event definitions Spotlights do not need to install this. This Spotlight pack contains a set of event definitions developed by Graylog. After enabling the "Event Definitions Rollup" Spotlight pack:</p>
+        <ol>
+            <li>
+                <p>Events are installed and on the system but are disabled by default. Review the installed event definitions by navigating to the <i>Alert</i>s page, then selecting <i>Event Definitions</i>.</p>
+            </li>
+            <li>
+                <p>Review the list of event definitions and identify the events that are applicable to your alerting requirements.</p>
+                <p>
+                    <section class="infoBox">
+                        <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;Graylog recommends that you make a copy of the event definitions provided in the events content packs, then use the copy instead of modifying and enabling the event definitions installed by the content pack. Making a copy of the event definition will prevent the loss of the event definition configuration if the events content pack is ever uninstalled.</div>
+                    </section>
+                </p>
+            </li>
+            <li>
+                <p>To make a copy of an event definition, select the <i>More</i> button associated with the event definition to be copied, then select <i>Duplicate</i> and <i>Confirm</i>. A copy of the event definition will be made, identifiable by the fact that a new event definition will appear with the same name but having the prefix <code class="linecode">COPY-</code> inserted in the event definition name.</p>
+            </li>
+        </ol>
+        <p>
+            <img src="../Resources/Images/duplicate_event_definitions.gif" />
+        </p>
+        <p>Event definitions can be enabled by clicking on the <i>More</i> button to the right of the event definition to enable, then select <i>Enable</i>.</p>
+    </body>
+</html>

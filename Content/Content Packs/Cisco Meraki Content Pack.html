@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html lang="en" xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" /><title> Cisco Meraki
+</title>
+        <!-- original-url : cisco-meraki
+## article-id : 0a701e78-19f6-45fb-b38b-828d4c3f5e4b
+## seo-title : Cisco Meraki
+## description : 
+## Metadata_End -->
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Cisco Meraki is a hardware vendor and sells cloud-controlled security appliances (firewall), switches, and access points via a centralized managed platform. This technology pack will process Cisco Meraki logs, providing normalization and enrichment of common events of interest.</p>
+        <h2>Supported Version(s)</h2>
+        <ul>
+            <li>Up to MX16.9+</li>
+        </ul>
+        <h2>Stream Configuration</h2>
+        <p>This technology pack includes one stream:</p>
+        <ul>
+            <li>“Illuminate:Cisco Device Messages”</li>
+        </ul>
+        <p>If this stream is already created then nothing will be changed. This stream will be created if it does not exist, and it will be configured to route messages to the Cisco Devices index set. There should not be any rules configured for this stream.</p>
+        <h2>Index Set Configuration</h2>
+        <p>This technology pack includes one index set definition:</p>
+        <ul>
+            <li>“Cisco Devices Event Log Messages”</li>
+        </ul>
+        <p>If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</p>
+        <h2>Log Format Examples</h2>
+        <p><code data-backticks="1" class="linecode">1 1619032507.590967163 ip_flow_end src=1.1.1.1 dst=2.2.2.2 protocol=icmp translated_dst_ip=4.4.4.4</code>
+        </p>
+        <p><code data-backticks="1" class="linecode">1 1619032507.495518695 DEVICE_NAME flows src=1.1.1.1 dst=2.2.2.2 protocol=udp sport=1900 dport=1900 pattern: 1 all</code>
+        </p>
+        <h2>Requirements</h2>
+        <ul>
+            <li>Configure Cisco Meraki to transmit Syslog to your Graylog server Syslog input.</li>
+        </ul>
+        <section class="warningBox">
+            <div class="title"><b>Meraki Syslog and Nanosecond Timestamps</b>
+            </div>
+            <div class="content">
+                <p>Cisco Meraki devices are sometimes configured to send epoch timestamps with nanoseconds; the Graylog syslog input cannot parse these messages and will drop them. If your device is configured to send nanosecond timestamps please configure a <code data-backticks="1" class="linecode">Raw/Plaintext UDP</code> input for Graylog and configure the Meraki to send logs to the raw input. This input must be configured to use a different port than any other existing UDP input. The parsing of epoch timestamps will be addressed in a future version of Graylog.</p>
+            </div>
+        </section>
+        <h2>What is Provided</h2>
+        <ul>
+            <li>Parsing rules to extract Cisco Meraki logs into Graylog schema compatible fields.</li>
+        </ul>
+    </body>
+</html>

@@ -1,0 +1,435 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title></title>
+    </head>
+    <body>
+        <p>
+            <MadCap:snippetText src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        </p>
+        <p>WatchGuard's Firebox is a unified security platform that covers traditional traffic, protecting an environment from intrusions, phishing attempts, malware, ransomware, and more. Both the hardware and virtual Firebox appliances are feature rich, allowing the appliance to run features such as stateful firewall, IPS, application control, web blocker, VPN, and more. This technology pack will process Firebox event log messages, providing normalization and enrichment of common events of interest.</p>
+        <h3 id="requirements">Requirement(s):</h3>
+        <ul>
+            <li>
+                <p>Watchguard Firebox running Fireware 12.x</p>
+            </li>
+            <li>
+                <p>Graylog Server with a valid Enterprise license, running Graylog version 4.2.5, 4.3.0, or later.</p>
+            </li>
+            <li>
+                <p>Watchguard Firebox configured to send logs to Graylog via syslog</p>
+            </li>
+        </ul>
+        <h3 id="stream-configuration">Stream Configuration:</h3>
+        <p>This technology pack includes one stream:</p>
+        <ul>
+            <li>
+                <p>"Illuminate:WatchGuard Device Messages”</p>
+            </li>
+        </ul>
+        <div class="(Info)">
+            <p>If this stream does not exist prior to the activation of this pack, then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</p>
+        </div>
+        <h3 id="index-set-configuration">Index Set Configuration:</h3>
+        <p>This technology pack includes one index set definition:</p>
+        <ul>
+            <li>
+                <p>“WatchGuard Device Logs”</p>
+            </li>
+        </ul>
+        <div class="(Warning)">
+            <p>If this index set is already defined, then nothing will be changed.  If this index set does not exist, then it will be created with default retention settings of a daily rotation and 90 days of retention, with 4 shards per index.  It is strongly recommended to review and adjust these settings to best suit your environment.</p>
+        </div>
+        <h3 id="log-format-example">Log Format Example:</h3>
+        <MadCap:codeSnippet>
+            <codeSnippetCopyButton />
+            <codeSnippetBody>DEV01 0011223344556 (2022-09-01T13:58:33) firewall: msg_id="3000-0148" Allow External Inside 44 tcp 20 238 10.11.12.13 192.168.1.10 58325 60951 offset 6 S 3172487743 win 4  geo_src="USA"  geo_dst="USA"  (Inbound Policy-00)
+</codeSnippetBody>
+        </MadCap:codeSnippet>
+        <h3 id="what-is-provided">What is Provided:</h3>
+        <ul>
+            <li>
+                <p>Rules to normalize and enrich event log messages</p>
+            </li>
+            <li>
+                <p>A Spotlight content pack
+</p>
+                <ul>
+                    <li>
+                        <p>Dashboard</p>
+                    </li>
+                    <li>
+                        <p>Saved search</p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h4 id="log-message-processing">Log Message Processing</h4>
+        <p>Illuminate will identify Watchguard Firebox event log messages and add the field <code class="linecode">event_source_product</code> with the value <code class="linecode">watchguard_firebox</code>.</p>
+        <p>The Illuminate processing of Watchguard Firebox log messages provides the following:</p>
+        <ul>
+            <li>
+                <p>Field extraction, normalization and message enrichment for Watchguard Firebox log messages</p>
+            </li>
+            <li>
+                <p>Graylog Schema compliance</p>
+            </li>
+        </ul>
+        <h4 id="spotlight-content-pack">Spotlight Content Pack</h4>
+        <p>The Spotlight content pack contains:</p>
+        <ul>
+            <li>
+                <p>Dashboard: Illuminate:WatchGuard Firebox Overview
+</p>
+                <ul>
+                    <li>
+                        <p>Overview tab: Summary of Firebox device operations</p>
+                        <p>
+                            <img src="../Resources/Images/Content Packs/watchguardfirebox/1stOverview.png" />
+                        </p>
+                        <p>
+                            <img src="../Resources/Images/Content Packs/watchguardfirebox/2ndoverview.png" />
+                        </p>
+                        <p>
+                            <img src="../Resources/Images/Content Packs/watchguardfirebox/3rdoverview.png" />
+                        </p>
+                    </li>
+                    <li>
+                        <p>Saved search: Two widgets and a tailored log view
+</p>
+                        <p>
+                            <img src="../Resources/Images/Content Packs/watchguardfirebox/savedsearch.png" />
+                        </p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h3 id="configuring-log-delivery">Configuring Log Delivery</h3>
+        <p>This process assumes that a local Syslog input has been created on the Graylog server.  The port configured for the input must match what's configured on the Firebox side.</p>
+        <h4 id="configuration-from-the-fireware-web-ui-and-policy-manager">Configuration from the Fireware Web UI and Policy Manager</h4>
+        <ol>
+            <li>
+                <p>Select <strong>System &gt; Logging</strong> in the Fireware Web UI or <strong>Setup &gt; Logging</strong> in Policy Manager</p>
+            </li>
+            <li>
+                <p>Click the <strong>Syslog Server</strong> tab</p>
+            </li>
+            <li>
+                <p>Select the <strong>Send log messages to these syslog servers</strong></p>
+            </li>
+            <li>
+                <p>Click <strong>Add</strong></p>
+            </li>
+            <li>
+                <p>Type the Graylog server IP address in the <strong>IP Address</strong> text box</p>
+            </li>
+            <li>
+                <p>In the <strong>Port</strong> text box, match the port configured on the input side of the Graylog server</p>
+            </li>
+            <li>
+                <p>Select <strong>Syslog</strong> from the <strong>Log Format</strong> drop-down list</p>
+            </li>
+            <li>
+                <p>Check off the time stamp and serial number of the device boxes so they are included</p>
+            </li>
+            <li>
+                <p>Select the syslog facility for each type of log message (Local0-7).  <strong>Alarm</strong> should be set to Local0 for high priority.</p>
+            </li>
+            <li>
+                <p>Click <strong>Save</strong></p>
+            </li>
+        </ol>
+        <h2 id="appendix-a-log-event-catalog">Appendix A: Log Event Catalog</h2>
+        <ul>
+            <li>
+                <p>The Illuminate Watchguard Firebox content will process the following events:</p>
+            </li>
+        </ul>
+        <table style="mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><code class="linecode">event_id</code>
+                    </th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><code class="linecode">gim_event_category</code>
+                    </th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><code class="linecode">gim_event_subcategory</code>
+                    </th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1"><code class="linecode">gim_event_type</code>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1100-0004</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1100-0005</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.logon</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1AFF-0005</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1AFF-0018</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1AFF-001A</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1AFF-001B</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1AFF-0021</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1AFF-0024</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1AFF-0025</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1AFF-0026</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1AFF-002C</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1AFF-002E</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1AFF-0033</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1AFF-0036</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1AFF-003D</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2CFF-0000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2CFF-0001</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2CFF-0005</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2DFF-0001</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2DFF-0005</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3000-0148</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3000-0149</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3000-0150</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3000-0152</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3000-0153</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3000-0154</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3000-0155</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3000-0156</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3000-0157</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3000-0158</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3000-0159</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3000-0160</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3000-0161</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3000-0162</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3000-0163</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3000-0164</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3000-0165</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3000-0166</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3000-0167</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3000-0168</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3000-0169</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3000-0170</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3000-0171</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3000-0172</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">-</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">3000-0173</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">-</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">-</td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>

@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint</b>:&#160;<span style="font-weight:normal;">The Snort IDS&#160;Processing Security Content Pack was first introduced in Illuminate 3.3. </span></div>
+            </section>
+        </p>
+        <p>Snort is an open source network intrusion detection (IDS) and intrusion prevention system (IPS). This IDS/IPS system performs real-time traffic analysis and packet logging on Internet Protocol (IP) networks. It also can be used to detect semantic URL attacks, server message block probes, OS fingerprinting attempts, stealth port scans and buffer overflows.</p>
+        <p>Snort can be configured in three different modes: packet-capture mode, logging mode or IDS mode. This pack runs Snort in IDS mode and comes with predefined rules. Snort will apply the packet content coming over any network it is monitoring to each rule.</p>
+        <section class="warningBox">
+            <div class="title"><b>Warning</b>:&#160;<span style="font-weight:normal;">This content pack may be used with <b>Snort 3</b> only.</span></div>
+        </section>
+        <h3>Sample Snort Rule</h3>
+        <p><code MadCap:createDate="2023-05-01T19:33:48.5884630-05:00" MadCap:creator="PhillipUmeh" MadCap:initials="PU" MadCap:comment="linecode format" MadCap:editor="PhillipUmeh" MadCap:editDate="2023-05-01T19:33:53.5870057-05:00" class="linecode">alert</code><code class="linecode"> icmp any any -&gt; any any (msg:"ICMP flood"; sid:1000001; rev:1; classtype:icmp-event; detection_filter:track by_dst, count 500, seconds 3;)</code>
+        </p>
+        <h3>Supported Versions</h3>
+        <p>Snort can run on Ubuntu and RedHat based Linux versions, FreeBSD, and Fedora.</p>
+        <h3>Stream Configuration</h3>
+        <p style="font-weight: normal;">This technology pack includes one stream: </p>
+        <ul>
+            <li>
+                <p style="font-weight: normal;">"Illuminate: Snort IDS Messages"</p>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title">Hint:<span style="font-weight:normal;"> If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream. Note that in the above example, we are forwarding only the Snort alerts which we are writing to the local5 facility. Alternatively, you could configure it to forward all syslog messages.</span></div>
+            </section>
+        </p>
+        <h3>Index Set Configuration</h3>
+        <p style="font-weight: normal;">This technology pack includes one index set definition: </p>
+        <ul>
+            <li>
+                <p style="font-weight: normal;">“Snort IDS Logs”</p>
+            </li>
+        </ul>
+        <section class="infoBox">
+            <div class="title">Hint:<span style="font-weight:normal;">  If this index set is already defined, nothing will be changed. If this index set does not exist, it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span></div>
+        </section>
+        <p>The default configuration file is<code class="linecode"> /etc/snort/snort.com</code>.</p>
+        <p>Please refer to Snort’s official website for an <a href="https://docs.snort.org/start/installation">installation and configuration guide</a>.</p>
+        <h3>Requirements</h3>
+        <p>In order to use this technology pack, Snort 3 should be configured to log in JSON format. Logging configurations such as <code class="linecode">alert_fast</code> can be used but a JSON configuration is required to capture detailed event information. </p>
+        <p>The <code class="linecode">snort.lua</code> file below can be used for both Snort alerts and AppID alerts. If AppID is not used, those settings can be ignored.</p>
+        <p>The recommended paths and file names are listed below. If these differ from an existing configuration, the paths and file names will need to be adjusted in the Filebeat configuration.</p>
+        <ul>
+            <li>
+                <p>Snort: <code class="linecode">/var/log/snort/alert_json.txt</code></p>
+            </li>
+            <li>
+                <p>AppID:  <code class="linecode">/var/log/snort/appid-output.json</code></p>
+            </li>
+        </ul>
+        <p>Additional information regarding AppID, installation, and usage can be found on the <a href="https://www.snort.org/#documents">Snort documentation page.</a> An example guide for installing and configuring AppID on Linux distributions can be found  under the section <b>Snort Setup Guides</b>. </p>
+        <h3>Snort 3 Configuration</h3>
+        <p><b>snort.lua</b>
+        </p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">alert_json =
+{
+        fields = 'timestamp seconds action class b64_data dir dst_addr dst_port eth_dst eth_len eth_src eth_type gid icmp_code icmp_id icmp_seq icmp_type iface ip_id ip_len msg pkt_gen pkt_len pkt_num priority proto rev rule service sid src_addr src_ap src_port target tcp_ack tcp_flags tcp_len tcp_seq tcp_win tos ttl udp_len vlan b64_data client_bytes client_pkts flowstart_time server_bytes server_pkts',
+        file = true,
+        limit = 100,
+}</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">appid_listener =
+{
+    json_logging = true,
+    file = "/var/log/snort/appid-output.json",
+}</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p>Because Snort is configured to log in JSON format, a delivery system that can parse each field and deliver them to Graylog is required. This technology pack supports log delivery via Filebeat with a specific configuration of inputs and outputs, identifying logs for parsing and delivery to Graylog for Illuminate processing.</p>
+        <p>The paths and fields sections are required for this configuration. If the Snort logs are being stored in paths other than those in the following .yml file, these paths must be updated. The <code class="linecode">event_source_product: snort</code> field is critical for proper identification and parsing of logs.</p>
+        <h3>Filebeat Configuration</h3>
+        <p>Additional information regarding the installation and configuration of Filebeat can be found below:</p>
+        <ul>
+            <li>
+                <p><a href="https://www.elastic.co/downloads/beats/filebeat-oss">Filebeat download</a>
+                </p>
+            </li>
+            <li>
+                <p><a href="https://www.elastic.co/guide/en/beats/filebeat/8.7/configuring-howto-filebeat.html">Filebeat configuration</a>
+                </p>
+            </li>
+        </ul>
+        <p>The following is the default configuration file which can be edited to configure Filebeat.</p>
+        <h4><b>filebeat.yml</b>
+        </h4>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">- type: filestream
+
+  id: snort-filestream
+
+  enabled: true
+
+  paths:
+    - /var/log/snort/alert_json.txt
+    - /var/log/snort/appid-output.json
+  
+  parsers:
+    - ndjson:
+        target: "snort3"
+        add_error_key: true
+        overwrite_keys: true
+
+
+  fields:
+    event_source_product: snort3
+    fields_under_root: true</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p>You can find instructions for sending other syslog daemons into Graylog in <a href="https://github.com/Graylog2/graylog-guide-syslog-linux">this document</a>.</p>
+        <h3><b>Log Format Example</b>
+        </h3>
+        <p><code class="linecode">&#160;</code><code class="linecode">{ "timestamp" : "04/04-10:36:13.537364", "seconds" : 1680618973, "action" : "allow", "class" : "Attempted User Privilege Gain", "b64_data" : "DHWBgAABAAQAAAAAB3NvbngtZnALbWVkaWFzZWFyY2gHdmVyaXpvbgNjb20AAAEAAcAMAAUAAQAAAEQATDFhYjI2Y2NhMTI0Y2JhNGY1ZDg5Y2MwYzUwOWQ5MjY2NC01Y2U1NzM2MTU5NzEyOTc4A2VsYgl1cy1lYXN0LTEJYW1hem9uYXdzwCjAPQABAAEAAAA5AAQjrk20wD0AAQABAAAAOQAEIsacQcA9AAEAAQAAADkABDRHiMQ=", "dir" : "S2C", "dst_addr" : "192.168.1.1", "dst_port" : 44661, "eth_dst" : "B1:F1:51:71:31:31", "eth_len" : 227, "eth_src" : "81:B1:91:F1:01:01", "eth_type" : "0x800", "gid" : 1, "iface" : "ens34", "ip_id" : 24269, "ip_len" : 193, "msg" : "PROTOCOL-DNS Microsoft Threat Management Gateway heap buffer overflow attempt", "pkt_gen" : "raw", "pkt_len" : 213, "pkt_num" : 22551641, "priority" : 1, "proto" : "UDP", "rev" : 1, "rule" : "1:57878:1", "service" : "unknown", "sid" : 57878, "src_addr" : "192.168.1.2", "src_ap" : "192.168.1.2:53", "src_port" : 53, "tos" : 0, "ttl" : 61, "udp_len" : 193, "vlan" : 0, "b64_data" : "ABCLDKDDHDVBAERY3345112442JhNGY1ZDg5Y2MwYzUwOWQ5MjY2NC01Y2U1NzM2MTU5NzEyOTc4A2VsYgl1cy1lYXN0LTEJYW1hem9uYXdzwCjAPQABAAEAAAA5AAQjrk20wD0AAQABAAAAOQAEIsacQcA9AAEAAQAAADkABDRHiMQ=", "client_bytes" : 91, "client_pkts" : 1, "flowstart_time" : 1680618973, "server_bytes" : 227, "server_pkts" : 1 }</code>
+        </p>
+        <h3 style="font-weight: bold;">What is Provided</h3>
+        <p style="font-weight: normal;">Rules to normalize and enrich Snort 3 log messages.</p>
+        <h3>Snort 3 Log Message Processing</h3>
+        <p>The Illuminate processing of Snort 3 log messages provides the following:</p>
+        <ul>
+            <li>
+                <p>Field extraction, normalization, and message enrichment for Snort 3 log messages (IDS and AppID).</p>
+            </li>
+            <li>
+                <p>GIM Categorization of the following messages:</p>
+            </li>
+        </ul>
+        <table style="width: 100%;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Snort 3 Log Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Subcategory</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ids</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">alert.default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">appid</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">network.default</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3><b>Use Cases</b>
+        </h3>
+        <p>Snort is used to monitor networks for malicious packets and threats. Functioning as either an IDS or IPS, Snort can analyze and compare traffic against thousands of signatures and application detectors to provide a high-level overview of a network.</p>
+        <p>Examples of what can be monitored using this content pack: Unauthorized hosts or users, misconfigured devices (DNS, hostname, etc.), devices beaconing to malicious IPs, brute force attacks or policy violations.</p>
+        <h3>Snort Spotlight Content Pack</h3>
+        <p>The Snort Spotlight content pack contains:</p>
+        <h4><b>Snort 3 Overview</b>
+        </h4>
+        <p>
+            <img src="../Resources/Images/Snort Content Pack/Overview.png" />
+        </p>
+        <h4><b>Snort IDS Overview</b>
+        </h4>
+        <p>
+            <img src="../Resources/Images/Snort Content Pack/Snort IDS-2.png" style="max-width: 75%;" />
+        </p>
+        <h4><b>Snort App ID Overview</b>
+        </h4>
+        <p>
+            <img src="../Resources/Images/Snort Content Pack/App ID.png" />
+        </p>
+    </body>
+</html>

@@ -1,0 +1,328 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html lang="en" xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!--1,"Name":"Upgrading to Illuminate 2.0.x","Icon":null,"Languages":[{"Code":"en",--><title>Upgrading to Illuminate
+ 2.0.x</title>
+        <!--upgrading-to-illuminate-2x",-->
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <h2>Prerequisites</h2>
+        <section class="infoBox">
+            <div class="title"><b>Hint</b>:&#160;<span style="font-weight: normal;">The following instructions are valid only when upgrading from Illuminate 1.7.0. Any
+ Illuminate versions prior to 1.7.0 must first be upgraded to Illuminate 1.7.0 prior to a final upgrade to
+ Illuminate 2.0.0</span></div>
+            <div class="content">
+                <p>If you are not currently running any previous Illuminate versions, see
+            <a href="https://go2docs.graylog.org/5-0/what_more_can_graylog_do_for_me/installing_illuminate_2.0.html">Installing Illuminate 2.0.</a></p>
+            </div>
+        </section>
+        <section class="warningBox">
+            <div class="title"><b>Warning</b>:&#160;If you are upgrading to Illuminate 2.0.1 or later from Illuminate 1.x you must first upgrade
+ to Illuminate 2.0.0 as instructed in this article. Then,
+        <a href="https://go2docs.graylog.org/5-0/what_more_can_graylog_do_for_me/upgrading_to_illuminate_2.0.x.html#illuminate-201">proceed to the Illuminate
+ 2.0.1 section</a>.</div>
+        </section>
+        <p>Prior to upgrading, the following conditions must be met:</p>
+        <ul>
+            <li>The environment must be running Graylog
+ Operations 4.2.0 or later.
+    </li>
+            <li>The Graylog cluster must have a current and valid Operations license.</li>
+            <li>Verify that the content pack “Default Grok Patterns” is installed.</li>
+        </ul>
+        <h2>Changes In This Release</h2>
+        <p>A new installation method is now available so that Illuminate 2.0 can be
+ installed entirely from the Graylog web interface.</p>
+        <section class="infoBox">
+            <div class="title"><b>Hint</b>:&#160;<span style="font-weight: normal;">This installer does not include the addition of Geolocation and Autonomous System Number
+ (ASN) lookup mmdb files, which can be installed manually if the Geolocation and
+ ASN lookup files were configured to work with previous versions of Illuminate.</span></div>
+        </section>
+        <p>Additionally, Illuminate metadata fields that previously used the field name prefix
+    <code data-backticks="1" class="linecode">gl2_</code> have now been renamed to the prefix <code data-backticks="1" class="linecode">gim_</code>. This
+ will improve support for using these fields in different parts of Graylog. Field aliases will allow searches that
+ use the updated field names to access data previously indexed with the old field names.</p>
+        <p>Field aliases will
+ also be used to allow content organized by the old field names to search newly indexed data; however, the one
+ exception to this rule is the field <code data-backticks="1" class="linecode">gim_event_subcategory</code>.</p>
+        <h2>Upgrading from
+ Illuminate 1.7.0</h2>
+        <p>Follow the preceding steps in order to update your Illuminate instance to the latest
+ version.</p>
+        <h2>Review the Processor Order Configuration</h2>
+        <p>Temporarily configuring the Illuminate processor to
+ run prior to the Message Filter Chain and Pipeline Processor will ensure the upgrade of Illuminate is a more
+ straightforward process.</p>
+        <ol>
+            <li>Log in to your Graylog application.</li>
+            <li>Navigate to <em>System</em> &gt; <em>Configurations</em>.</li>
+            <li>Review and make a note of the current order of the Message Processors Configuration. <strong>You will need this
+ information to restore the listed order later!</strong></li>
+            <li>Verify that the Illuminate Processor is ordered to run <strong>before</strong> the Pipeline Processor and
+ Message Filter Chain. If this is not the case, select “Update” and move the Illuminate Processor as required.
+    </li>
+        </ol>
+        <p>
+            <img src="../Resources/Images/Illuminate Processing Management/config update.png" />
+        </p>
+        <h2>Record Currently Enabled Content Packs</h2>
+        <p>Next, you will want to record the current content packs enabled on
+ your Graylog instance.</p>
+        <ol>
+            <li>In Graylog, navigate to <em>System</em> &gt; <em>Content Packs</em>.</li>
+            <li>Locate the filter entry text box; enter the word <code data-backticks="1" class="linecode">Illuminate</code> and click on <em>Filter</em>.
+    </li>
+            <li>Record a separate list of all Illuminate content packs that are listed as installed, but do not uninstall or
+ delete these content packs.
+    </li>
+        </ol>
+        <p>
+            <img src="../Resources/Images/Illuminate Processing Management/filter.png" />
+        </p>
+        <h2>Extract the Graylog Illuminate Release Archive File</h2>
+        <p>Graylog Illuminate is distributed as a zip format
+ archive file. <a href="https://go2.graylog.org/contact-sales">Contact your sales representative</a> for information
+ on obtaining the Graylog Illuminate 2.0 release file.</p>
+        <ol>
+            <li>Once you receive the file, download and extract it in a convenient location.</li>
+            <li>The archive will expand into a directory starting with the name “graylog_illuminate.” The Illuminate bundle zip
+ file and the file “spotlights” will be located in this subdirectory, which contains all of the included
+ Illuminate Spotlight content packs.
+    </li>
+        </ol>
+        <p>
+            <img src="../Resources/Images/Upgrading to Graylog Illuminate 2.0/Extract Illuminate Release Archive File.png" alt="Upgrade_Illuminate_3" class="fr-fic fr-dii fr-draggable" />
+        </p>
+        <h2>Upload the Illuminate Bundle</h2>
+        <p>Now, you will upload and enable your new Illuminate bundle.</p>
+        <ol>
+            <li>In the Graylog interface, navigate to <em>Operations</em> &gt; <em>Illuminate</em>.</li>
+            <li>Drag and drop or click to select the Illuminate 2.0.0 bundle zip archive file that was extracted in the previous
+ step.
+    </li>
+        </ol>
+        <p>
+            <img src="../Resources/Images/Illuminate Processing Management/install.png" />
+        </p>
+        <ol start="3">
+            <li>In the following menu select all of the packs that correspond with your previously recorded list of installed
+ content packs.
+    </li>
+            <li>If your previous instance of Illuminate was configured to perform Geolocation and Autonomous System Number (ASN)
+ lookups, and those files are installed on the Graylog server(s), then be sure to also select the pack,
+ “Illuminate 2.0.0:Geolocation and AS Enrichment.”
+    </li>
+        </ol>
+        <p>
+            <img src="../Resources/Images/Illuminate Processing Management/geolocation and AS.png" />
+        </p>
+        <section class="infoBox">
+            <div class="title"><b>Hint</b>:&#160;<span style="font-weight: normal;">You may also enable GIM Enforcement from this menu, if you choose; for more information
+ please review the </span><a href="https://go2docs.graylog.org/5-0/what_more_can_graylog_do_for_me/installing_illuminate_2.0.html#gim-enforcement" style="font-weight: normal;">GIM
+ Enforcement guide</a><span style="font-weight: normal;">.</span></div>
+        </section>
+        <ol start="6">
+            <li>Click <em>Enable Selected</em>, and the selected packs will be updated to indicate which packs have been
+ enabled. (This process may take a few moments.)
+    </li>
+        </ol>
+        <h2>Uninstall Previous Illuminate Content</h2>
+        <p>After the Illuminate technology packs have been installed and
+ activated, the previous Illuminate content packs should be removed, with the sole exception of the “Events”
+ Spotlight content pack.</p>
+        <ol>
+            <li>Navigate again to <em>System</em> &gt; <em>Content Packs</em>.</li>
+            <li>Filter through the packs using the word <code data-backticks="1" class="linecode">Illuminate&#160;</code>as in the previous
+ steps.
+    </li>
+            <li>Now, uninstall all the listed Illuminate Spotlight content <strong>except for the “Illuminate:Events”
+ Spotlight</strong>. Do not alter this content pack.
+    </li>
+            <li>To remove the listed content packs, click on the Spotlight pack to uninstall. All available and installed
+ revisions will be listed in the top left of the page.
+    </li>
+        </ol>
+        <p>
+            <img src="../Resources/Images/Illuminate Processing Management/uninstall.png" />
+        </p>
+        <ol start="5">
+            <li>Click on <em>Uninstall</em>.</li>
+            <li>Repeat this process until all of the Spotlight packs <strong>(except for the Events spotlight pack)</strong>
+        have been removed.
+    </li>
+        </ol>
+        <h2>Install the Illuminate Spotlight Content</h2>
+        <p>Now, you can download your desired content packs for
+ Illuminate.</p>
+        <section class="infoBox">
+            <div class="title"><b>Hint</b>:&#160;<span style="font-weight: normal;">The Illuminate installer does not currently support installing dashboards, saved searches,
+ or event definitions; however, the Illuminate archive file has Spotlight content packs that contain these.</span></div>
+        </section>
+        <ol>
+            <li>Navigate again to <em>System</em> &gt; <em>Content Packs</em>. Here, you can upload the content packs you wish
+ to integrate into your Graylog instance.
+    </li>
+            <li>Click <em>Upload</em>.</li>
+        </ol>
+        <ol start="3">
+            <li>Then, click on <em>Browse</em> and navigate to the directory where the Graylog Illuminate archive was extracted
+ in the previous steps.
+    </li>
+            <li>Locate the “graylog_illuminate.v2_0_0” directory and select it.</li>
+            <li>Then, navigate to the “spotlights” subdirectory.</li>
+            <li>Here, select the Spotlight you wish to upload and click <em>Open</em>.</li>
+            <li>Repeat this process until all desired Spotlight packs have been uploaded.</li>
+            <li>Now, you need to install the content packs. These Spotlight packs will be listed on the "Content Packs" page in
+ Graylog.
+    </li>
+            <li>Click on an Illuminate Spotlight content pack to install.</li>
+            <li>On the left hand side, there will be a listing of versions; select the <em>Actions</em> button to the right of
+ the most recent revision and click <em>Install</em> from the drop-down menu.
+    </li>
+        </ol>
+        <p>
+            <img src="../Resources/Images/Illuminate Processing Management/action button.png" />
+        </p>
+        <ol start="11">
+            <li>Repeat this process for all desired Spotlight packs to be installed.</li>
+        </ol>
+        <h2>Update the Event Definitions</h2>
+        <p>Illuminate 2.0 includes some changes to field definitions that require
+ updates to existing event definitions. The Illuminate 2.0 Event Definitions Spotlight includes updated event
+ definitions for all existing rules.</p>
+        <p>Review currently enabled Illuminate event definitions.</p>
+        <ol>
+            <li>Navigate to the “Alerts” dashboard in the Graylog web interface.</li>
+            <li>Click on the “Event Definitions” button on the upper right of the page.</li>
+            <li>Record a separate list of all enabled Illuminate events. You will need to refer to this list in future
+ steps.</li>
+        </ol>
+        <p>
+            <img src="../Resources/Images/Illuminate Processing Management/event definition.png" />
+        </p>
+        <ol>
+            <li>
+                <p>If the Illuminate 2.0.0 Event Definitions spotlight has not already been uploaded, then complete the
+ following steps.</p>
+                <ol>
+                    <li>Navigate to the <em>System</em> &gt; <em>Content Packs</em> page in the Graylog web interface.</li>
+                    <li>Select <em>Upload</em> and then <em>Browse</em>, as in previous steps.</li>
+                    <li>Navigate to the directory where the Illuminate Spotlight archive was extracted.</li>
+                    <li>Click on the “Illuminate_events” subfolder and upload the content pack file.</li>
+                </ol>
+            </li>
+            <li>
+                <p>Apply any customizations to the corresponding updated event, such as notification settings. (Illuminate event
+ definitions are provided without any notification settings. If notification settings have been added, or if any
+ of the threshold settings have been updated, then these must be applied to the updated event definitions
+ included with Illuminate 2.0.0.)</p>
+                <ol>
+                    <li>Navigate back to the “Event Definitions” page in the Graylog web interface.</li>
+                    <li>Click on the <em>Edit</em> button on the event definition to be updated.</li>
+                    <li>Record any changes to the threshold settings and notifications for the event definition and keep this
+ record. (The updated event definitions will have similar titles as the previous definitions but will
+ begin with “Illuminate:Events:4;”.)
+            </li>
+                    <li>Locate and edit the updated event definition.</li>
+                    <li>Apply the recorded customizations.</li>
+                </ol>
+            </li>
+            <li>
+                <p>Now, enable the new event.</p>
+                <ol>
+                    <li>Click on the <em>More</em> button corresponding with the updated event definition.</li>
+                    <li>Then click
+                <em>Enable</em>.<img src="../Resources/Images/Illuminate Processing Management/more button.png" /></li>
+                </ol>
+            </li>
+            <li>
+                <p>Then, disable the old event.</p>
+                <ol>
+                    <li>Click on the <em>More</em> button corresponding with the previous event definition.</li>
+                    <li>Click <em>Disable</em>.</li>
+                </ol>
+            </li>
+            <li>
+                <p>Repeat this entire process for all of the event definitions that were previously in use.</p>
+            </li>
+        </ol>
+        <h2>Remove Previous Event Definition Settings</h2>
+        <p>After all event definition settings have been updated, the
+ previous revisions of the event definitions should be removed. <strong>It is important to note that once the older
+ content pack revisions have been uninstalled, all settings on the event definitions associated with the older
+ event definitions will be removed and cannot be recovered.</strong></p>
+        <p>To remove the previous event
+ definitions:</p>
+        <ol>
+            <li>Click on the content pack entry “Graylog Illuminate:Event Definitions;2021-10-16”.</li>
+            <li>The available and installed revisions of the content pack will be listed on the left side of the page.</li>
+            <li>Click on <em>Uninstall</em> for revisions 1, 2, and 3 <strong>only</strong>.</li>
+        </ol>
+        <p>
+            <img src="../Resources/Images/Illuminate Processing Management/versions.png" />
+        </p>
+        <h2>Restore the Processing Order</h2>
+        <p>Once the installation is complete, it is necessary to revert to the previous
+ processing order.</p>
+        <ol>
+            <li>Navigate to <em>System</em> &gt; <em>Configurations</em> in the Graylog web interface.</li>
+            <li>Consult your recorded notes on the previous processing order and restore the processing order exactly as
+ recorded.
+    </li>
+        </ol>
+        <h2>Illuminate 2.0.1</h2>
+        <p>For upgrading to Illuminate 2.0.1, you must first install Illuminate 2.0.0 as described
+ above. Then, proceed with the following installation and upgrade actions as you did with 2.0.0:</p>
+        <ol>
+            <li><a href="https://go2docs.graylog.org/5-0/what_more_can_graylog_do_for_me/upgrading_to_illuminate_2.0.x.html#extract-the-graylog-illuminate-release-archive-file">Download
+ and extract the Graylog Illuminate 2.0.1 release archive file</a>.
+    </li>
+            <li><a href="https://go2docs.graylog.org/5-0/what_more_can_graylog_do_for_me/upgrading_to_illuminate_2.0.x.html#upload-the-illuminate-bundle">Upload the
+ Illuminate 2.01 bundle</a>.
+        <ol><li>For this step, there are some additional confirmation actions that will need to occur. See the preceding
+ section, "Upload the Illuminate 2.0.1 Bundle," for more details.
+            </li></ol></li>
+            <li><a href="https://go2docs.graylog.org/5-0/what_more_can_graylog_do_for_me/upgrading_to_illuminate_2.0.x.html#uninstall-the-previous-illuminate-content">Uninstall
+ the previous Illuminate content</a>.
+    </li>
+            <li><a href="https://go2docs.graylog.org/5-0/what_more_can_graylog_do_for_me/upgrading_to_illuminate_2.0.x.html#install-the-illuminate-spotlight-content">Upload
+ and Install the Illuminate 2.0.1 Spotlight packs</a>.
+    </li>
+        </ol>
+        <h3>Upload the Illuminate 2.0.1 Bundle</h3>
+        <p>Now, you will upload and enable your new Illuminate bundle as before
+ in the "<a href="https://go2docs.graylog.org/5-0/what_more_can_graylog_do_for_me/upgrading_to_illuminate_2.0.x.html#upload-the-illuminate-bundle">Upload the
+ Illuminate Bundle</a>" section above. This process is generally the same as before when installing Illuminate
+ 2.0.0; however, after the bundle is updated, there will be a message indicating that the bundle was uploaded but
+ that the previous version was active.</p>
+        <p>
+            <img src="../Resources/Images/Upgrading to Graylog Illuminate 2.0/Upload Illuminate Bundle.png" alt="Upgrade_Illuminate_13" class="fr-fic fr-dii fr-draggable" />
+        </p>
+        <ol>
+            <li>From here, click on the button <em>Continue to Packs Manager</em> to enable the new version of Illuminate.</li>
+            <li>Click on the Illuminate version selection drop-down menu located on the upper right corner of the Illuminate
+ installer page.
+    </li>
+        </ol>
+        <p>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<img src="../Resources/Images/Illuminate Processing Management/version number.png" style="width: 637px;height: 302px;" /></p>
+        <ol start="3">
+            <li>
+                <p>Select the illuminate version to activate and click on the <em>Activate</em> button.<br /><img src="../Resources/Images/Illuminate Processing Management/activate.png" /><br /></p>
+            </li>
+            <li>
+                <p>A confirmation message will
+ appear.<br /></p>
+            </li>
+            <li>
+                <p>Click <em>Confirm</em> to activate the new version of Illuminate.</p>
+            </li>
+            <li>
+                <p>Confirm that the previous technology packs that were activated are still active.</p>
+            </li>
+        </ol>
+        <!--OriginalURI: :/upgrading-to-illuminate-2x"}],-->
+    </body>
+</html>

@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>The Juniper SRX line of firewalls combine effective security, SD-WAN, routing, switching and WAN interfaces with next-generation firewall and advanced threat mitigation capabilities. It provides secure connectivity across distributed enterprise locations.</p>
+        <h2>Requirement(s)</h2>
+        <ul>
+            <li>
+                <p>Juniper SRX devices running Junos OS 17.4. These should be configured to send sd-syslog formatted logs.</p>
+            </li>
+            <li>
+                <p>A Graylog Server with a valid Enterprise license that is running Graylog version 5.0.3 or later.</p>
+            </li>
+        </ul>
+        <h2>Graylog Server Requirement</h2>
+        <ul>
+            <li>
+                <p>This spotlight requires Graylog Server version 5.0.3 or higher. If an earlier version is used, fields will be improperly processed.</p>
+            </li>
+        </ul>
+        <h2>Not Supported</h2>
+        <ul>
+            <li>
+                <p>N/A</p>
+            </li>
+        </ul>
+        <h2>Stream Configuration</h2>
+        <p>This technology pack includes one stream:</p>
+        <ul>
+            <li>
+                <p>“Illuminate:Juniper Messages”</p>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the activation of the content pack, it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</span>
+                </div>
+            </section>
+        </p>
+        <h2>Index Set Configuration</h2>
+        <p>This technology pack includes one index set definition:</p>
+        <ul>
+            <li>
+                <p>“Juniper Logs”</p>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;"><span style="font-weight: normal;">If this index set is already defined, nothing will be changed. If this index set does not exist, it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation</span>.</span>
+                </div>
+            </section>
+        </p>
+        <h2>Log Format Examples</h2>
+        <p><code class="linecode">&lt;14&gt;1 2023-08-02T06:20:55.496Z RT_FLOW - RT_FLOW_SESSION_CREATE [junos@2636.1.1.1.2.129 source-address="192.168.1.2" source-port="49158" destination-address="10.10.10.10" destination-port="80" connection-tag="0" service-name="junos-http" nat-source-address="172.16.1.2" nat-source-port="29479" nat-destination-address="10.10.10.10" nat-destination-port="80" nat-connection-tag="0" src-nat-rule-type="source rule" src-nat-rule-name="trust_Zone" dst-nat-rule-type="N/A" dst-nat-rule-name="N/A" protocol-id="6" policy-name="default-permit" source-zone-name="trust" destination-zone-name="untrust" session-id="6389" username="N/A" roles="N/A" packet-incoming-interface="ge-0/0/1.0" application="UNKNOWN" nested-application="UNKNOWN" encrypted="UNKNOWN" application-category="N/A" application-sub-category="N/A" application-risk="-1" application-characteristics="N/A" src-vrf-grp="N/A" dst-vrf-grp="N/A" tunnel-inspection="Off" tunnel-inspection-policy-set="root" source-tenant="N/A" destination-service="N/A"]</code>
+        </p>
+        <p><code class="linecode">&lt;14&gt;1 2023-08-02T06:20:13.049Z RT_IDS - RT_SCREEN_TCP [junos@2636.1.1.1.2.40 attack-name="SYN flood!" source-address="192.168.1.1" source-port="40001" destination-address="192.168.1.2" destination-port="50010" source-zone-name="trustZone" interface-name="ge-0/0/1.0" action="drop"]</code>
+        </p>
+        <h2>Requirements</h2>
+        <ul>
+            <li>
+                <p>Juniper SRX Logging</p>
+            </li>
+            <li>
+                <p>Junos OS must be configured to send log messages via the sd-syslog format.</p>
+            </li>
+        </ul>
+        <p>When compared to standard syslog, the sd-syslog format is an overly structured system log file format. Information regarding this format can be found at:</p>
+        <ul>
+            <li>
+                <p><a href="https://github.com/Graylog2/graylog-project-illuminate/blob/develop/illuminate/juniper_srx/_meta/documentation/juniper_srx.md">Logging Messages in Structured-Data Format</a>
+                </p>
+            </li>
+            <li>
+                <p><a href="https://supportportal.juniper.net/s/article/JSA-Junos-Space-SRX-How-to-forward-logs-from-an-SRX-device-to-an-external-syslog-server-like-JSA-Junos-Space?language=en_US">KB16224</a>
+                </p>
+            </li>
+            <li>
+                <p><a href="https://github.com/Graylog2/graylog-project-illuminate/blob/develop/illuminate/juniper_srx/_meta/documentation/juniper_srx.md">RFC 5424 - Structured-Data</a>
+                </p>
+            </li>
+        </ul>
+        <p>
+            <section class="warningBox">
+                <div class="title"><b>Warning</b>:&#160;<span style="font-weight:normal;">The <i>expand structured data</i> option in the input to which you send your logs should be <b>unchecked</b>.</span></div>
+            </section>
+        </p>
+        <h2>What is Provided</h2>
+        <p>Rules to normalize and enrich Juniper SRX log messages.</p>
+        <h2>Juniper SRX Log Message Processing</h2>
+        <p>The Illuminate processing of Juniper SRX log messages provides the following:</p>
+        <ul>
+            <li>
+                <p>Field extraction, normalization and message enrichment for Juniper SRX log messages.</p>
+            </li>
+            <li>
+                <p>GIM Categorization of the following messages:</p>
+            </li>
+        </ul>
+        <table style="width: 100%;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <colgroup>
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            </colgroup>
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Juniper SRX Log Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Subcategory</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">RT_FLOW_SESSION_CLOSE</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network.flow</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">RT_FLOW_SESSION_CREATE</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network.open</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">IDP_ATTACK_LOG_EVENT</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network.flow</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><code class="linecode">APPTRACK_SESSION_CLOSE</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">network.flow</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>Juniper SRX Spotlight Content Pack</h2>
+        <ul>
+            <li>
+                <p>Dashboard: Illuminate:Juniper SRX Overview</p>
+            </li>
+        </ul>
+        <p>
+            <img src="../Resources/Images/Content Packs/Juniper/Overview-final.png" />
+        </p>
+    </body>
+</html>

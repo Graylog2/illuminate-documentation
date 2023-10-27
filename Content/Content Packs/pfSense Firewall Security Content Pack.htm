@@ -1,0 +1,600 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint</b>:&#160;<span style="font-weight:normal;">The pfSense Firewall Security Content Pack was first introduced in Illuminate 3.3. </span></div>
+            </section>
+        </p>
+        <p>pfSense and OPNsense are free, open-source firewalls and router software based on FreeBSD. They provide advanced networking features and can be used in a variety of network configurations.</p>
+        <p>This technology pack will process pfSense and OPNsense messages.</p>
+        <h2>Requirement(s)</h2>
+        <ul>
+            <li>
+                <p>Supported versions include Sense CE edition 2.6 and OPNsense 23.1.</p>
+            </li>
+            <li>
+                <p>Graylog server with a valid Operations license running Graylog 5.0.3+.</p>
+            </li>
+        </ul>
+        <h2>Supported Logs</h2>
+        <ul>
+            <li>
+                <p><code class="linecode">dhcpd </code>(DHCP logs)</p>
+            </li>
+            <li>
+                <p><code class="linecode">filterlog </code>(Firewall logs)</p>
+            </li>
+            <li>
+                <p><code class="linecode">nginx</code> / <code class="linecode">lighttpd</code> (Traffic logs)</p>
+            </li>
+            <li>
+                <p><code class="linecode">unbound</code> (DNS logs, query)</p>
+            </li>
+            <li>
+                <p><code class="linecode">sshd</code> (Login/Logout via SSH)</p>
+            </li>
+            <li>
+                <p><code class="linecode">GUI login</code> (Login)</p>
+            </li>
+            <li>
+                <p><code class="linecode">sshguard</code> (SSHGuard logs)</p>
+            </li>
+            <li>
+                <p><code class="linecode">audit</code> / <code class="linecode">php-fpm</code> (Authentication)</p>
+            </li>
+            <li>
+                <p><code class="linecode">php-fpm</code> (User creation and deletion)</p>
+            </li>
+            <li>
+                <p>Beta support:</p>
+                <ul>
+                    <li>
+                        <p><code class="linecode">ntpd</code> (NTP logs)</p>
+                    </li>
+                    <li>
+                        <p><code class="linecode">openvpn</code> (OpenVPN logs)</p>
+                    </li>
+                    <li>
+                        <p><code class="linecode">radvd</code> (Routing advertisement logs)</p>
+                    </li>
+                    <li>
+                        <p><code class="linecode">suricata</code> (Intrusion Detection)</p>
+                    </li>
+                    <li>
+                        <p><code class="linecode">snort</code> (Snort 2.9, Intrusion Detection)</p>
+                    </li>
+                    <li>
+                        <p><code class="linecode">/usr/sbin/cron</code> (Cron System logs)</p>
+                    </li>
+                    <li>
+                        <p><code class="linecode">dpinger</code> (Gateway logs)</p>
+                    </li>
+                    <li>
+                        <p><code class="linecode">charon</code> (IPSec)</p>
+                    </li>
+                    <li>
+                        <p><code class="linecode">dnsmasq</code> (DNSMasq)</p>
+                    </li>
+                    <li>
+                        <p><code class="linecode">pkg_static</code> (Packet Manager)</p>
+                    </li>
+                    <li>
+                        <p><code class="linecode">shutdown</code> (Shutdown command)</p>
+                    </li>
+                    <li>
+                        <p><code class="linecode">rc.gateway_alarm</code> (Gateway alarm)</p>
+                    </li>
+                    <li>
+                        <p><code class="linecode">snmpd</code> (SNMP)</p>
+                    </li>
+                    <li>
+                        <p><code class="linecode">arpwatch</code> (Arpwatch)</p>
+                    </li>
+                    <li>
+                        <p><code class="linecode">squid</code> (Proxy Server, requires a specific input)</p>
+                    </li>
+                    <li>
+                        <p><code class="linecode">Bind</code> (Alternative DNS Server)</p>
+                    </li>
+                    <li>
+                        <p><code class="linecode">tailscaled</code> (Tailscale successful connection)</p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint</b>: <span style="font-weight: normal;"><MadCap:annotation MadCap:createDate="2023-05-08T08:07:08.9984993-08:00" MadCap:creator="AnnieZempel" MadCap:initials="AN" MadCap:comment="Just to clarify: meaning here that the log types listed above are mostly not included by default?" MadCap:editor="AnnieZempel" MadCap:editDate="2023-05-08T08:07:52.4348666-08:00">These are mostly additional pfSense/OPNsense packages</MadCap:annotation> (not installed or configured by default). The pack will parse out at least the basic fields of the aforementioned packs but some may require adjusted logging settings.</span></div>
+            </section>
+        </p>
+        <h2>Stream Configuration</h2>
+        <p>This technology pack includes one stream:</p>
+        <ul>
+            <li>
+                <p>“Illuminate:pfsense_firewall Messages”</p>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint</b>: <span style="font-weight: normal;">If this stream does not exist prior to the activation of this pack, then it will be created and configured to route messages to this stream and the associated index set. <MadCap:annotation MadCap:createDate="2023-05-08T08:09:11.9373649-08:00" MadCap:creator="AnnieZempel" MadCap:initials="AN" MadCap:comment="Does this mean that stream rules should not be configured or that, upon activating this pack, there will be no stream rules created by default?" MadCap:editor="AnnieZempel" MadCap:editDate="2023-05-08T08:09:36.9248354-08:00">There should not be any stream rules configured for this stream.</MadCap:annotation></span></div>
+            </section>
+        </p>
+        <h2>Index Set Configuration</h2>
+        <p>This technology pack includes one index set definition:</p>
+        <ul>
+            <li>
+                <p>“pfsense_firewall Logs”</p>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint</b>: <span style="font-weight: normal;">If this index set is already defined, then nothing will be changed.  If this index set does not exist, then it will be created with<MadCap:annotation MadCap:createDate="2023-05-08T08:09:50.4533057-08:00" MadCap:creator="AnnieZempel" MadCap:initials="AN" MadCap:comment="Is this still true given that the time/size rotation strategy is being set to default globally for 5.1?" MadCap:editor="AnnieZempel" MadCap:editDate="2023-05-08T08:10:07.9381989-08:00"> retention settings of a daily rotation and 90 days of retention</MadCap:annotation>.  These settings can be adjusted as required after installation.</span></div>
+            </section>
+        </p>
+        <h2>Log Format Examples</h2>
+        <p><code class="linecode">dhcpd</code> (DHCP logs)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">DHCPREQUEST for 192.168.1.50 from 52:54:00:06:aa:11 (tsterkal) via vtnet1</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">filterlog</code> (Firewall logs)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">71,,,1eb94a38e58994641aff378c21d5984f,vtnet0,match,block,in,4,0x0,,255,43376,0,DF,17,udp,73,192.168.122.40,224.0.0.251,5353,5353,53</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">nginx</code> / <code class="linecode">lighttpd</code> (Traffic logs)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">192.168.1.50 192.168.1.10 - [23/Mar/2023:14:48:28 +0000] "GET /api/core/system/status HTTP/2.0" 200 317 "https://192.168.1.10/services_dhcp.php?if=lan" "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0"</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">unbound</code> (DNS logs)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">[61142:0] info: reply from &lt;cnn.com.&gt; 205.251.192.47#53</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">[98871:0] query: 192.168.1.100 safebrowsing.googleapis.com. A IN</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">sshguard</code> (SSHGuard logs)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">Attack from "192.168.7.1" on service 100 with danger 10.</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">sshd</code> (Login/Logout via SSH)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">Accepted keyboard-interactive/pam for admin from 192.168.1.100 port 53214 ssh2</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">audit</code> / <code class="linecode">php-fpm</code> (Authentication)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">/index.php: Successful login for user 'root' from: 192.168.1.50</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">login</code> (Login to a shell)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">login on ttyv0 as root</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <h3>Logs in Beta Support</h3>
+        <p><code class="linecode">ntpd </code>(NTP logs)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">65.182.224.60 local addr 192.168.122.34 -&gt; &lt;null&gt;</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">openvpn </code>(OpenVPN logs)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">myusercert/192.168.1.100:35609 SENT CONTROL [myusercert]: 'PUSH_REPLY,redirect-gateway def1,route-gateway 192.168.2.1,topology subnet,ping 10,ping-restart 60,ifconfig 192.168.2.2 255.255.255.0,peer-id 0,cipher AES-256-GCM' (status=1)</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">radvd </code>(Routing advertisement logs)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">ignoring RA from fe80::abcd:1234:5678:aaaa on igb0: not enough addresses for subnet</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">suricata </code>(Intrusion Detection)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">[46424]: [Drop] [1:2001219:20] ET SCAN Potential SSH Scan [Classification: Attempted Information Leak] [Priority: 2] {TCP} 118.123.10.10:1566 -&gt; 192.168.1.25:22</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">snort</code> (Snort 2.9)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">[119:4:1] (http_inspect) BARE BYTE UNICODE ENCODING [Classification: Not Suspicious Traffic] [Priority: 3] {TCP} 192.168.1.100:49922 -&gt; 192.168.1.1:3128</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">/usr/sbin/cron</code> (Cron System logs)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">(root) CMD (/usr/bin/nice -n20 /usr/local/sbin/expiretable -v -t 3600 virusprot)</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">dpinger</code> (Gateway logs)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">dpinger[11000]: WAN_GW 198.51.100.1: Alarm latency 4807us stddev 1790us loss 21%</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">charon</code> (IPSec)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">16[CFG] loaded 0 RADIUS server configurations</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <ul>
+            <li>
+                <p> Parsing is only for <code class="linecode">charon </code>process and <code class="linecode">pid</code>.</p>
+            </li>
+        </ul>
+        <p><code class="linecode">dnsmasq </code>(DNSMasq)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">1 192.168.1.50/49952 query[A] cnn.com from 192.168.1.50</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">pkg_static</code> / <code class="linecode">pkg</code> (Packet Manager)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">opnsense upgraded: 23.1 -&gt; 23.1.4_1</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">shutdown</code> (Shutdown command)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">power-down by root:</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">rc.gateway_alarm</code> (Gateway alarm)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">&gt;&gt;&gt; Gateway alarm: WAN_DHCP (Addr:192.168.122.1 Alarm:0 RTT:1.241ms RTTsd:10.968ms Loss:0%)</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">snmpd</code> (SNMP)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">disk_OS_get_disks: adding device 'cd0' to device list</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">php-fpm</code> (User create and deletion)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">/system_usermanager.php: Configuration Change: admin@192.168.1.100 (Local Database): Successfully deleted user: stefan</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">arpwatch</code> (Arpwatch)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">new station 192.168.1.100 52:54:00:06:57:10</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">kernel</code>
+        </p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">vtnet0: promiscuous mode enabled</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">squid</code> (Proxy Server, requires a specific input)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">1680109171.634 171177 192.168.1.100 TCP_TUNNEL/200 111 CONNECT 192.169.3.4:443 - HIER_DIRECT/10.10.10.10 -</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">php/php_pfb</code> (Software Updates/News)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">[pfBlockerNG] Starting cron process.</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">Bind/named</code> (Alternative DNS Server)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">queries: info: client @0x802512d60 192.168.1.100#54251 (heise.de): query: heise.de IN A +E(0)K (192.168.1.1)</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><code class="linecode">tailscaled</code> (Tailscale connection)</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">UDP{100.121.10.10:60074 &gt; 192.168.2.10:53} 70 ok</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <h2>Requirements</h2>
+        <p>The pack allows you to select one of three different ways to route the logs into the right pack.</p>
+        <h3>Option 1 (via device name):</h3>
+        <ul>
+            <li>
+                <p>The name of the pfSense/OPNsense device must start with <code class="linecode">pfSense</code> or <code class="linecode">OPNsense</code>. (Note these titles are case sensitive.)</p>
+            </li>
+        </ul>
+        <h3>Option 2 (via static field):</h3>
+        <ul>
+            <li>
+                <p>The required field name is <code class="linecode">RoutedFrom</code>, and the required value is <code class="linecode">Route - PFSense Logs</code>. Both values are key sensitive.</p>
+            </li>
+        </ul>
+        <h3>Option 3 (via specific input):</h3>
+        <ul>
+            <li>
+                <p>A pfSense/OPNsense specific input on the Graylog server and an Illuminate lookup override can also be configured.</p>
+            </li>
+        </ul>
+        <h2>Graylog Server Configuration for a Specific Input</h2>
+        <p>1. Create a new Syslog input and choose an unused port. (If an input already exists that only handles pfSense/OPNSense logs, use that input.  If using a new or existing forwarder, create a new input as part of the forwarder setup process or use the input already associated with an existing forwarder.)</p>
+        <p>2. Once created, select <i>Show received messages</i> to obtain the input ID. This will pull up a search window with the "All Time" timeframe.  If there is a large number of logs, you might want to adjust the timeframe to speed up the process.</p>
+        <p>
+            <img src="../Resources/Images/pfSense Firewall Security Content Pack/input_all_messages.png" style="max-width: 75%;" />
+        </p>
+        <p>
+            <img src="../Resources/Images/pfSense Firewall Security Content Pack/forwarder_all_messages.png" style="max-width: 75%;" />
+        </p>
+        <p>3. Copy the <code class="linecode">gl2_source_input</code> value.</p>
+        <p>4. Navigate to <i>Enterprise</i> &gt; <i>Illuminate</i> and click on the <i>Customization</i> tab.</p>
+        <p>5. Locate<code class="linecode"> lookup_adapter_input_routing</code> and select <i>Edit</i>.  For the <code class="linecode">content_name</code> key, enter <code class="linecode">pfsense_firewall</code>. For the <code class="linecode">input_id</code> value, enter the <code class="linecode">gl2_source_input ID</code> copied earlier.</p>
+        <p>
+            <img src="../Resources/Images/pfSense Firewall Security Content Pack/illuminate_override.png" style="max-width: 75%;" />
+        </p>
+        <p>6. Click <i>Configure value</i> to confirm.</p>
+        <p>Now, all logs sent to the configured input will be identified as  pfSense/OPNSense logs and will allow for proper Illuminate processing.</p>
+        <h2>pfSense/OPNsense Configuration</h2>
+        <p>1. Enable remote logging on pfSense/OPNsense and configure your logging target.</p>
+        <p>2. Select the logs what you want to see. Some services require to select a setting within that service to produce logs. Most log sources are not activated by default. Some services like unbound/dns produce a high volume of logs.</p>
+        <p>3. The <i>Hostname</i> is the IP of your Graylog server.</p>
+        <p>4. Set a port. (Note it must match a Syslog input in Graylog.) The default protocol is <code class="linecode">udp</code>.</p>
+        <p>5. Select or enable <code class="linecode">syslog rfc5424</code>.</p>
+        <h2>What is Provided</h2>
+        <ul>
+            <li>
+                <p> Rules to normalize and enrich pfSense and OPNSense log messages.</p>
+            </li>
+        </ul>
+        <h2> pfSense/OPNsense Log Message Processing</h2>
+        <p>The Illuminate processing of pfSense/OPNsense log messages provides the following:</p>
+        <ul>
+            <li>
+                <p>Field extraction, normalization, and message enrichment for pfSense/OPNsense log messages.</p>
+            </li>
+            <li>
+                <p>GIM categorization of the following messages:</p>
+            </li>
+        </ul>
+        <table style="width: 100%;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 259px;" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM&#160;Category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM&#160;Subcategory</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DHCPACK </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp.acknowledgement</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DHCPREQUEST </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp.request</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DHCPOFFER </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp.offer</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DHCPDISCOVER </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp.discovery</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network traffic</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http communication</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">GUI login</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">authentication.logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">GUI logout</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication.logoff</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ssh login</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">authentication.logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>pw_admin_change</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>iam</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>iam.object modify</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>pw_user_change</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>iam</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>iam.object modify</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>login_failed</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>authentication</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>authentication.logon</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>created user</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>iam</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>iam.object modify</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>deleted user</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>iam</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>iam.object modify</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>snort alert</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>alert</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>alert.default</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>suricata alert</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>alert</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>alert.default</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>sshguard attack alert</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>alert</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>alert.default</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>ipv4 traffic</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>network</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>network.network connection</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>ipv6 traffic</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>network</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>network.network connection</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>tailscale connection</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>network</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>network.network connection</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>squid connection</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>network</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>network.default</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>ipv4 icmp traffic</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>network</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>network.default</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>ipv6 icmp traffic</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>network</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>network.default</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>ipv4 igmp traffic</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>network</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>network.default</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>snmpd connection</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>network</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>network.default</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">
+                        <p>dns query</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">
+                        <p>name resolution</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">
+                        <p>dns query</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>pfSense/OPNsense Spotlight Content Pack</h2>
+        <p>pfSense/OPNsense offers two dashboards: a dashboard with overviews and a dashboard with filterlogs and alerts.</p>
+        <p>
+            <img src="../Resources/Images/pfSense Firewall Security Content Pack/pfSense_Overview.png" />
+        </p>
+        <p>
+            <img src="../Resources/Images/pfSense Firewall Security Content Pack/pfSense_Filterlogs.png" />
+        </p>
+    </body>
+</html>

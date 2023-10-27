@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head><title>BIND DNS Content Pack</title>
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;This content pack was first released in Illuminate v3.2.0. </div>
+            </section>
+        </p>
+        <p>Berkeley Internet Name Domain (BIND) is a popular DNS server. It is currently in version 9 as of this publication. BIND is an open-source system free to download and use. </p>
+        <p>This technology pack will process BIND&#160;9 DNS query logs and  error logs, providing normalization and enrichment of those events.</p>
+        <h3>Supported Version</h3>
+        <ul>
+            <li>
+                <p>BIND 9.18.1</p>
+            </li>
+        </ul>
+        <h3>Log Format Example</h3>
+        <p><code class="linecode">2023-02-23T21:31:02.205Z queries: info: client @0x7f9bac008aa8 127.0.0.1#57316 (notadomainatall.org): query: notadomainatall.org IN A +E(0)K (127.0.0.1)</code>
+        </p>
+        <p><code class="linecode">2023-02-23T18:27:56.834Z query-errors: info: client @0x7f9ba802c7f8 127.0.0.1#40232 (asldkjfals.topnet): query failed (REFUSED) for asldkjfals.topnet/IN/A at query.c:5590</code>
+        </p>
+        <h3>Requirements</h3>
+        <ul>
+            <li>
+                <p>Install BIND DNS.</p>
+                <ul>
+                    <li>
+                        <p>You can find information on how to install BIND DNS <a href="https://www.isc.org/bind/">in their documentation</a>. Please refer to your vendor for specific instructions on downloading BIND based on your operating system.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>The Illuminate BIND DNS pack requires the following log channel settings for all BIND DNS logs being sent to Graylog:</p>
+            </li>
+        </ul>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">  - print-category yes;
+
+  - print-severity yes;</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <ul>
+            <li>
+                <p>Configure Filebeat to send BIND logs to Graylog server beats input.</p>
+            </li>
+        </ul>
+        <h2>Filebeat Setup</h2>
+        <p>Filebeat is a lightweight log shipper that can be used to send logs from a Windows server to a remote logging system like Graylog. Follow the order below to install and connect Filebeat to your Graylog instance:</p>
+        <h3>1. Install Filebeat</h3>
+        <p>Download and install Filebeat for Windows from <a href="https://www.elastic.co/downloads/past-releases#filebeat-oss">elastic.co</a>. Choose the required version and download the ZIP file. Follow the <a href="https://www.elastic.co/guide/en/beats/filebeat/8.6/filebeat-installation-configuration.html">installation instructions for filebeat</a>.</p>
+        <h3>2. Create An Input Page in Graylog</h3>
+        <ol>
+            <li>
+                <p>Create a Beats input under <i>System/Inputs</i> in Graylog with the desired port number.</p>
+            </li>
+            <li>
+                <p><b style="font-weight: normal;">Name and save the input.</b> Make sure input status is running.</p>
+            </li>
+            <li>
+                <p>Configure Filebeat to collect BIND logs. Edit the Filebeat configuration file (<code class="linecode">filebeat.yml</code>) to specify the location of the BIND logs and any other desired settings. In this file, you'll also need to specify the Graylog output for Filebeat to send the logs to.</p>
+                <ol>
+                    <li>
+                        <p>In our case below under “paths,” we added this line to retrieve all the files in the folder: <code class="linecode">C:\Windows\System32\BIND\*</code></p>
+                    </li>
+                    <li>
+                        <p> The “ fields” portion is mandatory as this is the field that Graylog will focus on to direct the logs into the correct stream.</p>
+                    </li>
+                </ol>
+            </li>
+        </ol>
+        <p>We have provided a sample <code class="linecode">filebeat.yml</code> file that will send your logs from your BIND server to Graylog, allowing for them to be fully imported and parsed. The following yaml file shows the minimum required sections for a yml file running BIND. You may choose to add to the file, but both sections (inputs and output) need to be present.</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve"># ============================== Filebeat inputs ===============================
+
+filebeat.inputs:
+
+# Each - is an input. Most options can be set at the input level, so
+
+# you can use different inputs for various configurations.
+
+# Below are the input specific configurations.
+
+# filestream is an input for collecting log messages from files.
+
+- type: filestream
+
+
+
+  # Unique ID among all inputs, an ID is required.
+
+  id: &lt;my-filestream-id&gt;
+
+  
+
+  # Change to true to enable this input configuration.
+
+  enabled: true
+
+  
+
+  # Paths that should be crawled and fetched. Glob based paths.
+
+  paths:
+
+    - &lt;/path/to/log/file*&gt;
+
+  
+
+  # Set the event_source_product field to bind_dns
+
+  fields:
+
+     event_source_product: bind_dns
+
+  fields_under_root: true
+
+  
+
+# ------------------------------ Logstash Output -------------------------------
+
+output.logstash:
+
+  # The Logstash hosts
+
+  hosts: ["&lt;your_graylog_ip&gt;:5044"]</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <h2>Stream Configuration</h2>
+        <p>This technology pack includes one stream:</p>
+        <p>"Illuminate: BIND DNS Messages"</p>
+        <section class="infoBox">
+            <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream. </div>
+        </section>
+        <h3>Index Set Configuration</h3>
+        <p>This technology pack includes one index set definition:</p>
+        <p>"BIND DNS Logs”</p>
+        <section class="infoBox">
+            <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation. </div>
+        </section>
+        <h2>Log Configuration</h2>
+        <p>Here is how to set up your BIND log configuration:</p>
+        <ol>
+            <li>
+                <p>Back up your configuration.</p>
+            </li>
+            <li>
+                <p>Configure your BIND instance logging to which you will save query logs:</p>
+                <p><code class="linecode"> /var/log/named/query.log.</code>
+                </p>
+            </li>
+            <li>
+                <p>Save query error logs to:</p>
+                <p><code class="linecode"> /var/log/named/query-errors.log</code>.</p>
+            </li>
+        </ol>
+        <p>The following is a sample BIND logging configuration section that can be added to your BIND configuration. Please verify that this logging configuration works in your environment. Make adjustments as necessary.</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">logging {
+
+        channel named           { file "/var/log/named/named.log"        versions 10 size 20M; severity info;  print-time iso8601-utc; print-category yes; print-severity yes;};
+
+        channel security        { file "/var/log/named/security.log"     versions 10 size 20M; severity info;  print-time iso8601-utc; print-severity yes; };
+
+        channel dnssec          { file "/var/log/named/dnssec.log"       versions 10 size 20M; severity info;  print-time iso8601-utc; print-severity yes; };
+
+        channel resolver        { file "/var/log/named/resolver.log"     versions 10 size 20M; severity info;  print-time iso8601-utc; print-severity yes; };
+
+        channel query_log       { file "/var/log/named/query.log"        versions 10 size 80M; severity debug; print-time iso8601-utc; print-severity yes; };
+
+        channel query-error     { file "/var/log/named/query-errors.log" versions 10 size 20M; severity info;  print-time iso8601-utc; print-severity yes; };
+
+        channel lame_servers    { file "/var/log/named/lame-servers.log" versions 10 size 20M; severity info;  print-time iso8601-utc; print-severity yes; };
+
+        channel capacity        { file "/var/log/named/capacity.log"     versions 10 size 20M; severity info;  print-time iso8601-utc; print-severity yes; };
+
+        channel rpz             { file "/var/log/named/rpz.log"          versions 10 size 20M; severity info;  print-time iso8601-utc; print-severity yes; };
+
+
+
+        category default        { default_syslog;  named; };
+
+        category general        { default_syslog;  named; };
+
+        category security       { security; };
+
+        category queries        { query_log; };
+
+        category lame-servers   { lame_servers;};
+
+        category dnssec         { dnssec; };
+
+        category edns-disabled  { default_syslog; };
+
+        category config         { default_syslog; named; };
+
+        category resolver       { resolver; };
+
+        category edns-disabled  { resolver; };
+
+        category cname          { resolver; };
+
+        category serve-stale    { resolver; };
+
+        category spill          { capacity; };
+
+        category rate-limit     { capacity; };
+
+        category database       { capacity; };
+
+        category client         { default_syslog; named; };
+
+        category network        { default_syslog; named; };
+
+        // category dnstap         { dnstap;};
+
+        category unmatched      { named; };
+
+        category network        { named; };
+
+        category delegation-only { named;};
+
+        category dispatch       { named; };
+
+        category trust-anchor-telemetry { named; };
+
+        category rpz            { rpz;};
+
+};</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p>For  BIND logging configuration basic recommendations, please refer to <a href="https://kb.isc.org/docs/aa-01526">the ISC&#160;documentation</a>. </p>
+        <p>Below is a sample log configuration for BIND. Please note that this is not a complete configuration and that adjustments should be made based on your environment.</p>
+        <p>The examples provided below use the path and file<code class="linecode"> /var/log/named/queries</code> and<code class="linecode"> /var/log/named/query-errors</code>.</p>
+        <p>Our examples were taken from the example in the basic recommendations with the following changes:</p>
+        <p><code class="linecode">- change print-time yes; to print-time iso8601-utc;</code>
+        </p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve"> - example config components (not a complete logging configuration for BIND!):
+
+      channel queries_log {
+
+          file "/var/log/named/queries" versions 600 size 20m;
+
+          print-time iso8601-utc;
+
+          print-category yes;
+
+          print-severity yes;
+
+          severity info;
+
+     };
+
+     channel query-errors_log {
+
+          file "/var/log/named/query-errors" versions 5 size 20m;
+
+          print-time iso8601-utc;
+
+          print-category yes;
+
+          print-severity yes;
+
+          severity dynamic;
+
+     };
+
+     category query-errors {query-errors_log; };
+
+     category queries { queries_log; };</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+    </body>
+</html>

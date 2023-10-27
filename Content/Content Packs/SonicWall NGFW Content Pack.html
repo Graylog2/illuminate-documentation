@@ -1,0 +1,1585 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html lang="en" xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" /><title> SonicWall NGFW
+</title>
+        <!-- original-url : sonicwall-ngfw
+## article-id : e7d28d57-82b5-41f7-ade1-9af7fac0fea4
+## seo-title : SonicWall NGFW
+## description : 
+## Metadata_End -->
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>SonicWall Next-Gen Firewalls (NGFW) include a range of products (NSsp, NSa, NSv, and TZ network security appliances) that provide application inspection, IDS/IPS, VPN, and traditional firewall functionality. This technology pack will process SonicWall NGFW event log messages, providing normalization, enrichment, and categorization of common events of interest.</p>
+        <h2>Requirement(s)</h2>
+        <ul>
+            <li>SonicWall NGFW Device(s) running SonicOS version 6.5, 7.0, or later</li>
+            <li>Graylog Server with a valid Enterprise license, running Graylog version 4.2.5, 4.3.0, or later</li>
+            <li>SonicWall devices configured to send logs to Graylog via syslog</li>
+            <li>SonicWall devices configured to send enhanced syslog format</li>
+        </ul>
+        <h2>Stream Configuration</h2>
+        <p>This technology pack includes one stream:</p>
+        <ul>
+            <li>“Illuminate:SonicWall Device Messages”</li>
+        </ul>
+        <section class="infoBox">
+            <div class="content">
+                <p><b>Hint:</b> If this stream does not exist prior to the activation of this pack, then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</p>
+            </div>
+        </section>
+        <h2>Index Set Configuration</h2>
+        <p>This technology pack includes one index set definition:</p>
+        <ul>
+            <li>“SonicWall Device Event Log Messages”</li>
+        </ul>
+        <section class="warningBox">
+            <div class="title"><b>Warning: </b><span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with default retention settings of a daily rotation and 90 days of retention, with 4 shards per index. It is strongly recommended to review and adjust these settings to best suit your environment.</span>
+            </div>
+        </section>
+        <h2>Log Format Example</h2><pre xml:space="preserve"><code data-code-id="section-1662669970623"><code class="linecode">id=SDF2lk3rj sn=SD2342LJFS time="2022-04-22 11:02:41" fw=10.1.2.3 pri=4 c=1024 m=537 msg="Connection Closed"</code> app=2 n=23593520 src=192.168.10.20:53323:IF0 dst=10.0.130.15:53:IF1 srcMac=00:15:5d:a1:a2:08 dstMac=f8:0f:6f:a8:a2:21 proto=udp/dns sent=85 rcvd=117 spkt=1 rpkt=1 cdur=30633 rule="3 (LAN-&gt;WAN)" fw_action="NA"
+</code></pre>
+        <h2>What Is Provided</h2>
+        <ul>
+            <li>Rules to normalize and enrich event log messages</li>
+            <li>A Spotlight content pack</li>
+        </ul>
+        <h3>Log Message Processing</h3>
+        <p>Illuminate will identify SonicWall NGFW event log messages and add the field<code class="linecode"> </code><code data-backticks="1" class="linecode">event_source_product</code> with the value<code class="linecode"> </code><code data-backticks="1" class="linecode">sonicwall_ngfw</code>.</p>
+        <p>The Illuminate processing of SonicWall NGFW log messages provides the following:</p>
+        <ul>
+            <li>Field extraction, normalization and message enrichment for SonicWall log messages</li>
+            <li>Graylog Schema compliance</li>
+            <li>GIM Categorization of the following messages:</li>
+        </ul>
+        <table style="mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">SonicWall Event Code</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><code data-backticks="1" class="linecode">gim_event_category</code>
+                    </th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><code data-backticks="1" class="linecode">gim_event_subcategory</code>
+                    </th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1"><code data-backticks="1" class="linecode">gim_event_type</code>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">22</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">23</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">24</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.logoff</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">session disconnect</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">25</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">27</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">28</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">31</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.logon,authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">32</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon,authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">33</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.logon,authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">34</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">81</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">82</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">83</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">139</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon,authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">140</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.logon,authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">141</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">150</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.process</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">process stopped</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">151</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.process</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">process stopped</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">177</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">178</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">179</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">229</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">237</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.logon,authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">238</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon,authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">243</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.logon,authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">244</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon,authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">245</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.logon,authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">246</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon,authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">248</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">267</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">328</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account renamed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">437</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">440</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">configuration change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">441</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">configuration change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">442</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">configuration change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">446</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">486</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.logon,authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">506</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service stopped</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">508</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service stopped</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">527</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.ports</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">port closed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">528</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.ports</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">port closed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">538</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.ports</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">port closed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">546</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">548</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">549</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.access policy</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">device policy violation</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">560</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object disable</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">account disabled</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">561</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object enable</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account enabled</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">564</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logoff</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">session disconnect</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">580</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">583</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">606</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">608</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">609</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">656</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">669</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">676</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">677</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">682</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">701</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">728</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service stopped</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">734</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">735</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">737</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">744</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">745</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">746</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">747</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">748</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">749</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">750</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">751</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">752</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">753</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">754</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">755</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">756</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">757</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">758</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">759</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">789</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">790</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">793</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">794</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">795</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">809</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">864</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">866</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">868</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">879</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">881</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.configuration</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">system time changed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">882</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http,network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http.communication,network.network connection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network http communication</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">883</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">884</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">885</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">886</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">897</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">898</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">904</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">905</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">913</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">987</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">988</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">989</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">990</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">991</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">992</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">993</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">authentication message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">994</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">configuration change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">995</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">configuration change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">996</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">997</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">authentication message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">998</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1001</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1002</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1003</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1004</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1005</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1006</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1011</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">password change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1033</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1035</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.logon,authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1048</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">password change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1049</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.filesystem</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">file modified</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1058</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.process</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">process altered</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1059</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.process</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">process altered</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1073</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1075</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.kerberos request</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1076</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1080</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.logon,authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1085</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service stopped</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1088</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1089</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1091</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1092</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1093</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1117</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1118</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">authentication message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1119</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1120</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">authentication message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1121</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1122</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">authentication message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1123</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1157</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object disable</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account disabled</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1158</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object disable</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">account disabled</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1180</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1181</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1190</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">group member added</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1191</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">group member removed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1192</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">group member added</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1193</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">group member removed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1198</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1199</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1200</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1201</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1202</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">authentication message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1203</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1204</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">authentication message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1209</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1210</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1211</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1212</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1213</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1214</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1226</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http,network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.communication,network.network connection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network http communication</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1227</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.access policy</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account policy violation</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1229</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1231</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.configuration</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">system time changed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1243</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1316</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1336</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">configuration change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1337</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">password change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1338</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">password change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1341</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">authentication message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1342</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1363</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1366</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1367</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1369</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1373</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1374</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1375</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1376</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1378</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1382</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.audit</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">audit policy changed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1383</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.audit</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">audit error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1387</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.network alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1393</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service stopped</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1432</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">configuration change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1438</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.configuration</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">system configuration modified</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1439</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.configuration</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">system configuration modified</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1440</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.configuration</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">system configuration modified</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1441</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.configuration</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">system configuration modified</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1450</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1471</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1490</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http,network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http.communication,network.network connection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network http communication</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1491</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http,network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.communication,network.network connection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network http communication</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1517</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1518</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1519</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1522</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1524</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1525</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1526</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1552</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1553</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1554</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1555</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1556</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1557</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1572</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon,authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1585</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.logon,authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1590</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.configuration</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">system configuration modified</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1595</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1596</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1599</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.configuration</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">system configuration modified</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1600</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.configuration</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">system configuration modified</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1601</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.configuration</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">system configuration modified</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1627</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object disable</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">account disabled</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1632</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service stopped</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1634</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service removed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1635</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1636</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1637</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">endpoint message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1640</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint.service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">configuration change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1642</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint.ports</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">port closed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1655</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.access policy</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">account policy violation</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">1674</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">endpoint.audit</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">audit policy changed</td>
+                </tr>
+            </tbody>
+        </table>
+        <section class="infoBox">
+            <div class="title"><b>Events associated with the built-in Administrative account</b>
+            </div>
+            <div class="content">
+                <p>SonicWall NGFW devices are configured with a built-in Administrator account. The default name for this account is "Admin", but this can be altered by the user. Some events are logged by the SonicWall devices related to this account, which do not include the actual user name but instead just refer to "Administrator". Illuminate will assign a <code data-backticks="1" class="linecode">user_name</code> value of "Administrator" for these events.</p>
+            </div>
+        </section>
+        <h3>Severity Mapping</h3>
+        <p>SonicWall devices have different severity level assignments which are mapped to the Graylog schema severity levels, in the fields <code data-backticks="1" class="linecode">event_severity</code> and <code data-backticks="1" class="linecode">event_severity_level</code>.</p>
+        <table style="mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th style="text-align: center;" class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><code data-backticks="1" class="linecode">vendor_event_severity_severity</code>
+                    </th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><code data-backticks="1" class="linecode">vendor_event_severity</code>
+                    </th>
+                    <th style="text-align: center;" class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><code data-backticks="1" class="linecode">event_severity_level</code>
+                    </th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1"><code data-backticks="1" class="linecode">event_severity</code>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td style="text-align: center;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Emergency</td>
+                    <td style="text-align: center;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">5</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">critical</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td style="text-align: center;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Alert</td>
+                    <td style="text-align: center;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">5</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">critical</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td style="text-align: center;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Critical</td>
+                    <td style="text-align: center;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">5</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">critical</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td style="text-align: center;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Error</td>
+                    <td style="text-align: center;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">high</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td style="text-align: center;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Warning</td>
+                    <td style="text-align: center;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">medium</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td style="text-align: center;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">5</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Notice</td>
+                    <td style="text-align: center;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">low</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td style="text-align: center;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">6</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Info</td>
+                    <td style="text-align: center;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">informational</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td style="text-align: center;" class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">7</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Debug</td>
+                    <td style="text-align: center;" class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">informational</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Spotlight Content Pack</h3>
+        <p>The Spotlight content pack contains:</p>
+        <ul>
+            <li>
+                <p>Dashboard: Illuminate:SonicWall NGFW Overview</p>
+                <ul>
+                    <li>
+                        <p>Overview tab: Summary of SonicWall device operations.</p>
+                        <p>
+                            <img src="../Resources/Images/Content Packs/sonicwall/overview.png" />
+                        </p>
+                    </li>
+                    <li>
+                        <p>Alerts tab: Summary of SonicWall GIM categorized alerts<br /></p>
+                        <img src="../Resources/Images/Content Packs/sonicwall/alerts.png" />
+                    </li>
+                    <li>
+                        <p>Network tab: Summary of Network Traffic</p>
+                        <p>
+                            <img src="../Resources/Images/Content Packs/sonicwall/ntw.png" />
+                            <br />
+                        </p>
+                    </li>
+                    <li>
+                        <p>VPN tab: Summary of VPN activity</p>
+                        <p>
+                            <img src="../Resources/Images/Content Packs/sonicwall/VPN.png" />
+                            <br />
+                        </p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Saved Search: Illuminate:SonicWall NGFW Alert Log Viewer</p>
+                <ul>
+                    <li>View SonicWall NGFW GIM categorized Security Alerts<img src="../Resources/Images/Content Packs/sonicwall/1stsavedsearch.png" /><br /></li>
+                </ul>
+            </li>
+            <li>
+                <p>Saved Search: Illuminate:SonicWall NGFW Log Viewer - Filtered</p>
+                <ul>
+                    <li>Filter SonicWall NGFW logs by vendor severity, from the most critical level (0 - Emergency) to the least (7 - debug)<br /><img src="../Resources/Images/Content Packs/sonicwall/2ndsavedsearch.png" /></li>
+                </ul>
+            </li>
+            <li>
+                <p>Saved Search: Illuminate:SonicWall NGFW Log Viewer</p>
+                <ul>
+                    <li>Saved search to view SonicWall NGFW Event Log Messages<img src="../Resources/Images/Content Packs/sonicwall/3rdsavedsearch.png" /><br /></li>
+                </ul>
+            </li>
+            <li>
+                <p>Saved Search: Illuminate:SonicWall NGFW VPN Log Viewer</p>
+                <ul>
+                    <li>Saved search to view SonicWall NGFW VPN, SSL VPN, L2TP, and Portal Messages<img src="../Resources/Images/Content Packs/sonicwall/4thsavedsearch.png" /><br /></li>
+                </ul>
+            </li>
+        </ul>
+    </body>
+</html>

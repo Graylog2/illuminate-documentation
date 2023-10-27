@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/OperationsFeatureBanner.flsnp" />
+        <p>This input will pull CrowdStrike data directly from the CrowdStrike API into Graylog allowing users to perform an in-depth analysis of security event data.</p>
+        <h2>Prerequisites</h2>
+        <p>In order for Graylog to pull data from CrowdStrike, an API client must be defined from the CrowdStrike Falcon UI along with its required scope. See the <a href="https://www.crowdstrike.com/blog/tech-center/get-access-falcon-apis/">CrowdStrike documentation</a> for more details. </p>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint</b>:&#160;<span style="font-weight:normal;"><span style="font-weight: normal;">You must be designated a Falcon Administrator role to view, create, or modify API clients or keys. Secrets are only shown when a new API Client is created or when it is reset.</span></span></div>
+            </section>
+        </p>
+        <h2>CrowdStrike Setup</h2>
+        <p>To define a CrowdStrike API client:</p>
+        <ol>
+            <li>
+                <p>Log into the Falcon UI.</p>
+            </li>
+            <li>
+                <p>On the left menu pane, navigate to <i>Support and resources</i> &gt; <i>API clients and keys</i><b>.</b></p>
+            </li>
+            <li>
+                <p>Click <i>Add new API Client</i><b>.</b></p>
+                <ol style="list-style-type: lower-alpha;">
+                    <li>
+                        <p>You will be prompted to provide a description and choose the relevant API scopes. </p>
+                    </li>
+                    <li>
+                        <p>After you click save, you will be presented with the Client ID and Client Secrets.</p>
+                    </li>
+                </ol>
+            </li>
+        </ol>
+        <div class="title"><b><section class="warningBox"><div class="title"><b>Warning</b>:&#160;<span style="font-weight:normal;"> <span style="font-weight: normal;">The secret will only be shown once and should be stored in a secure place. If the Client Secret is lost, a reset must be performed, and any application relying on the Client Secret will need to be updated with the new credentials.</span></span></div></section></b>
+        </div>
+        <p>
+            <img src="../Resources/Images/Falcon UI.png" style="width: 2155px;height: 921px;" />
+        </p>
+        <p>
+            <img src="../Resources/Images/API Details_Scopes.png" style="width: 2156px;height: 1734px;" />
+        </p>
+        <h2>Graylog Configuration</h2>
+        <p>When launching a new CrowdStrike input from the Graylog <i>Inputs</i> tab, the following parameters will need to be completed:</p>
+        <ul>
+            <li>
+                <p><b>Input Name</b>: Provide a unique name for your new CrowdStrike input.</p>
+            </li>
+            <li>
+                <p><b>CrowdStrike Client ID</b>:  The Client ID obtained from the CrowdStrike configuration above.</p>
+            </li>
+            <li>
+                <p><b>Client Secret</b>: The Client ID obtained from the CrowdStrike configuration above.</p>
+            </li>
+            <li>
+                <p><b>User Region</b>: The CrowdStrike User Account Region.</p>
+            </li>
+            <li><b>Store Full Message:</b>
+            </li>
+            <ul style="list-style-type: circle;">
+                <li>
+                    <p>Permits Graylog to store the raw log data in the <code class="linecode">full_message</code> field for each log message.</p>
+                </li>
+                <li>
+                    <p>Selection can result in a significant increase in the amount of data stored.</p>
+                </li>
+            </ul>
+            <li>
+                <p><b>Checkpoint Interval</b>: <MadCap:annotation MadCap:createDate="2023-10-09T12:05:25.4066114-08:00" MadCap:creator="AnnieZempel" MadCap:initials="AN" MadCap:comment="Are there recommended values for these two new config options?" MadCap:editor="AnnieZempel" MadCap:editDate="2023-10-09T12:05:41.9368031-08:00">How </MadCap:annotation>often (in seconds) Graylog will record checkpoints for CrowdStrike data streams.</p>
+            </li>
+            <li>
+                <p><b>Stream Read Timeout</b>: The longest time interval (in seconds) Graylog will wait for messages from the CrowdStrike data feed stream before considering the stream to be broken.</p>
+            </li>
+        </ul>
+    </body>
+</html>

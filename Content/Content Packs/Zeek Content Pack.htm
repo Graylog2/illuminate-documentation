@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title></title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <p>Zeek is an open-source network security monitoring tool capable of passively analyzing network traffic and generating a number of logs describing the activity it sees.  Zeek can be used to detect attacks and probes with a variety of different analyzers and scripts.  This technology pack will process Zeek log messages by providing normalization and enrichment of common events of interest.</p>
+        <h2>Requirement(s)</h2>
+        <ul>
+            <li>Zeek 5.0.9+</li>
+            <li>Filebeat 7.13+ (ndjson parser)</li>
+            <li>Graylog Server with a valid enterprise license, running Graylog version 5.0.3 or later</li>
+            <li>Configured Beats input</li>
+        </ul>
+        <h2>Graylog Server Requirement</h2>
+        <p>This spotlight requires a more recent version of Graylog than the other spotlights due to a change in how some of the extraction functions work. Fields will be improperly processed if using a version of Graylog Server earlier than version 5.0.</p>
+        <h2>Not Supported</h2>
+        <ul>
+            <li>N/A</li>
+        </ul>
+        <h2>Stream Configuration</h2>
+        <p>This technology pack includes one stream:</p>
+        <ul>
+            <li>“Illuminate:Zeek Messages”</li>
+        </ul>
+        <h3>About Illuminate Streams</h3>
+        <p>If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</p>
+        <h2>Index Set Configuration</h2>
+        <p>This technology pack includes one index set definition:</p>
+        <ul>
+            <li>“Zeek Logs”</li>
+        </ul>
+        <h3 id="about-illuminate-index-set-definitions">About Illuminate Index Set Definitions</h3>
+        <p>If this index set is already defined, then nothing will be changed.  If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention.  These settings can be adjusted as required after installation.</p>
+        <h2>Log Format Example</h2>
+        <p><code class="linecode">{"filebeat_id_orig_p":58405,"filebeat_log_offset":908201,"filebeat_agent_name":"snort1","filebeat_history":"ShADadFf","filebeat_resp_pkts":7,"filebeat_id_orig_h":"74.96.110.140","filebeat_event_source_product":"zeek","beats_type":"filebeat","filebeat_@metadata_beat":"filebeat","filebeat_ts":"2023-06-05T14:15:05.682220Z","filebeat_@timestamp":"2023-06-05T14:15:23.109Z","filebeat_agent_type":"filebeat","filebeat_@metadata_version":"8.6.2","filebeat_host_name":"snort1","filebeat_proto":"tcp","filebeat_agent_version":"8.6.2","filebeat_orig_ip_bytes":1234,"filebeat_agent_ephemeral_id":"6a114e83-ca97-4925-b4c6-8971c97d191b","filebeat_local_orig":true,"filebeat_orig_bytes":942,"filebeat_input_type":"filestream","filebeat_id_resp_h":"172.65.251.78","filebeat_orig_pkts":7,"filebeat_resp_bytes":1960,"filebeat_duration":10.197248935699463,"message":"-","filebeat_ecs_version":"8.0.0","filebeat_id_resp_p":443,"filebeat_uid":"CyRQBS1i6zJKpZXgHl","filebeat_service":"ssl","filebeat_missed_bytes":0,"filebeat_@metadata_type":"_doc","filebeat_conn_state":"SF","filebeat_resp_ip_bytes":2252,"filebeat_local_resp":false,"filebeat_agent_id":"c2c08007-50ba-4d8e-948b-ca484ef0ece2","filebeat_log_file_path":"/opt/zeek5/logs/current/conn.log","host":"bg-devel","level":6,"replayed_log":"true"}</code>
+        </p>
+        <h2>Requirements</h2>
+        <h3>Zeek</h3>
+        <p>Zeek must be configured to log in JSON format in order to use this technology pack.  Any existing logging configuration can still be used separately but this technology pack requires the JSON configuration below to capture detailed event information.  The essential settings and file locations are below.</p>
+        <p><code>The ISO8601 setting is crucial for proper timestamp processing.</code>
+        </p>
+        <p>Additional information regarding Zeek installation and usage can be found on the Zeek documentation page which is extremely detailed.</p>
+        <ul>
+            <li><a href="https://zeek.org/get-zeek/">Zeek download</a>
+            </li>
+            <li><a href="https://docs.zeek.org/en/master/install.html">Zeek documentation</a>
+            </li>
+        </ul>
+        <h3>Zeek Configuration</h3>
+        <h4><strong>json-logs.zeek</strong> - <em>(<code class="linecode" style="font-style: normal;">/zeek_install_path/share/zeek/policy/tuning/</code>)</em></h4>
+        <MadCap:codeSnippet>
+            <codeSnippetCopyButton />
+            <codeSnippetBody>##! Loading this script will cause all logs to be written
+##! out as JSON by default.
+
+redef LogAscii::use_json=T;
+redef LogAscii::json_timestamps = JSON::TS_ISO8601;
+redef LogAscii::json_include_unset_fields=T;
+</codeSnippetBody>
+        </MadCap:codeSnippet>
+        <h4><strong>local.zeek</strong> - <em>(</em><code class="linecode">/zeek_install_path/share/zeek/site/</code><em>)</em></h4>
+        <MadCap:codeSnippet>
+            <codeSnippetCopyButton />
+            <codeSnippetBody>@load packages
+@load policy/tuning/json-logs.zeek
+</codeSnippetBody>
+        </MadCap:codeSnippet>
+        <h3>Filebeat</h3>
+        <p>Because Zeek is configured to log in JSON format, a delivery system that can parse each field and deliver them to Graylog is required.  This technology pack supports log delivery via Filebeat with a specific configuration of inputs and outputs, identifying logs for parsing and delivery to Graylog for Illuminate processing.</p>
+        <p>The <strong>paths</strong>, <strong>fields</strong>, and <strong>parsers</strong> sections are required for this configuration.  If the Zeek logs are being stored in a location other than below, these paths must be updated.  The <code style="font-weight: normal;" class="linecode">event_source_product: zeek</code> and <code class="linecode">target: "zeek"</code> fields are critical for proper identification and parsing of logs.</p>
+        <h3>Filebeat Configuration</h3>
+        <p>Additional information regarding the installation and configuration of Filebeat can be found below:</p>
+        <ul>
+            <li><a href="https://www.elastic.co/downloads/beats/filebeat-oss">Filebeat download</a>
+            </li>
+            <li><a href="https://www.elastic.co/guide/en/beats/filebeat/8.7/configuring-howto-filebeat.html">Filebeat configuration</a>
+            </li>
+        </ul>
+        <h4><strong>filebeat.yml</strong>
+        </h4>
+        <MadCap:codeSnippet>
+            <codeSnippetCopyButton />
+            <codeSnippetBody>- type: filestream
+
+  id: zeek-filestream
+
+  enabled: true
+
+  paths:
+    - /zeek_install_path/logs/current/*.log
+  
+  parsers:
+    - ndjson:
+        target: "zeek"
+        add_error_key: true
+        overwrite_keys: true
+
+  fields:
+    event_source_product: zeek
+    fields_under_root: true
+</codeSnippetBody>
+        </MadCap:codeSnippet>
+        <h2>What is Provided</h2>
+        <ul>
+            <li>Rules to normalize and enrich Zeek log messages</li>
+        </ul>
+        <h3>Zeek Log Message Processing</h3>
+        <p>The Illuminate processing of Zeek log messages provides the following:</p>
+        <ul>
+            <li>Field extraction, normalization, and message enrichment for Zeek log messages (IDS and AppID)</li>
+            <li>GIM Categorization of the following messages:</li>
+        </ul>
+        <table style="mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Zeek Log Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Subcategory</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http.communication</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">conn</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network.flow</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">conn</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network.default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dns</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">name resolution.dns request</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">dns</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">name resolution</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">name resolution.dns request, name resolution.dns answer</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Zeek Spotlight Content Pack</h3>
+        <p>The Zeek Spotlight content pack contains:</p>
+        <ul>
+            <li>Dashboard: Illuminate:Zeek Overview</li>
+        </ul>
+    </body>
+</html>

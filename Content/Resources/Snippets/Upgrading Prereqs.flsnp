@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
+    </head>
+    <body>
+        <p>The following tasks must be completed before upgrading the Graylog server. If they are not completed, problems may occur. Once the prerequisites are satisfied, then you may proceed with the upgrade process.</p>
+        <ul>
+            <li>
+                <p>Review the release notes of the version(s) of Graylog that you will upgrade to. You can find all stable releases under Upgrading Graylog.</p>
+            </li>
+        </ul>
+        <p>
+            <section class="warningBox">
+                <div class="title">Warning: <span style="font-weight: normal;">Do not skip a major version when upgrading Graylog. For example, to upgrade from 3.3.x to 4.3.x, first upgrade to the major version 4.0.x and then to 4.3.x. To upgrade from 3.3.x to 5.x.x, follow the same progression, i.e. first upgrade to the major versions then to 5.x.x (3.1 &gt; 4.0 &gt; 5.0 &gt; 5.1.6).</span></div>
+            </section>
+        </p>
+        <ul>
+            <li>
+                <p>You may also need to perform manual edits to the Graylog server.conf configuration file before restarting the Graylog server. Information on manual tasks required by a version of Graylog can be found in the changelogs and the Upgrading Graylog pages in the documentation.</p>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <p>Ensure that you back up both the MongoDB and Elasticsearch/OpenSearch database state prior to upgrading any component of the Graylog stack to create a rollback option.</p>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <p>In preparation for upgrading Graylog, you must first satisfy any software prerequisites. MongoDB and Elasticsearch/OpenSearch must be running at least the minimum required version required for the version of Graylog to which you wish to upgrade. Please refer to the following chart to determine your version compatibility requirements:</p>
+            </li>
+        </ul>
+        <table style="width: 100%;mc-table-style: url('../TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <colgroup>
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 104px;" />
+                <col style="width: 179px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col style="width: 179px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col style="width: 145px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 144px;" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 139px;" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 106px;" />
+            </colgroup>
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Graylog Version</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Minimum MongoDB&#160;Version</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Maximum MongoDB&#160;Version</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Minimum Elasticsearch Version</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Maximum Elasticsearch Version</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Minimum OpenSearch Version</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Maximum OpenSearch Version</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4.0.x</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3.6</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4.2</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">6.8 or 7.0</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">7.1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><i>Not Supported</i>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1" style="font-style: italic;">Not Supported</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4.1.x</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3.6</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4.4</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">6.8 or 7.0</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">7.1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><i>Not Supported</i>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2" style="font-style: italic;">Not Supported</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4.2.x</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3.6</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4.4</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">6.8 or 7.0</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">7.10.2</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1" style="font-style: italic;">Not Supported</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><i>Not Supported</i>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4.3.x</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3.6</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">5.0</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">6.8 or 7.0</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">7.10.2</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1.1.x <i>(or 1.3.x for Graylog Security)</i></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">1.3.x</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="table-text">5.0.x</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="table-text">5.0</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="table-text">6.x</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="table-text">7.10.2</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="table-text">7.10.2</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="table-text">1.1.x <i>(or 1.3.x for Graylog Security)</i></p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="table-text">2.5.x</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                        <p class="table-text">5.1.x</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                        <p class="table-text">5.0</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                        <p class="table-text">6.x</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                        <p class="table-text">7.10.2</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                        <p class="table-text">7.10.2</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                        <p class="table-text">1.1.x <i>(or 1.3.x for Graylog Security)</i></p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">
+                        <p class="table-text">2.5.x</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>

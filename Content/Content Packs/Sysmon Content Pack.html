@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html lang="en" xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" /><title> Sysmon
+</title>
+        <!-- original-url : sysmon
+## article-id : 4ba3aa96-b1f8-47f7-bfef-4360c58b6fda
+## seo-title : Sysmon
+## description : 
+## Metadata_End -->
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Microsoft Sysmon is a free agent that can be installed on Windows systems and configured to provide rich details about events of particular interest when performing security monitoring of systems. This technology pack will process all Sysmon event log messages produced by recent and current versions of Sysmon. This technology pack will process Sysmon logs, providing normalization and enrichment of common events of interest.</p>
+        <h2>Supported Version(s)</h2>
+        <ul>
+            <li>Sysmon version 12 later.</li>
+        </ul>
+        <h2>Stream Configuration</h2>
+        <p>This technology pack includes one stream:</p>
+        <ul>
+            <li>“Illuminate:Sysmon;Messages”, which will contain all events collected from the Sysmon event log</li>
+        </ul>
+        <h2>Index Set Configuration</h2>
+        <p>This technology pack includes one index set definition:</p>
+        <ul>
+            <li>“Sysmon Event Log Messages,” which contains all messages from the Windows Sysmon event log.</li>
+        </ul>
+        <p>If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</p>
+        <h2>Requirements</h2>
+        <ul>
+            <li>Sysmon event logs delivered to Graylog via Winlogbeat 7.x or NXLog 2.10, 3.0 or 3.1</li>
+        </ul>
+        <h2>Log Delivery Configuration</h2>
+        <p>The log delivery agent, either Winlogbeat or NXLog, must be configured to collect Sysmon events from the Windows event log service. Examples are listed below but please refer to the agent’s configuration documentation to properly configure the log delivery agent to support your requirements.</p>
+        <h3>Agent Configuration - Winlogbeat 7.x</h3>
+        <ol>
+            <li>Under the <code data-backticks="1" class="linecode">event_logs:</code> section of the Winlogbeat configuration, add the line:
+<ul><li><code data-backticks="1" class="linecode">name: Microsoft-Windows-Sysmon/Operational</code></li></ul></li>
+        </ol>
+        <h3>Agent Configuration - NXLog 2.10, 3.0 or 3.1</h3>
+        <ol>
+            <li>
+                <p>In the <code data-backticks="1" class="linecode">QueryXML</code> section of the NXLog configuration, add the following:</p>
+                <ul>
+                    <li><code data-backticks="1" class="linecode">&lt;Select Path='Microsoft-Windows-Sysmon/Operational'&gt;*&lt;/Select&gt;</code>
+                    </li>
+                </ul>
+                <p>&#160;</p>
+                <p>Working configuration file for Sysmon (Security, Application, System, Powershell):</p>
+                <p>This configuration requires to install NXLog 3.x in C:\Program Files (x86)\nxlog and not in the default folder.</p>
+                <p>The HOST and Port are examples, use your Graylog IP and your port.</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">define ROOT C:\Program Files (x86)\nxlog
+
+Moduledir %ROOT%\modules
+CacheDir %ROOT%\data
+Pidfile %ROOT%\data\nxlog.pid
+SpoolDir %ROOT%\data
+LogFile %ROOT%\data\nxlog.log
+LogLevel INFO
+
+&lt;Extension logrotate&gt;
+    Module  xm_fileop
+    &lt;Schedule&gt;
+        When    @daily
+        Exec    file_cycle('%ROOT%\data\nxlog.log', 7);
+     &lt;/Schedule&gt;
+&lt;/Extension&gt;
+
+&lt;Extension gelfExt&gt;
+  Module xm_gelf
+  # Avoid truncation of the short_message field to 64 characters.
+  ShortMessageLength 65536
+&lt;/Extension&gt;
+
+&lt;Input eventlog&gt;
+        Module im_msvistalog
+        PollInterval 1
+        SavePos False
+        ReadFromLast True
+    &lt;QueryXML&gt;
+        &lt;QueryList&gt;
+            &lt;Query Id='1'&gt;
+                &lt;Select Path='Security'&gt;*&lt;/Select&gt;
+                &lt;Select Path="Application"&gt;*&lt;/Select&gt;
+                &lt;Select Path="System"&gt;*&lt;/Select&gt;
+                &lt;Select Path="Microsoft-Windows-PowerShell/Operational"&gt;*&lt;/Select&gt;
+                &lt;Select Path='Microsoft-Windows-Sysmon/Operational'&gt;*&lt;/Select&gt;
+            &lt;/Query&gt;
+        &lt;/QueryList&gt;
+    &lt;/QueryXML&gt;
+&lt;/Input&gt;
+
+&lt;Output gelf&gt;
+Module om_tcp
+Host 192.168.122.40
+Port 12244
+OutputType  GELF_TCP
+&lt;Exec&gt;
+ # These fields are needed for Graylog
+ $gl2_source_collector = '${sidecar.nodeId}';
+ $collector_node_id = '${sidecar.nodeName}';
+&lt;/Exec&gt;
+&lt;/Output&gt;
+
+&lt;Route route-1&gt;
+  Path eventlog =&gt; gelf
+&lt;/Route&gt;
+</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+        </ol>
+        <h2>What is Provided</h2>
+        <ul>
+            <li>Parsing rules to extract Sysmon logs into Graylog schema compatible fields</li>
+            <li>Graylog Information Model message categorization</li>
+            <li>Illuminate spotlight</li>
+        </ul>
+        <h2>Events Processed by This Technology Pack</h2>
+        <ul>
+            <li>The Sysmon technology pack will process all Sysmon event IDs.</li>
+        </ul>
+    </body>
+</html>

@@ -1,0 +1,1546 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" lang="en">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" /><title> Windows Event Logs
+</title>
+        <!-- original-url : windows-event-logs
+## article-id : 9f425e43-2165-49c9-af57-a8552b2665a9
+## seo-title : Windows Event Logs
+## description : 
+## Metadata_End -->
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>This technology pack will process Windows Security event logs, providing normalization and enrichment of common events of interest. In addition, it will identify all Windows logs that have not been processed by any other technology pack, normalize common event log fields, and index these messages in a separate index.</p>
+        <h2>Supported Version(s)</h2>
+        <ul>
+            <li>Currently supported versions of the Windows operating system</li>
+        </ul>
+        <h2>Requirements</h2>
+        <ul>
+            <li>Winlogbeat v 8.x  or NXLog Enterprise 3.2 / NXLog Community Edition 2.10</li>
+            <li>
+                <p>The beats type prefix should also be enabled when using the Winlogbeat agent</p>
+            </li>
+        </ul>
+        <h2>Stream Configuration</h2>
+        <p>This technology pack includes two streams:</p>
+        <ul>
+            <li>
+                <p>“Illuminate:Windows Security Event Log Messages,” which contains all messages from the Windows Security event log</p>
+            </li>
+            <li>
+                <p>“Illuminate:Windows Event Log Messages,” which will contain all event log messages that have not been processed by this or any other technology pack</p>
+            </li>
+        </ul>
+        <h2>Index Set Configuration</h2>
+        <p>This technology pack includes two index set definitions:</p>
+        <ul>
+            <li>“Windows Security Event Log Messages,” which contains all messages from the Windows Security event log</li>
+            <li>“Windows Event Log Messages,” which will contain all event log messages not processed by this or any other technology pack</li>
+        </ul>
+        <p>If these index sets are already defined, then nothing will be changed. If these index sets do not exist, then they will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</p>
+        <h2>What is Provided</h2>
+        <ul>
+            <li>Parsing and normalization to extract Windows event logs into Graylog schema compatible fields</li>
+            <li>Graylog Information Model categorization of messages</li>
+            <li>Illuminate Spotlight</li>
+        </ul>
+        <h2>Events Processed by This Technology Pack</h2>
+        <p>Illuminate will perform some basic processing of all event logs ingested by Winlogbeat, normalizing field common to all events:</p>
+        <table style="width: 100%;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">event_code</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Windows "Event ID" value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">event_log_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The lower case Windows event log "name" or channel</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">event_reporter</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The system that delivered the event to Graylog</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">event_source</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The computer name that originally generated the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">event_uid</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The unique system record entry number for the event message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><code class="linecode">vendor_event_category</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">The Microsoft-defined event category derived from the "Task" field</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>&#160;</p>
+        <p>The Windows Security technology pack will apply normalization of common event log fields, such as Event ID, to all Windows event log messages. The Windows Security technology pack will provide normalization and enrichment to the following Windows security event log IDs:</p>
+        <table style="border-collapse: collapse;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <thead>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">
+                        <p class="p_1">Event ID</p>
+                    </th>
+                    <th style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">
+                        <p class="p_1">Additional Data</p>
+                    </th>
+                    <th style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">
+                        <p class="p_1">gim_event_type_code</p>
+                    </th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">
+                        <p class="p_1">gim_event_category</p>
+                    </th>
+                    <th style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">
+                        <p class="p_1">gim_event_subcategory</p>
+                    </th>
+                    <th style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">
+                        <p class="p_1">gim_event_type</p>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4720</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">110000</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam.object create</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">account created</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4722</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">112001</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam.object enable</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">account enabled</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4723</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">111004</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam.object modify</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">password change</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4724</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">111005</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam.object modify</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">administrative password reset</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4725</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">111501</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam.object disable</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">account disabled</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4726</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">110500</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam.object delete</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">account deleted</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4738</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">111000</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam.object modify</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">account account modified</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4740</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">111500</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam.object disable</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">account locked</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4767</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">112000</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam.object enable</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">account unlocked</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4781</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">111003</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam.object modify</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">account renamed</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4672</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">101000</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">authentication</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">authentication.access notice</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">special logon</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4624</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">100000</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">authentication</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">authentication.logon</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">logon</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4625</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">100000</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">authentication</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">authentication.logon</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">logon</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4634</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">102500</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">authentication</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">authentication.logoff</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">logoff</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4647</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">102500</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">authentication</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">authentication.logoff</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">logoff</p>
+                    </td>
+                </tr>
+                <tr style="height: 29pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4768</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_4"><span class="span_1">100000<br />102002</span>
+                        </p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">authentication</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_4"><span class="span_1">authentication.logon<br />authentication.kerberos requests</span>
+                        </p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_4"><span class="span_1">logon<br />tgt request</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4648</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">100003</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">authentication</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">authentication.logon</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">logon with alternate credentials</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4769</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">102001</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">authentication</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">authentication.kerberos requests</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">service ticket requested</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4770</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">102000</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">authentication</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">authentication.kerberos requests</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">service ticket renewed</p>
+                    </td>
+                </tr>
+                <tr style="height: 29pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4771</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_4"><span class="span_1">100000<br />100500</span>
+                        </p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">authentication</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_4"><span class="span_1">authentication.logon<br />authentication.credential validation</span>
+                        </p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_4"><span class="span_1">logon<br />credential validation</span>
+                        </p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4776</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">100500</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">authentication</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">authentication.credential validation</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">credential validation</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4820</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">101501</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">authentication</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">authentication.access policy</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">device policy violation</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4821</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">101500</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">authentication</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">authentication.access policy</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">access policy violation</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4822</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">101502</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">authentication</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">authentication.access policy</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">account policy violation</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4823</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">101502</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">authentication</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">authentication.access policy</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">account policy violation</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4824</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">101502</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">authentication</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">authentication.access policy</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">account policy violation</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4616</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">260000</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">registry</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">registry.default</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">registry event</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">1102</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">220000</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">audit</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">audit.integrity</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">audit log cleared</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">1100</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">220101</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">audit</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">audit.state</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">audit service stopped</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">1101</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">220102</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">audit</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">audit.state</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">audit error</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">1104</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">220102</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">audit</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">audit.state</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">audit error</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4727</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">110002</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam.object create</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">group created</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4728</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">111007</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam.object modify</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">group member added</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4729</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">111008</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam.object modify</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">group member removed</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4730</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">110501</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam.object delete</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">group deleted</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4731</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">110002</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam.object create</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">group created</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4732</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">111007</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam.object modify</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">group member added</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4733</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">111008</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam.object modify</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">group member removed</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4734</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">110501</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam.object delete</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">group deleted</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4735</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">111009</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam.object modify</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">group properties modified</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4737</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">111009</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam.object modify</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">group properties modified</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4741</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">110000</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam.object create</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">Account created</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4742</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">111000</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam.object modify</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">account account modified</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4743</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">110500</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam.object delete</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">account deleted</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4754</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">110002</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam.object create</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">group created</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4755</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">111009</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam.object modify</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">group properties modified</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4756</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">111007</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam.object modify</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">group member added</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4757</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">111008</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam.object modify</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">group member removed</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4758</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">110501</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam.object delete</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">group deleted</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4764</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">111009</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam.object modify</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">group properties modified</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4798</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">119500</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">iam.information</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">IAM message</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4799</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">119500</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">iam.information</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">IAM message</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4778</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">100004</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">authentication</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">authentication.logon</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">session reconnect</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4779</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">102501</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">authentication</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">authentication.logoff</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">session disconnect</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4688</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">190000</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">process</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">process.execution</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">process started</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4689</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">190100</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">process</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">process.end</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">process stopped</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4663</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_5">Access Type: ReadData (or ListDirectory)</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">201500</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">file</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">file.access</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">file access</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4663</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_5">Access Type: WriteData (or AddFile)</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">201000</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">file</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">file.modify</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">file modified</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4663</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_5">Access Type: AppendData (or AddSubdirectory or CreatePipeInstance)</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">201000</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">file</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">file.modify</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">file modified</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4663</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_5">Access Type: ReadEA</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">209999</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">file</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">file.default</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">file event</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4663</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_5">Access Type: WriteEA</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">209999</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">file</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">file.default</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">file event</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4663</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_5">Access Type: Query key value</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">259999</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">registry</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">registry.default</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">registry event</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4663</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_5">Access Type: Set key value</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">250000</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">registry</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">registry.value_change</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">registry value set</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4663</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_5">Access Type: Create sub-key</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">250500</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">registry</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">registry.key_change</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">registry key added</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4663</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_5">Access Type: Enumerate sub-key</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">259999</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">registry</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">registry.default</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">registry event</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4663</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_5">Access Type: Notify about changes to keys</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">259999</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">registry</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">registry.default</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">registry event</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4697</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">211500</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">service</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">service.state</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">service installed</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4610</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">270000</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">registry</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">registry.default</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">registry event</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_2">4611</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">270000</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">registry</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="p_1">registry.default</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p class="p_1">registry event</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_2">4614</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">270000</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">registry</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="p_1">registry.default</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p class="p_1">registry event</p>
+                    </td>
+                </tr>
+                <tr style="height: 16pt;" class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">
+                        <p class="p_2">4622</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">
+                        <p class="p_3">&#160;</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">
+                        <p class="p_1">270000</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">
+                        <p class="p_1">registry</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">
+                        <p class="p_1">registry.default</p>
+                    </td>
+                    <td style="vertical-align: bottom;" class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">
+                        <p class="p_1">registry event</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>

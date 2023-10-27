@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+    </head>
+    <body>
+        <h1>Ubiquiti UniFi</h1>
+        <p style="text-align: justify;">Ubiquiti UniFi is a family of monitoring products that range from wireless access points, routers, switches, security cameras, and controllers (cloud or on-prem), all working together to provide a cohesive overview of your environment. This technology pack will process UniFi log messages for UniFi OS, UniFi Network, and UniFi Protect by providing normalization and enrichment of common events of interest.</p>
+        <h2>Requirement(s)</h2>
+        <ul>
+            <li>
+                <p>UniFi devices running UniFi OS 3.0+, Network 7.3+, and Protect 2.7+</p>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <p>Graylog Server with a valid enterprise license, running Graylog version 4.3.0 or later</p>
+            </li>
+        </ul>
+        <h2>Graylog Server Requirement</h2>
+        <p>This spotlight requires a more recent version of Graylog than the other spotlights due to a change in how some of the extraction functions work. Fields will be improperly processed if using a version of Graylog Server earlier than version 4.3.0.</p>
+        <h2>Stream Configuration</h2>
+        <p>This technology pack includes one stream:</p>
+        <p>“Illuminate:Ubiquiti UniFi Messages”</p>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream. </div>
+            </section>
+        </p>
+        <h2>Index Set Configuration</h2>
+        <p>This technology pack includes one index set definition:</p>
+        <p>“Ubiquiti Unifi Logs”</p>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation. </div>
+            </section>
+        </p>
+        <h2>Log Format Example</h2>
+        <p style="text-align: justify;"><code class="linecode">APSomewhere f091234518f6,UAP-AC-Pro-Gen2-6.2.49+14111: dnsmasq[4797]: forwarded www.graylog.org to 10.10.10.10</code><code class="linecode">APAnywhere f09fc2dc18f6,UAP-AC-Pro-Gen2-6.2.49+14111: /usr/sbin/hostapd[16441]: WPA: Encrypt Key Data using AES-WRAP (KEK length 16)</code>
+        </p>
+        <h2>Requirements</h2>
+        <p style="text-align: justify;">Due to the way UniFi controllers (e.g., Dream Machine Pro) generate some logs (syslog notation of path, process name, and process ID), identifying and parsing some of these logs can be difficult. To solve this problem, a UniFi specific input on the Graylog server and an Illuminate lookup override must be configured. This will allow Illuminate to treat every log sent to this input as a UniFi message by mapping the input ID to the Unifi Illuminate identification rule. This should be unique to UniFi to ensure this pack only processes UniFi logs.</p>
+        <h2>Graylog Server Configuration</h2>
+        <ol>
+            <li>
+                <p style="text-align: justify;">Create a new syslog input and choose an unused port. If an input already exists that only handles UniFi logs, use that input. If using a new or existing forwarder, create a new input as part of the forwarder setup process or use the input already associated with an existing forwarder.</p>
+            </li>
+            <li>
+                <p style="text-align: justify;">Once created or having already been created, click on the<i>Show received messages</i> button to obtain the input ID (this will pull up a search window with the "All Time" timeframe. If there is a large number of logs, you might want to adjust the timeframe to speed up the process.</p>
+                <p style="text-align: justify;">
+                    <img src="../Resources/Images/Ubiquiti UniFi/Show Received Msg.png" />
+                </p>
+                <p style="text-align: justify;">
+                    <img src="../Resources/Images/Ubiquiti UniFi/Input ID.png" style="width: 2305px;height: 902px;" />
+                    <br />
+                </p>
+            </li>
+            <li>
+                <p style="text-align: justify;">Copy the gl2_source_input value.</p>
+            </li>
+            <li>
+                <p style="text-align: justify;">Navigate to "Enterprise", "Illuminate", and click on the Customization tab.</p>
+            </li>
+            <li>
+                <p style="text-align: justify;">Locate the "lookup_adapter_input_routing" Title and click Edit on the right. For the "content_name" key, enter ubiquiti_unifi and for the "input_id" value, enter the gl2_source_input ID copied earlier.</p>
+                <p style="text-align: justify;">
+                    <img src="../Resources/Images/Ubiquiti UniFi/Content Name.png" />
+                    <br />
+                </p>
+            </li>
+            <li>
+                <p>Click Configure value to confirm.</p>
+                <p>Now, all logs sent to the configured input will be identified as a UniFi log and allow for proper Illuminate processing.</p>
+                <h2>UniFi Configuration</h2>
+                <ol>
+                    <li>
+                        <p>Enable remote logging in the UniFi Network Sytem settings page under Support.</p>
+                    </li>
+                    <li>
+                        <p>Set "Logging Levels" to Auto.</p>
+                    </li>
+                    <li>
+                        <p style="text-align: left;">The "Remote Logging Location settings" should be have Remote Server enabled, Syslog checked, and Host details filled out (remote IP and port). The port is especially important when configuring UniFi logging as it must match the port configured for the input above in the Graylog Server Configuration section.<br /><img src="../Resources/Images/Ubiquiti UniFi/Remote Logging Location Settings.png" /></p>
+                    </li>
+                </ol>
+            </li>
+        </ol>
+        <h2>What is Provided</h2>
+        <ul>
+            <li>
+                <p>Rules to normalize and enrich Ubiquiti UniFi log messages</p>
+            </li>
+        </ul>
+        <h2>Ubiquiti UniFi Log Message Processing</h2>
+        <p>The Illuminate processing of UniFi log messages provides the following:</p>
+        <ul>
+            <li>
+                <p>Field extraction, normalization and message enrichment for UniFi log messages</p>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <p>GIM Categorization of the following messages:</p>
+            </li>
+        </ul>
+        <table style="width: 100%;">
+            <col style="width: 633px;" />
+            <col style="width: 554px;" />
+            <col />
+            <tbody>
+                <tr>
+                    <td><b>UniFi Log Type</b>
+                    </td>
+                    <td><b>GIM Category</b>
+                    </td>
+                    <td><b>GIM Subcategory</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td>firewall</td>
+                    <td>network</td>
+                    <td>network.default</td>
+                </tr>
+                <tr>
+                    <td>dnsmasq</td>
+                    <td>name resolution</td>
+                    <td>name resolution.dns request</td>
+                </tr>
+                <tr>
+                    <td>dnsmasq</td>
+                    <td>name resolution</td>
+                    <td>name resolution.dns request, name resolution.dns answer</td>
+                </tr>
+                <tr>
+                    <td>dnsmasq-dhcp</td>
+                    <td>dhcp</td>
+                    <td>dhcp.request</td>
+                </tr>
+                <tr>
+                    <td>dnsmasq-dhcp</td>
+                    <td>dhcp</td>
+                    <td>dhcp.discovery</td>
+                </tr>
+                <tr>
+                    <td>dnsmasq-dhcp</td>
+                    <td>dhcp</td>
+                    <td>dhcp.offer</td>
+                </tr>
+                <tr>
+                    <td>dnsmasq-dhcp</td>
+                    <td>dhcp</td>
+                    <td>dhcp.acknowledgement</td>
+                </tr>
+            </tbody>
+        </table>
+        <table style="width: 100%;">
+            <col style="width: 639px;" />
+            <col style="width: 550px;" />
+            <col />
+            <tbody>
+                <tr>
+                    <td>dnsmasq-dhcp</td>
+                    <td>dhcp</td>
+                    <td>dhcp.default</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>Ubiquiti UniFi Spotlight Content Pack</h2>
+        <ul>
+            <li>
+                <p>Dashboard: Illuminate: Ubiquiti UniFi Overview<br /><img src="../Resources/Images/Ubiquiti UniFi/Ubiquiti UniFi Overview.png" /></p>
+            </li>
+        </ul>
+    </body>
+</html>

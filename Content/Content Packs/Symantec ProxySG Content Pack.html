@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html lang="en" xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" /><title> Symantec ProxySG
+</title>
+        <!-- original-url : symantec-proxysg
+## article-id : 30a19981-df24-4968-97db-f1b5688bd52c
+## seo-title : Symantec ProxySG
+## description : 
+## Metadata_End -->
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Symantec ProxySG (Symantec Proxy Secure Gateway) is a next-generation web application firewall that delivers both comprehensive web security and WAN optimization. This technology pack will process ProxySG event log messages, providing normalization and enrichment of common events of interest.</p>
+        <h2>Supported version(s)</h2>
+        <ul>
+            <li>Up to version 9.x</li>
+        </ul>
+        <h2>Stream Configuration</h2>
+        <p>This technology pack includes one stream:</p>
+        <ul>
+            <li>"Illuminate:Bluecoat Messages”</li>
+        </ul>
+        <h2>Index Set Configuration</h2>
+        <p>This technology pack includes one index set definition:</p>
+        <ul>
+            <li>“Bluecoat Event Log Messages”</li>
+        </ul>
+        <p>If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</p>
+        <h2>Log Format Example</h2>
+        <p><code data-backticks="1" class="linecode">1812 2018-02-10 18:00:12 "DP1-DE1_ProxySG" 888 x.x.x.x bob - - OBSERVED "Business/Economy" https://www.szlb.net/ 200 TCP_NC_MISS GET image/jpeg http www.szlb.net 80 /templets/default/images/wap/bg-gray1.jpg - jpg "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:52.0) Gecko/20100101 Firefox/52.0" x.x.x.x 4385 367 - - 0 "client" client_connector "-" "-" x.x.x.x - - - - - none - - - - none - - ICAP_NOT_SCANNED - ICAP_NOT_SCANNED - - - - 9eef3983b1d826f3-00000000c3a3468b-000000005a7f332b</code>
+        </p>
+        <h2>Requirements</h2>
+        <ul>
+            <li>
+                <p>Configure the Symantec ProxySG appliance to transmit Syslog to your Graylog server Syslog input.</p>
+            </li>
+            <li>
+                <p>The Symantec ProxySG technology pack expects the fields in the following order, with the field<code class="linecode"> </code><code data-backticks="1" class="linecode">x-bluecoat-request-tenant-id</code> being optional:</p>
+                <ul>
+                    <li><code data-backticks="1" class="linecode">x-bluecoat-request-tenant-id</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">date</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">time</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-bluecoat-appliance-name</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">time-taken</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">c-ip</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">cs-userdn</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">cs-auth-groups</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-exception-id</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">sc-filter-result</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">cs-categories</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">cs(Referer)</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">sc-status</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">s-action</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">cs-method</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">rs(Content-Type)</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">cs-uri-scheme</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">cs-host</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">cs-uri-port</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">cs-uri-path</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">cs-uri-query</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">cs-uri-extension</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">cs(User-Agent)</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">s-ip</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">sc-bytes</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">cs-bytes</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-data-leak-detected</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-virus-id</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-bluecoat-location-id</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-bluecoat-location-name</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-bluecoat-access-type</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-bluecoat-application-name</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-bluecoat-application-operation</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">r-ip</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-rs-certificate-validate-status</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-rs-certificate-observed-errors</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-cs-ocsp-error</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-rs-ocsp-error</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-rs-connection-negotiated-ssl-version</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-rs-connection-negotiated-cipher</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-rs-connection-negotiated-cipher-size</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-rs-certificate-hostname</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-rs-certificate-hostname-categories</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-cs-connection-negotiated-ssl-version</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-cs-connection-negotiated-cipher</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-cs-connection-negotiated-cipher-size</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-cs-certificate-subject</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">cs-icap-status</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">cs-icap-error-details</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">rs-icap-status</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">rs-icap-error-details</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-cloud-rs</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-bluecoat-placeholder</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">cs(X-Requested-With)</code>
+                    </li>
+                    <li><code data-backticks="1" class="linecode">x-bluecoat-transaction-uuid</code>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h2>What is Provided</h2>
+        <ul>
+            <li>Parsing rules to extract Symantec ProxySG logs into Graylog schema compatible fields.</li>
+        </ul>
+    </body>
+</html>

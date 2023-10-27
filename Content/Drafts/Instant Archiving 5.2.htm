@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/CloudOnlyBanner.flsnp" />
+        <p>As introduced in Graylog 5.2, instant archiving offers an alternative method for archiving log data. The original method for archiving logs in Graylog remains supported and available; however, this new method bases the process of archiving on streams rather than on indices. The benefit to this method is that selected log data is archived as soon as it is imported into a Graylog stream based on a user's preferred configuration. Additionally, as the original Graylog method of archiving based on data that has been indexed is preserved, you can essentially archive data in parallel using both archiving methods depending on your needs and configuration settings. This data can be restored at any future point for searching and analyzing in Graylog or for exporting to Elasticsearch/OpenSearch if needed. </p>
+        <h2>Prerequisites</h2>
+        <ul>
+            <li>
+                <p>This is a Graylog Cloud exclusive feature and is not currently available for self-managed Graylog instances. </p>
+            </li>
+        </ul>
+        <h2>Create A New Archive</h2>
+        <p>As instant archiving is based on streams, to create a new archive set, you will need to determine which stream(s) your archive will be based on. Note that you may attach multiple streams to one archive as needed.</p>
+        <ol>
+            <li>
+                <p>Navigate to <i>Enterprise</i> &gt; <i>Instant Archiving</i>.</p>
+            </li>
+            <li>
+                <p>Select the <i>Configuration</i> tab and complete the following fields:</p>
+                <ol>
+                    <li>
+                        <p><b>Archive Name</b>: A unique name for the new archive. (Note that spaces will not be permitted.)</p>
+                    </li>
+                    <li>
+                        <p><b>Streams</b>: Select the stream(s) from which log data will be archived.</p>
+                    </li>
+                    <li>
+                        <p><b>Archive Enabled</b>: Select to enable archiving upon creation.</p>
+                    </li>
+                </ol>
+            </li>
+            <li>
+                <p>Then, click on <i>Create</i>.</p>
+            </li>
+            <li>
+                <p>Once you have created your archive, select the <i>Overview</i> tab to view and manage all your created archives.</p>
+            </li>
+        </ol>
+        <h2>Managing Your Archives</h2>
+        <p>To view and manage your archives in the <i>Enterprise</i> &gt; <i>Instant Archiving</i> menu, select the <i>Overview</i> tab. Here you will find a list of all created archives and their current status, whether active or inactive.</p>
+        <p>To view detailed information about an archive, select the archive name from this list. On this page you will be able to view information specific to each archive, including a total message count, streams attached to the archive, the time period in which the archive has been actively collecting data, and a detailed view of any restore operations for data in the archive.</p>
+        <h2>Restore Log Data from an Archive</h2>
+        <p>You can restore archived log data so that it may be utilized in Graylog for search or analysis purposes.</p>
+        <ol>
+            <li>
+                <p>In the <i>Enterprise</i> &gt; <i>Instant Archiving</i> menu, ensure that the <i>Overview</i> tab is selected.</p>
+            </li>
+            <li>
+                <p>For the archive from which you wish to restore data, locate the <i>Actions</i> column and select <i>Restore</i>.</p>
+            </li>
+            <li>
+                <p>From the resultant <i>Restore Archives</i> menu, select the time range for the data you wish to restore. You may limit your search by date or select a more specific time period within those dates by adjusting the hours, minutes, and seconds ranges.</p>
+            </li>
+            <li>
+                <p>You may also choose to include all streams within the archive or only a specific stream or subset of streams.</p>
+            </li>
+            <li>
+                <p>Note that the <i>Estimation</i> modal will provide you with an estimated message count and size for the range of data you have selected.</p>
+            </li>
+            <li>
+                <p>Once you have finished select <i>Restore</i>.</p>
+            </li>
+            <li>
+                <p>From the <i>Overview</i> menu you will see an <i>Instant Archiving</i> jobs tab appear while the restoration of your data is in progress.</p>
+            </li>
+            <li>
+                <p>Once the job has been completed, select the archive name from the list to see your newly completed restore operation.</p>
+            </li>
+            <li>
+                <p>Select <i>Show messages</i> from the <i>Actions</i> column for your recent restore. You will then be able to search and analyze your restored log data.</p>
+            </li>
+        </ol>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint:</b><span style="font-weight: normal;">Indices containing this restored data will also be created once the restore is complete. In the <i>Restore Operations</i> menu, select the restore for a detailed view, and you will be able to view the new indices.</span>
+                </div>
+            </section>
+        </p>
+        <h2>Delete Log Data from an Archive</h2>
+        <p>Additionally, you may wish to delete all or a specific subset of data from an archive if it is no longer needed.</p>
+        <p>
+            <section class="warningBox">
+                <div class="title"><b>Warning:</b><span style="font-weight: normal;">Please note that any data that is deleted from an archive CANNOT be retrieved by Graylog at a later date.</span>
+                </div>
+            </section>
+        </p>
+        <ol>
+            <li>
+                <p>In the <i>Enterprise</i> &gt; <i>Instant Archiving</i> menu, ensure that the <i>Overview</i> tab is selected.</p>
+            </li>
+            <li>
+                <p>For the archive from which you wish to delete data, locate the <i>Actions</i> column and select <i>Delete</i>.</p>
+            </li>
+            <li>
+                <p>From the resultant <i>Restore Archives</i> menu, you may choose to delete the entire archive of data, or you can opt to delete a portion of the data based on the time range in which the data was logged. (Please note that if you choose to delete all of the data within an archive, you will also be prompted to determine whether or not you want to delete any restored data from this archive as well.)</p>
+            </li>
+            <li>
+                <p>Once you have made your selections, click <i>Delete</i> to permanently delete the data.</p>
+            </li>
+        </ol>
+        <h2>Stopping and Deleting an Archive</h2>
+        <p>In the <i>Overview</i> menu, you can stop an archive from collecting data by selecting the status in the <i>Archive status</i> column. If the status shows as “Stopped,” then log data for your selected streams are no longer being instantly archived. You can restart archiving at any time by selecting the status again so that it shows as “Running.”</p>
+        <p>Alternatively, you can also delete the archive configuration from the <i>Configuration</i> menu by selecting the checkbox next to the archive name and clicking <i>Delete</i>. Note that this will delete the configuration you have applied to the archive so that data will no longer be archived according to your specifications, but it will not delete the data that has been archived previously. Should you wish to restore your configuration settings at a later date, in the <i>Overview</i> menu select <i>Restore</i> from the <i>Actions</i> column for the specific archive you wish to enable.</p>
+        <p>&#160;</p>
+    </body>
+</html>

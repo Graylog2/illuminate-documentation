@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+    </head>
+    <body>
+        <h1>Asset Enrichment</h1>
+        <h2>Overview</h2>
+        <p>Graylog Security’s Asset module allows you to track different types of assets across your environment and enrich messages with their information. Asset information can be manually added through the Graylog UI or synced through LDAP or Active Directory. Once asset information is added to Graylog, assets can be associated with specific log messages enabling the<span style="color: #ff0000;"><span style="color: #000000;"> </span></span>Illuminate Processing Pack or a set of pipeline rules. Those associated assets can then be quickly inspected and queried in the search UI or <span>used in alerts</span>.</p>
+        <h2>Prerequisites</h2>
+        <p>A valid Graylog Security license is required. Contact the Graylog Sales team for more information on purchasing and downloading this license.</p>
+        <h2>Asset Types</h2>
+        <h4>Machine Assets<br /></h4>
+        <p>Machine Assets represent different types of machines across your network: servers, personal computers, firewalls, etc.</p>
+        <h4>User Assets</h4>
+        <p>User Assets represent the various system and human user accounts across your environment.</p>
+        <h2>Asset Sources</h2>
+        <p>The Asset Source feature allows assets to be imported from external sources (only support for Active Directory and LDAP will be added in 5.2). Users have the capability to configure a connection to an Active Directory/LDAP server and to also configure filter options to target which user(s) or machine(s) to import from the AD/LDAP server.</p>
+        <p style="font-style: normal;">A new <i>Asset Sources</i> tab has been added to the top-level, assets navigation menu header. This is where all asset sources will be listed. </p>
+        <p style="font-style: normal;">New sources can be created here by clicking on the <i>New Source</i> button, and existing sources can be edited by clicking on the ellipsis on a selected asset source and clicking on the edit option.<br /></p>
+        <p style="font-style: normal;">
+            <img src="../Resources/Images/Assets Enrichment/LDAP_AD.png" style="width: 1944px;height: 496px;" />
+        </p>
+        <p style="font-style: normal;">
+            <br />
+            <br />
+        </p>
+        <p>When adding/editing an Asset Source, the following configuration form is presented. Users can test the server connection by clicking on the <i>Test Server Connection</i> button to the right of the form, before proceeding to save the asset source. </p>
+        <p>
+            <img src="../Resources/Images/Assets Enrichment/Asset Source Configuration.png" />
+            <br />
+        </p>
+        <p>As part of the asset source configuration, users also have the capability to map which fields in LDAP or AD map to assets in Graylog</p>
+        <p>
+            <img src="../Resources/Images/Assets Enrichment/Asset Sources.png" />
+        </p>
+        <h2>Asset Priorities and Categories</h2>
+        <p>Each asset can be assigned a priority and multiple categories. There is a default list of priorities including Low, Medium, High, Critical which can be customized in the Config tab. There are no default categories, but they can be added from the Config tab or when creating or editing an asset.</p>
+        <h2>Creating Assets</h2>
+        <p>To create assets in Graylog, start by accessing the Graylog UI. Then, navigate to the Security/Assets drop-down menu and choose "Assets". On the Assets page, you will find two types of assets: Machine and User. Depending on the asset type you want to create, select it from the horizontal menu header. To begin the process, click on the "New Asset" button. This will initiate the flow for asset creation.</p>
+        <p>
+            <img src="../Resources/Images/Assets Enrichment/Assets Types.png" />
+        </p>
+        <h5>Machine Assets</h5>
+        <p>Machine assets have many fields that can be edited in a multi-tabbed editor comprising of (<i>General Info</i>, <i>Location</i> and <i>Custom Fields</i>).</p>
+        <p>The <i>General Info</i> and <i>Location</i> fields are intuitive, while the <i>Custom Fields</i> allow for the inclusion of additional information required for machine assets beyond what is provided in the user interface. Each custom field is defined by a name, type (string, date, or number), and a set of values. These values can be accessed in the <code class="linecode">machine_asset_lookup</code> pipeline rule.<br /></p>
+        <p>
+            <img src="../Resources/Images/Assets Enrichment/Machine Asset.png" style="width: 1485px;height: 1426px;" /> <br /> <img src="../Resources/Images/Assets Enrichment/Custom Fields.png" style="width: 1480px;height: 1127px;" /> <br /></p>
+        <h5>User Assets</h5>
+        <p>User assets can be created in a similar single-page editor.</p>
+        <p>
+            <img src="../Resources/Images/Assets Enrichment/User Asset.png" style="width: 1487px;height: 1110px;" />
+        </p>
+        <h2>Asset Pipeline Rules</h2>
+        <p>A set of pipeline rules can be used to set the<code class="linecode"> associate_assets</code> field on a message, update existing assets, and retrieve asset information to further enrich messages.</p>
+        <h4>set_associated_assets</h4>
+        <p>This pipeline rule populates the <code class="linecode">associated_assets</code> field on the message using GIM schema fields. The field will set an array with the ID of each asset that matches a field on the message. The <code class="linecode">associated_assets</code> field will determine which assets are displayed on the expanded log message on the search page.</p>
+        <p>The following fields are used to associate machine assets:</p>
+        <p><code class="linecode">source_ip</code> <br /><code class="linecode">source_ipv6 </code><br /><code class="linecode">source_nat_ip </code><br /><code class="linecode">destination_ip </code><br /><code class="linecode">destination_nat_ip </code><br /><code class="linecode">host_ip </code><br /><code class="linecode">vendor_private_ip </code><br /><code class="linecode">vendor_private_ipv6 </code><br /><code class="linecode">vendor_public_ip </code><br /><code class="linecode">vendor_public_ipv6 </code><br /><code class="linecode">event_observer_ip </code><br /><code class="linecode">source_mac </code><br /><code class="linecode">destination_mac </code><br /><code class="linecode">source_hostname </code><br /><code class="linecode">destination_hostname </code><br /><code class="linecode">host_hostname</code></p>
+        <p>The following fields are used to associate user assets:</p>
+        <p><code class="linecode">user_name </code>
+            <br /><code class="linecode">target_user_name </code>
+            <br /><code class="linecode">user_name_mapped </code>
+            <br /><code class="linecode">user_id </code>
+            <br /><code class="linecode">target_user_id </code>
+            <br /><code class="linecode">user_email</code> <br /><code class="linecode">target_user_email </code></p>
+        <h4>
+            <br />machine_asset_lookup</h4>
+        <p>This pipeline rule takes a<code class="linecode"> lookup_type</code> and value parameter. <code class="linecode">lookup_type</code> can be one of <i>name</i>, <i>ip</i>, <i>mac</i>, or <i>hostname</i>. The value field is the value to be used to do the lookup for the specified type. The rule assumes that the lookup will be unique so if multiple assets happen to match the lookup only one will be returned. If the lookup has a match, it will return a map with the following structure:<br /></p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton>&#160;</MadCap:codeSnippetCopyButton>
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">{
+  "id": "string"
+  "name": "string",
+  "priority": number,
+  "category": ["string", "array"],
+  "details": {
+    "type": "machine",
+    "description": "string",
+    "owner": "string",
+    "ip_addresses": ["string", "array"],
+    "mac_addresses": ["string", "array"],
+    "hostnames": ["string", "array"],
+    "custom_fields": Map
+  }
+}</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p><b>Note:</b> The <code class="linecode">custom_fields</code> map structure will depend on the custom fields defined for a given asset. Each entry will have a string key and an array of values that are either <i>strings</i>, <i>dates</i>, or <i>numbers</i>.</p>
+        <p>These fields can then be used to enrich the message in a more targeted way than the <code class="linecode">set_associated_assets</code> rule. For example, to look up an asset by the <code class="linecode">source_ip</code> field and then set fields on the message based on the asset returned would look similar to:<br /></p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton>&#160;</MadCap:codeSnippetCopyButton>
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">rule "machine_asset_lookup"
+when
+    has_field("source_ip")
+then
+    let asset = machine_asset_lookup(lookup_type:"ip", value:to_string($message.source_ip));
+    let details = asset.details;
+    set_field("asset_id", asset.id);
+    set_field("asset_name", asset.name);
+    set_field("asset_description", details.description);
+    set_field("asset_ips", details.ip_addresses);
+    set_field("asset_macs", details.mac_addresses);
+    set_field("asset_hostnames", details.hostnames);
+end</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <h3>machine_asset_update</h3>
+        <p>This rule will update IP addresses and hostnames of existing machine assets. The parameters are:</p>
+        <p><code class="linecode">lookup_type</code>: one of <i>name</i>, <i>ip</i>, <i>mac</i>, or <i>hostname</i></p>
+        <p><code class="linecode">lookup_value</code>: the value for the <code class="linecode">lookup_type</code></p>
+        <p><code class="linecode">ip_addresses</code> : string or array or IP addresses to update the asset with [optional]<br /></p>
+        <p><code class="linecode">hostnames</code>: string or array of hostnames to update the asset with [optional]</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">rule "machine_asset_update"
+when
+    true
+then
+    machine_asset_update(lookup_type:"mac", lookup_value:"AA:BB", ip_addresses:"10.0.0.0");
+end</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p>Using this rule on DHCP logs, for example, can keep existing assets up to date based on incoming logs.</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">rule "machine_asset_update"
+when
+    true
+then
+    machine_asset_update(lookup_type:"mac", lookup_value:$message.mac, ip_addresses:to_string($message.new_ip));
+end</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <h3>user_asset_lookup</h3>
+        <p>This pipeline rule takes a <code class="linecode">lookup_type</code> and value parameter. <code class="linecode">lookup_type</code> can be one of <i>name</i>, <i>username</i>, <i>user_id</i>, or <i>email</i>. The value field is the value to be used to do the lookup for the specified type. The rule assumes that the lookup will be unique so if multiple assets happen to match the lookup only one will be returned. If the lookup has a match, it will return a map with the following structure:<br /></p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton>&#160;</MadCap:codeSnippetCopyButton>
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">{
+  "id": "string"
+  "name": "string",
+  "priority": number,
+  "category": ["string", "array"],
+  "details": {
+    "type": "user",
+    "description": "string",
+    "username": "string",
+    "user_ids": ["string", "array"],
+    "email_addresses": ["string", "array"],
+    "first_name": "string",
+    "last_name": "string"
+  }
+}</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p>These fields can then be used to enrich the message in a more targeted way than the <code class="linecode">set_associated_assets</code> rule. For example, to look up an asset by the username field and then set fields on the message based on the asset returned would look similar to:<br /></p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton>&#160;</MadCap:codeSnippetCopyButton>
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">rule "user_asset_lookup"
+when
+    has_field(“username”)
+then
+    let asset = user_asset_lookup(lookup_type:"username", value:"username");
+    let details = asset.details;
+    set_field("asset_id", asset.id);
+    set_field("asset_name", asset.name);
+    set_field("asset_type", details.type);
+    set_field("asset_username", details.username);
+    set_field("asset_user_ids", details.user_ids);
+    set_field("asset_emails", details.email_addresses);
+end</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <h2>Associated Assets in Search</h2>
+        <p style="text-align: justify;">With Graylog 5.2, an Illuminate version will also be released that has a new assets processing pack. When enabled, the pack will automatically run the<code class="linecode"> set_associated_assets</code> pipeline rule for all messages. However, users also have the option to specifically apply the <code class="linecode">set_associated_assets</code> pipeline rule for a subset of logs. In this case, the user would not enable the illuminate assets processing pack but rather would implement the <code class="linecode">set_associated_assets</code> pipeline function themselves by putting the <code class="linecode">set_associated_assets</code> in a pipeline rule, add it to a pipeline, set filters and/or assign it to selected stream(s). This functionality is customizable to the extent that users can either apply it to all logs by enabling the illuminate processing pack or to a subset of their logs by manually configuring and applying the rule.<br /></p>
+        <p>
+            <img src="../Resources/Images/Assets Enrichment/Assets Processing Pack.png" style="width: 1480px;height: 607px;" />
+        </p>
+        <p>Once a message has been enriched with the <code class="linecode">associated_assets</code> fields those fields can be displayed in the expanded log view of an individual message. The details of each associated asset can then be expanded as well.</p>
+        <p>
+            <img src="../Resources/Images/Assets Enrichment/Associated Assets.png" style="width: 1466px;height: 988px;" /> <br /></p>
+        <p>In addition to viewing the asset in search, users now also have the capability to add an asset to the search query, to see any log message associated with that asset.</p>
+        <h2>Pivoting to an Asset Search</h2>
+        <p>To pivot to an asset search, click the <i>Add to query</i> button  for a particular asset to view all log messages for the asset.</p>
+        <p>Note that the asset ID is then added to the search query for the <code class="linecode">associated_assets field: associated_assets:64cc02ad88985b1f7a5dbb1c</code></p>
+        <p>The value of this capability is that it allows for users to see an asset in the search results and pivot to see more logs for the asset to investigate further. For example, if a Finance department computer shows is found to be an asset for a log message, the Graylog user could then pivot and view all logs for that machine to further investigate activities for that machine.</p>
+        <h1>Use Cases</h1>
+        <h3>Scenario 1: Searching for Users/Machines:</h3>
+        <p>A user has two different accounts (rich.murphy and rmurphy) as well as two different emails (rich@graylog.com and rich.murphy@graylog.com).  I want to search across all logs for that user:<br /></p>
+    </body>
+</html>
