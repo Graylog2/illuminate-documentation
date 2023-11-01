@@ -3,7 +3,179 @@
     <head>
     </head>
     <body>
-        <h1>Illuminate Changelogs</h1>
-        <p>Delete this text and replace it with your own content.</p>
+        <h2>Illuminate 4.0.x</h2>
+        <p>Released:&#160;2023-11-01</p>
+        <h4>Known Issues</h4>
+        <ul>
+            <li>
+                <p> <b>Installing this Illuminate release will cause any currently running Anomaly Detection jobs to be disabled.</b> Please identify which Anomaly Detection jobs are running prior to activating this release and enable them after this version has been activated. </p>
+            </li>
+        </ul>
+        <h4>Fixed</h4>
+        <ul>
+            <li>
+                <p>Cisco ASA: Some Authentication messages have GIM errors, logoff are wrong categorized (1421)</p>
+            </li>
+            <li>
+                <p>Added the missing <code class="linecode">destination_reference</code> field for ASA authentication messages between 606001 and 606004. Logout messages are now categorizes as logout messages and <code class="linecode">vendor_event_action</code> is now success.</p>
+            </li>
+            <li>
+                <p>Sophos Firewall: Spotlight widgets including non-Sophos data (1686)</p>
+            </li>
+            <li>
+                <p>SonicWall saved search widget modification and dashboard spelling correction (1557)</p>
+            </li>
+            <li>
+                <p>The Message Count by Severity widget in the SonicWall NGFW Log Viewer - Filtered saved search had a confusing sort order.  Corrected to sort by <code class="linecode">vendor_event_severity_level</code>.  Also, fixed the spelling of the Dashboard - previously started with <code class="linecode">Illuminate:*</code> and corrected to <code class="linecode">Illuminate:*</code></p>
+            </li>
+            <li>
+                <p>Sysmon: add <code class="linecode">file_is_executable</code> extraction for Event ID 28 (1552)</p>
+            </li>
+            <li>
+                <p>ASA dashboard has confusing severity levels (1559)</p>
+            </li>
+            <li>
+                <p>Stormshield Bugfixes and Enhancement (1610)</p>
+            </li>
+            <li>
+                <p>Updated bugfix rule to account for logs that contain a <code class="linecode">cat_site</code> AND <code class="linecode">arg</code> field. An existing Stormshield bug adds an extra quotation mark to the <code class="linecode">cat_site</code> field value which breaks parsing.</p>
+            </li>
+            <li>
+                <p>Sysmon: Normalize Event Type to <code class="linecode">vendor_event_type</code> for all related Sysmon events (1576)</p>
+            </li>
+            <li>
+                <p>Cisco ASA:Alert severity not assigned for some 338002 messages (1420)</p>
+            </li>
+            <li>
+                <p>All dynamic filter messages 338001 to 338204 now get an alert severity even if the message does not have this field. Renamed field <code class="linecode">vendor_alert_severity1</code> to <code class="linecode">vendor_alert_severity</code></p>
+            </li>
+            <li>
+                <p>Added check for previously identified messages to Checkpoint (1612)</p>
+            </li>
+            <li>
+                <p>Illuminate: Added <code class="linecode">event_error_code</code> mapping as keyword (1674)</p>
+                <p><b>NOTE</b>: This may cause a short-term mapping conflict in dashboards where mapping type are updated (such as with Palo Alto) but this conflict will resolve over time. Some products produce an error code as an integer value, some produce codes in other formats such as hex. This field is expected to be a keyword type, but implicit mappings result in mapping conflicts where integer values are mapped as type "long." The static mapping of <code class="linecode">event_error_code</code> as keyword will resolve this mapping conflict.</p>
+            </li>
+            <li>
+                <p>Windows Security: Event 4663 not handled properly (803)</p>
+            </li>
+            <li>
+                <p>Windows 4663 was categorized as a file change but 4663 can reflect changes to multiple components on a system in addition to the file system. Illuminate will now categorize a system based upon the component identified in event ID 4663.</p>
+            </li>
+            <li>
+                <p>Sysmon extracting target process name incorrectly (1575)</p>
+            </li>
+            <li>
+                <p>The field was being extracted incorrectly as <code class="linecode">target_process_name</code>, now extracting it as <code class="linecode">process_target_name</code></p>
+            </li>
+            <li>
+                <p>Symantec Endpoint: Spotlight Alert destinations widget uses source fields (1679)</p>
+            </li>
+            <li>
+                <p>Moved Cisco ASA identification rules from stage 2 to stage 5 (1613)</p>
+            </li>
+            <li>
+                <p>Fortigate: fixed <code class="linecode">event_severity</code> &amp; <code class="linecode">event_severity_level</code> for informational and low (1642)</p>
+            </li>
+            <li>
+                <p>The Fortigate event severity for informational events properly maps to a value  of 1 for <code class="linecode">event_severity_level</code> and informational for <code class="linecode">event_severity</code>.  Additionally, for  the notice Fortigate events, the <code class="linecode">event_severity_level</code> has been corrected with a value of 2 (low).</p>
+            </li>
+            <li>
+                <p>Cisco ASA: Add support for user names with an @ in them. (1661)</p>
+            </li>
+            <li>
+                <p> Checkpoint: Fixed processing of text for severity levels (1688)</p>
+            </li>
+        </ul>
+        <h4>Added</h4>
+        <ul>
+            <li>
+                <p>Added Ubiquiti UniFi Overview dashboard to go along with the existing Ubiquiti UniFi Illuminate pack. (1296)</p>
+            </li>
+            <li>
+                <p>Added new technology pack NGINX Webserver (1207)</p>
+            </li>
+            <li>
+                <p>This pack adds support for NGINX Webserver. It is tested with version 1.18/1.24 with the combined log format.</p>
+            </li>
+            <li>
+                <p>Added Asset pack to Illuminate Security editions</p>
+            </li>
+            <li>
+                <p>Adds the Asset processing pack needed to add the <code class="linecode">associated_assets</code> field to messages used by the Assets feature, available only in Graylog Security.</p>
+            </li>
+            <li>
+                <p>Added support for Audit Security System Extension Windows events (216)</p>
+            </li>
+            <li>
+                <p>Added support for additional Windows Security Event IDs 4610, 4611, 4614, 4622, 4697 which are enabled by the Audit Security System Extension policy in Windows. See <a href="https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/audit-security-system-extension">https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/audit-security-system-extension</a> for additional information about these events.</p>
+            </li>
+            <li>
+                <p>Core MITRE lookup that allows the mapping of technique UID to name (1622)</p>
+            </li>
+            <li>
+                <p>Added a new core lookup that maps <code class="linecode">attacks_technique_uid</code> (MITRE ID) to <code class="linecode">attacks_technique_name</code> (MITRE name).  These are new fields.</p>
+            </li>
+            <li>
+                <p>Updated Juniper documentation to include required input setting for proper processing (1569)</p>
+            </li>
+            <li>
+                <p>Added full support for Cisco Firepower (1449)</p>
+            </li>
+            <li>
+                <p>Adding full parsing for Cisco Firepower FTD events. Event IDs between 430001 and 430005 are now fully supported. This Illuminate pack will process the Cisco Firepower logs delivered to Graylog via Syslog and is not for use with the Cisco Firepower Event Streamer (eStreamer)/eNcore agents. The pack supports %FTD, %NGIPS, %NGFW (and %ASA) logs.</p>
+            </li>
+            <li>
+                <p> Illuminate: The <code class="linecode">http_response_code</code> field now gets enriched. The new field <code class="linecode">http_response</code> describes the response code. (1633)</p>
+            </li>
+            <li>
+                <p>Windows Security: Add access list enrichment (1644)</p>
+            </li>
+            <li>
+                <p>Windows 4663 contains codes that reflect the types of accesses requested. Add an enrichment that will provide a plain text description of these access list codes in the field <code class="linecode">vendor_access_type</code>.</p>
+            </li>
+            <li>
+                <p>CrowdStrike Falcon Technology Pack (1483)</p>
+            </li>
+            <li>
+                <p>CrowdStrike Falcon technology pack release. Supports alerts and authentication events received by the CrowdStrike input, and includes a spotlight pack with an overview tab, authentication tab, and alert tab.</p>
+            </li>
+            <li>
+                <p>Microsoft Defender for Endpoint Technology Pack (1540)</p>
+            </li>
+            <li>
+                <p>Microsoft Defender for Endpoint technology pack release.  Supports 'alerts' events received by the Microsoft Defender for Endpoint Graylog input. Also adds a new core lookup that maps <code class="linecode">attacks_technique_uid</code> (MITRE ID) to <code class="linecode">attacks_technique_name</code> (MITRE name).  These are new fields.</p>
+            </li>
+        </ul>
+        <h4>Changed</h4>
+        <ul>
+            <li>
+                <p>GIM Enforcement:Change enforced source and destination fields for events categorized as network messages (1524)</p>
+            </li>
+            <li>
+                <p>Reference fields (<code class="linecode">source_reference</code>, <code class="linecode">destination_reference</code>) are selected from a list of possible source fields such as <code class="linecode">source_ip</code>, <code class="linecode">destination_ip</code>, and <code class="linecode">source_hostname</code>. Defining the required fields for the network category to use these reference fields instead of only the IP fields will allow more messages to be categorized as network messages. Some sources will provide hostnames or mac addresses instead of IPs, changing the required field to use a reference field enables those messages to also be categorized as network messages.</p>
+            </li>
+            <li>
+                <p>Core: Revised reference field processing (1685)</p>
+            </li>
+            <li>
+                <p>Reference fields (<code class="linecode">host_reference</code>, <code class="linecode">source_reference</code>, <code class="linecode">destination_reference</code>) are now processed for any message with candidate fields and not just categorized messages. Any messages with source/host/destination IP, hostname, or MAC fields will now have associated reference fields added. For example, a message with <code class="linecode">host_ip</code>, <code class="linecode">host_hostname</code>, or <code class="linecode">host_mac </code>will have a  <code class="linecode">host_reference</code> field generated.</p>
+            </li>
+            <li>
+                <p>Convert Illuminate Spotlight content IP fields to instead use reference fields (1673)</p>
+            </li>
+            <li>
+                <p> Many existing Illuminate dashboards use the IP fields (<code class="linecode">source_ip</code>, <code class="linecode">destination_ip</code>, <code class="linecode">host_ip</code>) for aggregations but the use of fields with the IP mappings commonly run into aggregation errors. Converting the IP field use in aggregations to instead the "reference" fields (<code class="linecode">source_reference</code>, <code class="linecode">destination_reference</code>, <code class="linecode">host_reference</code>) will use keyword-mapped fields while retaining the ability to search the IP-based fields with CIDR functions and ranged searches, which will reduce the number of aggregations errors when viewing Illuminate content. Reference fields are selected from multiple potential fields (such as <code class="linecode">source_ip</code>, <code class="linecode">source_hostname</code>, <code class="linecode">source_mac</code>, and others) but will typically contain the original IP field data as that field as the IP field is typically the first choice selected when it exists.</p>
+            </li>
+            <li>
+                <p>Converted <code class="linecode">gim_event_type_code</code> assignments to support multiple values (1504)</p>
+            </li>
+            <li>
+                <p>The assignment of a `<code class="linecode">gim_event_type_code</code>` value has been limited to one value. With this change the `<code class="linecode">gim_event_type_code</code>` field is now a list of values and multiple codes can be assigned. This change requires Graylog 5.1.5 or greater.</p>
+            </li>
+            <li>
+                <p>Rename original Microsoft Defender content to Microsoft Defender Antivirus (1654)</p>
+            </li>
+        </ul>
     </body>
 </html>
