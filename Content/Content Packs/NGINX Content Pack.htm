@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../../../GraylogDocsSource1/GraylogDocsSource1/Content/Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>NGINX [Engine x] is an HTTP Server that runs on Linux systems. It was originally written by Igor Sysoev and publicly released in 2004.</p>
+        <p> This pack parses and configures NGINX access logs and error logs. The default log location is:&#160;<code class="linecode">/var/log/nginx/</code></p>
+        <h3>Requirement(s)</h3>
+        <ul>
+            <li>
+                <p>A Graylog Server with a valid Enterprise license that is running Graylog version 5.1.5 or later.</p>
+            </li>
+            <li>
+                <p>This pack will work with all versions of NGINX, as long as the combined log format is used.</p>
+            </li>
+            <li>
+                <p>Log folders must be named:<code class="linecode">access.log</code>.</p>
+            </li>
+            <li>
+                <p>Either Filebeat (with Sidecar) or rsyslog are required for delivering logs.</p>
+            </li>
+        </ul>
+        <h3>Input via Filebeat Together with Graylog Sidecar</h3>
+        <p>Please follow the <a href="https://go2docs.graylog.org/5-1/getting_in_log_data/graylog_sidecar.html">official documentation</a> . You will need to configure your Graylog Server and your client(s).</p>
+        <p>To do this:</p>
+        <ol>
+            <li>
+                <p>Create an input and an API key. Then set up Graylog sidecar. </p>
+            </li>
+            <li>
+                <p>Add your clients, e.g. web server.</p>
+            </li>
+        </ol>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">It is possible to run the NGINX webserver and Graylog on the same machine.</span>
+                </div>
+            </section>
+        </p>
+        <h4>Graylog Server Settings</h4>
+        <ol>
+            <li>
+                <p>Create a global Beats input in Graylog.</p>
+            </li>
+            <li>
+                <p>Create a Graylog REST API Access Token and save it.</p>
+            </li>
+            <li>
+                <p>Create a (Linux) filebeat configuration under Sidecar&gt;Configuration with a <code class="linecode">filebeat on Linux</code> collector.</p>
+            </li>
+            <li>
+                <p>After configuring the file:</p>
+            </li>
+        </ol>
+        <ul>
+            <li>
+                <p>Add the Graylog server IP under hosts.</p>
+            </li>
+            <li>
+                <p>Configure the log source to the desired value and configure the field <code class="linecode">event_source_product</code> with the value <code class="linecode">NGINX-web</code>.</p>
+            </li>
+        </ul>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">filebeat.inputs:
+- input_type: log
+  paths:
+    - /var/log/nginx/access.log
+    - /var/log/nginx/error.log
+  type: filestream
+  fields_under_root: true
+  fields:
+    event_source_product: nginx-web</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint:</b><span style="font-weight: normal;"> There must be two spaces in front of<code class="linecode"> event_source_product</code> and </span><code class="linecode" style="font-weight: normal;">- /var...</code><span style="font-weight: normal;"> .</span>
+                </div>
+            </section>
+        </p>
+        <ul>
+            <li>
+                <p>Save the configuration</p>
+            </li>
+        </ul>
+        <h3>Configure a Client with Filebeat and Graylog Sidecar</h3>
+        <ol>
+            <li>
+                <p>Install Sidecar on the <b>remote</b> machine. See <a href="https://go2docs.graylog.org/5-0/getting_in_log_data/graylog_sidecar.html">here</a> for instructions.</p>
+            </li>
+            <li>
+                <p>Edit the<code class="linecode">/etc/graylog/sidecar/sidecar.yml </code>file and configure:</p>
+                <ul>
+                    <li>
+                        <p><code class="linecode">server_url </code>as: <code class="linecode">GraylogServerIP</code></p>
+                    </li>
+                    <li>
+                        <p><code class="linecode">server_api_token </code>as: <code class="linecode">your API token</code></p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p> Install the Sidecar service.</p>
+            </li>
+            <li>
+                <p>Enable and start the Sidecar service.</p>
+            </li>
+            <li>
+                <p>Check the Sidecar status.</p>
+            </li>
+        </ol>
+        <p>Here are some sample commands for Ubuntu, please use the official documentation.</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">wget https://packages.graylog2.org/repo/packages/graylog-sidecar-repository_1-5_all.deb
+sudo dpkg -i graylog-sidecar-repository_1-5_all.deb
+sudo apt-get update &amp;&amp; sudo apt-get install graylog-sidecar
+
+sudo gedit /etc/graylog/sidecar/sidecar.yml
+server_url: "http://192.168.122.52:9000/api/"
+server_api_token: "65ol7edseo24mub8o7pu86h2rsr8j9fjjpimtrm9nrpbjso7cnv"
+
+sudo graylog-sidecar -service install
+sudo systemctl enable graylog-sidecar
+sudo systemctl start graylog-sidecar
+sudo systemctl status graylog-sidecar</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p style="text-indent: 0.5in;">6. Install <a href="https://www.elastic.co/downloads/beats/filebeat">Filebeat</a>.</p>
+        <p style="text-indent: 0.5in;">7. Download the link for the <a href="https://www.elastic.co/downloads/beats/filebeat-oss">OSS version</a>.</p>
+        <ul>
+            <li>
+                <p>  If you choose to install it manually, install it under <code class="linecode">/etc/filebeat</code>.</p>
+            </li>
+            <li>
+                <p> If you choose to install it via <code class="linecode">apt-get</code>, no further action is required.</p>
+            </li>
+        </ul>
+        <p>Sample commands for Ubuntu, please use the official documentation.</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+sudo apt-get install apt-transport-https
+echo "deb https://artifacts.elastic.co/packages/oss-8.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-8.x.list
+sudo apt-get update &amp;&amp; sudo apt-get install filebeat
+sudo systemctl enable filebeat
+sudo systemctl start filebeat
+sudo systemctl status filebeat</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p>You may edit the<code class="linecode">filebeat.yml</code> file via the Sidecar configuration in Graylog.</p>
+        <p style="text-indent: 0.5in;">8. Start the daemon.  Any permission issues may be solved with <code class="linecode">sudo chown root filebeat.yml</code>.</p>
+        <p style="text-indent: 0.5in;">9. Configure filebeat to start automatically after reboot (recommended).</p>
+        <p style="text-indent: 0.5in;">10. Assign a configuration to your machine in Graylog.</p>
+        <h3>Input via rsyslog</h3>
+        <ul>
+            <li>
+                <p>You will need a configured UDP or <code class="linecode">TCP_syslog</code> input on the Graylog server side.</p>
+            </li>
+            <li>
+                <p>Install rsyslog via the <a href="https://www.rsyslog.com/ubuntu-repository/">official documentation</a>. </p>
+            </li>
+            <li>
+                <p>Modify the configured <code class="linecode">rsyslog.conf</code> file.</p>
+            </li>
+        </ul>
+        <p>Example for <code class="linecode">/etc/nginx.conf</code> with a UDP input at 1544 on IP 192.168.122.40:</p>
+        <p><code class="linecode">sudo gedit /etc/rsyslog.conf</code>
+        </p>
+        <ul>
+            <li>
+                <p>Under MODULES add or modify:</p>
+            </li>
+        </ul>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve"># provides UDP syslog reception
+$ModLoad imudp
+$UDPServerRun 1544
+*.* @192.168.122.40:1544;RSYSLOG_SyslogProtocol23Format</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p>The next code block can be set in a different configuration file or at the end of the<code class="linecode">rsyslog.conf</code>file.</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">module(load="imfile" PollingInterval="10" statefile.directory="/var/spool/rsyslog")
+input(type="imfile"
+      File="/var/log/nginx/access.log"
+      Tag="nginx_web_http_access"
+      Severity="info"
+      Facility="local6")
+input(type="imfile"
+      File="/var/log/nginx/error.log"
+      Tag="nginx_web_http_error"
+      Severity="info"
+      Facility="local6")
+local6.access        @192.168.122.40:1544</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">This configuration is for UDP. If you choose to select TCP, see the <a href="https://www.rsyslog.com/ubuntu-repository/">official documentation</a>.</span>
+                </div>
+            </section>
+        </p>
+        <p>The command to restart the service on Ubuntu:</p>
+        <p><code class="linecode">sudo systemctl restart rsyslog</code>
+        </p>
+        <p>You can check the status with:</p>
+        <p><code class="linecode">sudo systemctl status rsyslog</code>
+        </p>
+        <p>Red lines may indicate problems. Sometimes a full reboot of the system is needed.</p>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint:  </b><span style="font-weight: normal;">When you install rsyslog, you may see some active default rules  that log system, kernel and other logs after installing rsyslog (e.g. 50-default.conf). These should be deactivated if they are not needed.</span>
+                </div>
+            </section>
+        </p>
+        <h3>Tested rsyslog version</h3>
+        <p>8.2212.0</p>
+        <h3>Stream Configuration:</h3>
+        <p>This technology pack includes one stream:</p>
+        <p><code class="linecode">"Illuminate:Nginx_web Messages"</code>
+        </p>
+        <p><span style="font-weight:normal;">If this stream name is already defined, then nothing will be changed. If this stream name does not exist, then it will be created.</span>
+        </p>
+        <h3>Index Set Configuration:</h3>
+        <p>This technology pack includes one index set definition:</p>
+        <p><code class="linecode">NGINX_web Logs</code>
+        </p>
+        <p><span style="font-weight:normal;"> If this index set is already defined, nothing will be changed. If this index set does not exist, it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
+        </p>
+        <h3>Log Format Examples:</h3>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton>&#160;</MadCap:codeSnippetCopyButton>
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">Access Logs version 1.18
+127.0.0.1 - - [04/Mar/2023:19:25:07 -0600] "GET / HTTP/1.1" 200 3543 "-" "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/109.0"
+
+Access Logs version 1.24
+127.0.0.1 - - [13/Sep/2023:08:34:54 -0500] "GET / HTTP/1.1" 200 615 "-" "Mozilla/5.0 (X11; Linux x86_64; rv:103.0) Gecko/20100101 Firefox/103.0" "-"
+
+Error Logs:
+2023/03/05 09:34:46 [emerg] 2032#2032: no "ssl_certificate" is defined for the "listen ... ssl" directive in /etc/nginx/sites-enabled/default:21
+
+2023/01/05 11:50:44 [error] 22053#0: *3 open() "/usr/local/stefan/nginx/1.10.2_1/html/stest" failed</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint:  </b><span style="font-weight: normal;">These are default fields or values found in the combined log format. Logs with custom fields, formats or ordering may be problematic.</span>
+                </div>
+            </section>
+        </p>
+        <h3>What is Provided</h3>
+        <p>This pack includes parsing rules that convert Nginx logs into Graylog schema-compatible fields. Nginx access logs get the GIM code “180200”.</p>
+        <h3>NGINX Spotlight Content Pack</h3>
+        <p>The NGINX content pack provides an Overview Dashboard.</p>
+        <p>
+            <img src="../../../GraylogDocsSource1/GraylogDocsSource1/Content/Resources/Images/pfsense.png" />
+        </p>
+    </body>
+</html>
