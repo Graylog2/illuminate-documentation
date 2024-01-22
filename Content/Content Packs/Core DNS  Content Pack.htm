@@ -25,6 +25,7 @@
             <li>DNS Query Request Length</li>
             <li>DNS Query Response Length</li>
             <li>DNS Query Entropy</li>
+            <li>DNS Server Approval Status</li>
         </ul>
         <h4>DNS Query Request/Response Length</h4>
         <p>This is a simple count of the number of characters in a DNS request or response.</p>
@@ -36,7 +37,38 @@
         <p>The query response length is an approximate measurement of the response length, DNS responses can often include multiple values with a separator character. This measurement will include those characters.</p>
         <h4>DNS Query Request Entropy Calculations</h4>
         <p>This pack wil calculate the entropy, using Shannon's entropy algorithm, for the value of the field <code class="linecode">query_response</code> when that field exists, and assign it to the field <code class="linecode">query_request_entropy</code>.</p>
+        <p>Entropy, in this context, is the measurement of the variability of the data. Some attacks that use <a href="https://attack.mitre.org/techniques/T1568/002/">Domain Generation Algorithms (DGA)</a> can be detected by measuring the entropy of the DNS request value.</p>
+        <h4>DNS Server Approval Status</h4>
+        <p>This pack will work in concert with the assets functionality included with Graylog Server and identify systems that have been identified as approved DNS servers.</p>
+        <p>This can be used to detect misconfigured/unauthorized devices attached to your network and increases your situational awareness with respect to the operation of your network.</p>
+        <p>This pack will add the field <code class="linecode">approved_dns_server</code> with the boolean value of <code class="linecode">true</code> if the device has been identified as an approved DNS server, and <code class="linecode">false</code> if it has not been identified as approved. Note that until a server has been identified as an approved DNS server that all DNS traffic will be considered unapproved.</p>
+        <h5>Configuring Approved DNS Servers</h5>
+        <p>In order to define a device as an "approved" DNS server it must be added to the asset list and assigned a category of <code class="linecode">approved_dns_servers</code>.</p>
+        <p>In the Graylog web interface, select the drop-down menu "Security" and click on the "Assets" item on this menu.</p>
+        <p>If there are already assets defined, Look for an existing entry for the DNS server to assign approval to. If there is already an asset entry for the DNS server to approve:</p>
+        <ul>
+            <li>click on the asset entry</li>
+            <li>click in or tab to the <code class="linecode">Categories</code> text box</li>
+            <li>enter the text <code class="linecode">approved_dns_servers</code> and hit the enter key</li>
+            <li>click the <code class="linecode">next</code> button repeatedly until you see the <code class="linecode">Save Asset</code> button</li>
+            <li>click on the <code class="linecode">Save Asset</code> button</li>
+        </ul>
+        <br/>
+        <p>If there is no existing asset entry:</p>
+        <ul>
+            <li>click on the <code class="linecode">New Asset</code> button</li>
+            <li>click on or tab to the <code class="lineclass">Asset Name</code> text box and enter an asset name</li>
+            <li>click on or tab to the <code class="lineclass">IP Addresses</code> text box</li>
+            <li>enter the IP address associated with the DNS server and hit the enter button</li>
+            <li>repeat this step for any additional IP addresses associated with the approved DNS server</li>
+            <li>add any relevant information to the other fields for this asset</li>
+            <li>click on the <code class="linecode">Next</code> button to advance to the next page of the asset entry form</li>
+            <li>fill out any of the additional fields desired in the asset entry, clicking the <code class="linecode">Next</code> button when completed</li>
+            <li>repeat this process for each page of the asset entry dialog</li>
+            <li>click the <code class="linecode">Save Entry</code>> button on the last page of the asset entry dialog</li>
+        </ul>
         <h3>DNS Processing Spotlight Content Pack</h3>
-        <p>The DNS Processing Spotlight content pack contains:</p>
+        <p>The DNS Processing Spotlight content pack contains a dashboard that provides insights in to DNS activity collected in Graylog</p>
+
     </body>
 </html>
