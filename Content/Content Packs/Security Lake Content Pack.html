@@ -1,0 +1,102 @@
+# AWS Security Lake Notes
+
+## About AWS Security Lake Log Collection
+
+Amazon Security Lake is a purpose-built data lake that centralizes security data from AWS environments, SaaS providers, on-premises, and cloud sources. It converts incoming security data logs to the Open Cybersecurity Schema Framework (OCSF) open standard.
+
+## Supported version(s)
+
+Tested with AWS Security Lake in January 2024.
+Requires at least Graylog 5.2.
+
+## Stream Configuration
+
+"Illuminate:AWS Security Lake Messages"
+
+If this stream name is already defined, then nothing will be changed. If this stream name does not exist, then it will be created.
+
+## Index Set Configuration
+
+"AWS Security Lake Logs"
+
+If this index set is already defined, then nothing will be changed. If this index set does not exist, it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.
+
+## Supported Log Types
+
+For Graylog 5.2:
+
+CloudTrail Lambda Data Events, API
+CloudTrail Management Events, API, Authentication, Account Change
+CloudTrail S3 Data Events, API
+Route53, DNS Activity
+Security Hub, Security Findings
+VPC FlowLogs, Network Activity
+
+With Graylog 6.0 the content pack may parse out and support other sources if the log structure uses the same fields.
+
+## Log Format Example
+
+### Route53 logs
+
+{\"metadata\":{\"product\":{\"version\":\"1.100000\",\"name\":\"Route 53\",\"feature\":{\"name\":\"Resolver Query Logs\"},\"vendor_name\":\"AWS\"},\"version\":\"0.26.1\"},\"cloud\":{\"account_uid\":\"67654654\",\"region\":\"ap-northeast-1\",\"provider\":\"AWS\"},\"src_endpoint\":{\"vpc_uid\":\"vpc-02c62c77516baa087\",\"ip\":\"172.31.12.120\",\"port\":37554,\"instance_uid\":\"i-018c0e79fa98b93f3\"},\"time\":\"1676953179000\",\"query\":{\"hostname\":\"motd.ubuntu.com.\",\"type\":\"A\",\"class\":\"IN\"},\"rcode\":\"NOERROR\",\"answers\":[{\"type\":\"A\",\"rdata\":\"34.243.160.129\",\"class\":\"IN\"},{\"type\":\"A\",\"rdata\":\"54.217.10.153\",\"class\":\"IN\"},{\"type\":\"A\",\"rdata\":\"34.254.182.186\",\"class\":\"IN\"},{\"type\":\"A\",\"rdata\":\"54.171.230.55\",\"class\":\"IN\"},{\"type\":\"A\",\"rdata\":\"54.247.62.1\",\"class\":\"IN\"}],\"connection_info\":{\"protocol_name\":\"UDP\",\"direction\":\"Lateral\",\"direction_id\":3},\"dst_endpoint\":{\"instance_uid\":\"None\",\"interface_uid\":\"None\"},\"severity_id\":\"-1\",\"severity\":\"Other\",\"class_name\":\"DNS Activity\",\"class_uid\":\"4003\",\"category_name\":\"Network Activity\",\"category_uid\":\"4\",\"rcode_id\":\"0\",\"activity_id\":\"1\",\"activity_name\":\"Resolved\",\"type_name\":\"DNS Activity: Resolved\",\"type_uid\":\"400301\",\"unmapped\":\"None\"}
+
+### CloudTrail logs
+
+Under metadata, the feature name can be Data or Management. Data is only API related, Management may include authentication and account change.
+
+Example for account change:
+<https://github.com/ocsf/examples/blob/main/Identity%20%26%20Access%20Management/Account%20Change/AWS/CloudTrail/account_change.json>
+
+Example for authentication:
+<https://github.com/ocsf/examples/blob/main/Identity%20%26%20Access%20Management/Authentication/AWS/CloudTrail/authentication.json>
+
+Example for generic API activity
+<https://github.com/ocsf/examples/blob/main/Application%20Activity/API%20Activity/AWS/CloudTrail/generic_api_activity.json>
+
+## Requirements
+
+This content pack work together with a configurated AWS Security Lake input.
+Graylog 5.2
+
+### Configuration AWS Security Lake input
+
+To set up the input, please use the input documentation.
+<https://go2docs.graylog.org/5-2/getting_in_log_data/aws_security_lake_input.htm>
+
+## What is Provided
+
+Parsing rules to extract AWS Security Lake logs into Graylog schema-compatible fields.
+Categorization of the Security Findings, Account Change, Authentication, Network Activity and DNS Activity.
+Dashboards for: Overview, Network, Alerts, Authentication, IAM and DNS Activities.
+
+### Security Lake Spotlight Content Pack
+
+The Security Lake Spotlight content pack contains:
+
+- Security Lake Overview tab: Overview
+
+![image.png](SecurityLakeOverview.png)
+
+- Security Lake Overview tab: Network
+
+![image.png](SecurityLakeNetwork.png)
+
+- Security Lake Overview tab: Alerts
+
+![image.png](SecurityLakeAlert.png)
+
+- Security Lake Overview tab: Authentication Overview
+
+![image.png](SecurityLakeAuthentication.png)
+
+- Security Lake Overview tab: IAM Overview
+
+![image.png](SecurityLakeIAM.png)
+
+- Security Lake Overview tab: DNS Overview
+
+![image.png](SecurityLakeDNS.png)
+
+## Limitations
+
+The content pack is designed for CloudTrail, Route53, Security Hub, and VPC FlowLogs. It may support similar sources, but it is not tested against other sources/products.
