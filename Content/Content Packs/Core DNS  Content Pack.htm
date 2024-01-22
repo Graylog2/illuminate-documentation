@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title></title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <p>The Core DNS Processing Illuminate Pack includes supplementary processing of DNS-related messages and a Spotlight pack to gain additional insights in to DNS-related log messages.</p>
+        <h2>Requirement(s)</h2>
+        <ul>
+            <li>A log source that includes DNS-related messages, either analyzed DNS traffic including DNS queries, and/or network traffic logs that include traffic associated with DNS servers.</li>
+            <li>Graylog Server with a valid security license, running Graylog version 5.2.0 or later</li>
+        </ul>
+        <h2>Graylog Server Requirement</h2>
+        <p>The Core DNS Processing Illuminate pack requires a Graylog Security license and Graylog 5.2.0 or later due to the integration with the Graylog Security Assets functionality and the entropy generation functionality.</p>
+        <h2>Background</h2>
+        <h3>DNS</h3>
+        <p>DNS, or the Domain Name System, is one of the important protocols in modern networks and is also an important data point for security monitoring and incident response.</p>
+        <h2>Features</h2>
+        <h3>Asset Integration</h3>
+        <p>This pack, when enabled, will work with the Asset Enrichment feature that is part of Graylog Security. It will allow users to identify approved DNS servers, allowing for identification of traffic to non-approved DNS servers.</p>
+        <h3>DNS Request Calculations</h3>
+        <p>This pack will enable the calculation of multiple data points related to DNS requests:</p>
+        <ul>
+            <li>DNS Query Request Length</li>
+            <li>DNS Query Response Length</li>
+            <li>DNS Query Entropy</li>
+        </ul>
+        <h4>DNS Query Request/Response Length</h4>
+        <p>This is a simple count of the number of characters in a DNS request or response.</p>
+        <p>This is valuable as it can be used, when measured in aggregate, to expose some attacks that use DNS for <a href="https://attack.mitre.org/techniques/T1048/">data exfiltration</a> and <a href="https://attack.mitre.org/techniques/T1071/004/">command & control</a>.</p>
+        <h5>DNS Query Length</h5>
+        <p>When the field <code class="linecode">query_request</code> exists this pack will generate the field <code class="linecode">query_request_length</code>.</p>
+        <h5>DNS Query Response Length</h5>
+        <p>When the field <code class="linecode">query_response</code> exists this pack will generate the field <code class="linecode">query_response_length</code>.</p>
+        <p>The query response length is an approximate measurement of the response length, DNS responses can often include multiple values with a separator character. This measurement will include those characters.</p>
+        <h4>DNS Query Request Entropy Calculations</h4>
+        <p>This pack wil calculate the entropy, using Shannon's entropy algorithm, for the value of the field <code class="linecode">query_response</code> when that field exists, and assign it to the field <code class="linecode">query_request_entropy</code>.</p>
+        <h3>DNS Processing Spotlight Content Pack</h3>
+        <p>The DNS Processing Spotlight content pack contains:</p>
+    </body>
+</html>
