@@ -3,7 +3,7 @@
 <p>Amazon Security Lake is a purpose-built data lake that centralizes security data from AWS environments, SaaS providers, on-premises, and cloud sources. It converts incoming security data logs to the Open Cybersecurity Schema Framework (OCSF) open standard.</p>
 <h2 id="supported-versions">Supported version(s)</h2>
 <p>Tested with AWS Security Lake in January 2024.
-Requires at least Graylog 5.2.</p>
+Requires at least Graylog 5.1.10 or 5.2.3.</p>
 <h2 id="stream-configuration">Stream Configuration</h2>
 <p>&quot;Illuminate:AWS Security Lake Messages&quot;</p>
 <p>If this stream name is already defined, then nothing will be changed. If this stream name does not exist, then it will be created.</p>
@@ -11,25 +11,15 @@ Requires at least Graylog 5.2.</p>
 <p>&quot;AWS Security Lake Logs&quot;</p>
 <p>If this index set is already defined, then nothing will be changed. If this index set does not exist, it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</p>
 <h2 id="supported-log-types">Supported Log Types</h2>
-<p>For Graylog 5.2:</p>
-<p>CloudTrail Lambda Data Events, API
-CloudTrail Management Events, API, Authentication, Account Change
-CloudTrail S3 Data Events, API
-Route53, DNS Activity
-Security Hub, Security Findings
-VPC FlowLogs, Network Activity</p>
-<p>With Graylog 6.0 the content pack may parse out and support other sources if the log structure uses the same fields.</p>
+The content pack parses out supported objects. If the data is provided in the below mentioned objects the pack will parse them out regardless of the source. Currently we support these objects:
+
+actor,anwers,api,attack,cloud,compliance,connection_info,cve,device,dns_answer,dns_query,email,endpoint,file,finding,http_request,http_response,identity,malware,metadata,process,resources,network_proxy,proxy,query,user,dst_endpoint,traffic,src_endpoint. 
+
+<p>Note: Fields with sub or subsubclasses are not fully supported with Graylogs search engine due to complex data types.</p>
 <h2 id="log-format-example">Log Format Example</h2>
 <h3 id="route53-logs">Route53 logs</h3>
 <p>{&quot;metadata&quot;:{&quot;product&quot;:{&quot;version&quot;:&quot;1.100000&quot;,&quot;name&quot;:&quot;Route 53&quot;,&quot;feature&quot;:{&quot;name&quot;:&quot;Resolver Query Logs&quot;},&quot;vendor_name&quot;:&quot;AWS&quot;},&quot;version&quot;:&quot;0.26.1&quot;},&quot;cloud&quot;:{&quot;account_uid&quot;:&quot;67654654&quot;,&quot;region&quot;:&quot;ap-northeast-1&quot;,&quot;provider&quot;:&quot;AWS&quot;},&quot;src_endpoint&quot;:{&quot;vpc_uid&quot;:&quot;vpc-02c62c77516baa087&quot;,&quot;ip&quot;:&quot;172.31.12.120&quot;,&quot;port&quot;:37554,&quot;instance_uid&quot;:&quot;i-018c0e79fa98b93f3&quot;},&quot;time&quot;:&quot;1676953179000&quot;,&quot;query&quot;:{&quot;hostname&quot;:&quot;motd.ubuntu.com.&quot;,&quot;type&quot;:&quot;A&quot;,&quot;class&quot;:&quot;IN&quot;},&quot;rcode&quot;:&quot;NOERROR&quot;,&quot;answers&quot;:[{&quot;type&quot;:&quot;A&quot;,&quot;rdata&quot;:&quot;34.243.160.129&quot;,&quot;class&quot;:&quot;IN&quot;},{&quot;type&quot;:&quot;A&quot;,&quot;rdata&quot;:&quot;54.217.10.153&quot;,&quot;class&quot;:&quot;IN&quot;},{&quot;type&quot;:&quot;A&quot;,&quot;rdata&quot;:&quot;34.254.182.186&quot;,&quot;class&quot;:&quot;IN&quot;},{&quot;type&quot;:&quot;A&quot;,&quot;rdata&quot;:&quot;54.171.230.55&quot;,&quot;class&quot;:&quot;IN&quot;},{&quot;type&quot;:&quot;A&quot;,&quot;rdata&quot;:&quot;54.247.62.1&quot;,&quot;class&quot;:&quot;IN&quot;}],&quot;connection_info&quot;:{&quot;protocol_name&quot;:&quot;UDP&quot;,&quot;direction&quot;:&quot;Lateral&quot;,&quot;direction_id&quot;:3},&quot;dst_endpoint&quot;:{&quot;instance_uid&quot;:&quot;None&quot;,&quot;interface_uid&quot;:&quot;None&quot;},&quot;severity_id&quot;:&quot;-1&quot;,&quot;severity&quot;:&quot;Other&quot;,&quot;class_name&quot;:&quot;DNS Activity&quot;,&quot;class_uid&quot;:&quot;4003&quot;,&quot;category_name&quot;:&quot;Network Activity&quot;,&quot;category_uid&quot;:&quot;4&quot;,&quot;rcode_id&quot;:&quot;0&quot;,&quot;activity_id&quot;:&quot;1&quot;,&quot;activity_name&quot;:&quot;Resolved&quot;,&quot;type_name&quot;:&quot;DNS Activity: Resolved&quot;,&quot;type_uid&quot;:&quot;400301&quot;,&quot;unmapped&quot;:&quot;None&quot;}</p>
-<h3 id="cloudtrail-logs">CloudTrail logs</h3>
-<p>Under metadata, the feature name can be Data or Management. Data is only API related, Management may include authentication and account change.</p>
-<p>Example for account change:
-<a href="https://github.com/ocsf/examples/blob/main/Identity%20%26%20Access%20Management/Account%20Change/AWS/CloudTrail/account_change.json">https://github.com/ocsf/examples/blob/main/Identity%20%26%20Access%20Management/Account%20Change/AWS/CloudTrail/account_change.json</a></p>
-<p>Example for authentication:
-<a href="https://github.com/ocsf/examples/blob/main/Identity%20%26%20Access%20Management/Authentication/AWS/CloudTrail/authentication.json">https://github.com/ocsf/examples/blob/main/Identity%20%26%20Access%20Management/Authentication/AWS/CloudTrail/authentication.json</a></p>
-<p>Example for generic API activity
-<a href="https://github.com/ocsf/examples/blob/main/Application%20Activity/API%20Activity/AWS/CloudTrail/generic_api_activity.json">https://github.com/ocsf/examples/blob/main/Application%20Activity/API%20Activity/AWS/CloudTrail/generic_api_activity.json</a></p>
+
 <h2 id="requirements">Requirements</h2>
 <p>This content pack work together with a configurated AWS Security Lake input.
 Graylog 5.2</p>
@@ -45,26 +35,24 @@ Dashboards for: Overview, Network, Alerts, Authentication, IAM and DNS Activitie
 <ul>
 <li>Security Lake Overview tab: Overview</li>
 </ul>
-<p><img src="SecurityLakeOverview.png" alt="image.png"></p>
+<p><img src="../Resources/Images/AWS Security Lake/SecurityLakeOverview.png" alt="image.png"></p>
 <ul>
 <li>Security Lake Overview tab: Network</li>
 </ul>
-<p><img src="SecurityLakeNetwork.png" alt="image.png"></p>
+<p><img src="../Resources/Images/AWS Security Lake/SecurityLakeNetwork.png" alt="image.png"></p>
 <ul>
 <li>Security Lake Overview tab: Alerts</li>
 </ul>
-<p><img src="SecurityLakeAlert.png" alt="image.png"></p>
+<p><img src="../Resources/Images/AWS Security Lake/SecurityLakeAlert.png" alt="image.png"></p>
 <ul>
 <li>Security Lake Overview tab: Authentication Overview</li>
 </ul>
-<p><img src="SecurityLakeAuthentication.png" alt="image.png"></p>
+<p><img src="../Resources/Images/AWS Security Lake/SecurityLakeAuthentication.png" alt="image.png"></p>
 <ul>
 <li>Security Lake Overview tab: IAM Overview</li>
 </ul>
-<p><img src="SecurityLakeIAM.png" alt="image.png"></p>
+<p><img src="../Resources/Images/AWS Security Lake/SecurityLakeIAM.png" alt="image.png"></p>
 <ul>
 <li>Security Lake Overview tab: DNS Overview</li>
 </ul>
-<p><img src="SecurityLakeDNS.png" alt="image.png"></p>
-<h2 id="limitations">Limitations</h2>
-<p>The content pack is designed for CloudTrail, Route53, Security Hub, and VPC FlowLogs. It may support similar sources, but it is not tested against other sources/products.</p>
+<p><img src="../Resources/Images/AWS Security Lake/SecurityLakeDNS.png" alt="image.png"></p>
