@@ -3,7 +3,176 @@
     <head>
     </head>
     <body>
-        <h2>Illuminate 4.0.x</h2>
+        <h2>Illuminate 4.1.0</h2>
+        <h4>Known Issues</h4>
+        <ul>
+            <li>
+                <p><b>The minimum version required for this version of Illuminate is Graylog 5.1.10 or 5.2.3</b>. (1808)</p>
+                <ul>
+                    <li>
+                        <p>If you are running a Graylog 5.1.x version prior to 5.1.10, or a Graylog 5.2.x version prior to 5.2.3, <b>DO NOT ENABLE THIS BUNDLE</b> until your Graylog systems are upgraded to one of the supported versions.</p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h4>Added</h4>
+        <ul>
+            <li>
+                <p>Okta:Switch from using the field <code class="linecode">vendor_event_action</code> to using the field <code class="linecode">vendor_event_type</code>. (1789)</p>
+            </li>
+            <li>
+                <p>Okta:Extract <code class="linecode">user_domain</code> from <code class="linecode">user_name</code>. (1751)</p>
+            </li>
+            <li>
+                <p>Powershell: If the registry gets changed via a reg command, the fields <code class="linecode">registry_type</code> and <code class="linecode">registry_path</code> are parsed out and get categorized. (633)</p>
+                <ul>
+                    <li>
+                        <p>Logging for <code class="linecode">event_id 4104</code> must be enabled (script block logging).</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Added parsing for Meraki MR logs. (788)(1687)</p>
+                <ul>
+                    <li>
+                        <p>Added support for Meraki association, disassociation, <code class="linecode">wpa_auth</code>, <code class="linecode">wpa_deauth</code>, <code class="linecode">8021x_eap_failure</code>, <code class="linecode">8021x_deauth</code>, <code class="linecode">8021x_auth</code>, <code class="linecode">8021x_eap_success</code>, <code class="linecode">splash_auth</code>, <code class="linecode">mac_spoofing</code>, <code class="linecode">multiple_servers</code>, and <code class="linecode">device_packet_flood</code> MR events. All ports are now numeric values.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>O365:Add record type enrichment. (1806)</p>
+                <ul>
+                    <li>
+                        <p>Added an enrichment which provides a description of the Office 365 record type. This enrichment is only available on the updated Office 365 inputs, available in Graylog after X.X.X, or for prior versions of the Office 365 inputs with the <code class="linecode">full_message</code> option enabled.</p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h4>Fixed</h4>
+        <ul>
+            <li>
+                <p>BIND:Add support for <code class="linecode">severity_level</code> mapping and support new log types. (1669)(1725)</p>
+                <ul>
+                    <li>
+                        <p>Mapped all severity levels to our schema and added support for BIND security log type.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>O365:User email field contains the user ID value. (1749)</p>
+                <ul>
+                    <li>
+                        <p>This has been addressed in the updated Illuminate Office 365 processing but still exists with the Office 365 integration prior to 5.1.10 without the <code class="linecode">full_message</code> capability enabled.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>O365:Update Illuminate Pack Titles (1704)</p>
+            </li>
+            <li>
+                <p>SEPM: Fix a client traffic log issue where having a null Remote Host Name broke parsing. (1784)</p>
+            </li>
+            <li>
+                <p>Okta: Problems with <code class="linecode">policy.evaluate_sign_on</code> processing. (1794)</p>
+                <ul>
+                    <li>
+                        <p>Change categorization of the policy evaluation rule <code class="linecode">policy.evaluate_sign_on</code> to <code class="linecode">authentication.default</code>.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>O365:Alerts generating GIM errors (1425)</p>
+            </li>
+            <li>
+                <p>O365:Exchange ModifyFolderPermissions incorrectly categorized as <code class="linecode">iam.object modify</code>. (1803)</p>
+            </li>
+            <li>
+                <p>Okta:Categorize user.authentication.sso as credential validation event. (1752)</p>
+            </li>
+            <li>
+                <p>Ubiquiti Unifi:Dnsmasq events using legacy GIM type multi-code assignment. (1746)</p>
+            </li>
+        </ul>
+        <h4>Changed</h4>
+        <ul>
+            <li>
+                <p>Removed <code class="linecode">alert_severity_level</code> mapping functions/lookups. (1718)</p>
+                <ul>
+                    <li>
+                        <p>Removed <code class="linecode">alert_severity_level</code> mapping functions/lookups. Snort3 pack now relies on core to map <code class="linecode">alert_severity_level</code> from <code class="linecode">alert_severity</code>. <code class="linecode">alert_severity_level</code> should no longer be a string as well.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Removed rules that processed logs and fields tied to the initial Snort3 filebeat configuration. (1715)</p>
+                <ul>
+                    <li>
+                        <p>The initial release of the Snort3 pack did not set the target field in the Filebeat configuration.  Current documentation notes adding 'target: "snort3"' which is required for proper log processing.  This release now fully requires that field to be set.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Meraki:Renamed WiFi fields to match the schema. (1719)</p>
+            </li>
+            <li>
+                <p>Okta:Update Illuminate processing to support updates to the Okta input. (1789)</p>
+                <ul>
+                    <li>
+                        <p>Parsing of Okta messages will be moved from the Graylog Okta input to Illuminate. This will allow for more rapid response to Okta message processing requests as they can now be provided by Illuminate updates, which can be released more frequently, instead of relying on Graylog Enterprise updates. This pack will maintain support for the legacy Okta inputs until Illuminate 6.0 is released. At that time, the support for the legacy Okta input message format will be removed. Support for the enhanced processing can be enabled on the Okta legacy input by enabling the <code class="linecode">full_message</code> feature in the Okta input configuration.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>O365:Add logic to support parsing full message. (1769)</p>
+                <ul>
+                    <li>
+                        <p>Parsing of Office 365 messages will be moved from the Graylog Office 365 integration input to Illuminate. Migrating the parsing out of the integration input improves the ability to update the parsing rules on a more frequent basis. Support for the updated Office 365 message processing can be enabled on the Office 365 legacy input by enabling the <code class="linecode">full_message</code> feature in the Office 365 input configuration.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Sophos:Renamed WiFi fields to match the schema. (1721)</p>
+            </li>
+            <li>
+                <p>Modified the Zeek message field construction to only use the even description field which is derived from a lookup. (1329)</p>
+                <ul>
+                    <li>
+                        <p>The message field is now only composed of the event description (derived from lookup).  The prefix 'Zeek - ' will no longer be appended and <code class="linecode">vendor_event_log_description</code> is removed. (now message).</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Defender EP:Added logic to dedup the <code class="linecode">user_name</code> field. (1693)</p>
+                <ul>
+                    <li>
+                        <p>Previously, the <code class="linecode">user_name</code> field array could contain the same <code class="linecode">user_name</code> multiple times.  Added logic to dedup similar names.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Okta:Improve handling of vendor client geo information. (1795)</p>
+                <ul>
+                    <li>
+                        <p>Normalize Okta-provided geolocation enrichment data to fields with the prefix <code class="linecode">vendor_client_geo</code>. This will prevent the Okta-provided geolocation enrichments from colliding with the Graylog-provided Geolocation enrichments.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Fortigate:Renamed WiFi fields to match the schema. (1717)</p>
+            </li>
+        </ul>
+        <h4>Removed</h4>
+        <ul>
+            <li>
+                <p>O365:Remove Skype Office 365 tab (1806)</p>
+                <ul>
+                    <li>
+                        <p>Skype For Business was retired in July of 2021.</p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h2>Illuminate 4.0.0</h2>
         <p>Released:&#160;2023-11-01</p>
         <h4>Known Issues</h4>
         <ul>
