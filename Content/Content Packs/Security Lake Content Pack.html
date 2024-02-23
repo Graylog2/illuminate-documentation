@@ -1,58 +1,61 @@
-<h1 id="aws-security-lake-notes">AWS Security Lake Notes</h1>
-<h2 id="about-aws-security-lake-log-collection">About AWS Security Lake Log Collection</h2>
-<p>Amazon Security Lake is a purpose-built data lake that centralizes security data from AWS environments, SaaS providers, on-premises, and cloud sources. It converts incoming security data logs to the Open Cybersecurity Schema Framework (OCSF) open standard.</p>
-<h2 id="supported-versions">Supported version(s)</h2>
-<p>Tested with AWS Security Lake in January 2024.
-Requires at least Graylog 5.1.10 or 5.2.3.</p>
-<h2 id="stream-configuration">Stream Configuration</h2>
-<p>&quot;Illuminate:AWS Security Lake Messages&quot;</p>
-<p>If this stream name is already defined, then nothing will be changed. If this stream name does not exist, then it will be created.</p>
-<h2 id="index-set-configuration">Index Set Configuration</h2>
-<p>&quot;AWS Security Lake Logs&quot;</p>
-<p>If this index set is already defined, then nothing will be changed. If this index set does not exist, it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</p>
-<h2 id="supported-log-types">Supported Log Types</h2>
-The content pack parses out supported objects. If the data is provided in the below mentioned objects the pack will parse them out regardless of the source. Currently we support these objects:
-
-actor,anwers,api,attack,cloud,compliance,connection_info,cve,device,dns_answer,dns_query,email,endpoint,file,finding,http_request,http_response,identity,malware,metadata,process,resources,network_proxy,proxy,query,user,dst_endpoint,traffic,src_endpoint. 
-
-<p>Note: Fields with sub or subsubclasses are not fully supported with Graylogs search engine due to complex data types.</p>
-<h2 id="log-format-example">Log Format Example</h2>
-<h3 id="route53-logs">Route53 logs</h3>
-<p>{&quot;metadata&quot;:{&quot;product&quot;:{&quot;version&quot;:&quot;1.100000&quot;,&quot;name&quot;:&quot;Route 53&quot;,&quot;feature&quot;:{&quot;name&quot;:&quot;Resolver Query Logs&quot;},&quot;vendor_name&quot;:&quot;AWS&quot;},&quot;version&quot;:&quot;0.26.1&quot;},&quot;cloud&quot;:{&quot;account_uid&quot;:&quot;67654654&quot;,&quot;region&quot;:&quot;ap-northeast-1&quot;,&quot;provider&quot;:&quot;AWS&quot;},&quot;src_endpoint&quot;:{&quot;vpc_uid&quot;:&quot;vpc-02c62c77516baa087&quot;,&quot;ip&quot;:&quot;172.31.12.120&quot;,&quot;port&quot;:37554,&quot;instance_uid&quot;:&quot;i-018c0e79fa98b93f3&quot;},&quot;time&quot;:&quot;1676953179000&quot;,&quot;query&quot;:{&quot;hostname&quot;:&quot;motd.ubuntu.com.&quot;,&quot;type&quot;:&quot;A&quot;,&quot;class&quot;:&quot;IN&quot;},&quot;rcode&quot;:&quot;NOERROR&quot;,&quot;answers&quot;:[{&quot;type&quot;:&quot;A&quot;,&quot;rdata&quot;:&quot;34.243.160.129&quot;,&quot;class&quot;:&quot;IN&quot;},{&quot;type&quot;:&quot;A&quot;,&quot;rdata&quot;:&quot;54.217.10.153&quot;,&quot;class&quot;:&quot;IN&quot;},{&quot;type&quot;:&quot;A&quot;,&quot;rdata&quot;:&quot;34.254.182.186&quot;,&quot;class&quot;:&quot;IN&quot;},{&quot;type&quot;:&quot;A&quot;,&quot;rdata&quot;:&quot;54.171.230.55&quot;,&quot;class&quot;:&quot;IN&quot;},{&quot;type&quot;:&quot;A&quot;,&quot;rdata&quot;:&quot;54.247.62.1&quot;,&quot;class&quot;:&quot;IN&quot;}],&quot;connection_info&quot;:{&quot;protocol_name&quot;:&quot;UDP&quot;,&quot;direction&quot;:&quot;Lateral&quot;,&quot;direction_id&quot;:3},&quot;dst_endpoint&quot;:{&quot;instance_uid&quot;:&quot;None&quot;,&quot;interface_uid&quot;:&quot;None&quot;},&quot;severity_id&quot;:&quot;-1&quot;,&quot;severity&quot;:&quot;Other&quot;,&quot;class_name&quot;:&quot;DNS Activity&quot;,&quot;class_uid&quot;:&quot;4003&quot;,&quot;category_name&quot;:&quot;Network Activity&quot;,&quot;category_uid&quot;:&quot;4&quot;,&quot;rcode_id&quot;:&quot;0&quot;,&quot;activity_id&quot;:&quot;1&quot;,&quot;activity_name&quot;:&quot;Resolved&quot;,&quot;type_name&quot;:&quot;DNS Activity: Resolved&quot;,&quot;type_uid&quot;:&quot;400301&quot;,&quot;unmapped&quot;:&quot;None&quot;}</p>
-
-<h2 id="requirements">Requirements</h2>
-<p>This content pack work together with a configurated AWS Security Lake input.
-Graylog 5.2</p>
-<h3 id="configuration-aws-security-lake-input">Configuration AWS Security Lake input</h3>
-<p>To set up the input, please use the input documentation.
-<a href="https://go2docs.graylog.org/5-2/getting_in_log_data/aws_security_lake_input.htm">https://go2docs.graylog.org/5-2/getting_in_log_data/aws_security_lake_input.htm</a></p>
-<h2 id="what-is-provided">What is Provided</h2>
-<p>Parsing rules to extract AWS Security Lake logs into Graylog schema-compatible fields.
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head><title></title>
+    </head>
+    <p>
+        <img src="../Resources/Images/AWS Security Lake/SecurityLakeDNS.png" alt="image.png" />
+    </p>
+    <ul>
+        <li>Security Lake Overview tab: DNS Overview</li>
+    </ul>
+    <p>
+        <img src="../Resources/Images/AWS Security Lake/SecurityLakeIAM.png" alt="image.png" />
+    </p>
+    <ul>
+        <li>Security Lake Overview tab: IAM Overview</li>
+    </ul>
+    <p>
+        <img src="../Resources/Images/AWS Security Lake/SecurityLakeAuthentication.png" alt="image.png" />
+    </p>
+    <ul>
+        <li>Security Lake Overview tab: Authentication Overview</li>
+    </ul>
+    <p>
+        <img src="../Resources/Images/AWS Security Lake/SecurityLakeAlert.png" alt="image.png" />
+    </p>
+    <ul>
+        <li>Security Lake Overview tab: Alerts</li>
+    </ul>
+    <p>
+        <img src="../Resources/Images/AWS Security Lake/SecurityLakeNetwork.png" alt="image.png" />
+    </p>
+    <ul>
+        <li>Security Lake Overview tab: Network</li>
+    </ul>
+    <p>
+        <img src="../Resources/Images/AWS Security Lake/SecurityLakeOverview.png" alt="image.png" />
+    </p>
+    <ul>
+        <li>Security Lake Overview tab: Overview</li>
+    </ul>
+    <p>The Security Lake Spotlight content pack contains:</p>
+    <h3 id="security-lake-spotlight-content-pack">Security Lake Spotlight Content Pack</h3>
+    <p>Parsing rules to extract AWS Security Lake logs into Graylog schema-compatible fields.
 Categorization of the Security Findings, Account Change, Authentication, Network Activity and DNS Activity.
 Dashboards for: Overview, Network, Alerts, Authentication, IAM and DNS Activities.</p>
-<h3 id="security-lake-spotlight-content-pack">Security Lake Spotlight Content Pack</h3>
-<p>The Security Lake Spotlight content pack contains:</p>
-<ul>
-<li>Security Lake Overview tab: Overview</li>
-</ul>
-<p><img src="../Resources/Images/AWS Security Lake/SecurityLakeOverview.png" alt="image.png"></p>
-<ul>
-<li>Security Lake Overview tab: Network</li>
-</ul>
-<p><img src="../Resources/Images/AWS Security Lake/SecurityLakeNetwork.png" alt="image.png"></p>
-<ul>
-<li>Security Lake Overview tab: Alerts</li>
-</ul>
-<p><img src="../Resources/Images/AWS Security Lake/SecurityLakeAlert.png" alt="image.png"></p>
-<ul>
-<li>Security Lake Overview tab: Authentication Overview</li>
-</ul>
-<p><img src="../Resources/Images/AWS Security Lake/SecurityLakeAuthentication.png" alt="image.png"></p>
-<ul>
-<li>Security Lake Overview tab: IAM Overview</li>
-</ul>
-<p><img src="../Resources/Images/AWS Security Lake/SecurityLakeIAM.png" alt="image.png"></p>
-<ul>
-<li>Security Lake Overview tab: DNS Overview</li>
-</ul>
-<p><img src="../Resources/Images/AWS Security Lake/SecurityLakeDNS.png" alt="image.png"></p>
+    <h2 id="what-is-provided">What is Provided</h2>
+    <p>To set up the input, please use the input documentation.
+<a href="https://go2docs.graylog.org/5-2/getting_in_log_data/aws_security_lake_input.htm">https://go2docs.graylog.org/5-2/getting_in_log_data/aws_security_lake_input.htm</a></p>
+    <h3 id="configuration-aws-security-lake-input">Configuration AWS Security Lake input</h3>
+    <p>This content pack work together with a configurated AWS Security Lake input.
+Graylog 5.2</p>
+    <h2 id="requirements">Requirements</h2>
+    <p>{"metadata":{"product":{"version":"1.100000","name":"Route 53","feature":{"name":"Resolver Query Logs"},"vendor_name":"AWS"},"version":"0.26.1"},"cloud":{"account_uid":"67654654","region":"ap-northeast-1","provider":"AWS"},"src_endpoint":{"vpc_uid":"vpc-02c62c77516baa087","ip":"172.31.12.120","port":37554,"instance_uid":"i-018c0e79fa98b93f3"},"time":"1676953179000","query":{"hostname":"motd.ubuntu.com.","type":"A","class":"IN"},"rcode":"NOERROR","answers":[{"type":"A","rdata":"34.243.160.129","class":"IN"},{"type":"A","rdata":"54.217.10.153","class":"IN"},{"type":"A","rdata":"34.254.182.186","class":"IN"},{"type":"A","rdata":"54.171.230.55","class":"IN"},{"type":"A","rdata":"54.247.62.1","class":"IN"}],"connection_info":{"protocol_name":"UDP","direction":"Lateral","direction_id":3},"dst_endpoint":{"instance_uid":"None","interface_uid":"None"},"severity_id":"-1","severity":"Other","class_name":"DNS Activity","class_uid":"4003","category_name":"Network Activity","category_uid":"4","rcode_id":"0","activity_id":"1","activity_name":"Resolved","type_name":"DNS Activity: Resolved","type_uid":"400301","unmapped":"None"}</p>
+    <h3 id="route53-logs">Route53 logs</h3>
+    <h2 id="log-format-example">Log Format Example</h2>
+    <p>Note: Fields with sub or subsubclasses are not fully supported with Graylogs search engine due to complex data types.</p> 
+
+The content pack parses out supported objects. If the data is provided in the below mentioned objects the pack will parse them out regardless of the source. Currently we support these objects:
+actor,anwers,api,attack,cloud,compliance,connection_info,cve,device,dns_answer,dns_query,email,endpoint,file,finding,http_request,http_response,identity,malware,metadata,process,resources,network_proxy,proxy,query,user,dst_endpoint,traffic,src_endpoint.
+<h2 id="supported-log-types">Supported Log Types</h2><p>If this index set is already defined, then nothing will be changed. If this index set does not exist, it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</p><p>"AWS Security Lake Logs"</p><h2 id="index-set-configuration">Index Set Configuration</h2><p>If this stream name is already defined, then nothing will be changed. If this stream name does not exist, then it will be created.</p><p>"Illuminate:AWS Security Lake Messages"</p><h2 id="stream-configuration">Stream Configuration</h2><p>Tested with AWS Security Lake in January 2024.
+Requires at least Graylog 5.1.10 or 5.2.3.</p><h2 id="supported-versions">Supported version(s)</h2><p>Amazon Security Lake is a purpose-built data lake that centralizes security data from AWS environments, SaaS providers, on-premises, and cloud sources. It converts incoming security data logs to the Open Cybersecurity Schema Framework (OCSF) open standard.</p><h2 id="about-aws-security-lake-log-collection">About AWS Security Lake Log Collection</h2><h1 id="aws-security-lake-notes">&#160;</h1><body>&#160;</body></html>
