@@ -1,0 +1,198 @@
+# HAProxy Notes
+
+HAProxy, is an open-source software solution that provides a high-performance and highly available TCP and HTTP load balancer and proxy server.
+
+## About HAProxy Log Collection
+
+HAProxy HTTP Server on a Linux system. This pack will parse out and configure HAProxy2 TCP, HTTP, HTTPS and TCP logs.
+
+## Supported version(s)
+
+Tested with Version 2.9.
+
+## Stream Configuration
+
+"Illuminate:HAProxy LoadBalancer Messages"
+
+If this stream name is already defined, then nothing will be changed. If this stream name does not exist, then it will be created.
+
+## Index Set Configuration
+
+"HAProxy LoadBalancer Messages"
+
+If this index set is already defined, then nothing will be changed. If this index set does not exist, it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.
+
+## Supported Log Formats
+
+Default/Connection Logs
+Error Logs
+TCP Logs (option tcplog)
+Http Logs (option httplog)
+HTTPS Logs (option httpslog)
+
+## Log Format Examples
+
+```text
+Connection logs:
+haproxy[1234]: Connect from 10.0.1.2:33312 to 10.0.3.31:8012 (www/HTTP)
+
+Error Log:
+haproxy[6103]: 127.0.0.1:56059 [03/Dec/2023:17:35:10.380] frt/f1: Connection error during SSL handshake
+
+TCP log:
+haproxy[14387]: 10.0.1.2:33313 [06/Feb/2023:12:12:51.443] http-in static/srv1 8/9/5007 212 PH -1/2/3/4/5 6/7
+
+HTTP/HTTPS log:
+haproxy[1234]: 10.0.1.2:33317 [06/Feb/2023:12:14:14.655] https-in static/srv1 11/0/31/68/108 200 2353 - - ---- 1/2/3/4/5 6/7 {graylog.de} {} "GET /index.html HTTP/1.1" 0/0/0/0/0 graylog.de/TLSv1.3/TLS_AES_256_GCM_SHA384
+
+Custom log formats are not supported.
+```
+
+## Requirements
+
+The content pack supports logging via syslog.
+
+The official setup guide for HAProxy and syslog is here:
+<https://www.haproxy.com/blog/introduction-to-haproxy-logging>
+
+Note:
+Graylog needs a syslog input with the matching IP, port and protocol to receive the logs.
+
+## What is Provided
+
+Parsing rules to extract HAProxy logs into Graylog schema-compatible fields.
+HAProxy default logs get the GIM code "129999" (network.default)
+Logs with the http_request get the GIM code "180000" (http.message)
+
+## Mappings
+
+### Default log structure
+
+This format is deprecated, but the content pack will support it.
+
+Feb  16 12:12:29 localhost haproxy[14115]: Connect from 10.0.12.20:59312 to 10.0.23.131:2022 (www/HTTP)
+
+"field_name","example value","description"
+  "process_name","haproxy"
+  "process_id","14115"
+  "source_ip","10.0.12.20"
+  "source_port","59312"
+  "destination_ip","10.0.23.131"
+  "destination_port","2022"
+  "vendor_frontend_name","www"
+  "vendor_frontend_mode","HTTP"
+
+#### Field description
+
+"process_name" is a static field and HAPproxy's process name.
+"process_id" is HAProxy's process id
+"source_ip" is the IP address of the client which initiated the connection.
+"source_port" is the TCP port of the client which initiated the connection.
+"destination_ip" is the IP address the client connected to.
+"destination_port" is the TCP port the client connected to.
+"frontend_name" is the name of the frontend (or listener) which received and processed the connection.
+"mode is the mode the frontend is operating (TCP or HTTP).
+
+### Default fields for TCP/HTTP and HTTPs logs
+
+haproxy[14387]: 10.0.1.22:33213 [02/Feb/2023:12:12:51.222] graylog backend1/srv1 1/2/5007 212 -- 3/4/5/6/+7 8/9
+
+"field_name","example value","description"
+  "process_name","haproxy"
+  "process_id","14115"
+  "source_ip","10.0.1.22"
+  "source_port","33213"
+  "event_received_time","02/Feb/2023:12:12:51.222"
+  "vendor_frontend_name","graylog"
+  "vendor_backend_name","backend1"
+  "vendor_server_name","srv1"
+  "vendor_tw,vendor_tc, vendor_tt","1,2,5007"
+  "destination_bytes_sent","212"
+  "captured_request_cookie" is an optional "name=value" entry indicating that
+    the client had this cookie in the request.
+  "captured_response_cookie" is an optional "name=value" entry indicating
+    that the server has returned a cookie with its response.
+  "vendor_termination_state","--" or "----"
+  "vendor_actconn,vendor_feconn,vendor_beconn,vendor_srv_conn,vendor_retries","3,4,5,6,7"
+  "vendor_srv_queue,vendor_backend_queue","8/9"
+
+#### Field description default fields
+
+  "source_ip" is the IP address of the client which initiated the connection.
+  "source_port" is the TCP port of the client which initiated the connection.
+  "event_received_time" is the exact date when the connection was received by HAProxy
+  "vendor_frontend_name","frontend_name" is the name of the frontend (or listener) which received and processed the connection.
+"captured_request_cookie" is an optional "name=value" entry indicating that the client had this cookie in the request.
+"captured_response_cookie" is an optional "name=value" entry indicating that the server has returned a cookie with its response.
+  "vendor_backend_name" is the name of the backend (or listener) which was selected to manage the connection to the server.
+  "vendor_server_name" is the name of the last server to which the connection was sent
+  "vendor_tw" is the total time in milliseconds spent waiting in the various queues.
+  "vendor_tc"is the total time in milliseconds spent waiting for the connection to establish to the final server, including retries.
+  "vendor_tt" is the total time in milliseconds elapsed between the accept and the last close.
+  "destination_bytes_sent" is the total number of bytes transmitted from the server to the client when the log is emitted.
+  "vendor_termination_state" is the condition the session was in when the session ended
+  "vendor_actconn" is the total number of concurrent connections on the process when the session was logged.
+  "vendor_feconn" is the total number of concurrent connections on the frontend when the session was logged.
+  "vendor_beconn" is the total number of concurrent connections handled by the backend when the session was logged.
+  "vendor_srv_conn" is the total number of concurrent connections still active on the server when the session was logged.
+  "vendor_retries" is the number of connection retries experienced by this session when trying to connect to the server.
+  "vendor_srv_queue" is the total number of requests which were processed before this one in the server queue.
+  "vendor_backend_queue" is the total number of requests which were processed before this one in the backend's global queue.
+
+### TCP log format
+
+Feb  6 12:12:56 localhost haproxy[14387]: 10.0.1.22:33213 [02/Feb/2023:12:12:51.222] graylog backend1/srv1 1/2/5007 212 -- 3/4/5/6/+7 8/9
+
+### HTTP/HTTPS format
+
+Additional fields for HTTP/HTTPS logs
+
+ haproxy[14389]: 10.0.1.2:33317 [06/Feb/2023:12:14:14.655] https-in graylog/srv1 10/0/30/69/109 200 27250 cookie - C--- 10/1/1/1/0 20/20 {1wt.de} {fun.de} "GET /index.html HTTP/1.1" 20/21/22/23/24 grt.de/TLSv1.3/TLS_AES_256_GCM_SHA384
+
+"field_name","example value","description"
+  vendor_trr,vendor_ta","69,109"
+  "http_response_code","200"
+  "http_request_cookie","cookie"
+  "http_response_cookie","-"
+  "vendor_captured_request_headers","1wt.de"
+  "vendor_captured_response_headers","fun.de"
+  "http_request_method","GET"
+  "http_request_path","/index.html"
+  "http_version","1.1"
+  "vendor_fc_err,vendor_ssl_fc_err,vendor_ssl_c_err,vendor_ssl_c_ca_err,vendor_ssl_fc_is_resumed","20,21,22,23,24"
+  "vendor_ssl_fc_sni","grt.de"
+  "vendor_ssl-version","TLSv1.3"
+  "vendor_ssl_ciphers","TLS_AES_256_GCM_SHA38"
+
+#### Field description additional HTTP/HTTPS fields
+
+  "vendor_trr" is the total time in milliseconds spent waiting for the server to send a full HTTP response, not counting data.
+  "vendor_ta" is the time the request remained active in HAProxy, which is the total time in milliseconds.
+  "http_response_code" is the HTTP status code returned to the client.
+  "vendor_captured_request_headers" is a list of headers captured in the request due to the presence of the "capture request header" statement in the frontend.
+  "vendor_captured_response_headers" is a list of headers captured in the response due to the presence of the "capture response header" statement in the frontend.
+  "http_request_method" is the HTTP request method.
+  "http_request_path" is the HTTP request path.
+  "http_version" is the http version
+  "vendor_fc_err" is the status of the connection on the frontend's side.
+  "vendor_ssl_fc_err" is the last error of the first SSL error stack that was raised on the connection from the frontend's perspective.
+  "vendor_ssl_c_err" is the status of the client's certificate verification process.
+  "vendor_ssl_c_ca_err" is the status of the client's certificate chain verification process.
+  "vendor_ssl_fc_is_resumed" is true if the incoming TLS session was resumed with the stateful cache or a stateless ticket.
+  "vendor_ssl_fc_sni" is the SNI (Server Name Indication) presented by the client to select the certificate to be used.
+  "vendor_ssl-version" is the SSL version of the frontend.
+  "vendor_ssl_ciphers" is the SSL cipher used for the connection.
+
+### HAProxy Spotlight Content Pack
+
+HAProxy offers fifv dashboards. A dashboard with overviews and a dashboard with filterlogs and alerts.
+
+![image.png](HAProxyOverview.png)
+
+![image.png](HAProxyDefault.png)
+
+![image.png](HAProxyTCP.png)
+
+![image.png](HAProxyHTTP.png)
+
+![image.png](HAProxyError.png)
