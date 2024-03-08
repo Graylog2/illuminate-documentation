@@ -72,7 +72,9 @@ Parsing rules to extract HAProxy logs into Graylog schema-compatible fields.
 
 The default format is deprecated, but the content pack will support it.
 
+```text
 Feb  16 12:12:29 localhost haproxy[14115]: Connect from 10.0.12.20:59312 to 10.0.23.131:2022 (www/HTTP)
+```
 
 | Field Name            | Example Value | Description                                                     |
 |-----------------------|---------------|-----------------------------------------------------------------|
@@ -86,8 +88,6 @@ Feb  16 12:12:29 localhost haproxy[14115]: Connect from 10.0.12.20:59312 to 10.0
 | vendor_frontend_mode  | HTTP          | mode the frontend is operating (TCP or HTTP)                    |
 
 ### Default fields for TCP/HTTP and HTTPs logs
-
-haproxy[14387]: 10.0.1.22:33213 [02/Feb/2023:12:12:51.222] graylog backend1/srv1 1/2/5007 212 -- 3/4/5/6/+7 8/9
 
 | field_name             | example value     | description                                                                                              |
 |------------------------|-------------------|----------------------------------------------------------------------------------------------------------|
@@ -114,17 +114,20 @@ haproxy[14387]: 10.0.1.22:33213 [02/Feb/2023:12:12:51.222] graylog backend1/srv1
 | vendor_srv_queue       | 8                 | total number of requests which were processed before this one in the server queue                        |
 | vendor_backend_queue   | 9                 | total number of requests which were processed before this one in the backend's global queue              |
 
-
 ### TCP log format
 
-Feb  6 12:12:56 localhost haproxy[14387]: 10.0.1.22:33213 [02/Feb/2023:12:12:51.222] graylog backend1/srv1 1/2/5007 212 -- 3/4/5/6/+7 8/9
+```text
+haproxy[14387]: 10.0.1.22:33213 [02/Feb/2023:12:12:51.222] graylog backend1/srv1 1/2/5007 212 -- 3/4/5/6/+7 8/9
+```
 
 ### HTTP/HTTPS format
 
+```text
+haproxy[14389]: 10.0.1.2:33317 [06/Feb/2023:12:14:14.655] https-in graylog/srv1 10/0/30/69/109 200 27250 cookie - C--- 10/1/1/1/0 20/20 {1graylog.de} {fun.de} "GET /index.html HTTP/1.1" 20/21/22/23/24 grt.de/TLSv1.3/TLS_AES_256_GCM_SHA384
+```
+ 
 Additional fields for HTTP/HTTPS logs
-
- haproxy[14389]: 10.0.1.2:33317 [06/Feb/2023:12:14:14.655] https-in graylog/srv1 10/0/30/69/109 200 27250 cookie - C--- 10/1/1/1/0 20/20 {1graylog.de} {fun.de} "GET /index.html HTTP/1.1" 20/21/22/23/24 grt.de/TLSv1.3/TLS_AES_256_GCM_SHA384
-
+ 
 | field_name                           | example value         | Description                                                                                                   |
 |--------------------------------------|-----------------------|---------------------------------------------------------------------------------------------------------------|
 | vendor_trr                           | 69                    | total time in milliseconds spent waiting for the server to send a full HTTP response                          |
