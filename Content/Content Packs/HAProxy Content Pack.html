@@ -1,0 +1,643 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>HAProxy Content Pack</title>
+    </head>
+    <body>
+        <p>HAProxy is an open-source software solution that provides a high-performance and highly available TCP and HTTP load balancer and proxy server.</p>
+        <h2>About HAProxy Log Collection</h2>
+        <ul>
+            <li>
+                <p>HAProxy HTTP server on a Linux system</p>
+            </li>
+            <li>
+                <p>This pack will parse out and configure HAProxy TCP, HTTP, HTTPS, and TCP logs</p>
+            </li>
+        </ul>
+        <h2>Requirements</h2>
+        <ul>
+            <li>
+                <p>The content pack supports logging via syslog.</p>
+            </li>
+            <li>
+                <p>The official setup guide for HAProxy and syslog can be found <a href="https://www.haproxy.com/blog/introduction-to-haproxy-logging">here</a>.</p>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content">
+                    <p><b>Hint:</b>&#160;Graylog needs a syslog input with the matching IP, port, and protocol to receive the logs.</p>
+                </div>
+            </section>
+        </p>
+        <h2>Supported Version(s)</h2>
+        <ul>
+            <li>
+                <p>Tested with HAProxy version 2.9</p>
+            </li>
+        </ul>
+        <h2>Stream Configuration</h2>
+        <p>This technology pack includes one stream:</p>
+        <ul>
+            <li>
+                <p>"Illuminate:HAProxy LoadBalancer Messages"</p>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content">
+                    <p><b>Hint:</b>&#160;If this stream name is already defined, then nothing will be changed. If this stream name does not exist, then it will be created.</p>
+                </div>
+            </section>
+        </p>
+        <h2>Index Set Configuration</h2>
+        <p>This technology pack includes one index set definition:</p>
+        <ul>
+            <li>
+                <p>"HAProxy LoadBalancer Messages"</p>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content">
+                    <p><b>Hint:</b> If this index set is already defined, then nothing will be changed. If this index set does not exist, it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</p>
+                </div>
+            </section>
+        </p>
+        <h2>Supported Log Formats</h2>
+        <ul>
+            <li>
+                <p>Default/Connection Logs</p>
+            </li>
+            <li>
+                <p>Error Logs</p>
+            </li>
+            <li>
+                <p>TCP Logs (option tcplog)</p>
+            </li>
+            <li>
+                <p>HTTP Logs (option httplog)</p>
+            </li>
+            <li>
+                <p>HTTPS Logs (option httpslog)</p>
+            </li>
+        </ul>
+        <h2>Log Format Examples</h2>
+        <h3>Connection Log</h3>
+        <p><code class="linecode">haproxy[1234]: Connect from 10.0.1.2:33312 to 10.0.3.31:8012 (www/HTTP)</code>
+        </p>
+        <h3>Error Log</h3>
+        <p><code class="linecode">haproxy[6103]: 127.0.0.1:56059 [03/Dec/2023:17:35:10.380] frt/f1: Connection error during SSL handshake</code>
+        </p>
+        <h3>TCP Log</h3>
+        <p><code class="linecode">haproxy[14387]: 10.0.1.2:33313 [06/Feb/2023:12:12:51.443] graylog-in static/srv1 8/9/5007 212 PH -1/2/3/4/5 6/7</code>
+        </p>
+        <h3>HTTP/HTTPS Log</h3>
+        <p><code class="linecode">haproxy[1234]: 10.0.1.2:33317 [06/Feb/2023:12:14:14.655] https-in static/srv1 11/0/31/68/108 200 2353 - - ---- 1/2/3/4/5 6/7 {graylog.de} {} "GET /index.html HTTP/1.1" 0/0/0/0/0 graylog.de/TLSv1.3/TLS_AES_256_GCM_SHA384</code>
+        </p>
+        <p>
+            <section class="warningBox">
+                <div class="content">
+                    <p><b>Warning:</b> Custom log formats are not supported.</p>
+                </div>
+            </section>
+        </p>
+        <h2>What is Provided</h2>
+        <p>Parsing rules to extract HAProxy logs into Graylog schema-compatible fields.</p>
+        <ul>
+            <li>
+                <p>HAProxy default logs get the GIM code "129999" (<code class="linecode">network.default</code>)</p>
+            </li>
+            <li>
+                <p> Logs with the <code class="linecode">http_request</code> get the GIM code "180000" (<code class="linecode">http.message</code>)</p>
+            </li>
+        </ul>
+        <h2>Mappings</h2>
+        <h3>Default Log Structure</h3>
+        <p>The default format is deprecated, but the content pack will support it.</p>
+        <p><code class="linecode">Feb  16 12:12:29 localhost haproxy[14115]: Connect from 10.0.12.20:59312 to 10.0.23.131:2022 (www/HTTP)</code>
+        </p>
+        <table style="width: 100%;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 212px;" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 246px;" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">haproxy       </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Process name         </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_id</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">14115         </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HAProxy's Process ID</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip             </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10.0.12.20</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IP address of the client which initiated the connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_port</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">59312         </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">TCP port of the client which initiated the connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_ip</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10.0.23.131</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IP address the client connected to</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_port</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2022          </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">TCP port the client connected to </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_frontend_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">www           </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The name of the frontend or listener    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">vendor_frontend_mode</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">HTTP          </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Mode the frontend is operating (TCP or HTTP)  </td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Default Fields for TCP/HTTP and HTTPs Logs</h3>
+        <table style="width: 100%;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 212px;" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 246px;" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">haproxy       </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Process name         </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_id</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">14115         </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Process ID</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip             </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10.0.1.22         </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">TCP port of the client that initiated the connection   </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_port</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">33213                     </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">TCP port of the client that initiated the connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>event_received_time</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>02/Feb/2023:12:12:51.222</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>Exact date when the connection was received by HAProxy</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>vendor_frontend_name</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>graylog</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>Name of the frontend (or listener) that received and processed the connection</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>vendor_backend_name</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>backend1</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>Name of the backend (or listener)</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>vendor_server_name</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>srv1</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>Name of the last server to which the connection was sent</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>vendor_tw</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="table-text">1</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>Total time in milliseconds spent waiting</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>vendor_tc</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="table-text">2</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>Total time in milliseconds spent waiting for the connection to establish to the final server</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>vendor_tt</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>5007</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>Total time in milliseconds elapsed between the accept and the last close</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>destination_bytes_sent</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>212</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>Total number of bytes transmitted from the server to the client when the log is emitted</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>captured_request_cookie</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>optional field</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>Optional <code class="linecode">name=value</code> entry indicating that the client had this cookie in the request</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>captured_response_cookie</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>optional field</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>Optional <code class="linecode">name=value</code> entry indicating that the server has returned a cookie with its response</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>vendor_termination_state</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>-- or ----</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>The condition the session was in when the session ended</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>vendor_actconn</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="table-text">3</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>Total number of concurrent connections on the process when the session was logged</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>vendor_feconn</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="table-text">4</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>Total number of concurrent connections on the frontend when the session was logged</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>vendor_beconn</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="table-text">5</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>Total number of concurrent connections handled by the backend when the session was logged</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>vendor_srv_conn</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="table-text">6</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>Total number of concurrent connections still active on the server when the session was logged</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>vendor_retries</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p class="table-text">7</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>Number of connection retries experienced by this session when trying to connect to the server</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>vendor_srv_queue</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p class="table-text">8</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>Total number of requests which were processed before this one in the server queue</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                        <p>vendor_backend_queue</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                        <p class="table-text">9</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">
+                        <p>Total number of requests which were processed before this one in the backend's global queue</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>TCP log format</h3>
+        <p><code class="linecode">haproxy[14387]: 10.0.1.22:33213 [02/Feb/2023:12:12:51.222] graylog backend1/srv1 1/2/5007 212 -- 3/4/5/6/+7 8/9</code>
+        </p>
+        <h3>HTTP/HTTPS format</h3>
+        <p><code class="linecode">haproxy[14389]: 10.0.1.2:33317 [06/Feb/2023:12:14:14.655] https-in graylog/srv1 10/0/30/69/109 200 27250 cookie - C--- 10/1/1/1/0 20/20 {1graylog.de} {fun.de} "GET /index.html HTTP/1.1" 20/21/22/23/24 grt.de/TLSv1.3/TLS_AES_256_GCM_SHA384</code>
+        </p>
+        <p>Additional fields for HTTP/HTTPS logs:</p>
+        <table style="width: 100%;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 212px;" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 246px;" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_trr                           </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">69         </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Total time in milliseconds spent waiting for the server to send a full HTTP response           </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>vendor_ta</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>109</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>Total time the request remained active in HAProxy</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>http_response_code</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>200</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>HTTP status code returned to the client</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>http_request_cookie</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>cookie</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>An optional <code class="linecode">name=value</code> entry indicating that the client had this cookie in the request</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>http_response_cookie</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>-</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>An optional <code class="linecode">name=value</code> entry indicating that the server has returned a cookie with its response</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>vendor_captured_request_headers</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>1graylog.de</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>List of headers captured in the request due to the presence of the "capture request header" statement</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>vendor_captured_response_headers</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>fun.de</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>A list of headers captured in the response due to the presence of the "capture response header" statement</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>http_request_method</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>GET</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>HTTP request method</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>http_request_path</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>/index.html</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>HTTP request path</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>http_version</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>1.1</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>HTTP version</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>vendor_fc_err</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>20</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>Status of the connection on the frontend's side</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>vendor_ssl_fc_err</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>21</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>Last error of the first SSL error stack that was raised on the connection from the frontend's perspective</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>vendor_ssl_c_err</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>22</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>Status of the client's certificate verification process</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>vendor_ssl_c_ca_err</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>23</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>Status of the client's certificate chain verification process</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>vendor_ssl_fc_is_resumed</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>24</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>True if the incoming TLS session was resumed with the stateful cache or a stateless ticket</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>vendor_ssl_fc_sni</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>grt.de</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>SNI (Server Name Indication) presented by the client to select the certificate to be used</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>vendor_ssl-version</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <p>TLSv1.3</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>SSL version of the frontend</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                        <p>vendor_ssl_ciphers</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                        <p>TLS_AES_256_GCM_SHA38</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">
+                        <p>SSL cipher used for the connection</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <h2> HAProxy Spotlight Content Pack</h2>
+        <p>HAProxy offers five dashboards: a general overview dashboard, a dashboard for default logs, one for TCP logs, one for HTTP and HTTPS logs, and an error dashboard.</p>
+        <h3>Overview Dashboard</h3>
+        <p>
+            <img src="../Resources/Images/haproxy_content_pack/HAProxyOverview.png" />
+        </p>
+        <h3>Default Logs Dashboard</h3>
+        <p>
+            <img src="../Resources/Images/haproxy_content_pack/HAProxyDefault.png" />
+        </p>
+        <h3>TCP&#160;Logs Dashboard</h3>
+        <p>
+            <img src="../Resources/Images/haproxy_content_pack/HAProxyTCP.png" />
+        </p>
+        <h3>HTTP and HTTPS Logs Dashboard</h3>
+        <p>
+            <img src="../Resources/Images/haproxy_content_pack/HAProxyHTTP.png" />
+        </p>
+        <h3>Error Dashboard</h3>
+        <p>
+            <img src="../Resources/Images/haproxy_content_pack/HAProxyError.png" />
+        </p>
+    </body>
+</html>
