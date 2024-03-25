@@ -72,12 +72,12 @@ The Packetbeat content pack supports parsing for all fields, and GIM categorizat
 Packetbeat offers a dashboard with 3 tabs - An overview tab, a network flow tab, and a tab for an overview of http
 
 - Packetbeat Overview Tab
-![image.png](packetbeat_overview_tab.png)
+![image.png](../Resources/Images/packetbeat_overview_tab.png)
 
 - Packetbeat Network Flows Tab
-![image.png](network_flow_tab.png)
+![image.png](../Resources/Images/network_flow_tab.png)
 
 - HTTP Overview Tab
-![image.png](http_tab.png)
+![image.png](../Resources/Images/http_tab.png)
 
 
