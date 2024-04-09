@@ -4,7 +4,7 @@
     </head>
     <body>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>Please note this guide assumes you are installing Graylog Illuminate for the first time. This guide also does not cover Illuminate deployments in Graylog Cloud. Please refer to the <a href="../Upgrading Illuminate/Upgrading Graylog Illuminate.htm">Illuminate Upgrade Guide</a> documentation for instructions to upgrade an existing Graylog Illuminate installation.</p>
+        <p>Please note this guide assumes you are installing Graylog Illuminate for the first time. This guide also does not cover Illuminate deployments in Graylog Cloud. Please refer to the <a href="../Upgrading Illuminate/Upgrading Graylog Illuminate.htm">Illuminate upgrade</a> documentation for instructions on how to upgrade an existing Graylog Illuminate installation.</p>
         <h2>Prerequisites</h2>
         <p>The following is required prior to installing Graylog Illuminate:</p>
         <ul>
@@ -26,12 +26,20 @@
         </ul>
         <h2>Install Illuminate</h2>
         <p>There are currently two methods of installation for Graylog Illuminate. The following section will describe installation directly via the Graylog interface, which is the preferred method as of Graylog 5.1; however, if your Graylog server cannot access the public internet, then you will need to complete <a href="Installing Illuminate Bundle Manually.htm">a manual installation</a> using a release file obtained from <a href="https://go2.graylog.org/contact-sales">your sales representative</a>.</p>
-        <p><b>Warning</b>:&#160;Users running Graylog with a free Operations license are unable to utilize the following Illuminate installation method and must employ <a href="Installing Illuminate Bundle Manually.htm">the manual method of installing</a> if possible.</p>
+        <p>
+            <section class="warningBox">
+                <div class="title"><b>Warning</b>:&#160;<span style="font-weight: normal;">Users running Graylog with a free Operations license are unable to utilize the following Illuminate installation method and must employ <a href="Installing Illuminate Bundle Manually.htm">the manual method of installing</a> if possible.</span></div>
+            </section>
+        </p>
         <h3>Installing Illuminate In Graylog</h3>
         <p>1. Navigate to the Illuminate page by selecting <i>Enterprise</i> &gt; <i>Illuminate</i>.</p>
         <p>2. You will see a notification at the top right of the screen indicating that a new Illuminate bundle is ready to install. You may select <i>Install</i> from this menu, or you can navigate to the <i>Install Another Bundle</i> link located beneath the <i>Illuminate Bundle Version</i> drop-down menu.</p>
         <p>3. On this menu select the Illuminate version you wish to install and click the <i>Download &amp; Install</i> button. (You may also wish to preview the available versions by selecting them from the side navigation and reviewing the attached changelogs.)&#160;</p>
-        <p><b>Hint</b>:&#160;Only Illuminate versions 3.3.0+ are available via this download service.</p>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint</b>:&#160;<span style="font-weight: normal;">Only Illuminate versions 3.3.0+ are available via this download service.</span></div>
+            </section>
+        </p>
         <p>
             <img src="../Resources/Images/Installing Graylog Illuminate/install_illuminate.png" />
         </p>
@@ -95,7 +103,11 @@
                 <p>Rules to enrich events required by Graylog anomaly detection rules pack to analyze events processed by Graylog Illuminate.</p>
             </li>
         </ul>
-        <p><b>Warning</b>:&#160;This pack <b>must</b> be enabled to utilize the Graylog Security anomaly detection functionality with the anomaly detection definitions included in the Graylog Illuminate anomaly detection rules content pack.</p>
+        <p>
+            <section class="warningBox">
+                <div class="title"><b>Warning</b>:&#160;<span style="font-weight: normal;">This pack <b>must</b> be enabled to utilize the Graylog Security anomaly detection functionality with the anomaly detection definitions included in the Graylog Illuminate anomaly detection rules content pack.</span></div>
+            </section>
+        </p>
         <h3><a name="About2"></a>About the GIM Enforcement Pack</h3>
         <h4>What is GIM?</h4>
         <p>GIM, short for Graylog Information Model, is how we ensure known types of messages that have been properly categorized will have the necessary fields required for processing.</p>
@@ -116,10 +128,18 @@
         <p>For example, all logon events should have the field <code class="linecode">user_name</code>. With GIM Enforcement enabled, any message that has been categorized but is missing one of these required fields will have a default value assigned, and the field <code class="linecode">gim_error</code> will be added indicating that the message is incomplete. This will ensure that searches, which look for logon messages by <code class="linecode">user_name</code>, will include these messages in related search results and aggregations.</p>
         <p>Without GIM enforcement messages may not be included in search results or aggregations if they have been improperly parsed or if they are malformed in some way.</p>
         <p>We recommend enabling GIM enforcement at least occasionally when troubleshooting field extraction issues or performing a test or review of data quality.</p>
-        <p><b>Warning</b>:&#160;<span style="font-weight: normal;">Be aware that enabling GIM Enforcement will incur additional slight computational costs per categorized message.</span></p>
+        <p>
+            <section class="warningBox">
+                <div class="title"><b>Warning</b>:&#160;<span style="font-weight: normal;">Be aware that enabling GIM Enforcement will incur additional slight computational costs per categorized message.</span></div>
+            </section>
+        </p>
         <h3><a name="About3"></a>About the Geolocation and Autonomous System (AS) Packs</h3>
         <p>Two technology packs support geolocation and ASN enrichment: one supporting MaxMind city and AS databases and another supporting IPinfo city and AS databases.</p>
-        <p><b>Warning</b>:&#160;We recommend that you activate only one of these packs. As they both provide similar functionality, enabling both will increase the computational cost of processing messages with no benefit.</p>
+        <p>
+            <section class="warningBox">
+                <div class="title"><b>Warning</b>:&#160;<span style="font-weight: normal;">We recommend that you activate only one of these packs. As they both provide similar functionality, enabling both will increase the computational cost of processing messages with no benefit.</span></div>
+            </section>
+        </p>
         <h4>Illuminate Geolocation and AS Deprecation Notice</h4>
         <p>The Graylog Illuminate Geolocation and AS enrichment processing packs are deprecated and will be removed from a future version of Graylog Illuminate. The functionality of these packs is replaced by the Geolocation Processor. Instead of using the Illuminate Geolocation Processor packs, please configure the Geolocation Processor, making sure the <i>Enforce default Graylog schema</i> option is selected.</p>
         <h4>Enabling MaxMind Geolocation and ASN Enrichment</h4>
