@@ -3,8 +3,167 @@
     <head><title>Illuminate Changelogs</title>
     </head>
     <body>
+        <h2>Illuminate 5.0.0</h2>
+        <p>Released:&#160;2024-04-17</p>
+        <h4>Added</h4>
+        <ul>
+            <li>
+                <p>Packetbeat: New content request from the customer (1851)</p>
+                <ul>
+                    <li>
+                        <p>With this addition, we will be supporting all Packetbeat logs, but we are currently focusing on enriching DNS, HTTP, and Flow logs specifically as well as adding a spotlight with three tabs: An overview tab, Flow network overview tab, and an HTTP overview tab as well.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Added support for Windows Security Event ID 1108 (827)</p>
+                <ul>
+                    <li>
+                        <p>See <a href="https://learn.microsoft.com/en-us/windows/security/threat-protection/auditing/event-1108">Microsoft documentation</a> for additional information about the event.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Added extraction for process information for Event Ids 4798, 4799 (266)</p>
+                <ul>
+                    <li>
+                        <p>Added NXLog and WLB7 field processing for <code class="linecode">process_path/id</code> values from events.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Symantec Endpoint Security (SES):Initial technology pack (1732)</p>
+                <ul>
+                    <li>
+                        <p>Symantec Endpoint Security is a cloud and hybrid-managed solution that provides the protection of SEP, attack detection of EDR, and other technologies to secure devices.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Add Network subcategory for ICMP (1696)</p>
+            </li>
+            <li>
+                <p>HAProxy: Added support for HAProxy (1854)</p>
+                <ul>
+                    <li>
+                        <p>This HAProxy content pack supports default, TCP, HTTP, HTTPS and Error logs.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Added Microsoft Windows Security - User Activity Sigma Rules (1852)</p>
+                <ul>
+                    <li>
+                        <p>Adds a spotlight pack containing Sigma-formatted alerts provided by SOC Prime and curated by the Graylog team. This may include some modifications of the source rules to align with the GIM schema and the Graylog team's findings.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Add new field <code class="linecode">gl2_processing_duration_ms</code> to Illuminate field mapping templates (1891)</p>
+            </li>
+            <li>
+                <p>Graylog API Security Content Pack (1937)</p>
+                <ul>
+                    <li>
+                        <p>Initial Graylog API Security Spotlight which includes an Overview tab highlighting API calls and alerts. Please <a href="Content Packs/Security Content Packs.html">see the Graylog documentation</a> for more information on the spotlight pack and how to configure API Security to send logs to your Graylog instance.</p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h4>Fixed</h4>
+        <ul>
+            <li>
+                <p>Sophos:Field normalization failure due to space in field name (1963)</p>
+            </li>
+            <li>
+                <p>Winlogbeat provides timestamp fields that are detected as dates but cause indexing failures (1902)</p>
+                <ul>
+                    <li>
+                        <p>This will disable date detection on all Winlogbeat "event data" fields. These fields are dynamically parsed by the winlogbeat agent in to individual fields. This addresses an issue where some event log messages may be rejected due to an index mapping type conflict related to some fields. This is due to the event data fields are either occasionally timestamps, or are timestamps but contain different timestamp formats, likely due to local system settings. This change will cause all Winlogbeat "event data" fields to be indexed with the mapping type "keyword." The side effect of this change is that some event data fields may be limited in how they can be analyzed in aggregate, or search. This change will not impact non-event data fields, or any fields that have been renamed by Illuminate.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Windows Security:fixed <code class="linecode">process_path</code> renaming (1841)</p>
+                <ul>
+                    <li>
+                        <p>Windows security processing sets the <code class="linecode">process_name</code> path with a value that is the full path of the process. This should be instead extracted to <code class="linecode">process_path</code> for both NXlog and Winlogbeat agents.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Symantec EP:Virus found logs not processed (1932)</p>
+            </li>
+            <li>
+                <p>CBDefense: Key value extraction generates illegal key name (1964)</p>
+            </li>
+            <li>
+                <p>SEPM: Updated dashboard to use detection instead of Alert. (1952)(1956)(1959)</p>
+                <ul>
+                    <li>
+                        <p>We are changing the way we use the word alert, which will be handled more so by the new curated alerts that will be coming soon, and so we want to start changing all the usages of the word alert to be detection. The first pack we are focusing on is the SEPM dashboards. We also added scoped streams to this dashboard as well.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Windows Security:Improve accuracy of <code class="linecode">user_type</code> identification pattern (1879)</p>
+                <ul>
+                    <li>
+                        <p>The Illuminate Windows Security event processing was not identifying likely computer names which began with a number. The Illuminate process of setting a user type based on the format of the logs is a best effort process, there is no way to precisely identify if an account is a user or machine account based on log data alone.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Auditbeat:Will not process events with multiple <code class="linecode">vendor_event_action</code> values (622)</p>
+            </li>
+            <li>
+                <p>O365:Updated messages incorrectly identified as legacy messages (1967)</p>
+            </li>
+            <li>
+                <p>Sonicwall assigning legacy GIM event code (1822)</p>
+            </li>
+            <li>
+                <p>Windows: nxlog <code class="linecode">process_id</code> not extracted properly (1926)</p>
+            </li>
+            <li>
+                <p>Palo Alto:Global Protect categorization uses legacy GIM code (1818)</p>
+            </li>
+            <li>
+                <p>Cisco ASA: SFIMS message normalization target fields contain spaces (1966)</p>
+            </li>
+        </ul>
+        <h4>Changed</h4>
+        <ul>
+            <li>
+                <p>Changed <code class="linecode">vendor_message</code> to message for Watchguard firebox (1496)</p>
+                <ul>
+                    <li>
+                        <p>The message field contains a lot of data that is extracted into other fields. Removing this and rewriting the message will: Reduce storage utilization Reduce duplication of data Lower computational cost for the pattern-based extraction</p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h4>Removed</h4>
+        <ul>
+            <li>
+                <p>GIM Enforcement:Removed field enforcement of DNS transaction events (1739)</p>
+                <ul>
+                    <li>
+                        <p>The DNS transaction event type has been removed. DNS events that contain both query and answer data are now assigned the relevant GIM codes for each of those events.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Removed event_source enforcement from GIM enforcement rules (1782)</p>
+                <ul>
+                    <li>
+                        <p>The <code class="linecode">event_source</code> field is deprecated and will be removed entirely from Illuminate 6.0.</p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
         <h2>Illuminate 4.2.0</h2>
-        <p>Released:&#160;2021-02-08</p>
+        <p>Released:&#160;2024-02-08</p>
         <h4>Known Issues</h4>
         <ul>
             <li>
