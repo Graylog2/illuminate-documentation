@@ -1,0 +1,414 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Symantec Endpoint Detection and Response Content Pack</title>
+        <link href="Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Symantec Endpoint Detection and Response is used to detect advanced attacks using machine learning and global threat intelligence to minimize
+            false positives and help ensure high levels of productivity for security teams.
+        </p>
+        <h2>Supported Version(s)</h2>
+        <ul>
+            <li>Symantec EDR Appliance 4.8
+            </li>
+        </ul>
+        <h2>Requirements</h2>
+        <ul>
+            <li>
+                <p>Symantec Endpoint Security Complete subscription</p>
+            </li>
+            <li>
+                <p>Symantec Endpoint Security Manager</p>
+            </li>
+            <li>
+                <p>OAuth Client to interact with Graylog input</p>
+            </li>
+            <li>
+                <p>Minimum of<b> Graylog 6.0+</b> with a valid Enterprise license</p>
+            </li>
+        </ul>
+        <h2>Stream Configuration</h2>
+        <p>This technology pack includes one stream:</p>
+        <ul>
+            <li>Illuminate:Symantec Endpoint Detection and Response Messages
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:  If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
+            </section>
+        </p>
+        <h2>Index Set Configuration</h2>
+        <p>This technology pack includes one index set definition:</p>
+        <ul>
+            <li>Symantec Endpoint Detection and Response Logs
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:  If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
+            </section>
+        </p>
+        <h2>Log Collection</h2>
+        <ul>
+            <li>Symantec Endpoint Detection and Response (EDR) utitlizes the  <a href="https://go2docs.graylog.org/current/getting_in_log_data/symantec_edr_events_input.htm">Graylog Symantec EDR Events input</a> that ingests event and incident logs in JSON format (as seen below).
+            </li>
+        </ul>
+        <h2> Configuration Example</h2>
+        <p>See the  <a href="https://go2docs.graylog.org/current/getting_in_log_data/symantec_edr_events_input.htm?Highlight=symantec%20input#ConfigureInputinGraylog">Graylog Symantec EDR Events input</a> documentation for configuration details. </p>
+        <p>
+            <img src="../Resources/Images/Symantec Endpoint Detection and Response Content Pack/edr_input.png" /><![CDATA[      ]]></p>
+        <h2>Log Format Example</h2>
+        <p><code class="linecode">{"type_id":8001,"severity_id":1,"device_time":"2024-04-24T00:02:35.215Z","log_time":"2024-04-23T11:47:49.747Z","device_uid":"3fb76a67-874f-4cd1-8d96-aeba1d20bbaf","device_name":"WIN-ABCD","device_ip":"192.168.1.1","device_ipv6":"fe80:0000:0000:0000:071b:8ecb:abcd:efgh","device_os_name":"Windows Server 2019 ","user_name":"SYSTEM","user_domain":"NT AUTHORITY","user_sid":"S-1-5-18","device_domain":"domain.com","operation":1,"event_actor":{"pid":756,"uid":"DEDEA815-FD16-F1EE-8DB5-60ABC5EF1DD4","cmd_line":"C:\\Windows\\system32\\services.exe","start_time":"2024-04-18T00:02:17.522Z","signature_level_id":60,"integrity_id":6,"user":{"name":"SYSTEM","sid":"S-1-5-18"},"file":{"name":"services.exe","md5":"2d072114fa0b9e2b51830510fa5f0f69","modified":"2022-11-05T18:59:47.734Z","path":"c:\\windows\\system32\\services.exe","normalized_path":"CSIDL_SYSTEM\\services.exe","signature_company_name":"Microsoft Windows Publisher","signature_value_ids":[3,5],"sha2":"751cd7ab78b18a2d8a55c47ca75b90a14234ac974d81be5f198d301b59183873","original_name":"services.exe"}},"process":{"pid":13896,"uid":"560F4CF9-01B7-F1EF-8DB5-98261F32744E","cmd_line":"C:\\Windows\\system32\\svchost.exe -k netsvcs -p -s wisvc","signature_level_id":60,"integrity_id":6,"user":{"name":"SYSTEM","sid":"S-1-5-18"},"file":{"normalized_path":"CSIDL_SYSTEM\\svchost.exe","name":"svchost.exe","md5":"4dd18f001ac31d5f48f50f99e4aa1761","modified":"2022-11-05T18:58:44.626Z","path":"c:\\windows\\system32\\svchost.exe","signature_company_name":"Microsoft Windows Publisher","signature_value_ids":[3,5],"sha2":"2b105fb153b1bcd619b95028612b3a93c60b953eef6837d3bb0099e4207aaf6b","original_name":"svchost.exe"}},"enriched_data":{"rule_name":"eGenericProcessLaunch","suspicion_score":0,"category_name":"Process Launch","category_id":2,"rule_description":"Generic process launch event"},"attacks":[{"technique_uid":"T1035","technique_name":"Service Execution","tactic_ids":[2],"tactic_uids":["TA0002"]}],"ref_uid":"9C863643-885C-45E8-A698-2C93FE50DD3F","uuid":"f467edf0-01cd-11ef-d990-0000000207ef","log_name":"epmp_events-fdr-2024-04-24"}
+</code><![CDATA[        ]]></p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Rules to normalize and enrich Symantec Endpoint Detection and Response log messages via field extraction and message enrichment:
+</p>
+            </li>
+        </ul>
+        <table cellspacing="21" style="mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');width: 597px;" class="TableStyle-Alternate-Row-Color">
+            <col style="width: 218px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col style="width : 222px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">vendor_subtype</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">vendor_subtype_name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Application Activity</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">20</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">User Session Audit</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">21</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Entity Audit</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">238</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Device Control</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">239</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Device Control</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">240</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Device Control</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">502</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Application Control</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">System Health</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4096</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Reputation Lookup</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4098</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Intrusion Prevention</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4099</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Suspicious File Detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4100</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">SONAR Detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4102</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Antivirus Detection (Endpoint)</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4109</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Dynamic Adversary Intelligence from Endpoint</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4110</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Dynamic Adversary Intelligence from Network</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4112</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Deny List (IP/URL/Domain)</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4113</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Vantage Detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4115</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Insight Detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4116</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Mobile Insight Detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4117</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Sandboxing Detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4118</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Deny List (file)</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4123</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Endpoint Detection (file)</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4124</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Endpoint Detection (IP/URL/Domain)</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4125</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Email Detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4353</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Antivirus Detection (Network)</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">8000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Session Event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">8001</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Process Event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">8002</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Module Event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">8003</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">File Event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">8004</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Directory Event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">8005</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Registry Key Event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">8006</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Registry Value Event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">8007</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Network Event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">8009</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Kernel Event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">8015</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">ETW (Event Tracing for Windows) Event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">8016</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Startup Application Configuration Change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">8018</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">AMSI (AntiMalware Scan Interface) Event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">8080</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Session Query Result</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">8081</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Process Query Result</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">8082</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Module Query Result</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">8083</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">File Query Result</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">8084</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Directory Query Result</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">8085</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Registry Key Query Result</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">8086</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Registry Value Query Result</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">8089</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Kernel Object Query Result</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">8090</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Service Query Result</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">8099</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Query Command Errors</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">8103</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">File Remediation</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">8119</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">File Remediation Errors</td>
+                </tr>
+            </tbody>
+        </table>
+        <ul>
+            <li>
+                <p>GIM categorization of the following messages:</p>
+            </li>
+        </ul>
+        <p>
+            <style>
+                    table, th, td {
+                        border: 1px solid black;
+                    }
+                </style>
+        </p>
+        <table cellspacing="21" style="mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col style="width : 77.25px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col style="width : 65.25px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col style="width : 82.5px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Vendor Event ID</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Subcategory</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4096</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">alert.default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4098</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert.default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4099</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">alert.default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4100</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert.default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4102</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">alert.default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4109</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert.default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4110</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">alert.default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4112</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert.default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4113</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">alert.default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4115</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert.default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4116</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">alert.default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4117</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert.default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4118</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">alert.default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4123</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert.default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4124</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">alert.default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4125</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alert.default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">4353</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">alert.default</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2 id="packetbeat-spotlight-content-pack">Symantec Endpoint Detection and Response Spotlight Content Pack</h2>
+        <p>Symantec Endpoint Detection and Response Spotlight Content Pack offers a dashboard with two tabs: Overview and MITRE ATT&amp;CK Overview.</p>
+        <ul>
+            <li>
+                <p>Overview tab</p>
+            </li>
+        </ul>
+        <p>
+            <img src="../Resources/Images/Symantec Endpoint Detection and Response Content Pack/edr_1.png" />
+        </p>
+        <p>
+            <img src="../Resources/Images/Symantec Endpoint Detection and Response Content Pack/edr_2.png" />
+        </p>
+        <ul>
+            <li>
+                <p>MITRE ATT&amp;CK Overview tab</p>
+            </li>
+        </ul>
+        <p>
+            <img src="../Resources/Images/Symantec Endpoint Detection and Response Content Pack/edr_3.png" />
+        </p>
+    </body>
+</html>
