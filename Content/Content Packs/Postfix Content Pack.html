@@ -1,27 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-    <head>
-        <link href="Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Postfix Content Pack</title>
-        <link href="Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    <head><title>Postfix Content Pack</title>
     </head>
     <body>
-        <MadCap:snippetBlock src="Resources/Snippets/IlluminateBanner.flsnp" />
-        <p><span style="background-color: #00;">Postfix is a free and open-source mail transfer agent (MTA) that routes and delivers electronic mail.It is known for its easy configuration, secure default settings, and efficient management of system resources.</span>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Postfix is a free and open-source mail transfer agent (MTA) that routes and delivers electronic mail.It is known for its easy configuration, secure default settings, and efficient management of system resources.
         </p>
         <h2>Supported Version(s)</h2>
         <ul>
-            <li><span style="background-color: #00;">Tested with Postfix version 3.7 but lower versions may work, too.</span>
-            </li>
+            <li>Tested with Postfix version 3.7, but earlier versions may be compatible. <![CDATA[
+            ]]></li>
         </ul>
         <h2>Requirements</h2>
         <ul>
-            <li><span style="background-color: #00;">* Graylog Server with a valid enterprise license, running Graylog version 5.2.4 or later</span>
+            <li> Graylog server with a valid Enterprise license, running Graylog version 5.2.4 or later.
             </li>
         </ul>
         <h2>Stream Configuration</h2>
-        <p>This technology pack includes <span style="background-color: #00;">1</span> stream:</p>
+        <p>This technology pack includes 1 stream:</p>
         <ul>
-            <li><span style="background-color: #00;">Illuminate:Postfix Mail Server Messages</span>
+            <li>"Illuminate:Postfix Mail Server Messages"
             </li>
         </ul>
         <p>
@@ -30,9 +28,9 @@
             </section>
         </p>
         <h2>Index Set Configuration</h2>
-        <p>This technology pack includes <span style="background-color: #00;">1</span> index set definition:</p>
+        <p>This technology pack includes 1 index set definition:</p>
         <ul>
-            <li><span style="background-color: #00;">Postfix Mail Server Logs</span>
+            <li>"Postfix Mail Server Logs"
             </li>
         </ul>
         <p>
@@ -42,65 +40,126 @@
         </p>
         <h2>Log Collection</h2>
         <ul>
-            <li><span style="background-color: #00;">Syslog</span>
+            <li>Syslog
             </li>
         </ul>
-        <h2><span style="background-color: #00;">Syslog</span> Configuration</h2>
-        <p><span style="background-color: #00;">Postfix sends the logs by default directly into syslog. First: create a matching Syslog input in Graylog. Second: Configure your syslog server (e.g rsyslog) to send the logs to Graylog.</span>
+        <h2>Syslog Configuration</h2>
+        <p>Postfix sends the logs by default directly into syslog.</p>
+        <ol>
+            <li>
+                <p> Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/syslog_inputs.html">syslog input</a> in Graylog. </p>
+            </li>
+            <li>
+                <p>Configure your syslog server (e.g. rsyslog) to send the logs to Graylog.
         </p>
+            </li>
+        </ol>
         <h2>Log Format Examples</h2>
-        <p><span style="background-color: #00;">
-        <h3>Bounce logs</h3>
+        <h4>Bounce Logs</h4>
+        <p><code class="linecode">
             `Jan 10 12:29:22 mailserver postfix/bounce[12345]: 24F202322: sender delay notification: 0A27A1222`
-        <h3>Cache logs</h3>
-            `Jan 10 12:29:22 mailserver postfix/cache[12345]: 24F202322: cache lmdb:/var/lib/postfix/verify_cache full cleanup: retained=722 dropped=26 entries`
-        <h3>Connect logs</h3>
+</code><![CDATA[        ]]></p>
+        <h4>Cache Logs</h4>
+        <p><![CDATA[
+            ]]><code class="linecode">`Jan 10 12:29:22 mailserver postfix/cache[12345]: 24F202322: cache lmdb:/var/lib/postfix/verify_cache full cleanup: retained=722 dropped=26 entries`
+</code><![CDATA[        ]]></p>
+        <h4>Connect Logs</h4>
+        <p><code class="linecode">
             `connect to intern.nl[10.10.10.10]:25: Connection timed out`
-        <h3>From logs</h3>
-             `1234567222: from=<user@graylog.com>, size=3527, nrcpt=1 (queue active)`
+</code><![CDATA[        ]]></p>
+        <h4>From Logs</h4>
+        <p><code class="linecode">
+             `1234567222: from=&lt;user@graylog.com&gt;, size=3527, nrcpt=1 (queue active)`
+</code><![CDATA[        ]]></p>
         <h3>To logs</h3>
-             `1234567222: to=, relay=none, delay=22, delays=22/0.02/0/0, dsn=4.4.1, status=deferred (connect to 127.0.0.1[127.0.0.1]:2525: Connection refused)`</span>
+        <p><code class="linecode">`1234567222: to=, relay=none, delay=22, delays=22/0.02/0/0, dsn=4.4.1, status=deferred (connect to 127.0.0.1[127.0.0.1]:2525: Connection refused)`</code>
         </p>
-        <h2 id="what-is-provided">What is Provided</h2>
+        <h2>What is Provided</h2>
         <ul>
             <li>
-                <p><span style="background-color: #00;">* Rules to normalize and enrich Postfix log messages and a dashboard with four tabs.
-</span>
+                <p> Rules to normalize and enrich Postfix log messages and a dashboard with four tabs.
                 </p>
             </li>
         </ul>
-        <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
-        <p>The <span style="background-color: #00;">Postfix</span> content pack supports <span style="background-color: #00;">
-            <p>Bounce Logs</p>
-            <p>Cache Logs</p>
-            <p>Certificate Logs</p>
-            <p>Client Logs</p>
-            <p>Connect Logs</p>
-            <p>DNS Logs</p>
-            <p>Lost Connection Logs</p>
-            <p>Mail from Logs</p>
-            <p>Mail to Logs</p>
-            <p>Master Logs</p>
-            <p>Pickup Logs</p>
-            <p>Postsuper Logs</p>
-            <p>Proxy Logs</p>
-            <p>PS Access Logs</p>
-            <p>PS Noqueue Logs</p>
-            <p>PS Violation Logs</p>
-            <p>QMGR Action Logs</p>
-            <p>SASL Failed Logs</p>
-            <p>Statistics Logs</p>
-            <p>Tls Connection Logs</p>
-            <p>Workaround Logs</p>
-        </span>.</p>
-        <h2 id="packetbeat-spotlight-content-pack"><span style="background-color: #00;">Graylog Illuminate:Postfix Spotlight</span> Spotlight Content Pack</h2>
-        <p><span style="background-color: #00;">Graylog Illuminate:Postfix Spotlight</span> offers a dashboard with <span style="background-color: #00;">4</span> tabs: <span style="background-color: #00;">Postfix Mail Server Overview, Postfix Email Overview, Postfix SMPT Overview, TLS Overview</span>.</p>
-        <p><span style="background-color: #00;"> 
-            <img src="../Resources/Images/Postfix Content Pack/Mail_Server_Overview.png" />
-            <img src="../Resources/Images/Postfix Content Pack/Email_Overview" />
+        <h2>Events Processed by This Technology Pack</h2>
+        <p>The Postfix content pack supports:</p>
+        <ul>
+            <li>
+                <p>Bounce Logs</p>
+            </li>
+            <li>
+                <p>Cache Logs</p>
+            </li>
+            <li>
+                <p>Certificate Logs</p>
+            </li>
+            <li>
+                <p>Client Logs</p>
+            </li>
+            <li>
+                <p>Connect Logs</p>
+            </li>
+            <li>
+                <p>DNS Logs</p>
+            </li>
+            <li>
+                <p>Lost Connection Logs</p>
+            </li>
+            <li>
+                <p>Mail from Logs</p>
+            </li>
+            <li>
+                <p>Mail to Logs</p>
+            </li>
+            <li>
+                <p>Master Logs</p>
+            </li>
+            <li>
+                <p>Pickup Logs</p>
+            </li>
+            <li>
+                <p>Postsuper Logs</p>
+            </li>
+            <li>
+                <p>Proxy Logs</p>
+            </li>
+            <li>
+                <p>PS Access Logs</p>
+            </li>
+            <li>
+                <p>PS Noqueue Logs</p>
+            </li>
+            <li>
+                <p>PS Violation Logs</p>
+            </li>
+            <li>
+                <p>QMGR Action Logs</p>
+            </li>
+            <li>
+                <p>SASL Failed Logs</p>
+            </li>
+            <li>
+                <p>Statistics Logs</p>
+            </li>
+            <li>
+                <p>Tls Connection Logs</p>
+            </li>
+            <li>
+                <p>Workaround Logs</p>
+            </li>
+        </ul>
+        <h2>Graylog Illuminate:Postfix Spotlight Spotlight Content Pack</h2>
+        <p>The Graylog "Illuminate:Postfix Spotlight" offers a dashboard with 4 tabs: Postfix Mail Server Overview, Postfix Email Overview, Postfix SMPT Overview, TLS Overview:</p>
+        <p>&#160;</p>
+        <img src="../Resources/Images/Postfix Content Pack/Mail_Server_Overview.png" />
+        <p>
+            <img src="../Resources/Images/Postfix Content Pack/Email_Overview.png" />
+        </p>
+        <p>
             <img src="../Resources/Images/Postfix Content Pack/SMTP_Overview.png" />
+        </p>
+        <p>
             <img src="../Resources/Images/Postfix Content Pack/TLS_Overview.png" />
-</span>
         </p>
     </body>
 </html>
