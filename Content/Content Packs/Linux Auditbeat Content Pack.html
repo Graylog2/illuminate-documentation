@@ -23,7 +23,52 @@
         </ul>
         <p>These built-in views can serve as a starting point for creating custom dashboards.</p>
         <h2>Supported Version(s)</h2>
-        <p>This Spotlight supports Auditbeat for Linux versions 7-8. This spotlight will function with both the OSS ("Open-Source Software") and non-OSS versions of the Linux Auditbeat agent; the non-OSS version of the agent does not include the system module which provides additional data sets not available in the OSS version of Auditbeat.</p>
+        <p>This Spotlight supports Auditbeat for Linux versions 7-8 and will function with both the <a href="https://www.elastic.co/guide/en/beats/auditbeat/8.6/auditbeat-installation-configuration.html">Elastic-licensed</a> and Apache-licensed versions of Auditbeat.</p>
+        <p>
+            <section class="warningBox">
+                <div class="content">
+                    <p><b>Warning:</b> The Apache-licensed version of Auditbeat does NOT include the "system" module, which provides additional data sets not available in the Elastic-licensed version.</p>
+                </div>
+            </section>
+        </p>
+        <p>By default, <a href="https://go2docs.graylog.org/current/getting_in_log_data/getting_started_with_graylog_sidecar.htm">Graylog Sidecar</a> comes with the Apache-licensed version of Auditbeat. If you want to utilize the "system" module, you can install the Elastic-licensed version by adding the appropriate repo and installing Auditbeat alongside the bundled version.</p>
+        <h3>Install Elastic Version of Auditbeat</h3>
+        <p>For the APT package manager, run the following command:</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+echo "deb https://artifacts.elastic.co/packages/8.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-8.x.list</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p>For the YUM package manager, run the following command:</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch
+cat &lt;&lt; EOF | sudo tee -a /etc/yum.repos.d/elastic-8.x.repo
+[elastic-8.x]
+name=Elastic repository for 8.x packages
+baseurl=https://artifacts.elastic.co/packages/8.x/yum
+gpgcheck=1
+gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+enabled=1
+autorefresh=1
+type=rpm-md
+EOF
+</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <h3>Configure Auditbeat Log Collector in Graylog</h3>
+        <p>Next,  modify the Auditbeat log collector configuration. For more information on setting up Sidecar log collectors, see the Graylog documentation on <a href="https://go2docs.graylog.org/current/getting_in_log_data/set_up_sidecar_collectors.htm?Highlight=auditbeat#ReviewandEditDefaultCollectors">default collector configurations</a>. </p>
+        <ol>
+            <li>
+                <p>Navigate to <i>System</i> &gt; <i>Sidecars</i>, and select the <i>Configurations</i> tab. </p>
+            </li>
+            <li>
+                <p>Then, under the <i>Log Collectors</i> menu, select <i>Edit</i>&#160;next to your Auditlog collector. </p>
+            </li>
+            <li>
+                <p>Modify the "Executable Path" field to point to the new Auditbeat agent's binary path, which is set to <code class="linecode">/usr/share/auditbeat/bin/auditbeat</code> by default. </p>
+            </li>
+        </ol>
+        <p>Optionally, you can also opt to create a new Auditbeat log collector with this path rather than modify the default so that you do not overwrite the default log collector, also providing it a unique name, like "Auditbeat (Elastic-licensed)".</p>
         <h2>Stream Configuration</h2>
         <p>This technology pack includes one stream:</p>
         <ul>
@@ -633,7 +678,7 @@
         <h3>Linux Auditbeat Spotlight Content Pack</h3>
         <h2>Create a Beats Input</h2>
         <section class="infoBox">
-            <div class="title"><b>Hint</b>:&#160;<span style="font-weight: normal;">One Beats input can service multiple log sources; therefore, this step is not required if a Beats input has already been configured.</span></div>
+            <div class="title"><b>Hint</b>:&#160;<span style="font-weight: normal;">One <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">beats input</a> can service multiple log sources; therefore, this step is not required if a beats input has already been configured.</span></div>
         </section>
         <ol>
             <li>On the <em>Select Input</em> drop-down menu, select the <em>System</em> menu and then choose <em>Inputs</em>.</li>
@@ -645,11 +690,5 @@
             <li>Save the input settings.</li>
             <li>If the input does not start automatically, select Start Input to begin listening for and processing new Beats messages (including Linux Auditbeat messages).</li>
         </ol>
-        <h2>References</h2>
-        <ul>
-            <li><a href="https://www.elastic.co/guide/en/beats/auditbeat/8.6/auditbeat-installation-configuration.html">Quick Install</a>
-            </li>
-            <li>Graylog Sidecar</li>
-        </ul>
     </body>
 </html>
