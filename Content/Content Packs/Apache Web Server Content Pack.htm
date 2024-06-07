@@ -5,16 +5,23 @@
     </head>
     <body>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>
-            <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;This content pack was first released in Illuminate v3.2.0. </div>
-            </section>
-        </p>
         <p class="NormalWeb">Apache HTTP Server on a Linux system. This pack will parse out and configure Apache2 access logs. It supports two access log formats: <span class="Emphasis">Common</span> and <span class="Emphasis">Combined logs. And</span> it supports "normal" logs and virtual hosts logs.</p>
         <h2 class="Heading2">Supported Version(s)</h2>
         <ul>
             <li>
                 <p class="NormalWeb">Version 2.4.<br /></p>
+            </li>
+        </ul>
+        <h2>Tested rsyslog Version</h2>
+        <ul>
+            <li>
+                <p class="NormalWeb">8.2212.0</p>
+            </li>
+        </ul>
+        <h2 class="Heading2">What is Provided?</h2>
+        <ul>
+            <li>
+                <p class="NormalWeb">Parsing rules to extract Apache logs into Graylog schema-compatible fields. Apache logs get the GIM code “180200” (http.communication).</p>
             </li>
         </ul>
         <h2 class="Heading2">Stream Configuration</h2>
@@ -71,9 +78,9 @@
             </section>
         </p>
         <h2>Graylog Server Settings</h2>
-        <p class="NormalWeb">1. Create a global Beats input in Graylog.</p>
-        <p class="NormalWeb">2. Create a Graylog REST API access token and save it.</p>
-        <p class="NormalWeb">3. Create a (Linux) filebeat configuration under <i>Sidercar/Configuration</i> with a "filebeat on linux" collector.</p>
+        <p class="NormalWeb">1. <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Create a global Beats input</a> in Graylog.</p>
+        <p class="NormalWeb">2. <a href="https://go2docs.graylog.org/current/setting_up_graylog/rest_api.html">Create a Graylog REST API access token</a> and save it.</p>
+        <p class="NormalWeb">3. Create a (Linux) filebeat configuration under <i>Sidercar </i>&gt;<i>&#160;Configuration</i> with a "filebeat on linux" collector.</p>
         <p class="NormalWeb">4. Configure the file and add:</p>
         <ul class="ul_2">
             <li class="NormalWeb">
@@ -98,7 +105,7 @@
         </MadCap:codeSnippet>
         <p>
             <section class="warningBox">
-                <div class="title" style="font-weight: normal;"><b>Warning</b>:&#160;There must be two spaces in front of <code class="linecode">event_source_product</code> and<code class="linecode"> - /var... </code>.</div>
+                <div class="title" style="font-weight: normal;"><b>Warning</b>:&#160;There must be two spaces in front of <code class="linecode">event_source_product</code> and <code class="linecode">- /var... </code>.</div>
             </section>
         </p>
         <p class="NormalWeb">This will only log Apache access logs, but you can add error logs, etc.</p>
@@ -221,7 +228,7 @@ local6.access        @192.168.122.40:1514</MadCap:codeSnippetBody>
         </MadCap:codeSnippet>
         <p>
             <section class="warningBox">
-                <div class="title" style="font-weight: normal;"><b>Warning</b>:&#160;This configuration is for UDP. UDP is not a reliable protocol, see official documentation if TCP is a better option for your organization. After installing rsyslog there might be active default rules (e.g. 50-default.conf) that log system, kernel and other logs. Deactivate them if not needed. </div>
+                <div class="title" style="font-weight: normal;"><b>Warning</b>:&#160;This configuration is for UDP. UDP is not a reliable protocol, so consider if TCP is a better option for your organization. After installing rsyslog there might be active default rules (e.g. 50-default.conf) that log system, kernel, and other logs. Deactivate them if not needed. </div>
             </section>
         </p>
         <p class="NormalWeb">Use this command to restart the service on Ubuntu:</p>
@@ -237,18 +244,6 @@ local6.access        @192.168.122.40:1514</MadCap:codeSnippetBody>
             </MadCap:codeSnippet>
         </p>
         <p class="NormalWeb">Note that red lines may indicate problems.</p>
-        <h2>Tested rsyslog Version</h2>
-        <ul>
-            <li>
-                <p class="NormalWeb">8.2212.0</p>
-            </li>
-        </ul>
-        <h2 class="Heading2">What is Provided?</h2>
-        <ul>
-            <li>
-                <p class="NormalWeb">Parsing rules to extract Apache logs into Graylog schema-compatible fields. Apache logs get the GIM code “180200” (http.communication).</p>
-            </li>
-        </ul>
         <h2 class="Heading2">Limitations</h2>
         <ul>
             <li>
