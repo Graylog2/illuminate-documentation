@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Graylog API Security captures real API traffic to detect attacks, leaks, and other threats to your APIs. This protection is accomplished with built-in automated and custom signatures and alerts.</p>
+        <p>Once a signature has reached the threshold for alerting, a corresponding alert message is constructed in GELF format. It is then sent to the previously configured webhook URL destination using HTTP POST requests. See <a href="https://go2docs.graylog.org/apisecurity-current/home.htm">Graylog API Security</a> for more information.</p>
+        <p>Graylog API Security formats payload strings according to the configured destination for each webhook. Once you have entered the Graylog destination URL for the GELF input, alerts are parsed and displayed in your Graylog API Security dashboard.</p>
+        <p>Make sure you fulfill the requirements below for a successful integration.</p>
+        <h2>Requirements</h2>
+        <ul>
+            <li>
+                <p>A Graylog Server with a valid <a href="https://go2docs.graylog.org/current/what_is_graylog/what_is_graylog_operations.html">Enterprise license</a>, running Graylog version 6.0 or later.</p>
+            </li>
+            <li>
+                <p>A <a href="../../../../Users/AnnieZempel/What Is Graylog/What is Graylog Operations.html">Graylog Security license</a> to activate the Security product. Contact the <a href="https://go2.graylog.org/contact-sales">Graylog Sales team</a> for more information on purchasing and downloading this license.</p>
+            </li>
+            <li>
+                <p>Install and set up Graylog API Security (see <a href="https://go2docs.graylog.org/apisecurity-current/home.htm">Graylog API Security</a> for details).</p>
+            </li>
+            <li>
+                <p>A GELF HTTP input with the default configuration (see <a href="#Configur">below</a>).</p>
+            </li>
+            <li>
+                <p>Configure alerting in Graylog API Security.</p>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint:</b><span style="font-weight: normal;"> It may take several minutes for alerts to appear in the Graylog API Security dashboard after configuration is complete</span><span style="font-weight: normal;">.</span>
+                </div>
+            </section>
+        </p>
+        <h3><a name="Configur"></a>Configure a GELF HTTP Input with the Default Configuration</h3>
+        <p>You can either set up <a href="https://go2docs.graylog.org/current/getting_in_log_data/gelf_inputs.html?tocpath=Getting%20in%20Logs%7CGraylog%20Inputs%7CGELF%7C_____1#GELFviaHTTP">a new GELF HTTP input</a> or configure an existing one with the default configuration:</p>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">Bind address: 0.0.0.0
+Port: 12201
+Enable TLS: False
+TCP keepalive: False
+Enable Bulk Receiving: False
+Enable CORS: True
+</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <h3><a name="Configur2"></a>Configure Alerting in Graylog API Security</h3>
+        <ol>
+            <li>
+                <p>Navigate to the <i>Settings</i> tab in Graylog API Security.</p>
+            </li>
+            <li>
+                <p>Enter both <code class="linecode">localhost</code> and the <code class="linecode">7700</code> endpoint in the <i>External Network Routing </i> section.</p>
+            </li>
+            <li>
+                <p>Enter a URL that points to your Graylog instance in the <i>Default alerting webhook</i> section, for example: <code class="linecode">http://mymachine.myorg.net:12201/gelf</code></p>
+            </li>
+        </ol>
+        <h2>Stream Configuration</h2>
+        <p>This content pack includes one stream:</p>
+        <ul>
+            <li>
+                <p>"Illuminate:Graylog API Security Messages"</p>
+            </li>
+        </ul>
+        <h2>Index Set Configuration</h2>
+        <p>This content pack includes one index set definition:</p>
+        <ul>
+            <li>
+                <p>"Graylog API&#160;Security Logs"</p>
+            </li>
+        </ul>
+        <h2>Log Format</h2>
+        <p>Once a signature has reached the threshold for alerting, a corresponding alert message is constructed with the following fields:</p>
+        <table style="width: 100%;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Name of the signature.</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">severity</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Signature severity: NOTICE, WARNING, ERROR, or CRITICAL</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">description</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Signature description.</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">remediation</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>Signature remediation. Information to help resolve the specific problem.</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">current_total</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">integer</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>Total number of API calls that match the signature at the time of polling.</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">sparkline_totals</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                        <p>Unicode characters to represent recent total count history.</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">sparkline_alerts</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                        <p>Unicode characters to represent recent alert history.</p>
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><code class="linecode">view_url</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">
+                        <p>Graylog API Security URL pointing back to the signature for triage.</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>Log Format Example</h2>
+        <p><code class="linecode">{</code><code class="linecode">"version":"1.1",</code><code class="linecode">"host":"GraylogAPISecurity",</code><code class="linecode">"short_message":"Malformed response bodies",</code><code class="linecode">"full_message":"",</code><code class="linecode">"_event_source_product":"graylog_api_security",</code><code class="linecode">"_alert_signature": "malformed_response_bodies",</code><code class="linecode">"_severity":"CRITICAL",</code><code class="linecode">"_description":"API calls where the response body cannot be parsed as valid JSON, which is likely to cause client failures, even if the response code is 200 (OK).",</code><code class="linecode">"_remediation":"Development should fix these specific cases where JSON responses include extra commas, braces, or unescaped characters. These cases are often data-dependent or based on user input that is improperly checked or escaped.",</code><code class="linecode">"_current_total":79,</code><code class="linecode">"_sparkline_alerts":"▁▁▁▁▁▁▁▁▁▁▁▅▅▅▅",</code><code class="linecode">"_sparkline_totals":"▁▁▁▁▁▁▁▁▁▁▁▃▅▃▇",</code><code class="linecode">"_view_url":"http://localhost:7700/ui/resurface/search?view=malformed_response_bodies"</code><code class="linecode">}</code>
+        </p>
+        <h2>Graylog  API Security Spotlight Content Pack</h2>
+        <p>Graylog API Security Spotlight Content Pack offers a dashboard with alerts.</p>
+        <p>
+            <img src="../Resources/Images/Graylog API Security Content Pack/API Security Content Pack.png" />
+        </p>
+    </body>
+</html>
