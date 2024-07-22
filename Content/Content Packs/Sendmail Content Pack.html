@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Sendmail Content Pack</title>
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Sendmail is a free and open-source mail transfer agent (MTA) used to route and deliver email on Unix-based systems. This technology pack will process Sendmail logs and includes parsers and dashboards to visualize key data such as sender/recipient activity, delivery status, ruleset rejections, authentication, and processing statistics.</p>
+        <h2>What is Provided</h2>
+        <ul>
+            <li>
+                <p>Rules to parse, normalize and enrich Sendmail log messages and a dashboard with six tabs covering key insights.
+                </p>
+            </li>
+        </ul>
+        <h2>Supported Version(s)</h2>
+        <ul>
+            <li>Tested with Sendmail version 8.15.2 but earlier versions are compatible.<![CDATA[
+            ]]></li>
+        </ul>
+        <h2>Requirements</h2>
+        <ul>
+            <li>Minimum of Graylog version 5.2.4 with a valid Enterprise license.
+            </li>
+        </ul>
+        <h2>Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>"Illuminate:Sendmail Mail Server Messages"
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Note</b>:  If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
+            </section>
+        </p>
+        <h2>Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"Sendmail Mail Server Logs"
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Note</b>:  If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
+            </section>
+        </p>
+        <h2>Log Collection</h2>
+        <ul>
+            <li>Syslog
+            </li>
+            <li>Filebeat (with Sidecar)
+            </li>
+        </ul>
+        <h3>Syslog Configuration</h3>
+        <p>Sendmail outputs to syslog under mail facility by default.</p>
+        <ol>
+            <li>
+                <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/syslog_inputs.html">syslog input</a> in Graylog.</p>
+            </li>
+            <li>
+                <p>Configure your syslog server (e.g. rsyslog) to send the logs to Graylog.</p>
+            </li>
+        </ol>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Note</b>:  Only <a href="https://www.ietf.org/rfc/rfc5424.txt">RFC 5424</a> compliant syslog messages are accepted.</div>
+            </section>
+        </p>
+        <h3>Filebeat Configuration</h3>
+        <p>Please refer to the <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">official documentation</a> to setup Graylog Sidecar for Filebeat.</p>
+        <ol>
+            <li>
+                <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> in Graylog.</p>
+            </li>
+            <li>
+                <p>Create an API access token and Linux Filebeat collector.</p>
+            </li>
+            <li>
+                <p>Configure the collector for Sendmail. See the following example snippet:</p>
+            </li>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">filebeat.inputs:
+- input_type: log
+  paths:
+    - /var/log/mail.log
+  type: filestream
+  fields_under_root: true
+  fields:
+    event_source_product: sendmail</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+            <p>
+                <section class="infoBox">
+                    <div class="title"><b>Note:</b><span style="font-weight: normal;"> There must be two spaces in front of <code class="linecode">event_source_product</code> and </span><code class="linecode" style="font-weight: normal;">- /var/log/mail.log</code><span style="font-weight: normal;"> .</span>
+                    </div>
+                </section>
+            </p>
+            <li>
+                <p>Configure the client with Filebeat and Sidecar.</p>
+            </li>
+        </ol>
+        <h2>Log Format Examples</h2>
+        <h4>Receipt Logs</h4>
+        <p><code class="linecode">
+            `qA6KmkmX918730: from=&lt;user@corp.example.com&gt;, size=1286, class=0, nrcpts=1, msgid=&lt;498FC718.7000891@corp.example.com&gt;, proto=ESMTP, daemon=MTA, relay=a.mail.example.com [11.111.11.111]`
+</code><![CDATA[        ]]></p>
+        <h4>Delivery Logs</h4>
+        <p><![CDATA[
+            ]]><code class="linecode">
+            `qABK0GcL913544: to=&lt;user@corp.example.com&gt;, delay=00:00:08, xdelay=00:00:01, mailer=esmtp, pri=1314205, relay=aspmx.l.google.com. [173.194.79.26], dsn=2.0.0, stat=Sent (OK 1234567890 h8au00996754opn.56)`
+</code><![CDATA[        ]]></p>
+        <h4>Ruleset Rejection Logs</h4>
+        <p><code class="linecode">
+            `e5DHeYC11749: ruleset=check_rcpt, arg1=&lt;user@foo.bar.com&gt;, relay=user@mail.bar.com [11.111.11.111], reject=550 5.7.1 &lt;user@foo.bar.com&gt;... Relaying denied`
+</code><![CDATA[        ]]></p>
+        <h4>Authentication Logs</h4>
+        <p><code class="linecode">
+            `AUTH=server, relay=11-111-11-111.srv.foo.bar.com [11.111.11.111] (may be forged), authid=gooduser, mech=PLAIN, bits=0`
+</code><![CDATA[        ]]></p>
+        <h4>STARTTLS Logs</h4>
+        <p><code class="linecode">
+            `STARTTLS=client, relay=gmail-smtp-in.l.google.com., version=TLSv1/SSLv3, verify=OK, cipher=RC4-SHA, bits=128/128`
+</code><![CDATA[        ]]></p>
+        <h4>Connection Logs</h4>
+        <p><code class="linecode">
+            `c22AJzde908658: SMTP outgoing connect on server1.example.com`
+</code><![CDATA[        ]]></p>
+        <h4>Invalid Connection Logs</h4>
+        <p><code class="linecode">
+            `m12Umdcw998259: [11.111.11.111] did not issue MAIL/EXPN/VRFY/ETRN during connection to SSLMTA`
+</code><![CDATA[        ]]></p>
+        <h4>Pregreet Traffic Logs</h4>
+        <p><code class="linecode">
+            `z1ENNTPj905074: rejecting commands from foo.bar.com [11.111.11.111] due to pre-greeting traffic after 0 seconds`
+</code><![CDATA[        ]]></p>
+        <h4>Rejected Discovery Logs</h4>
+        <p><code class="linecode">
+            `u52CZzhr906425: AAAb9625.ne.foo.bar.com [11.111.11.111]: VRFY user [rejected]`
+</code><![CDATA[        ]]></p>
+        <h4>Service Status Logs</h4>
+        <p><code class="linecode">
+            `starting daemon (8.14.4): SMTP+queueing@00:10:00`
+</code><![CDATA[        ]]></p>
+        <h2>Events Processed by This Technology Pack</h2>
+        <p>The Sendmail content pack supports:</p>
+        <ul>
+            <li>
+                <p>Receipt Logs</p>
+            </li>
+            <li>
+                <p>Delivery Logs</p>
+            </li>
+            <li>
+                <p>Ruleset Rejection Logs</p>
+            </li>
+            <li>
+                <p>Authentication Logs</p>
+            </li>
+            <li>
+                <p>STARTTLS Logs</p>
+            </li>
+            <li>
+                <p>Connection Logs</p>
+            </li>
+            <li>
+                <p>Invalid Connection Logs</p>
+            </li>
+            <li>
+                <p>Pregreet Traffic Logs</p>
+            </li>
+            <li>
+                <p>Rejected Discovery Logs</p>
+            </li>
+            <li>
+                <p>Service Status Logs</p>
+            </li>
+        </ul>
+        <h2>Message Fields Included in this Pack</h2>
+        <table cellspacing="21" style="mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');width: 868px;" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 241px;" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 177px;" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                </tr>
+            </thead>
+        </table>
+        <h2>Graylog Illuminate:Sendmail Spotlight Content Pack</h2>
+        <p>The Graylog "Illuminate:Sendmail Spotlight" offers a dashboard with 6 tabs: Sendmail Mail Server Overview, Activity, Delivery Status, Rule Rejection, Authentication, and Processing Statistics</p>
+        <p>&#160;</p>
+        <img src="" />
+        <p>
+            <img src="" />
+        </p>
+        <p>
+            <img src="" />
+        </p>
+        <p>
+            <img src="" />
+        </p>
+    </body>
+</html>
