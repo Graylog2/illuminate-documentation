@@ -83,6 +83,144 @@
                 <p>HTTPS Logs (option httpslog)</p>
             </li>
         </ul>
+        <h2>Input via Filebeat Together with Graylog Sidecar</h2>
+        <p>Please follow <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">the official documentation</a>. You will need to configure your Graylog Server and your client(s).</p>
+        <ol>
+            <li>
+                <p>Create an input and an API key. Then set up Graylog sidecar.</p>
+            </li>
+            <li>
+                <p>Add your clients, e.g. web server.</p>
+            </li>
+        </ol>
+        <p>
+            <section class="infoBox">
+                <div class="content">
+                    <p><b>Hint:</b>&#160; It is possible to run HAProxy and Graylog on the same machine, but this is <b>NOT</b> recommended.</p>
+                </div>
+            </section>
+        </p>
+        <h2>Graylog Server Settings</h2>
+        <ol>
+            <li>
+                <p>Create a global beats input in Graylog.</p>
+            </li>
+            <li>
+                <p>Create a Graylog REST API Access Token and save it.</p>
+            </li>
+            <li>
+                <p>Create a (Linux) filebeat configuration under <i>Sidecar</i> &gt; <i>Configuration</i> with a <code class="linecode">filebeat on Linux</code> collector.</p>
+            </li>
+            <li>
+                <p>After configuring the file:</p>
+                <ol>
+                    <li>
+                        <p>Add the Graylog server IP under hosts.</p>
+                    </li>
+                    <li>
+                        <p>Configure the log source to the desired value and configure the field <code class="linecode">event_source_product</code> with the value <code class="linecode">haproxy</code>. The below template is an example. Please make sure to replace the IP, port and path with the correct values.</p>
+                    </li>
+                </ol>
+            </li>
+        </ol>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">fields_under_root: true
+fields.collector_node_id: ${sidecar.nodeName}
+fields.gl2_source_collector: ${sidecar.nodeId}
+filebeat.inputs:
+    input_type: log
+    paths:
+        /var/log/haproxy.log
+        type: filestream
+        fields_under_root: true
+        fields:
+        event_source_product: haproxy
+        output.logstash:
+        hosts: ["192.168.122.212:5044"]
+        path:
+        data: ${sidecar.spoolDir!"/var/lib/graylog-sidecar/collectors/filebeat"}/data
+        logs: ${sidecar.spoolDir!"/var/lib/graylog-sidecar/collectors/filebeat"}/log</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p>There must be two spaces in front of<code class="linecode">  event_source_product</code> and <code class="linecode">- /var...</code>.</p>
+        <p>Ensure that you save the configuration upon completion.</p>
+        <h2>Configure a Client with Filebeat and Graylog Sidecar</h2>
+        <ol>
+            <li>
+                <p>Install Sidecar on the remote machine. See <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">the official documentation</a> for instructions.</p>
+            </li>
+            <li>
+                <p>Edit the /etc/graylog/sidecar/sidecar.yml file and configure:</p>
+                <ol>
+                    <li>
+                        <p><code class="linecode">server_url</code> as: GraylogServerIP</p>
+                    </li>
+                    <li>
+                        <p><code class="linecode">server_api_token</code> as: your API token</p>
+                    </li>
+                </ol>
+            </li>
+            <li>
+                <p>Install the Sidecar service.</p>
+            </li>
+            <li>
+                <p>Enable and start the Sidecar service.</p>
+            </li>
+            <li>
+                <p>Check the Sidecar status. The following are sample commands for Ubuntu.</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">wget https://packages.graylog2.org/repo/packages/graylog-sidecar-repository_1-5_all.deb
+sudo dpkg -i graylog-sidecar-repository_1-5_all.deb
+sudo apt-get update &amp;&amp; sudo apt-get install graylog-sidecar
+
+sudo gedit /etc/graylog/sidecar/sidecar.yml
+server_url: "http://192.168.122.52:9000/api/"
+server_api_token: "65ol7edseo24mub8o7pu86h2rsr8j9fjjpimtrm9nrpbjso7cnv"
+
+sudo graylog-sidecar -service install
+sudo systemctl enable graylog-sidecar
+sudo systemctl start graylog-sidecar
+sudo systemctl status graylog-sidecar</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+            <li>
+                <p>Install <a href="https://www.elastic.co/downloads/beats/filebeat">Filebeat</a>.</p>
+            </li>
+            <li>
+                <p>Download the link for the <a href="https://www.elastic.co/downloads/beats/filebeat-oss">OSS version</a>.</p>
+                <ol>
+                    <li>
+                        <p>If you choose to install it manually, install it under /etc/filebeat.</p>
+                    </li>
+                    <li>
+                        <p>If you choose to install it via apt-get, no further action is required.</p>
+                        <MadCap:codeSnippet>
+                            <MadCap:codeSnippetCopyButton />
+                            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+sudo apt-get install apt-transport-https
+echo "deb https://artifacts.elastic.co/packages/oss-8.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-8.x.list
+sudo apt-get update &amp;&amp; sudo apt-get install filebeat
+sudo systemctl enable filebeat
+sudo systemctl start filebeat
+sudo systemctl status filebeat</MadCap:codeSnippetBody>
+                        </MadCap:codeSnippet>
+                    </li>
+                    <li>
+                        <p>You may edit thefilebeat.yml file via the Sidecar configuration in Graylog.</p>
+                    </li>
+                </ol>
+            </li>
+            <li>
+                <p>Start the daemon. Any permission issues may be solved with <code class="linecode">sudo chown root filebeat.yml</code>.</p>
+            </li>
+            <li>
+                <p>Configure Filebeat to start automatically after reboot (recommended).</p>
+            </li>
+            <li>
+                <p>Assign a configuration to your machine in Graylog.</p>
+            </li>
+        </ol>
         <h2>Log Format Examples</h2>
         <h3>Connection Log</h3>
         <p><code class="linecode">haproxy[1234]: Connect from 10.0.1.2:33312 to 10.0.3.31:8012 (www/HTTP)</code>
