@@ -7,38 +7,35 @@
         <!--illuminate",-->
     </head>
     <body>
-        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
         <p>Illuminate is a Graylog-provided collection of content comprising pipelines, parsing rules, lookup tables, and more.
- This content enables various event logs to be processed using a standard methodology, leveraging
- the&#160;<a href="https://schema.graylog.org/en/stable/index.html">Graylog schema</a>&#160;and Graylog Information
- Model (GIM) to make searching and analyzing common log sources more efficient.</p>
+ This content enables various event logs to be processed using a standard methodology, leveraging&#160;the <a href="../Schema/Graylog Information Model Schema/Graylog Information Model Schema.htm">Graylog Information
+ Model (GIM) schema</a> to make searching and analyzing common log sources more efficient.</p>
         <p>By enriching and normalizing
  your log data so that the username or IP address is always in the same field, searching for logs becomes much easier
- and faster. Also, you can make more universal dashboards (Dashboards that would work across any data type because it
- is mapped to the schema) as it will not matter which firewall connection you may have, the details all look the
- same.</p>
-        <p>To accomplish this, Illuminate works by ingesting the logs, sorting them, and processing them. The
- sorting process occurs on the original log message as it comes into Graylog, so how the log data is sent affects
+ and faster. Additionally, you can create more universal <a href="https://go2docs.graylog.org/current/interacting_with_your_log_data/dashboards.html">dashboards</a> that will work across any data type, as they are mapped to the schema, and regardless of which firewall connection(s) you may have.</p>
+        <p>To accomplish this, Illuminate works by ingesting logs, sorting them, and processing them. The
+ sorting process occurs on the original log message as it comes into Graylog, so <a href="https://go2docs.graylog.org/current/getting_in_log_data/getting_in_log_data.html">how the log data is sent</a> affects
  whether Illuminate will pick up and process the message correctly. For example, some devices can send logs in
- multiple formats like Syslog compliant messages, BSD compliant messages, and free-form messages. But we have to
- have it in a specific form to make parsing rules work. Please refer to the
-    <a href="https://go2docs.graylog.org/5-0/getting_in_log_data/getting_in_log_data.html">Getting in log data</a> page on the Graylog documentation
- site.
+ multiple formats, like <a href="https://go2docs.graylog.org/current/getting_in_log_data/syslog_inputs.html">syslog-compliant messages</a>, BSD-compliant messages, and free-form messages, but a specific form is still required to make parsing rules work. For specifics on system versions, specific formats, or settings, please refer to
+ the&#160;individual <a href="../Content Packs/Security Content Packs.html">content pack documentation</a>.</p>
+        <h2>Illuminate Licensing </h2>
+        <p>&#160;</p>
+        <p>Contact the
+    <a href="https://go2.graylog.org/contact-sales">Graylog Sales team</a> for more information on license purchase.
 </p>
-        <p>For specifics on system versions, specific formats, or settings, please refer to
- the&#160;<a href="https://go2docs.graylog.org/5-0/what_more_can_graylog_do_for_me/security_content_packs.html">Security Content Packs</a>&#160;page on the
- Graylog documentation site.</p>
         <h2>Illuminate Architecture</h2>
         <p>Illuminate is designed with a processing hierarchy
- that breaks up processing into roughly two steps:</p>
-        <h4>Technology Packs</h4>
+ that breaks up processing into two key areas.</p>
+        <h3>Content Packs</h3>
+        <p>Individual content packs:</p>
         <ul>
-            <li>Identifies logs from the collection of all logs received by a Graylog instance.</li>
-            <li>Performs parsing/normalization and applies the Graylog schema.</li>
-            <li>Identifies specific event message types and assigns type codes.</li>
-            <li>Enriches event messages.</li>
+            <li>Identify logs from the collection of all logs received by a Graylog instance.</li>
+            <li>Perform parsing/normalization and apply the Graylog schema.</li>
+            <li>Identify specific event message types and assigns type codes.</li>
+            <li>Enrich event messages.</li>
         </ul>
-        <h4>Illuminate Core</h4>
+        <h3>Illuminate Core</h3>
+        <p>The Illuminate core processor:</p>
         <ul>
             <li>Provides common processing logic to event log messages.</li>
             <li>Identifies common private/reserved IP addresses.</li>
@@ -49,12 +46,11 @@
  databases.
     </li>
             <li>Optionally provides GIM enforcement which will ensure events have required fields for categories and
- subcategories and identifies potential event categorization issues.
-    </li>
+ subcategories and identifies potential event categorization issues.    </li>
         </ul>
         <h2>Performance Impact of Illuminate</h2>
-        <p>Illuminate log processing allows for items like alert rules,
-    <a href="https://go2docs.graylog.org/5-0/what_more_can_graylog_do_for_me/anomaly_detectors.html">anomaly detectors</a>, and dashboards to work across
+        <p>Illuminate log processing allows for items like <a href="https://go2docs.graylog.org/current/interacting_with_your_log_data/alerts.html">alert rules</a>,
+    <a href="https://go2docs.graylog.org/current/what_more_can_graylog_do_for_me/anomaly_detectors.html">anomaly detectors</a>, and <a href="https://go2docs.graylog.org/current/interacting_with_your_log_data/dashboards.html">dashboards</a> to work across
  various log sources. With Illuminate processing log data, you do not have to create separate rules like "Windows
  Logon Brute Force" and "Linux Logon Brute Force." You only need to create one rule to cover them both.</p>
         <p>As with
@@ -62,29 +58,19 @@
  described above. Gates or sorting rules are the first set evaluated to limit logs to be processed further,
  shortening the number of rules each message touches.</p>
         <p>Processing rules can range from
-    <a href="https://go2docs.graylog.org/5-0/getting_in_log_data/gelf.html">simple key-value extractors</a>, which perform very quickly, to complex regex
+    <a href="https://go2docs.graylog.org/current/getting_in_log_data/gelf.html">simple key-value extractors</a>, which perform very quickly, to complex regex
  statements or GROK patterns. Each rule can have a different performance impact, and each rule can perform
  differently based on the log type, so finding an actual cost per rule is subjective to an environment.</p>
         <h2>
     Indexes and Shards</h2>
         <p>Graylog Illuminate does not use unique values for
-    <a href="https://go2docs.graylog.org/5-0/setting_up_graylog/index_model.html">index and shard settings</a>; instead, it currently takes the
+    <a href="https://go2docs.graylog.org/current/setting_up_graylog/index_model.html">index and shard settings</a>; instead, it currently takes the
  system's default for those settings. After the indexes and streams are created, you can adjust the default settings
  if a replica is needed or for more or fewer shards.</p>
         <p>Illuminate sets up indexes with a retention time based on
  common practices and standards. These settings allow the dashboards, anomaly rules, and alert rules to have enough
  online data to operate. Adjustments to these settings can be made, but note that any previously saved settings can
  be affected.</p>
-        <h2>License Cost</h2>
-        <p>Graylog Enterprise and Security Licenses are calculated based on the amount
- of data written to disk and not the processing of data it ingests.</p>
-        <p>Illuminate adds data to enrich the message,
- like Geo Coordinates or a GIM tag like "logon." While these add to the total amount of data stored on disk,
- additional data in the log can be truncated or removed. Illuminate balances the benefits of enriching log data with
- the cost of storage to give you the best bang for your buck!</p>
-        <p>Contact the
-    <a href="https://go2.graylog.org/contact-sales">Graylog Sales team</a> for more information on license purchase.
-</p>
         <!--OriginalURI: :/illuminate"}],-->
     </body>
 </html>
