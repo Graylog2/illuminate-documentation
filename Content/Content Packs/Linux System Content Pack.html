@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Linux System Content Pack</title>
+        <link href="Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <MadCap:snippetBlock src="Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Linux is a ubiquitous, open-source operating system that powers everything from servers and cloud infrastructure to desktop systems and embedded devices.
+            For its initial release, this technology pack provides common log parsing, normalization and enrichment for Debian/Ubuntu Linux distributions.
+        </p>
+        <h2>Supported Distributions</h2>
+        <ul>
+            <li>Ubuntu 20.04 LTS (Focal Fossa) and 22.04 LTS (Jammy Jellyfish)
+            </li>
+            <li>Debian 11 (bullseye) and 12 (bookworm)
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Note</b>:  While this pack was primarily developed and tested on Ubuntu, it also supports Debian as Ubuntu is based on Debian.
+                    Both distributions share similar log formats for common system outputs like syslog and auth.log.
+                    Minor differences in service naming or security frameworks may exist, but the core log structures are compatible across both platforms.
+                </div>
+            </section>
+        </p>
+        <h2>Requirements</h2>
+        <ul>
+            <li>Minimum of Graylog 6.0.1 with a valid Enterprise license
+            </li>
+        </ul>
+        <h2>Stream Configuration</h2>
+        <p>This technology pack includes one stream:</p>
+        <ul>
+            <li>Illuminate:Linux System Messages
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Note</b>:  If this stream does not exist prior to the activation of this pack then it will be created and
+                    configured to route messages to this stream and the associated index set.There should not be any stream rules configured for this stream.
+                </div>
+            </section>
+        </p>
+        <h2>Index Set Configuration</h2>
+        <p>This technology pack includes one index set definition:</p>
+        <ul>
+            <li>Linux System Logs
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Note</b>:  If this index set is already defined, then nothing will be changed. If this index set does not exist,
+                    then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.
+                </div>
+            </section>
+        </p>
+        <h2>Log Collection</h2>
+        <ul>
+            <li>Syslog (with Rsyslog)
+            </li>
+            <li>Filebeat (with Sidecar)
+            </li>
+        </ul>
+        <h3>Rsyslog Configuration</h3>
+        <p>Sendmail outputs to syslog under mail facility by default.</p>
+        <ol>
+            <li>
+                <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/syslog_inputs.html">syslog input</a> in Graylog.</p>
+            </li>
+            <li>
+                <p>Configure your syslog server (e.g. rsyslog) to send the logs to Graylog.</p>
+            </li>
+        </ol>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Note</b>:  Only <a href="https://www.ietf.org/rfc/rfc5424.txt">RFC 5424</a> compliant syslog messages are accepted.</div>
+            </section>
+        </p>
+        <h3>Filebeat Configuration</h3>
+        <p>Please refer to the <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">official documentation</a> to setup Graylog Sidecar for Filebeat.</p>
+        <ol>
+            <li>
+                <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> in Graylog.</p>
+            </li>
+            <li>
+                <p>Create an API access token and Linux Filebeat collector.</p>
+            </li>
+            <li>
+                <p>Configure the collector for Sendmail. See the following example snippet:</p>
+            </li>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">filebeat.inputs:
+- input_type: log
+  paths:
+    - /var/log/mail.log
+  type: filestream
+  fields_under_root: true
+  fields:
+    event_source_product: sendmail</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+            <p>
+                <section class="infoBox">
+                    <div class="title"><b>Note:</b><span style="font-weight: normal;"> There must be two spaces in front of <code class="linecode">event_source_product</code> and </span><code class="linecode" style="font-weight: normal;">- /var/log/mail.log</code><span style="font-weight: normal;"> .</span>
+                    </div>
+                </section>
+            </p>
+            <li>
+                <p>Configure the client with Filebeat and Sidecar.</p>
+            </li>
+        </ol>        <h2>Log Format Example</h2>
+        <p><span style="background-color: #ffff00;">[Text]</span>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p><span style="background-color: #ffff00;">[Text]</span>
+                </p>
+            </li>
+        </ul>
+        <table style="width: 100%;mc-table-style: url('Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">&#160;</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">&#160;</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">&#160;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">&#160;</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
+        <p>The <span style="background-color: #ffff00;">[title]</span> content pack supports <span style="background-color: #ffff00;">[text]</span>.</p>
+        <h2 id="packetbeat-spotlight-content-pack"><span style="background-color: #ffff00;">[TITLE]</span> Spotlight Content Pack</h2>
+        <p><span style="background-color: #ffff00;">[Title]</span> offers a dashboard with <span style="background-color: #ffff00;">[x]</span> tabs: <span style="background-color: #ffff00;">[list of tabs]</span>.</p>
+        <p><span style="background-color: #ffff00;">[Images may be inserted below.]</span>
+        </p>
+    </body>
+</html>
