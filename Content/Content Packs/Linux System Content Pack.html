@@ -18,7 +18,7 @@
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Note</b>:  While this pack was primarily developed and tested on Ubuntu, it also supports Debian as Ubuntu is based on Debian.
+                <div class="title" style="font-weight: normal;"><b>Note</b>:  While the initial release of this pack was primarily developed and tested on Ubuntu, it also supports Debian as Ubuntu is based on Debian.
                     Both distributions share similar log formats for common system outputs like syslog and auth.log.
                     Minor differences in service naming or security frameworks may exist, but the core log structures are compatible across both platforms.
                 </div>
@@ -56,22 +56,39 @@
             </section>
         </p>
         <h2>Log Collection</h2>
+        <p>This pack primarily parses logs written to syslog and auth.log under the /var/log directory.
+            The following log forwarders are recommended:
+        </p>
         <ul>
-            <li>Syslog (with Rsyslog)
+            <li>Rsyslog
             </li>
-            <li>Filebeat (with Sidecar)
+            <li>Filebeat (with Graylog Sidecar)
             </li>
         </ul>
         <h3>Rsyslog Configuration</h3>
-        <p>Sendmail outputs to syslog under mail facility by default.</p>
         <ol>
             <li>
                 <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/syslog_inputs.html">syslog input</a> in Graylog.</p>
             </li>
             <li>
-                <p>Configure your syslog server (e.g. rsyslog) to send the logs to Graylog.</p>
+                <p>Configure rsyslog to send logs under <code class="linecode">/var/log</code> to Graylog.
+                    You can specifically forward messages from syslog and auth.log as the pack primarily targets these log sources.</p>
             </li>
-        </ol>
+            <li>
+                <p>Create a custom template that identifies the logs as Linux logs for the parser to recognize.
+                    The simplest method is to set the field <code class="linecode">event_source_product</code> as "linux" in the structured data
+                    portion of the syslog message. See the following example template configuration:
+                </p>
+            </li>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton />
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">
+template(name="Custom_Linux_SyslogProtocol23Format" type="string" string="<%PRI%>1 %TIMESTAMP:::date-rfc3339% %HOSTNAME% %APP-NAME% %PROCID% %MSGID% [origin event_source_product=\"linux\"] %MSG%\n")
+
+*.* action(type="omfwd" target="YOUR GRAYLOG SERVER" port="514" protocol="udp" template="Custom_Linux_SyslogProtocol23Format")
+            </MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+            </ol>
         <p>
             <section class="infoBox">
                 <div class="title" style="font-weight: normal;"><b>Note</b>:  Only <a href="https://www.ietf.org/rfc/rfc5424.txt">RFC 5424</a> compliant syslog messages are accepted.</div>
@@ -81,83 +98,50 @@
         <p>Please refer to the <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">official documentation</a> to setup Graylog Sidecar for Filebeat.</p>
         <ol>
             <li>
-                <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> in Graylog.</p>
+                <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> in Graylog.
+                    Ensure that the option "Do not add Beats type as prefix" is disabled.
+                </p>
             </li>
             <li>
-                <p>Create an API access token and Linux Filebeat collector.</p>
+                <p>Create an API access token and custom Linux Filebeat collector.</p>
             </li>
             <li>
-                <p>Configure the collector for Sendmail. See the following example snippet:</p>
+                <p>Configure the collector to ship messages in syslog and auth.log to Graylog. The Filebeat input must add the field <code class="linecode">event_source_product: linux</code> for the parser to identify the log source as Linux.
+                    In addition, the option <code class="linecode">fields_under_root</code> must be set to <code class="linecode">true</code> for message identification to work. See the following example snippet:
+                </p>
             </li>
         <MadCap:codeSnippet>
             <MadCap:codeSnippetCopyButton />
             <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">filebeat.inputs:
 - input_type: log
   paths:
-    - /var/log/mail.log
+    - /var/log/auth.log
+    - /var/log/syslog
   type: filestream
   fields_under_root: true
   fields:
-    event_source_product: sendmail</MadCap:codeSnippetBody>
+    event_source_product: linux</MadCap:codeSnippetBody>
         </MadCap:codeSnippet>
-            <p>
-                <section class="infoBox">
-                    <div class="title"><b>Note:</b><span style="font-weight: normal;"> There must be two spaces in front of <code class="linecode">event_source_product</code> and </span><code class="linecode" style="font-weight: normal;">- /var/log/mail.log</code><span style="font-weight: normal;"> .</span>
-                    </div>
-                </section>
-            </p>
             <li>
-                <p>Configure the client with Filebeat and Sidecar.</p>
+                <p>Install Graylog Sidecar on the client host.</p>
             </li>
-        </ol>        <h2>Log Format Example</h2>
-        <p><span style="background-color: #ffff00;">[Text]</span>
-        </p>
+            <li>
+                <p>Edit the Graylog Sidecar client configuration with your Graylog server API URL and API access token.</p>
+            </li>
+        </ol>
         <h2 id="what-is-provided">What is Provided</h2>
         <ul>
             <li>
-                <p><span style="background-color: #ffff00;">[Text]</span>
+                <p>
+                    Rules to parse, normalize and enrich Linux system log messages
+                </p>
+            </li>
+            <li>
+                <p>
+                    A dashboard displaying events and statistics of interest
                 </p>
             </li>
         </ul>
-        <table style="width: 100%;mc-table-style: url('Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-            <thead>
-                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">&#160;</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">&#160;</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">&#160;</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">&#160;</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">&#160;</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">&#160;</td>
-                </tr>
-            </tbody>
-        </table>
         <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
         <p>The <span style="background-color: #ffff00;">[title]</span> content pack supports <span style="background-color: #ffff00;">[text]</span>.</p>
         <h2 id="packetbeat-spotlight-content-pack"><span style="background-color: #ffff00;">[TITLE]</span> Spotlight Content Pack</h2>
