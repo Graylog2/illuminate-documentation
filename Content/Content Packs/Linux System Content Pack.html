@@ -1,68 +1,75 @@
-<?xml version="1.0" encoding="utf-8"?>
-<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html lang="en" xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
     <head>
-        <link href="Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Linux System Logs Content Pack</title>
-        <link href="Resources/Stylesheets/Styles.css" rel="stylesheet" />
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" /><title> Linux System Content Pack
+</title>
+        <!-- original-url : linux-auditbeat
+## article-id : 3a14acbf-0fb7-4598-8f13-84dd49068504
+## seo-title : Linux Auditbeat
+## description : 
+## Metadata_End -->
     </head>
     <body>
-        <MadCap:snippetBlock src="Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>Linux is a ubiquitous, open-source operating system that powers everything from servers and cloud infrastructure to desktop systems and embedded devices.
-            For its initial release, this technology pack provides common log parsing, normalization and enrichment for Debian/Ubuntu Linux distributions.
-        </p>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Linux is a ubiquitous, open-source operating system that powers everything from servers and cloud infrastructure to desktop systems and embedded devices.</p>
+        <p>This technology pack provides common log parsing, normalization, and enrichment for Debian/Ubuntu Linux distributions.</p>
         <h2>Supported Distributions</h2>
         <ul>
-            <li>Ubuntu 20.04 LTS (Focal Fossa) and 22.04 LTS (Jammy Jellyfish)
+            <li>
+                <p>Ubuntu 20.04 LTS (Focal Fossa) and 22.04 LTS (Jammy Jellyfish)</p>
             </li>
-            <li>Debian 11 (bullseye) and 12 (bookworm)
+            <li>
+                <p>Debian 11 (bullseye) and 12 (bookworm)</p>
             </li>
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Note</b>:  While the initial release of this pack was primarily developed and tested on Ubuntu, it also supports Debian as Ubuntu is based on Debian.
-                    Both distributions share similar log formats for common system outputs like syslog and auth.log.
-                    Minor differences in service naming or security frameworks may exist, but the core log structures are compatible across both platforms.
+                <div class="content">
+                    <p><b>Hint:</b> While the initial release of this pack was primarily developed and tested on Ubuntu, it also supports Debian as Ubuntu is based on Debian. Both distributions share similar log formats for common system outputs like syslog and auth.log. Minor differences in service naming or security frameworks may exist, but the core log structures are compatible across both platforms.</p>
                 </div>
             </section>
         </p>
         <h2>Requirements</h2>
         <ul>
-            <li>Minimum of Graylog 6.0.1 with a valid Enterprise license
+            <li>
+                <p>Graylog 6.0.1+ with a valid Enterprise license</p>
             </li>
         </ul>
         <h2>Stream Configuration</h2>
         <p>This technology pack includes one stream:</p>
         <ul>
-            <li>Illuminate:Linux System Messages
-            </li>
+            <li>“Illuminate:Linux System Messages”</li>
         </ul>
-        <p>
-            <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Note</b>:  If this stream does not exist prior to the activation of this pack then it will be created and
-                    configured to route messages to this stream and the associated index set.There should not be any stream rules configured for this stream.
-                </div>
-            </section>
-        </p>
+        <section class="infoBox">
+            <div class="content">
+                <p><b>Hint:</b> If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</p>
+            </div>
+        </section>
         <h2>Index Set Configuration</h2>
         <p>This technology pack includes one index set definition:</p>
         <ul>
-            <li>Linux System Logs
-            </li>
+            <li>"Linux System Logs"</li>
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Note</b>:  If this index set is already defined, then nothing will be changed. If this index set does not exist,
-                    then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
                 </div>
             </section>
         </p>
         <h2>Log Collection</h2>
-        <p>This pack primarily parses logs written to syslog and auth.log under the /var/log directory.
-            The following log forwarders are recommended:
-        </p>
+        <p>This pack primarily parses logs written to syslog and auth.log under the /var/log directory.</p>
+        <p>The following log forwarders are recommended:</p>
         <ul>
-            <li>Rsyslog
+            <li>
+                <p>
+                    <MadCap:annotation MadCap:createDate="2024-10-11T09:46:36.4841997-08:00" MadCap:creator="AnnieZempel" MadCap:initials="AN" MadCap:comment="Insert link here and below to docs." MadCap:editor="AnnieZempel" MadCap:editDate="2024-10-11T09:46:41.7720049-08:00">Rsyslog</MadCap:annotation>
+                </p>
             </li>
-            <li>Filebeat (with Graylog Sidecar)
+            <li>
+                <p>Filebeat (with Graylog Sidecar)</p>
             </li>
         </ul>
         <h3>Rsyslog Configuration</h3>
@@ -71,49 +78,51 @@
                 <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/syslog_inputs.html">syslog input</a> in Graylog.</p>
             </li>
             <li>
-                <p>Configure rsyslog to send logs under <code class="linecode">/var/log</code> to Graylog.
-                    You can specifically forward messages from syslog and auth.log as the pack primarily targets these log sources.</p>
+                <p>Configure rsyslog to send logs under <code class="linecode">/var/log</code> to Graylog.</p>
             </li>
             <li>
-                <p>Create a custom template that identifies the logs as Linux logs for the parser to recognize.
-                    The simplest method is to set the field <code class="linecode">event_source_product</code> as "linux" in the structured data
-                    portion of the syslog message. See the following example template configuration:
-                </p>
+                <p>You can specifically forward messages from syslog and auth.log as the pack primarily targets these log sources.</p>
             </li>
-        <MadCap:codeSnippet>
-            <MadCap:codeSnippetCopyButton />
-            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">
-template(name="Custom_Linux_SyslogProtocol23Format" type="string" string="<%PRI%>1 %TIMESTAMP:::date-rfc3339% %HOSTNAME% %APP-NAME% %PROCID% %MSGID% [origin event_source_product=\"linux\"] %MSG%\n")
+            <li>
+                <p>Create a custom template that identifies the logs as Linux logs for the parser to recognize.</p>
+            </li>
+            <li>
+                <p>The simplest method is to set the field <code class="linecode">event_source_product</code> as <code class="linecode">linux</code> in the structured data portion of the syslog message. See the following example template configuration:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">template(name="Custom_Linux_SyslogProtocol23Format" type="string" string="&lt;%PRI%&gt;1 %TIMESTAMP:::date-rfc3339% %HOSTNAME% %APP-NAME% %PROCID% %MSGID% [origin event_source_product=\"linux\"] %MSG%\n")
 
-*.* action(type="omfwd" target="YOUR GRAYLOG SERVER" port="514" protocol="udp" template="Custom_Linux_SyslogProtocol23Format")
-            </MadCap:codeSnippetBody>
-        </MadCap:codeSnippet>
-            </ol>
+*.* action(type="omfwd" target="YOUR GRAYLOG SERVER" port="514" protocol="udp" template="Custom_Linux_SyslogProtocol23Format")</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+        </ol>
         <p>
             <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Note</b>:  Only <a href="https://www.ietf.org/rfc/rfc5424.txt">RFC 5424</a> compliant syslog messages are accepted.</div>
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">Only <a href="https://www.ietf.org/rfc/rfc5424.txt">RFC 5424</a>-compliant syslog messages are accepted.</span>
+                </div>
             </section>
-        </p>
-        <h3>Filebeat Configuration</h3>
-        <p>Please refer to the <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">official documentation</a> to setup Graylog Sidecar for Filebeat.</p>
-        <ol>
-            <li>
-                <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> in Graylog.
-                    Ensure that the option "Do not add Beats type as prefix" is disabled.
-                </p>
-            </li>
-            <li>
-                <p>Create an API access token and custom Linux Filebeat collector.</p>
-            </li>
-            <li>
-                <p>Configure the collector to ship messages in syslog and auth.log to Graylog. The Filebeat input must add the field <code class="linecode">event_source_product: linux</code> for the parser to identify the log source as Linux.
-                    In addition, the option <code class="linecode">fields_under_root</code> must be set to <code class="linecode">true</code> for message identification to work. See the following example snippet:
-                </p>
-            </li>
-        <MadCap:codeSnippet>
-            <MadCap:codeSnippetCopyButton />
-            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">filebeat.inputs:
-- input_type: log
+            <h3>Filebeat Configuration</h3>
+            <ol>
+                <li>
+                    <p>Please refer to the official documentation to <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">set up Graylog Sidecar for Filebeat</a>.</p>
+                </li>
+                <li>
+                    <p>Create <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">a matching Beats input in Graylog</a>.</p>
+                </li>
+                <li>
+                    <p>Ensure that the option <i>Do not add Beats type as prefix</i> is disabled.</p>
+                </li>
+                <li>
+                    <p>Create an API access token and custom Linux Filebeat collector.</p>
+                </li>
+                <li>
+                    <p>Configure the collector to ship messages in syslog and auth.log to Graylog. The Filebeat input must add the field <code class="linecode">event_source_product: linux</code> for the parser to identify the log source as Linux.</p>
+                </li>
+                <li>
+                    <p>In addition, the option <code class="linecode">fields_under_root</code> must be set to <code class="linecode">true</code> for message identification to work. See the following example:</p>
+                    <MadCap:codeSnippet>
+                        <MadCap:codeSnippetCopyButton />
+                        <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">- input_type: log
   paths:
     - /var/log/auth.log
     - /var/log/syslog
@@ -121,24 +130,26 @@ template(name="Custom_Linux_SyslogProtocol23Format" type="string" string="<%PRI%
   fields_under_root: true
   fields:
     event_source_product: linux</MadCap:codeSnippetBody>
-        </MadCap:codeSnippet>
-            <li>
-                <p>Install Graylog Sidecar on the client host.</p>
-            </li>
-            <li>
-                <p>Edit the Graylog Sidecar client configuration with your Graylog server API URL and API access token.</p>
-            </li>
-        </ol>
-        <h2 id="what-is-provided">What is Provided</h2>
+                    </MadCap:codeSnippet>
+                </li>
+                <li>
+                    <p>Install Graylog Sidecar on the client host.</p>
+                </li>
+                <li>
+                    <p>Edit the Graylog Sidecar client configuration with your Graylog server API URL and API access token.</p>
+                </li>
+            </ol>
+        </p>
+        <h2>What is Provided</h2>
         <ul>
             <li>
-                <p>Rules to parse, normalize and enrich Linux system log messages</p>
+                <p>Rules to parse, normalize, and enrich Linux system log messages</p>
             </li>
             <li>
                 <p>A dashboard displaying events and statistics of interest</p>
             </li>
         </ul>
-        <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
+        <h2>Events Processed by This Technology Pack</h2>
         <p>The Linux System Logs content pack supports the following log types. Generic processing will be provided for log types not listed.</p>
         <ul>
             <li>
@@ -166,58 +177,849 @@ template(name="Custom_Linux_SyslogProtocol23Format" type="string" string="<%PRI%
                 <p>Group Activity Logs</p>
             </li>
         </ul>
-        <p>GIM categorization is provided for the following messages **see attachment in PR**:</p>
-        <table>
-            <!--This table contains GIM categorization, **see attachment in PR**-->
+        <h3>GIM Categorization </h3>
+        <p>GIM categorization is provided for the following messages:</p>
+        <table cellspacing="21" style="mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col style="width : 108.75px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col style="width : 179.25px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col style="width : 68.25px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col style="width : 158.25px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col style="width : 99.75px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Log Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Vendor Event Description</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Event Type Code</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">pam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Authentication failure</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">109999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ssh</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Postponed keyboard-interactive</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">109999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ssh</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Accepted password</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.credential validaion</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">100500</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ssh</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Accepted publickey</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.credential validaion</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">100500</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ssh</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Failed password (for invalid/illegal user)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.credential validaion</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">100500</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ssh</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Failed publickey (for invalid/illegal user)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.credential validaion</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">100500</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">systemd</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Service status message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">219999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">systemd</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Unit service entered &lt;STATE&gt; state</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">219999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">systemd</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Failed with result</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">219999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">systemd</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Main process exited</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">219999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">systemd</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Control process exited</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">219999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">users/groups</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Changed password expiry for user</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">119999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">users/groups</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Changed user information</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">119999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">users/groups</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Changed user shell</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">119999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">users/groups</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User added to group</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">119999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">users/groups</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">User removed from group</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">119999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">users/groups</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User created</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">119999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">users/groups</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">User deleted</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">119999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">users/groups</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User username changed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">119999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">users/groups</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">User password changed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">119999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">users/groups</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User ID changed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">119999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">users/groups</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Group removed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">119999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">users/groups</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Group ID changed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">119999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">users/groups</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Group password changed by user</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">119999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">users/groups</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Group password removed by user</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">iam.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">119999</td>
+                </tr>
+            </tbody>
         </table>
-        <section class="infoBox">
-            <div class="title" style="font-weight: normal;"><b>Note</b>:  GIM categorization for IAM events currently lacks support for events referencing group entities.
-                This might be changed in a future iteration of the schema, at which point the implementation of GIM categorization for IAM events in this pack will become more granular.
-            </div>
-        </section>        
-        <h2 id="message-fields-included-in-this-pack">Message Fields Included in This Pack **see attachment in PR**</h2>
-        <table>
-            <!--This table contains parsed fields, **see attachment in PR**-->
+        <p>
+            <section class="infoBox">
+                <div class="content">
+                    <p><b>Hint:</b> GIM categorization for IAM events currently lacks support for events referencing group entities. </p>
+                </div>
+            </section>
+        </p>
+        <h3>Message Fields Included in This Pack</h3>
+        <table cellspacing="21" style="mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');width: 1153px;" class="TableStyle-Alternate-Row-Color">
+            <col style="width : 231px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col style="width: 493px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col style="width: 177px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col style="width: 229px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead class="s16">
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                </tr>
+            </thead>
+            <tbody class="s16">
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" MadCap:pattern="4">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2" style="font-weight: bold;">General Parsing</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2" style="font-weight: bold;">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2" style="font-weight: bold;">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2" style="font-weight: bold;">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">application_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">sshd</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">This field is generated by the syslog input or parsed from the syslog header in Filebeat messages</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">facility</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">security/authorization</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">This field is generated by the syslog input</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">process_id</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">5222</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword/loweronly</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">This field is generated by the syslog input</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">prodlxv01</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Hostname or IP of the source system that generated the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2" style="font-weight: bold;">SSH</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2" style="font-weight: bold;">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2" style="font-weight: bold;">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2" style="font-weight: bold;">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">event_outcome</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">success</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The outcome of the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">event_repeat_count</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Count of times a message has been repeated</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">host_ip</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10.1.2.3</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IP address that the SSH server  binds to</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">host_port</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">22</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Port that the SSH server listens on</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_ip</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10.1.2.3</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IP address of the client</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">source_hostname</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">workstation.corp.example.com</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Hostname of the client</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_port</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">62681</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Port from which the client connects</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">user_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">webadmin</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The user used to authenticate or associated with the session</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_credential_type</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">publickey</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The type of credentials used for authentication</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_event_action</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">refused</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The action taken in the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_event_description</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Accepted password</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The description of the event action</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_event_outcome</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">not allowed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The vendor-defined outcome of the action described in the message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_event_outcome_reason</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">not listed in AllowUsers</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The vendor-provided text detailing the reason for the event outcome</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_ssh_signature</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ED25519 SHA256:YbexxF5dVcxxmEh9xx/DuXoUX6xxLvKI2u3xx7LjYuw</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The fingerprint of the key or certificate used for authentication</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1" style="font-weight: bold;">Sudo</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1" style="font-weight: bold;">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1" style="font-weight: bold;">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1" style="font-weight: bold;">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">event_outcome</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">success</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The outcome of the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">process_command_line</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">/bin/bash</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The full command line that the user attempted to execute</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">process_working_directory</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">/home/user1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The current working directory that the process was called from</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_user_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The user that initiated the request to run a command with elevated privileges</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">user_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">root</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The user that the command is run as</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_event_description</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User executed a command with elevated privileges</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The description of the event action</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_event_outcome</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">success</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The outcome describing whether the sudo attempt was successful or not</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_sudo_error</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user <b>NOT</b> in sudoers</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The error that occurred, often indicating a failed sudo attempt</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_tty</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">pts/1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The terminal from which the sudo command was executed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1" style="font-weight: bold;">Su</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1" style="font-weight: bold;">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1" style="font-weight: bold;">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1" style="font-weight: bold;">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">event_outcome</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">success</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The outcome of the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_user_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The user that initiated the action to switch to another user</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">user_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user2</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The target user that the original user attempted to switch to</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_event_description</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Failed user attempt to switch to another user</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The description of the event action</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_event_outcome</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">FAILED</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The outcome describing whether the su attempt was successful or not</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_tty</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">pts/0</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The terminal from which the su command was executed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2" style="font-weight: bold;">PAM</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2" style="font-weight: bold;">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2" style="font-weight: bold;">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2" style="font-weight: bold;">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">event_outcome</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">failure</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The outcome of the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">source_ip</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">10.1.2.3</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Remote IP address from which the authentication attempt originated</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_hostname</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">workstation.corp.example.com</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Remote hostname from which the authentication attempt originated</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">source_user_id</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">ID of the user or process that initiated the session for another user</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_user_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The remote user that made the authentication attempt or user that initiated the session</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">user_id</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">ID of the user for which a session was opened/closed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">user_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user2</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The user account being authenticated or the user for which a session was opened/closed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_event_action</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">opened</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The action taken in the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_event_description</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Session opened for user</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The description of the event action</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_pam_euid</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The effective user ID used to execute the process, which may differ from the real user ID</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_pam_function</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">auth</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The specific function being invoked by PAM</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_pam_logname</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The login name of the user</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_pam_module</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">pam_unix</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The name of the PAM module handling the authentication</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_pam_service_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">sshd</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The service or application using PAM for authentication</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_pam_uid</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">ID of the user being authenticated or of the process facilitating the authentication</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_tty</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">/dev/pts/0</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The terminal over which the authentication attempt was made</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1" style="font-weight: bold;">Systemd</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1" style="font-weight: bold;">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1" style="font-weight: bold;">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1" style="font-weight: bold;">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">event_outcome</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">failure</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The outcome of the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">service_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">logrotate</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The name of the service</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">service_state</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">active</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The state of the service</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_event_action</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Finished</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The action taken in the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_event_description</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Main process exited</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The description of the event action</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_event_outcome</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Failed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The vendor-defined outcome of the action described in the message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_systemd_code</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">exited</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The exit code returned by the process when it terminates</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_systemd_service_status</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Deactivated successfully.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The general status of the service</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_systemd_status_code</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The status code that indicates the result of the process</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_systemd_status_description</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">FAILURE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The description of the status of the service after its process has terminated</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_systemd_unit_description</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Rotate log files</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The description of the systemd unit, often from when it changes state</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1" style="font-weight: bold;">Cron</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1" style="font-weight: bold;">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1" style="font-weight: bold;">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1" style="font-weight: bold;">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">process_command_line</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cd / &amp;&amp; run-parts --report /etc/cron.hourly</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The full command line scheduled to run</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_user_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">root</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The user that modified the crontab of itself or another user</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">user_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The user that the command is run under or whose crontab is modified</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_cron_error</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">grandchild #2176 failed with exit status 1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The error that occurred during a job or when processing crontab</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_cron_info</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Running @reboot jobs</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The general information output from a job</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_event_description</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Cron job initiated</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The description of the event action</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2" style="font-weight: bold;">User and Group Activity</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2" style="font-weight: bold;">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2" style="font-weight: bold;">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2" style="font-weight: bold;">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_user_id</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1001</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">ID of the user account impacting another user account, or the ID before a change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">source_user_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Name of the user account impacting another user account, or the name before a change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">user_id</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1002</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">ID of the user account</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">user_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user2</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Name of the user account</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_event_action</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">created</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The action taken in the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_event_description</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">User created</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The description of the event action</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_source_group_id</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">998</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">ID of the group before a change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_source_group_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">group1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Name of the group before a change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_group_id</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">ID of the group</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_group_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">group2</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Name of the group</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_tty</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">/dev/pts/0</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The terminal from which an action was taken</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_user_home</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">/home/user1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">User home directory</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><code class="linecode">vendor_user_shell</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">/bin/bash</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">User login shell</td>
+                </tr>
+            </tbody>
         </table>
-        <section class="infoBox">
-            <div class="title" style="font-weight: normal;"><b>Note</b>:  Usernames are case-sensitive in some Linux distributions. While case is retained in the original message and in extracted fields like
-                <code class="linecode">user_name</code> and <code class="linecode">source_user_name</code>, searches will treat the values as case-insensitive.
-                For example, a search for <code class="linecode">user_name:user1</code> would return results containing both cases.
-            </div>
-        </section>
-        <h2 id="linux-system-logs-spotlight-content-pack">Linux System Logs Spotlight Content Pack</h2>
-        <p>The Linux System Logs Spotlight Content Pack offers a dashboard with 4 tabs:</p>
-        <ul>
-            <li>
-                <p>Linux System Overview</p>
-            </li>
-        </ul>
         <p>
-            <img src="../Resources/Images/Linux System Content Pack/overview.png">
-        </p>
-        <ul>
-            <li>
-                <p>SSH</p>
-            </li>
-        </ul>
-        <p>
-            <img src="../Resources/Images/Linux System Content Pack/ssh.png">
-        </p>
-        <ul>
-            <li>
-                <p>Sudo</p>
-            </li>
-        </ul>
-        <p>
-            <img src="../Resources/Images/Linux System Content Pack/sudo.png">
-        </p>
-        <ul>
-            <li>
-                <p>Users and Groups</p>
-            </li>
-        </ul>
-        <p>
-            <img src="../Resources/Images/Linux System Content Pack/users_groups.png">
+            <section class="infoBox">
+                <div class="content">
+                    <p><b>Hint:</b> User names are case-sensitive in some Linux distributions. While case is retained in the original message and in extracted fields like <code class="linecode">user_name</code> and <code class="linecode">source_user_name</code>, searches will treat the values as case-insensitive. For example, a search for <code class="linecode">user_name:user1</code> would return results containing both cases.</p>
+                </div>
+            </section>
+            <h2>Linux System Logs Spotlight Content Pack</h2>
+            <h3>Linux System Overview</h3>
+            <p>
+                <img src="../Resources/Images/Linux System Content Pack/overview.png" />
+            </p>
+            <h3>SSH</h3>
+            <p>
+                <img src="../Resources/Images/Linux System Content Pack/ssh.png" />
+            </p>
+            <h3>Sudo</h3>
+            <p>
+                <img src="../Resources/Images/Linux System Content Pack/sudo.png" />
+            </p>
+            <h3>Users and Groups</h3>
+            <p>
+                <img src="../Resources/Images/Linux System Content Pack/users_groups.png" />
+            </p>
         </p>
     </body>
 </html>
