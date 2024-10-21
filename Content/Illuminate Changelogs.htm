@@ -3,6 +3,144 @@
     <head><title>Illuminate Changelogs</title>
     </head>
     <body>
+        <h2>Illuminate 6.0.0</h2>
+        <p>Released:&#160;2024-10-21</p>
+        <h4>Added</h4>
+        <ul>
+            <li>
+                <p><a href="Content Packs/Google Workspace Content Pack.html">Google Workspace</a>: Google Workspace Content Pack (2064)</p>
+                <ul>
+                    <li>
+                        <p>Google Workspace is a collection of cloud computing, productivity and collaboration tools, software and products developed and marketed by Google. It consists of Gmail, Contacts, Calendar, Meet, Chat, Drive, and Google Docs.  Admin-related logs are included.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Graylog Compliance: Add remote access dashboard (2342)</p>
+            </li>
+            <li>
+                <p>Windows Security: Added parsing for Event ID 5379 (2170)</p>
+            </li>
+            <li>
+                <p><a href="Content Packs/Cisco Umbrella Content Pack.html">Cisco Umbrella</a>: Added support for Cisco Umbrella (2066)</p>
+                <ul>
+                    <li>
+                        <p>Cisco Umbrella is a cloud-delivered security platform that provides threat intelligence, secure access, and protection against internet-based threats.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p><a href="Content Packs/Webserver Sigma Rules Content Pack.html">Added Curated Alerts - Webserver</a> (2235)</p>
+                <ul>
+                    <li>
+                        <p>Adds a spotlight pack containing Sigma-formatted alerts provided by SOC Prime and curated by the Graylog team. This may include some modifications of the source rules to align with the GIM schema and the Graylog team's findings.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p> Windows Security: Added parsing for Windows Event ID 5145 (728)</p>
+            </li>
+            <li>
+                <p>Windows Security: Added support for Event ID 4660 and 4658 (2216)</p>
+            </li>
+            <li>
+                <p><a href="What is Illuminate/Graylog Illuminate.html#Graylog">Illuminate: Added Open edition bundle</a> (2300)</p>
+            </li>
+            <li>
+                <p><a href="Content Packs/Linux System User Activity Sigma Rules Content Pack.html">Added Curated Alerts - Linux</a> (2241)</p>
+                <ul>
+                    <li>
+                        <p>Adds a spotlight pack containing Sigma-formatted Linux alerts provided by SOC Prime and curated by the Graylog team. This may include some modifications of the source rules to align with the GIM schema and the Graylog team's findings.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Windows Security: Added support for Windows Event ID 4656 (1973)</p>
+            </li>
+            <li>
+                <p>Curated Alerts: Remote Desktop From Internet: added 172.22.x range and fixed GIM field (2212)</p>
+            </li>
+            <li>
+                <p>Renamed non existing GIM field from <code class="linecode">source_is_reserved</code> to existing GIM field <code class="linecode">source_reserved_ip</code></p>
+            </li>
+            <li>
+                <p>MS365: Added processing of Endpoint subtype events (2108)</p>
+                <ul>
+                    <li>
+                        <p>Added processing for MS365 Endpoint file events: <code class="linecode">FileModified</code>, <code class="linecode">FileCreated</code>, <code class="linecode">FileDeleted</code>, <code class="linecode">FileRenamed</code>, <code class="linecode">FileDownloadedFromBrowser</code>, <code class="linecode">ArchiveCreated</code>, <code class="linecode">DlpRuleMatch</code>, <code class="linecode">FileRead</code>, <code class="linecode">FileCopiedToRemovableMedia</code>. This includes field extraction, categorization, and updating the message field with a brief event summary.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Core: Added 16 new sigma mappings (1292)</p>
+            </li>
+            <li>
+                <p> <a href="Content Packs/Linux System Content Pack.html">Linux System Logs</a>: Initial technology pack (2217)</p>
+                <ul>
+                    <li>
+                        <p>Linux is a widely-used, open-source operating system that powers everything from servers and  cloud infrastructure to desktop systems and embedded devices. For its initial release, this  technology pack supports common Syslog and auth logs from Debian/Ubuntu distributions.</p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h4>Fixed</h4>
+        <ul>
+            <li>
+                <p>MS365: <code class="linecode">CompliancePostureManagement</code> events not being processed  (2302)</p>
+            </li>
+            <li>
+                <p>Curated Alerts: Improved rule: Illuminate - Windows Security - Remote Desktop From Internet (2246)</p>
+                <ul>
+                    <li>
+                        <p>Changed the <code class="linecode">source_reference</code> field in this sigma rule to <code class="linecode">source_ip</code> field to reduce the number of false-positives.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Fortigate: Fixed wrong <code class="linecode">event_action</code> mapping (2327)</p>
+                <ul>
+                    <li>
+                        <p>The <code class="linecode">event_action</code> for server-rst and client-rst set to allowed. The field <code class="linecode">utmaction</code> was set to <code class="linecode">vendor_event_action</code> but changed to <code class="linecode">vendor_utm_action</code>.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Crowdstrike: Content and spotlight improvements (2140)</p>
+                <ul>
+                    <li>
+                        <p>Revamped our Crowdstrike Falcon dashboards to improve alert focus, expanded coverage for additional alert subtypes,  and resolved the misidentification of API events as authentication events, resulting in more accurate and comprehensive alert tracking.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>MS365: Fixed logic for pipeline rule execution related to setting the message field (2289)</p>
+                <ul>
+                    <li>
+                        <p>Pipeline processing order logic was preventing the message field from being properly set.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>MS365: <code class="linecode">source_port</code> no longer set to <code class="linecode">0</code> when no source port exists in source JSON (2270)</p>
+            </li>
+        </ul>
+        <h4>Changed</h4>
+        <ul>
+            <li>
+                <p>Windows Security: Change Request-Add <code class="linecode">remote_access</code> GIM tag for RDP sessions (2332)</p>
+            </li>
+            <li>
+                <p>MS365: Replaced occurrences of <code class="linecode">vendor_event_type</code> with <code class="linecode">vendor_event_action</code> in Spotlight (2274)</p>
+                <ul>
+                    <li>
+                        <p>Changes to processing now rely on <code class="linecode">vendor_event_action</code>; <code class="linecode">vendor_event_type</code> is now considered a legacy field.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Palo Alto: Add GIM tag <code class="linecode">remote_access</code> for Global Protect logs (2340)</p>
+            </li>
+        </ul>
         <h2>Illuminate 5.2.0</h2>
         <p>Released:&#160;2024-08-07</p>
         <h4>Added</h4>
