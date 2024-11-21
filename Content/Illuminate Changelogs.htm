@@ -3,6 +3,235 @@
     <head><title>Illuminate Changelogs</title>
     </head>
     <body>
+        <h2>Illuminate 6.1.0</h2>
+        <p>Released:&#160;2024-11-21</p>
+        <h4>Added</h4>
+        <ul>
+            <li>
+                <p>Sysmon: Added <code class="linecode">user_name</code> parsing for <code class="linecode">event_code 16</code>. (2309)</p>
+            </li>
+            <li>
+                <p>Sophos: Added support for new firewall file names. (2508)</p>
+                <ul>
+                    <li>
+                        <p>Sophos changed the field names <code class="linecode">vendor_packets_sent</code> and <code class="linecode">vendor_packets_received</code> in firewall logs. Renamed <code class="linecode">vendor_dst_mac</code> to <code class="linecode">destination_mac</code>.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Bitdefender: <a href="Content Packs/Bitdefender GravityZone Content Pack.html">Bitdefender GravityZone Content Pack</a> (2362)</p>
+                <ul>
+                    <li>
+                        <p>Bitdefender GravityZone is an enterprise security solution offering centralized management for endpoint protection, network security, and cloud security. It consists of about 45 modules.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>MS365: Added additional <code class="linecode">vendor_event_action</code> to lookup. (2157)</p>
+                <ul>
+                    <li>
+                        <p>The addition of numerous <code class="linecode">vendor_event_action</code> to the related lookup will allow other fields to be populated where info exists. Other fields being <code class="linecode">vendor_event_category</code>, <code class="linecode">gim_event_type_code</code>, and <code class="linecode">vendor_event_description</code>.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>MS365: Added GIM categorization for additional DLPEndpoint file related events. (2254)</p>
+            </li>
+            <li>
+                <p>MS365: Process role assignment and removal events (2483)</p>
+                <ul>
+                    <li>
+                        <p>This change processes the MS365 role removal and assignment events. The roles assigned/removed will be extracted to the fields <code class="linecode">privilege_added_name</code>, <code class="linecode">privilege_added_id</code>, <code class="linecode">privilege_removed_name</code>, <code class="linecode">privilege_removed_id</code>.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Sophos: Added Sophos stream to dashboard scope. (2500)</p>
+            </li>
+            <li>
+                <p>Windows: Categorize Security Event ID 4703, 4704, 4705 as privilege added and privilege removed. (2532)</p>
+            </li>
+            <li>
+                <p>Cloudflare: <a href="Content Packs/Cloudflare Content Pack.html">Cloudflare Content Pack</a> (2363)</p>
+                <ul>
+                    <li>
+                        <p>Cloudflare is a web infrastructure and security company that provides services such as content delivery, DDoS protection, internet security,  and domain name server (DNS) solutions to enhance website performance and protect against cyber threats.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Sysmon Spotlight: Added support for EventID 28/29. (1554)</p>
+            </li>
+            <li>
+                <p>Ubiquiti UniFi: Added parsing for kernel logs noting received packets with identical addresses. (2475)</p>
+            </li>
+            <li>
+                <p>Compliance: Add privilege changes to Compliance Spotlight dashboard. (2542)</p>
+            </li>
+            <li>
+                <p>Sophos: Added <code class="linecode">event_action</code> parsing for events. (2515)</p>
+            </li>
+            <li>
+                <p>Some <code class="linecode">event_types</code> events include an action. Adding parsing for failed login attempts.</p>
+            </li>
+            <li>
+                <p>MS365: Added a Security Posture Management tab to the Office 365 Overview spotlight. (2318)</p>
+                <ul>
+                    <li>
+                        <p>The Security Posture Management Overview tab includes assessment and regulatory compliance information which details your environment security posture.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Windows: Process privilege token assignments in windows using the privilege fields (2519)</p>
+                <ul>
+                    <li>
+                        <p>Process security tokens in Windows event logs using privilege fields. Windows Security event log messages that list security tokens will now use the fields <code class="linecode">privilege_assigned_name</code>, <code class="linecode">privilege_removed_name</code>, and <code class="linecode">privilege</code> name based on the event. Additionally an enrichment has been added to define privilege category (<code class="linecode">privilege_assigned_category</code>, <code class="linecode">privilege_removed_category</code>, <code class="linecode">privilege_category</code>), which will assign the value <code class="linecode">elevated_privilege</code> to identify tokens that allow an account to perform sensitive system activities.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Sophos: Added categorization for HTTP logs and added parsing according to the Graylog schema (2422)</p>
+                <ul>
+                    <li>
+                        <p>Sophos logs with the event component HTTP are now categorized as network network.connection and http.default. Firewall Authentication logs for failed logon are categorized as authentication.logoff. Blocked appliance logs are categorized as authentication.logon Changed fields from <code class="linecode">http_uri</code> to <code class="linecode">http_request_path</code>, <code class="linecode">vendor_http_status</code> to <code class="linecode">http_response_code</code>, <code class="linecode">vendor_http_user_agent</code> to <code class="linecode">http_user_agent</code>, <code class="linecode">vendor_con_id</code> to <code class="linecode">connection_id</code>.</p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h4>Fixed</h4>
+        <ul>
+            <li>
+                <p>MS365: Updated <code class="linecode">user_name</code> parsing and added <code class="linecode">user_domain</code> extraction. (2321)</p>
+                <ul>
+                    <li>
+                        <p>User names formatted as user-at-domain.com or DOMAIN-backslash-USER will now extract the <code class="linecode">user_name</code> and <code class="linecode">user_domain</code> as separate fields.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Postfix: <code class="linecode">12-postfix_event_created_normalization</code> rule can't handle extra space.(2414)</p>
+            </li>
+            <li>
+                <p>Updated the <code class="linecode">event_created</code> extraction logic for Postfix. The pack will now attempt to parse multiple date formats. In order to prevent indexing errors related to unexpected date formats in <code class="linecode">event_created</code> it will now perform the initial extraction of the date field as <code class="linecode">vendor_event_created</code>, then the pack will attempt to parse this date field and assign the value to <code class="linecode">event_created</code>. If it is unable to, then <code class="linecode">vendor_event_created</code> will be indexed as a keyword type field that will not prevent indexing of the message, but this field will not be able to be used in ranged searches.</p>
+            </li>
+            <li>
+                <p>MS365: Group names are extracted as <code class="linecode">o365_group_name_new</code> or <code class="linecode">o365_group_name_old</code> but context is missing. (2413)</p>
+                <ul>
+                    <li>
+                        <p>Removed these fields for IAM events where only one or the other exists, in that case they are assigned to the field <code class="linecode">group_name</code>.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Cisco ASA: Fixed parsing and categorization for 113004, 113005, 113006, and 113007. (2400)</p>
+                <ul>
+                    <li>
+                        <p>Added categorization for 113004 and 113005 (authentication.logon) and changed parsing <code class="linecode">host_ip</code>/<code class="linecode">host_hostname</code> to <code class="linecode">source_ip</code>/<code class="linecode">source_hostname</code>.  Changed categorization for 113006 from authentication.logon to authentication.logoff.  Changed categorization for 113007 from authentication.logon to account.unlocked and changed parsing from <code class="linecode">vendor_admin_user_name</code> to <code class="linecode">source_user_name</code>.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>MS365: AzureAD/Entra ID ExtendedProperties User Agent Field Extraction (2269)</p>
+                <ul>
+                    <li>
+                        <p>The <code class="linecode">http_user_agent</code> field extracted from AzureAD/Entra ID logs is now extracted as a single string capable of being processed by additional functions.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>MS365: Entra ID Sign-In Failures and Reason by Top 5 Users Widget Fix (2506)</p>
+                <ul>
+                    <li>
+                        <p>The group by column field associated with this widget has been updated to v<code class="linecode">endor_event_action</code>, which better represents the intent of the widget.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>MS365: <code class="linecode">user_name</code> field is value list for IAM group change events. (2411)</p>
+            </li>
+            <li>
+                <p>Crowdstrike: Fixed issue with spotlight by removing unsupported dependency. (2574)</p>
+            </li>
+        </ul>
+        <h4>Changed</h4>
+        <ul>
+            <li>
+                <p>NGINX: Scope dashboard widgets to NGINX Messages stream. (2450)</p>
+            </li>
+            <li>
+                <p>Fortigate: Changed dashboard widget times to 1hr. (2197)</p>
+            </li>
+            <li>
+                <p>Cisco ASA: Scope dashboard widgets to Cisco ASA Messages stream. (2433)</p>
+            </li>
+            <li>
+                <p>Sysmon: Scope dashboard widgets to Sysmon Messages stream. (2505)</p>
+            </li>
+            <li>
+                <p>Snort IDS: Scope dashboard widgets to Snort IDS Messages stream. (2496)</p>
+            </li>
+            <li>
+                <p>Checkpoint: Scope dashboard widgets to Checkpoint Messages stream. (2484)</p>
+            </li>
+            <li>
+                <p>Watchguard: Scope dashboard widgets to Watchguard Messages stream. (2512)</p>
+            </li>
+            <li>
+                <p>Ubiquiti Unifi: Scope dashboard widgets to Ubiquiti Unifi Messages stream. (2510)</p>
+            </li>
+            <li>
+                <p>Okta: Scope dashboard widgets to Okta Messages stream. (2453)</p>
+            </li>
+            <li>
+                <p>Windows Security: Scope dashboard widgets to Windows Security Messages stream. (2513)</p>
+            </li>
+            <li>
+                <p>Juniper SRX: Scope dashboard widgets to Juniper SRX Messages stream. (2437)</p>
+            </li>
+            <li>
+                <p>Stormshield: Scope dashboard widgets to Stormshield Messages stream. (2501)</p>
+            </li>
+            <li>
+                <p>Zeek: Scope dashboard widgets to Zeek Messages stream. (2518)</p>
+            </li>
+            <li>
+                <p>MS Defender AV: Scope dashboard widgets to MS Defender AV Messages stream. (2488)</p>
+            </li>
+            <li>
+                <p>Fortigate: Forward subtype logs now categorized as network connections. (2236)</p>
+            </li>
+            <li>
+                <p>Linux Auditbeat: Scope dashboard widgets to Linux Auditbeat Messages stream. (2439)</p>
+            </li>
+            <li>
+                <p>Sonicwall: Scope dashboard widgets to Sonicwall Messages stream. (2498)</p>
+            </li>
+            <li>
+                <p>AWS Security Lake: Scope dashboard widgets to AWS Securtiy Lake Messages stream. (2430)</p>
+            </li>
+            <li>
+                <p>Sophos: Reducing Graylog license utilization for Sophos (2490)</p>
+            </li>
+            <li>
+                <p>Message field is now shortened to avoid data duplication. Deleted fields related to ports and packets if their value is 0.</p>
+            </li>
+            <li>
+                <p>Unifi Spotlight: Updated the time range for all spotlight widgets to 1 hour. (2417)</p>
+            </li>
+            <li>
+                <p>Pfsense: Scope dashboard widgets to Pfsense Messages stream. (2493)</p>
+            </li>
+            <li>
+                <p>Powershell: Scope dashboard widgets to Powershell Messages stream. (2494)</p>
+            </li>
+            <li>
+                <p>Palo Alto: Scope dashboard widgets to Palo Alto Messages stream. (2455)</p>
+            </li>
+            <li>
+                <p>Meraki: Scope dashboard widgets to Meraki Messages stream. (2442)</p>
+            </li>
+        </ul>
         <h2>Illuminate 6.0.1</h2>
         <p>Released:&#160;2024-10-24</p>
         <h4>Fixed</h4>
