@@ -1,0 +1,49 @@
+function showOutput() {
+    const users = document.getElementById("numbers").value;
+    const retention = document.getElementById("retention").value;
+    let output = "";
+
+    if (users === "1") {
+        if (retention === "1") {
+            output = "Core Architecture";
+            populateTable([1, 8, 16, 1, 8, 24]);
+        } else if (retention === "2") {
+            output = "Conventional Architecture";
+            clearTable();
+        }
+    } else if (users === "2") {
+        if (retention === "1") {
+            output = "Conventional Architecture";
+            clearTable();
+        } else if (retention === "2") {
+            output = "Custom Architecture";
+            clearTable();
+        }
+    } else if (users === "3") {
+        output = "Custom Architecture";
+        clearTable();
+    }
+
+    const outputElement = document.getElementById("output");
+    if (outputElement) {
+        outputElement.textContent = output;
+    } else {
+        console.error("Output element not found!");
+    }
+}
+
+function populateTable(values) {
+    const tableRow = document.querySelector(".TableStyle-Alternate-Row-Color-Body-Body1");
+    const cells = tableRow.querySelectorAll("td");
+    values.forEach((value, index) => {
+        cells[index].textContent = value;
+    });
+}
+
+function clearTable() {
+    const tableRow = document.querySelector(".TableStyle-Alternate-Row-Color-Body-Body1");
+    const cells = tableRow.querySelectorAll("td");
+    cells.forEach(cell => {
+        cell.textContent = "";
+    });
+}
