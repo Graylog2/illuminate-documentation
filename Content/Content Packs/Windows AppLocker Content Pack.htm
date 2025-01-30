@@ -1,0 +1,287 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+	<head> <title> Windows PowerShell Security Content Pack
+		</title>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>PowerShell is a task automation and configuration management program from Microsoft. This technology pack processes PowerShell logs.</p>
+        <h2>Requirement(s)</h2>
+        <ul>
+            <li>
+                <p>Windows 10, Windows 11, or Windows Server 2023</p>
+            </li>
+            <li>
+                <p>PowerShell 5.1 or 7 </p>
+            </li>
+            <li>
+                <p>Log delivery agent: Winlogbeat 7.11/8.8 or NXLog  3.2</p>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <p>Graylog Server with a valid enterprise license running Graylog version 5.0.3 or later</p>
+            </li>
+            <li>
+                <p>Illuminate 3.4+</p>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;Windows does not log all PowerShell logs by default. If needed, please activate advanced logging via Group Policy or Registry.</div>
+            </section>
+        </p>
+        <h2>Supported Logs/Event IDs</h2>
+        <p>200, 300, 400, 403, 500, 501, 600, 800, 4100, 4101, 4102, 4103, 4104, 4105, 4106, 32784, 40961, 40962, 53504, 53506.</p>
+        <h2>Supported Event Log Names</h2>
+        <ul>
+            <li>
+                <p>Microsoft-Windows-PowerShell/Operational</p>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <p>PowerShellCore/Operational</p>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <p>Windows PowerShell</p>
+            </li>
+        </ul>
+        <p>
+            <section class="warningBox">
+                <div class="title" style="font-weight: normal;"><b>Warning</b>: Windows 11 currently has a bug affecting Winlogbeat. The message field may contain placeholders instead of actual data. While the pack will work with Windows 11 and Winlogbeat, important logging details may be missing. Microsoft is currently working on a patch. For Windows Server 2022, Winlogbeat 8 or NXLog is recommended. Note that Winlogbeat 7 may not ship the message field; this usually appears as an empty message.</div>
+            </section>
+        </p>
+        <p>This pack will normalize common fields for PowerShell if shipped to one of these three listed event log names.</p>
+        <h2>Stream Configuration</h2>
+        <p>This technology pack includes one stream:</p>
+        <ul>
+            <li>
+                <p>“Illuminate:Powershell Messages”</p>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream. </div>
+            </section>
+        </p>
+        <h2>Index Set Configuration</h2>
+        <p>This technology pack includes one index set definition:</p>
+        <ul>
+            <li>
+                <p>“powershell Logs”</p>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation. </div>
+            </section>
+        </p>
+        <h2>Log Examples</h2>
+        <p>These logs  come from Windows Event Viewer as evtx files are not human readable.</p>
+        <h3>Requirements</h3>
+        <ul>
+            <li>
+                <p>The pack works  with Winlogbeat and NXlog.</p>
+            </li>
+            <li>
+                <p>(NXLog + Sidecar) NXLog's binaries  need to be installed under <code class="linecode">C:\Program Files (x86)\nxlog</code> or the permissions for Sidecar file access has to be adjusted. </p>
+            </li>
+        </ul>
+        <h2>Graylog Sidecar Configuration</h2>
+        <p>Please follow Graylog documentation to install <a href="https://go2docs.graylog.org/5-0/getting_in_log_data/graylog_sidecar.html?tocpath=Getting%20in%20Logs%7CGraylog%20Sidecar%7C_____0">Sidecar</a>. You need to add the following paths in your Winlogbeat or NXLog configuration:</p>
+        <li>
+            <p><i>Winlogbeat (with Security logs):</i>
+            </p>
+            <MadCap:codeSnippet>
+                <MadCap:codeSnippetCopyButton />
+                <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">winlogbeat:
+  event_logs:
+   - name: Security
+   - name: Microsoft-Windows-PowerShell/Operational
+   - name: PowerShellCore/Operational
+   - name: Windows PowerShell</MadCap:codeSnippetBody>
+            </MadCap:codeSnippet>
+        </li>
+        <li>
+            <p><i>Example config file for NXLog (with Security logs):</i>
+            </p>
+            <MadCap:codeSnippet>
+                <MadCap:codeSnippetCopyButton />
+                <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">&lt;Input eventlog&gt;
+        Module im_msvistalog
+        PollInterval 1
+        SavePos False
+        ReadFromLast True
+    &lt;QueryXML&gt;
+        &lt;QueryList&gt;
+            &lt;Query Id='1'&gt;
+                &lt;Select Path='Security'&gt;*&lt;/Select&gt;
+                &lt;Select Path='Windows Powershell'&gt;*&lt;/Select&gt;
+                &lt;Select Path='PowerShellCore/Operational'&gt;*&lt;/Select&gt;
+                &lt;Select Path='Microsoft-Windows-PowerShell/Operational'&gt;*&lt;/Select&gt;
+            &lt;/Query&gt;
+        &lt;/QueryList&gt;
+    &lt;/QueryXML&gt;       
+&lt;/Input&gt;</MadCap:codeSnippetBody>
+            </MadCap:codeSnippet>
+            <p>Adjust the host IP and port accordingly to your Graylog server. Configuration files are key sensitive, and correct spacing is necessary. Installation of NXlogs binaries in <code class="linecode">C:\Program Files (x86)\nxlog</code> is recommended, but if you choose a different location, you must adjust the Sidecar file permissions and define a new ROOT location. If you are not using PowerShellCore (PowerShell 6.x and higher), omit the PowerShellCore line. To capture remote PowerShell access, add path: <code class="linecode">Microsoft-Windows-WinRM/Operational</code> (not supported by this pack).</p>
+            <ul>
+                <li>
+                    <p>Graylog Input: Beats with Beats type prefix</p>
+                </li>
+            </ul>
+            <h2>PowerShell Configuration</h2>
+            <ul>
+                <li>
+                    <p>Not all PowerShell logs are logged by default. If needed, activate Script Block Logging (event ID 4104), Module Logging (event ID 4103), and others via group policy.</p>
+                </li>
+                <li>
+                    <p>PowerShell version 5 (and lower) and PowerShellCore version 6.x (and higher) have separate policy and registry settings. If you want to log both versions, you need to adjust both keys.</p>
+                </li>
+                <li>
+                    <p>PowerShellCore uses PowerShellCore/Operational as an additional log source. <br /><b>Attention:</b> Depending on your environment PowerShell logging might generate very large volumes of data.</p>
+                </li>
+            </ul>
+            <h2>What is Provided</h2>
+            <ul>
+                <li>
+                    <p>Rules to normalize and enrich PowerShell log messages</p>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <p>Dashboards</p>
+                </li>
+            </ul>
+            <h3>PowerShell Message Processing</h3>
+            <p>The Illuminate processing of PowerShell log messages provides the following:</p>
+            <ul>
+                <li>
+                    <p>Field extraction, normalization, and message enrichment for PowerShell log messages.</p>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <p>GIM Categorization of the following messages:</p>
+                    <table style="width: 100%;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+                        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                        <thead>
+                            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">vendor_command_name</th>
+                                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><b>GIM Event Type Code	</b>
+                                </th>
+                                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1"><b style="color: #ffffff;">GIM Event Type</b>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Add-LocalGroupMember</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111007</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">group member added</td>
+                            </tr>
+                            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">New-LocalUser</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">110000</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account created</td>
+                            </tr>
+                            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">New-LocalGroup</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">110002</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">group created</td>
+                            </tr>
+                            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Enable-LocalUser</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">112001</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account enabled</td>
+                            </tr>
+                            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Disable-LocalUser</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111501</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">account disabled</td>
+                            </tr>
+                            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Remove-LocalUser</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">110500</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account locked</td>
+                            </tr>
+                            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Remove-LocalGroupMember</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111008</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">group member removed</td>
+                            </tr>
+                            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Remove-LocalGroup</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">110501</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">group deleted</td>
+                            </tr>
+                            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Rename-LocalUser</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111003</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">account renamed</td>
+                            </tr>
+                            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Rename-LocalGroup</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111009</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">group properties modified</td>
+                            </tr>
+                            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Set-LocalGroup</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111009	</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">group properties modified</td>
+                            </tr>
+                            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Set-LocalUser</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111000</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account modified</td>
+                            </tr>
+                            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Clear-EventLog</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">220000</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">audit log cleared</td>
+                            </tr>
+                            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Start-Process</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">190000</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">process started</td>
+                            </tr>
+                            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Stop-Process</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">190100</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">process stopped</td>
+                            </tr>
+                            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Start-Service</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">210000</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service started</td>
+                            </tr>
+                            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Stop-Service</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">210100</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service stopped</td>
+                            </tr>
+                            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Get-LocalGroupMember</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">119500</td>
+                                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">group membership enumerated</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </li>
+            </ul>
+            <h2>PowerShell Spotlight Content Pack</h2>
+            <p>PowerShell offers one dashboard with four tabs. One overview dashboard and three dashboards around relevant data for sigma rules.</p>
+            <p style="text-align: center;">
+                <img src="../Resources/Images/Powershell Overview.png" />
+                <br />
+                <img src="../Resources/Images/Powershell Dashboards (Sigma).png" />
+            </p>
+        </li>
+    </body>
+</html>
