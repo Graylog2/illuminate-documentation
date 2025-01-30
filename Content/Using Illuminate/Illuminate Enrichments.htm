@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head><title>Illuminate Enrichments</title>
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Illuminate functionality includes enrichment of events with additional data that can help contextualize events. This is done throughout Illuminate, both in the core functionality and in many of the Illuminate processing packs. This document focuses on the enrichments added by Illuminate core and that are used by Illuminate Core.
+        </p>
+        <p>Some of the lookups provided in Illuminate can be customized by the user, this will be explained in the descriptions of the lookups where it applies.</p>
+        <h2>Enrichments Included with Illuminate Core</h2>
+        <h3>Severity Mapping Enrichments</h3>
+        <p>Event logs and alerts will often have a severity assigned, sometimes this event is provided as a plain text severity and sometimes it is provided as a numeric value. These lookups are used to ensure that where either the text or numeric value is the only value defined that corresponding value will be defined.</p>
+        <p>The severity mapping lookups included with Illuminate Core:</p>
+        <ul>
+            <li>illuminate-mapping-alert-severity-to-level: When a message includes an <code class="linecode">alert_severity</code> value but not <code class="linecode">alert_severity_level</code> field this mapping is used to define the level value.</li>
+            <li>illuminate-mapping-level-to-alert-severity: When a message includes an <code class="linecode">alert_severity_level</code> numeric value but not <code class="linecode">alert_severity</code> value this mapping is used to define the severity value.</li>
+            <li>illuminate-mapping-event-severity-to-level: When a message includes an <code class="linecode">event_severity</code> value but not <code class="linecode">event_severity_level</code> field this mapping is used to define the level value.</li>
+            <li>illuminate-mapping-event-level-to-severity: When a message includes an <code class="linecode">event_severity_level</code> numeric value but not <code class="linecode">event_severity</code> value this mapping is used to define the severity value.</li>
+        </ul>
+        <p>These lookups should not be customized.</p>
+        <h3>GIM Data Enrichment</h3>
+        <p>This lookup takes the <code class="linecode">gim_event_type_code</code> value and defines the fields:</p>
+        <ul>
+            <li>gim_event_class</li>
+            <li>gim_event_category</li>
+            <li>gim_event_subcategory</li>
+            <li>gim_event_type</li>
+        </ul>
+        <p>The GIM event data mapping lookup is <code class="linecode">core_gim_data_lookup</code>. This lookup should not be customized.</p>
+        <h3>Network Range Enrichment Lookup</h3>
+        <p>Illuminate provides the ability to define "category fields" for source/destination/host systems defined in logs. This enrichment will examine the fields <code class="linecode">source_ip</code>, <code class="linecode">destination_ip</code>, and <code class="linecode">host_ip</code>. If the IP address in those fields is in a range that has been added to the network ranges lookup then any category values defined in that lookup will be assigned to the fields <code class="linecode">source_category</code>, <code class="linecode">destination_category</code>, or <code class="linecode">host_category</code>, respectively.</p>
+        <p>After installing Graylog Illuminate and enabling any pack there will be a lookup added with a lookup adapter titled "core_networks_adapter". You can add entries to this lookup adapter and provide one or more "category" values that will be added to incoming logs.
+        <h4>Defining Categories for Hosts Based On Network Ranges</h4>
+        <section class="warningBox">
+            <div class="title"><b>Warning</b>: <span style="font-weight: normal;">Use caution when adding lookup table customization entries that you are modifying the intended lookup table adapter</span></div>
+        </section>
+        <ol>
+            <li>Navigate to the "Illuminate" page located under the "Enterprise" menu in the Graylog Server web interface</li>
+            <li>Click on the "Customization" tab located on the top left-hand side of the  Illuminate page</li>
+            <li>You will see a list of Illuminate lookup adapters, locate the lookup adapter named <code class="linecode">core_networks_lookup</code> - click on the "Edit" button for the adapter, located to the right of the adapter entry</li>
+            <li>You will see an entry box with the key column titled "ip range" and a value column titled "ip category data"</li>
+            <li>Add a <a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing#CIDR_notation">CIDR-notation formatted</a> IP range (both IPv4 and IPv6 are supported) in the "ip range column"</li>
+            <li>Add one or more category values, separating each category value with a pipe character ("|"), in the "ip category data" column</li>
+        </ol>
+        <p>We recommend using only alphanumeric characters, and replacing spaces with a replacement character such as an underscore ("_") to simplify searching for these category values.</p>
+        </p>
+        <h3>HTTP Data Enrichment Adapters</h3>
+        <p>These lookups will some common HTTP fields with useful data. There are two lookup adapters in this group:</p>
+        <ol>
+            <li>lookup_http_class</li>
+            <li>lookup_http_response</li>
+        </ol>
+        <p>Illuminate Core will detect when the <code class="linecode">http_response_code</code> field is defined and will enrich these events with two fields:</p>
+        <ul>
+            <li><code class="linecode">http_response_class</code>: The response class is based upon the first digit of the http response, see <a href="https://datatracker.ietf.org/doc/html/rfc2616#section-6.1.1">RFC2616#6.1.1</a></li>
+            <li><code class="linecode">http_response</code>: The response phrase corresponding with the response code, see <a href="https://datatracker.ietf.org/doc/html/rfc2616#section-6.1.1">RFC2616#6.1.1</a> and <a href="https://datatracker.ietf.org/doc/html/rfc6585">RFC6585</a></li>
+        </ul>
+    </body>
+</html>
