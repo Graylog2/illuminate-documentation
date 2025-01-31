@@ -1,287 +1,255 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-	<head> <title> Windows PowerShell Security Content Pack
-		</title>
-        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
+    <head>
+        <link href="Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Windows AppLocker Content Pack</title>
+        <link href="Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
-        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>PowerShell is a task automation and configuration management program from Microsoft. This technology pack processes PowerShell logs.</p>
-        <h2>Requirement(s)</h2>
+        <MadCap:snippetBlock src="Resources/Snippets/IlluminateBanner.flsnp" />
+        <p><span>Windows AppLocker is an optional security feature that helps organizations control which apps and files users can run, including executables, dynamic-link libraries (DLLs), scripts, installers and packaged apps.</span>
+        </p>
+        <h2>Supported Version(s)</h2>
         <ul>
-            <li>
-                <p>Windows 10, Windows 11, or Windows Server 2023</p>
-            </li>
-            <li>
-                <p>PowerShell 5.1 or 7 </p>
-            </li>
-            <li>
-                <p>Log delivery agent: Winlogbeat 7.11/8.8 or NXLog  3.2</p>
-            </li>
-        </ul>
-        <ul>
-            <li>
-                <p>Graylog Server with a valid enterprise license running Graylog version 5.0.3 or later</p>
-            </li>
-            <li>
-                <p>Illuminate 3.4+</p>
+            <li><span>Windows 8 or later, recommended Windows 10/11 or Server 2022+</span>
             </li>
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;Windows does not log all PowerShell logs by default. If needed, please activate advanced logging via Group Policy or Registry.</div>
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;AppLocker feature availability is highly dependent on the Windows edition and version in use. Please refer to the <a href="https://learn.microsoft.com/en-us/windows/security/application-security/application-control/app-control-for-business/applocker/requirements-to-use-applocker">Microsoft documentation</a> for detailed requirements.</div>
             </section>
         </p>
-        <h2>Supported Logs/Event IDs</h2>
-        <p>200, 300, 400, 403, 500, 501, 600, 800, 4100, 4101, 4102, 4103, 4104, 4105, 4106, 32784, 40961, 40962, 53504, 53506.</p>
-        <h2>Supported Event Log Names</h2>
+        <h2>Requirements</h2>
         <ul>
-            <li>
-                <p>Microsoft-Windows-PowerShell/Operational</p>
+            <li><span>Graylog 6.0.1+ with a valid Enterprise license</span>
             </li>
         </ul>
         <ul>
-            <li>
-                <p>PowerShellCore/Operational</p>
+            <li><span>AppLocker policies must be enabled and rules created via Group Policy or Local Security Policy</span>
             </li>
         </ul>
-        <ul>
-            <li>
-                <p>Windows PowerShell</p>
-            </li>
-        </ul>
-        <p>
-            <section class="warningBox">
-                <div class="title" style="font-weight: normal;"><b>Warning</b>: Windows 11 currently has a bug affecting Winlogbeat. The message field may contain placeholders instead of actual data. While the pack will work with Windows 11 and Winlogbeat, important logging details may be missing. Microsoft is currently working on a patch. For Windows Server 2022, Winlogbeat 8 or NXLog is recommended. Note that Winlogbeat 7 may not ship the message field; this usually appears as an empty message.</div>
-            </section>
-        </p>
-        <p>This pack will normalize common fields for PowerShell if shipped to one of these three listed event log names.</p>
         <h2>Stream Configuration</h2>
         <p>This technology pack includes one stream:</p>
         <ul>
-            <li>
-                <p>“Illuminate:Powershell Messages”</p>
+            <li><span>Illuminate:Windows AppLocker Event Log Messages</span>
             </li>
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream. </div>
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:  If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
             </section>
         </p>
         <h2>Index Set Configuration</h2>
         <p>This technology pack includes one index set definition:</p>
         <ul>
-            <li>
-                <p>“powershell Logs”</p>
+            <li><span>Windows AppLocker Event Log Messages</span>
             </li>
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation. </div>
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:  If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
             </section>
         </p>
-        <h2>Log Examples</h2>
-        <p>These logs  come from Windows Event Viewer as evtx files are not human readable.</p>
-        <h3>Requirements</h3>
+        <h2>Log Collection</h2>
+        <p>The following log delivery agents are supported:</p>
         <ul>
-            <li>
-                <p>The pack works  with Winlogbeat and NXlog.</p>
-            </li>
-            <li>
-                <p>(NXLog + Sidecar) NXLog's binaries  need to be installed under <code class="linecode">C:\Program Files (x86)\nxlog</code> or the permissions for Sidecar file access has to be adjusted. </p>
+            <li><span>Winlogbeat</span>
             </li>
         </ul>
-        <h2>Graylog Sidecar Configuration</h2>
-        <p>Please follow Graylog documentation to install <a href="https://go2docs.graylog.org/5-0/getting_in_log_data/graylog_sidecar.html?tocpath=Getting%20in%20Logs%7CGraylog%20Sidecar%7C_____0">Sidecar</a>. You need to add the following paths in your Winlogbeat or NXLog configuration:</p>
-        <li>
-            <p><i>Winlogbeat (with Security logs):</i>
-            </p>
-            <MadCap:codeSnippet>
-                <MadCap:codeSnippetCopyButton />
-                <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">winlogbeat:
+        <ul>
+            <li><span>NXLog Enterprise Edition</span>
+            </li>
+        </ul>
+        <ul>
+            <li><span>NXLog Community Edition (limited support)</span>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:  NXLog Community Edition does not send the RuleAndFileData XML portion of the event. This suppressed event data contains key fields that are important for effective AppLocker activity monitoring. Due to this limitation, we recommend to use NXLog Enterprise or Winlogbeat instead.</div>
+            </section>
+        </p>
+        <h2>Graylog Sidecar Example Configuration</h2>
+        <ol>
+            <li>
+                <p>Please refer to the official documentation to <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">set up Graylog Sidecar</a>.</p>
+            </li>
+            <li>
+                <p>Create a <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> for Winlogbeat or a <a href="https://go2docs.graylog.org/current/getting_in_log_data/gelf.html">GELF input</a> for NXLog in Graylog.</p>
+            </li>
+            <li>
+                <p>When sending to a Beats input, ensure that the option <i>Do not add Beats type as prefix</i> is <strong>disabled</strong>.</p>
+            </li>
+            <li>
+                <p>Create an API access token and a custom configuration for your chosen log delivery agent.</p>
+            </li>
+            <li>
+                <p>See the following example configuration for Winlogbeat:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve"># Needed for Graylog
+fields_under_root: true
+fields.collector_node_id: ${sidecar.nodeName}
+fields.gl2_source_collector: ${sidecar.nodeId}
+
+output.logstash:
+  hosts: ["${user.graylog_host}:5044"]
+path:
+  data: ${sidecar.spoolDir!"C:\\Program Files\\Graylog\\sidecar\\cache\\winlogbeat"}\data
+  logs: ${sidecar.spoolDir!"C:\\Program Files\\Graylog\\sidecar"}\logs
+tags:
+  - windows
+winlogbeat:
   event_logs:
-   - name: Security
-   - name: Microsoft-Windows-PowerShell/Operational
-   - name: PowerShellCore/Operational
-   - name: Windows PowerShell</MadCap:codeSnippetBody>
-            </MadCap:codeSnippet>
-        </li>
-        <li>
-            <p><i>Example config file for NXLog (with Security logs):</i>
-            </p>
-            <MadCap:codeSnippet>
-                <MadCap:codeSnippetCopyButton />
-                <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">&lt;Input eventlog&gt;
-        Module im_msvistalog
-        PollInterval 1
-        SavePos False
-        ReadFromLast True
+    - name: "Microsoft-Windows-AppLocker/EXE and DLL"
+      ignore_older: 24h
+    - name: "Microsoft-Windows-AppLocker/MSI and SCRIPT"
+      ignore_older: 24h
+    - name: "Microsoft-Windows-AppLocker/Packaged app-Deployment"
+      ignore_older: 24h
+    - name: "Microsoft-Windows-AppLocker/Packaged app-Execution"
+      ignore_older: 24h</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+            <li>
+                <p>See the following example configuration for NXLog:</p>
+                <p>This configuration requires NXLog to be installed in <code class="linecode">C:\Program Files (x86)\nxlog</code> and not in the default folder.</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">define ROOT C:\Program Files (x86)\nxlog
+
+Moduledir %ROOT%\modules
+CacheDir %ROOT%\data
+Pidfile %ROOT%\data\nxlog.pid
+SpoolDir %ROOT%\data
+LogFile %ROOT%\data\nxlog.log
+LogLevel INFO
+
+&lt;Extension logrotate&gt;
+    Module  xm_fileop
+    &lt;Schedule&gt;
+        When    @daily
+        Exec    file_cycle('%ROOT%\data\nxlog.log', 7);
+    &lt;/Schedule&gt;
+&lt;/Extension&gt;
+
+&lt;Extension gelfExt&gt;
+    Module xm_gelf
+    # Avoid truncation of the short_message field to 64 characters.
+    ShortMessageLength 65536
+&lt;/Extension&gt;
+
+&lt;Input eventlog&gt;
+    Module im_msvistalog
+    PollInterval 1
+    SavePos True
+    ReadFromLast True
+
     &lt;QueryXML&gt;
         &lt;QueryList&gt;
             &lt;Query Id='1'&gt;
-                &lt;Select Path='Security'&gt;*&lt;/Select&gt;
-                &lt;Select Path='Windows Powershell'&gt;*&lt;/Select&gt;
-                &lt;Select Path='PowerShellCore/Operational'&gt;*&lt;/Select&gt;
-                &lt;Select Path='Microsoft-Windows-PowerShell/Operational'&gt;*&lt;/Select&gt;
+                &lt;Select Path="Microsoft-Windows-AppLocker/EXE and DLL"&gt;*&lt;/Select&gt;
+                &lt;Select Path="Microsoft-Windows-AppLocker/MSI and Script"&gt;*&lt;/Select&gt;
+                &lt;Select Path="Microsoft-Windows-AppLocker/Packaged app-Deployment"&gt;*&lt;/Select&gt;
+                &lt;Select Path="Microsoft-Windows-AppLocker/Packaged app-Execution"&gt;*&lt;/Select&gt;
             &lt;/Query&gt;
         &lt;/QueryList&gt;
-    &lt;/QueryXML&gt;       
-&lt;/Input&gt;</MadCap:codeSnippetBody>
-            </MadCap:codeSnippet>
-            <p>Adjust the host IP and port accordingly to your Graylog server. Configuration files are key sensitive, and correct spacing is necessary. Installation of NXlogs binaries in <code class="linecode">C:\Program Files (x86)\nxlog</code> is recommended, but if you choose a different location, you must adjust the Sidecar file permissions and define a new ROOT location. If you are not using PowerShellCore (PowerShell 6.x and higher), omit the PowerShellCore line. To capture remote PowerShell access, add path: <code class="linecode">Microsoft-Windows-WinRM/Operational</code> (not supported by this pack).</p>
-            <ul>
-                <li>
-                    <p>Graylog Input: Beats with Beats type prefix</p>
-                </li>
-            </ul>
-            <h2>PowerShell Configuration</h2>
-            <ul>
-                <li>
-                    <p>Not all PowerShell logs are logged by default. If needed, activate Script Block Logging (event ID 4104), Module Logging (event ID 4103), and others via group policy.</p>
-                </li>
-                <li>
-                    <p>PowerShell version 5 (and lower) and PowerShellCore version 6.x (and higher) have separate policy and registry settings. If you want to log both versions, you need to adjust both keys.</p>
-                </li>
-                <li>
-                    <p>PowerShellCore uses PowerShellCore/Operational as an additional log source. <br /><b>Attention:</b> Depending on your environment PowerShell logging might generate very large volumes of data.</p>
-                </li>
-            </ul>
-            <h2>What is Provided</h2>
-            <ul>
-                <li>
-                    <p>Rules to normalize and enrich PowerShell log messages</p>
-                </li>
-            </ul>
-            <ul>
-                <li>
-                    <p>Dashboards</p>
-                </li>
-            </ul>
-            <h3>PowerShell Message Processing</h3>
-            <p>The Illuminate processing of PowerShell log messages provides the following:</p>
-            <ul>
-                <li>
-                    <p>Field extraction, normalization, and message enrichment for PowerShell log messages.</p>
-                </li>
-            </ul>
-            <ul>
-                <li>
-                    <p>GIM Categorization of the following messages:</p>
-                    <table style="width: 100%;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
-                        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                        <thead>
-                            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">vendor_command_name</th>
-                                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><b>GIM Event Type Code	</b>
-                                </th>
-                                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1"><b style="color: #ffffff;">GIM Event Type</b>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Add-LocalGroupMember</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111007</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">group member added</td>
-                            </tr>
-                            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">New-LocalUser</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">110000</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account created</td>
-                            </tr>
-                            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">New-LocalGroup</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">110002</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">group created</td>
-                            </tr>
-                            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Enable-LocalUser</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">112001</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account enabled</td>
-                            </tr>
-                            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Disable-LocalUser</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111501</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">account disabled</td>
-                            </tr>
-                            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Remove-LocalUser</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">110500</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account locked</td>
-                            </tr>
-                            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Remove-LocalGroupMember</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111008</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">group member removed</td>
-                            </tr>
-                            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Remove-LocalGroup</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">110501</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">group deleted</td>
-                            </tr>
-                            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Rename-LocalUser</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111003</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">account renamed</td>
-                            </tr>
-                            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Rename-LocalGroup</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111009</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">group properties modified</td>
-                            </tr>
-                            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Set-LocalGroup</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111009	</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">group properties modified</td>
-                            </tr>
-                            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Set-LocalUser</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111000</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account modified</td>
-                            </tr>
-                            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Clear-EventLog</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">220000</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">audit log cleared</td>
-                            </tr>
-                            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Start-Process</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">190000</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">process started</td>
-                            </tr>
-                            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Stop-Process</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">190100</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">process stopped</td>
-                            </tr>
-                            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Start-Service</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">210000</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service started</td>
-                            </tr>
-                            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Stop-Service</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">210100</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service stopped</td>
-                            </tr>
-                            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Get-LocalGroupMember</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">119500</td>
-                                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">group membership enumerated</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </li>
-            </ul>
-            <h2>PowerShell Spotlight Content Pack</h2>
-            <p>PowerShell offers one dashboard with four tabs. One overview dashboard and three dashboards around relevant data for sigma rules.</p>
-            <p style="text-align: center;">
-                <img src="../Resources/Images/Powershell Overview.png" />
-                <br />
-                <img src="../Resources/Images/Powershell Dashboards (Sigma).png" />
-            </p>
-        </li>
+    &lt;/QueryXML&gt;
+&lt;/Input&gt;
+
+&lt;Output gelf&gt;
+    Module om_tcp
+    Host ${user.graylog_host}
+    Port 12201
+    OutputType  GELF_TCP
+    &lt;Exec&gt;
+        # These fields are needed for Graylog
+        $gl2_source_collector = '${sidecar.nodeId}';
+        $collector_node_id = '${sidecar.nodeName}';
+    &lt;/Exec&gt;
+&lt;/Output&gt;
+
+&lt;Route route-1&gt;
+    Path eventlog =&gt; gelf
+&lt;/Route&gt;
+</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+            <li>
+                <p>Install Graylog Sidecar on the client host.</p>
+            </li>
+            <li>
+                <p>Edit the Graylog Sidecar client configuration with your Graylog server API URL and API access token.</p>
+            </li>
+        </ol>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Parsing rules to extract Windows AppLocker event logs into Graylog schema compatible fields
+                </p>
+            </li>
+            <li>
+                <p>Illuminate spotlight highlighting security events and statistics of interest
+                </p>
+            </li>
+        </ul>
+        <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
+        <p>The Windows AppLocker content pack supports the following event IDs. Generic processing will be provided for event IDs not listed.</p>
+        <table>
+            <!--This table contains event IDs and descriptions, **see attachment in PR**-->
+        </table>
+        <h2 id="message-fields-included-in-this-pack">Message Fields Included in This Pack</h2>
+        <table>
+            <!--This table contains parsed fields, **see attachment in PR**-->
+        </table>
+        <h2 id="spotlight-content-pack">Windows AppLocker Spotlight Content Pack</h2>
+        <p>Windows AppLocker offers a dashboard with 6 tabs:</p>
+        <ul>
+            <li>
+                <p>AppLocker Events Overview</p>
+            </li>
+        </ul>
+        <p>
+            <img src="../Resources/Images/Windows AppLocker Content Pack/overview.png">
+        </p>
+        <ul>
+            <li>
+                <p>EXE</p>
+            </li>
+        </ul>
+        <p>
+            <img src="../Resources/Images/Windows AppLocker Content Pack/exe.png">
+        </p>
+        <ul>
+            <li>
+                <p>DLL</p>
+            </li>
+        </ul>
+        <p>
+            <img src="../Resources/Images/Windows AppLocker Content Pack/dll.png">
+        </p>
+        <ul>
+            <li>
+                <p>MSI</p>
+            </li>
+        </ul>
+        <p>
+            <img src="../Resources/Images/Windows AppLocker Content Pack/msi.png">
+        </p>
+        <ul>
+            <li>
+                <p>SCRIPT</p>
+            </li>
+        </ul>
+        <p>
+            <img src="../Resources/Images/Windows AppLocker Content Pack/script.png">
+        </p>
+        <ul>
+            <li>
+                <p>APPX</p>
+            </li>
+        </ul>
+        <p>
+            <img src="../Resources/Images/Windows AppLocker Content Pack/appx.png">
+        </p>
     </body>
 </html>
