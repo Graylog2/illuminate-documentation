@@ -1,0 +1,525 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Windows AppLocker Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Windows AppLocker is an optional security feature that helps organizations control which applications and files users can run, including executables, dynamic-link libraries (DLLs), scripts, installers, and packaged applications.</p>
+        <h2>Supported Version(s)</h2>
+        <ul>
+            <li>Windows 8 or later, though we recommended Windows 10 or 11 or Server 2022+
+</li>
+        </ul>
+        <section class="infoBox">
+            <p><b>Hint:</b> AppLocker feature availability is highly dependent on the Windows edition and version in use. Please refer to <a href="https://learn.microsoft.com/en-us/windows/security/application-security/application-control/app-control-for-business/applocker/requirements-to-use-applocker">the Microsoft documentation</a> for detailed requirements.</p>
+        </section>
+        <h2>Requirements</h2>
+        <ul>
+            <li>
+                <p>Graylog 6.0.1+ with a valid Enterprise license</p>
+            </li>
+            <li>
+                <p>AppLocker policies must be enabled and rules created via Group Policy or Local Security Policy</p>
+            </li>
+        </ul>
+        <h2>Stream Configuration</h2>
+        <p>This technology pack includes one stream:</p>
+        <ul>
+            <li>
+                <p>"Illuminate:Windows AppLocker Event Log Messages"</p>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:  If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
+            </section>
+        </p>
+        <h2>Index Set Configuration</h2>
+        <p>This technology pack includes one index set definition:</p>
+        <ul>
+            <li>
+                <p>"Windows AppLocker Event Log Messages"</p>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:  If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
+            </section>
+        </p>
+        <h2>Log Collection</h2>
+        <p>The following log delivery agents are supported:</p>
+        <ul>
+            <li>
+                <p>Winlogbeat</p>
+            </li>
+            <li>
+                <p>NXLog Enterprise Edition</p>
+            </li>
+            <li>
+                <p>NXLog Community Edition (<b>limited support</b>)</p>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:  NXLog Community Edition does not send the RuleAndFileData XML portion of the event. This suppressed event data contains key fields that are important for effective AppLocker activity monitoring. Due to this limitation, we recommend you use NXLog Enterprise or Winlogbeat instead.</div>
+            </section>
+        </p>
+        <h2>Graylog Sidecar Example Configuration</h2>
+        <p>Please refer to <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">the official documentation</a> to set up Graylog Sidecar.</p>
+        <ol>
+            <li>
+                <p>Create a <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> for Winlogbeat or a <a href="https://go2docs.graylog.org/current/getting_in_log_data/gelf.html">GELF input</a> for NXLog in Graylog. When sending to a Beats input, ensure that the option <i>Do not add Beats type as prefix</i> is <b>disabled</b>.</p>
+            </li>
+            <li>
+                <p>Create an API access token and a custom configuration for your chosen log delivery agent.</p>
+                <p>See the following example configuration for Winlogbeat:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve"># Needed for Graylog
+fields_under_root: true
+fields.collector_node_id: ${sidecar.nodeName}
+fields.gl2_source_collector: ${sidecar.nodeId}
+
+output.logstash:
+  hosts: ["${user.graylog_host}:5044"]
+path:
+  data: ${sidecar.spoolDir!"C:\\Program Files\\Graylog\\sidecar\\cache\\winlogbeat"}\data
+  logs: ${sidecar.spoolDir!"C:\\Program Files\\Graylog\\sidecar"}\logs
+tags:
+  - windows
+winlogbeat:
+  event_logs:
+    - name: "Microsoft-Windows-AppLocker/EXE and DLL"
+      ignore_older: 24h
+    - name: "Microsoft-Windows-AppLocker/MSI and SCRIPT"
+      ignore_older: 24h
+    - name: "Microsoft-Windows-AppLocker/Packaged app-Deployment"
+      ignore_older: 24h
+    - name: "Microsoft-Windows-AppLocker/Packaged app-Execution"
+      ignore_older: 24h</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+                <p>See the following example configuration for NXLog:</p>
+                <p>
+                    <section class="infoBox">
+                        <div class="title" style="font-weight: normal;"><b>Hint</b>:  This configuration requires NXLog to be installed in <code class="linecode">C:\Program Files (x86)\nxlog</code> and not in the default folder.</div>
+                    </section>
+                </p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">define ROOT C:\Program Files (x86)\nxlog
+
+Moduledir %ROOT%\modules
+CacheDir %ROOT%\data
+Pidfile %ROOT%\data\nxlog.pid
+SpoolDir %ROOT%\data
+LogFile %ROOT%\data\nxlog.log
+LogLevel INFO
+
+&amp;lt;Extension logrotate&amp;gt;
+    Module  xm_fileop
+    &amp;lt;Schedule&amp;gt;
+        When    @daily
+        Exec    file_cycle('%ROOT%\data\nxlog.log', 7);
+    &amp;lt;/Schedule&amp;gt;
+&amp;lt;/Extension&amp;gt;
+
+&amp;lt;Extension gelfExt&amp;gt;
+    Module xm_gelf
+    # Avoid truncation of the short_message field to 64 characters.
+    ShortMessageLength 65536
+&amp;lt;/Extension&amp;gt;
+
+&amp;lt;Input eventlog&amp;gt;
+    Module im_msvistalog
+    PollInterval 1
+    SavePos True
+    ReadFromLast True
+
+    &amp;lt;QueryXML&amp;gt;
+        &amp;lt;QueryList&amp;gt;
+            &amp;lt;Query Id='1'&amp;gt;
+                &amp;lt;Select Path="Microsoft-Windows-AppLocker/EXE and DLL"&amp;gt;*&amp;lt;/Select&amp;gt;
+                &amp;lt;Select Path="Microsoft-Windows-AppLocker/MSI and Script"&amp;gt;*&amp;lt;/Select&amp;gt;
+                &amp;lt;Select Path="Microsoft-Windows-AppLocker/Packaged app-Deployment"&amp;gt;*&amp;lt;/Select&amp;gt;
+                &amp;lt;Select Path="Microsoft-Windows-AppLocker/Packaged app-Execution"&amp;gt;*&amp;lt;/Select&amp;gt;
+            &amp;lt;/Query&amp;gt;
+        &amp;lt;/QueryList&amp;gt;
+    &amp;lt;/QueryXML&amp;gt;
+&amp;lt;/Input&amp;gt;
+
+&amp;lt;Output gelf&amp;gt;
+    Module om_tcp
+    Host ${user.graylog_host}
+    Port 12201
+    OutputType  GELF_TCP
+    &amp;lt;Exec&amp;gt;
+        # These fields are needed for Graylog
+        $gl2_source_collector = '${sidecar.nodeId}';
+        $collector_node_id = '${sidecar.nodeName}';
+    &amp;lt;/Exec&amp;gt;
+&amp;lt;/Output&amp;gt;
+
+&amp;lt;Route route-1&amp;gt;
+    Path eventlog =&amp;gt; gelf
+&amp;lt;/Route&amp;gt;</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+            <li>
+                <p>Install Graylog Sidecar on the client host.</p>
+            </li>
+            <li>
+                <p>Edit the Graylog Sidecar client configuration with your Graylog server API URL and API access token.</p>
+            </li>
+        </ol>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Parsing rules to extract Windows AppLocker event logs into Graylog schema compatible fields</p>
+            </li>
+            <li>
+                <p>Illuminate spotlight highlighting security events and statistics of interest</p>
+            </li>
+        </ul>
+        <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
+        <p>The Windows AppLocker content pack supports the following event IDs. Generic processing will be provided for event IDs not listed.</p>
+        <h3>Event IDs</h3>
+        <table style="mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');width: 800px;" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event ID</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Action</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">8000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">modified</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">AppID policy conversion failed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">8001</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">modified</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">A policy was successfully applied</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">8002</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">allowed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">An EXE or DLL file was allowed to run</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">8003</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">allowed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">An EXE or DLL file was allowed to run due to Audit policy but would be blocked otherwise</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Parsed Fields</h3>
+        <table cellspacing="21" style="mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');width: 900px;" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 513px;" />
+            <col style="width: 251px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col style="width : 801.75px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr style="height : 14.25px;" class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">allowed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The action taken by AppLocker, such as allowing or blocking a file execution</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">8003</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The Windows Event ID associated with the AppLocker event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">microsoft-windows-applocker/exe and dll</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The name of the event log channel where the event was recorded</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">low</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The description of the normalized event severity rating</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The normalized numeric severity rating for the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">applocker</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The primary identifier for AppLocker events</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1005</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The unique Windows Event Record ID of the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">boolean</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Indicates whether the file is digitally signed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">PSLIST.EXE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The name of the file being evaluated</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">%OSDRIVE%\USERS\TESTUSER\DESKTOP\PSLIST.EXE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The file path with environment variables</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">SYSINTERNALS PSLIST</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The file product extracted from its FQBN</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1.41.0.00</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The file version extracted from its FQBN</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">MICROSOFT CORPORATION</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The entity that signed the file, if applicable</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>015D546D0B1A31CF10A6DD00D36F5E17503E</p>
+                        <p>AF45C164F73B6E578970C08DA082</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The SHA-256 hash of the file</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">7964</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The process ID of the application being executed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DESKTOP-CJL6M40</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Hostname or IP of the source system that generated the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">S-1-5-21-314323950-2314161084-4234690932-1002</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The SID of the user associated with the file execution</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0x2a36e</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The Logon ID of the user session context under which the application runs</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">GOODCORP</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The domain or local machine name associated with the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">S-1-5-21-314323950-2314161084-4234690932-1002</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The SID of the user associated with the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">testuser</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The name of the user associated with the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <p>An EXE or DLL file was allowed to run due to Audit policy </p>
+                        <p>but would be blocked otherwise</p>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The description corresponding to the Event ID</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">warning</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The vendor-defined description of the event severity rating</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The vendor-defined numeric severity rating for the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">WARNING</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The type of the event describing the severity</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">EXE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The extension of the filename</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">32</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The length of the file hash string</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">PSLIST.EXE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The original name of the file extracted from its FQBN</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">43</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The length of the file path string</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">MICROSOFT CORPORATION</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The common name field from the file's digital certificate</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">US</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The country field from the file's digital certificate</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">REDMOND</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The locality field from the file's digital certificate</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">MICROSOFT CORPORATION</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The organization that issued the file's digital signature</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">WASHINGTON</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The state or province field from the file's digital certificate</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US\SYSINTERNALS PSLIST\PSLIST.EXE\1.41.0.00</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The FQBN (Fully Qualified Binary Name) that uniquely identifies the software publisher and version information, used by rules based on the file's digital signature if it exists</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">95</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The length of the FQBN (Fully Qualified Binary Name)</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">C:\Users\testuser\Desktop\pslist.exe</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The full file path without use of environment variables</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">36</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The length of the full file path string</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Info</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The description of the Windows Event Opcode</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The numeric representation of the Windows Event Opcode</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">MICROSOFT.WINDOWSMAPS</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The name of the application package</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">36</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The length of the package name string</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">EXE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The AppLocker policy associated with the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The length of the policy name string</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">{0A591A2E-66FC-40F5-A421-0E2B94D6D539}</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The ID of the AppLocker rule the application was evaluated against</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">(Default Rule) All files located in the Windows folder</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The name of the AppLocker rule the application was evaluated against</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">54</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The length of the rule name string</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">D:(XA;;FX;;;S-1-1-0;(APPID://PATH Contains "%WINDIR%\*"))</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The Security Descriptor Definition Language (SDDL) string defining rule permissions</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">57</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The length of the rule SDDL string</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">User</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The type of account associated with the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">RuleAndFileData</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">The Event Log XML element containing details about the event</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2 id="spotlight-content-pack">Windows AppLocker Spotlight Content Pack</h2>
+        <p>Windows AppLocker offers a dashboard with 6 tabs:</p>
+        <h3>AppLocker Events Overview</h3>
+        <p>
+            <img src="../Resources/Images/Windows AppLocker Content Pack/overview.png" />
+        </p>
+        <h3>EXE</h3>
+        <p>
+            <img src="../Resources/Images/Windows AppLocker Content Pack/exe.png" />
+        </p>
+        <h3>DLL</h3>
+        <p>
+            <img src="../Resources/Images/Windows AppLocker Content Pack/dll.png" />
+        </p>
+        <h3>MSI</h3>
+        <p>
+            <img src="../Resources/Images/Windows AppLocker Content Pack/msi.png" />
+        </p>
+        <h3>SCRIPT</h3>
+        <p>
+            <img src="../Resources/Images/Windows AppLocker Content Pack/script.png" />
+        </p>
+        <h3>APPX</h3>
+        <p>
+            <img src="../Resources/Images/Windows AppLocker Content Pack/appx.png" />
+        </p>
+    </body>
+</html>
