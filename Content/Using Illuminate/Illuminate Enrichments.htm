@@ -21,10 +21,10 @@
         <h3>GIM Data Enrichment</h3>
         <p>This lookup takes the <code class="linecode">gim_event_type_code</code> value and defines the fields:</p>
         <ul>
-            <li>gim_event_class</li>
-            <li>gim_event_category</li>
-            <li>gim_event_subcategory</li>
-            <li>gim_event_type</li>
+            <li><code class="linecode">gim_event_class</code></li>
+            <li><code class="linecode">gim_event_category</code></li>
+            <li><code class="linecode">gim_event_subcategory</code></li>
+            <li><code class="linecode">gim_event_type</code></li>
         </ul>
         <p>The GIM event data mapping lookup is <code class="linecode">core_gim_data_lookup</code>. This lookup should not be customized.</p>
         <h3>Network Range Enrichment Lookup</h3>
@@ -34,8 +34,8 @@
         <h3>HTTP Data Enrichment Adapters</h3>
         <p>These lookups will some common HTTP fields with useful data. There are two lookup adapters in this group:</p>
         <ol>
-            <li>lookup_http_class</li>
-            <li>lookup_http_response</li>
+            <li><code class="linecode">lookup_http_class</code></li>
+            <li><code class="linecode">lookup_http_response</code></li>
         </ol>
         <p>Illuminate Core will detect when the <code class="linecode">http_response_code</code> field is defined and will enrich these events with two fields:</p>
         <ul>
@@ -48,27 +48,128 @@
         <p>Some network event sources will provide a numeric value representing the <a href="https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml">IANA-registered protocol number</a> (which should be assigned to the field <code class="linecode">network_iana_number</code>) but not the protocol name.
             This enrichment, using a lookup with the lookup adapter named <code class="linecode">core_iana_to_network_transport</code>, will identify when only <code class="linecode">network_iana_number</code> is defined and use it to determine the protocol name, which will be assigned to the field <code class="linecode">network_transport</code>.
         </p>
-        <h4>Private Address Identification</h4>
-        <p>This lookup will inspect the fields:</p>
+        <h4>Reserved/Non-Routable Address Identification</h4>
+        <p>This lookup will inspect the key fields:</p>
         <ul>
-            <li>source_ip</li>
-            <li>destination_ip</li>
-            <li>host_ip</li>
+            <li><code class="linecode">source_ip</code></li>
+            <li><code class="linecode">destination_ip</code></li>
+            <li><code class="linecode">host_ip</code></li>
         </ul>
         <p>When any of these fields exist a lookup with the adapter titled <code class="linecode">core_ip_processing_reserved_ip_ranges_adapter</code> will be used to identify the use of any reserved IP address ranges. The reserved ranges used are:</p>
+        <table>
+            <thead>
+              <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Range(s)</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Tag Suffixes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                  192.168.0.0/16, 172.16.0.0/12, 10.0.0.0/8, <a href="https://www.rfc-editor.org/rfc/rfc1918">RFC1918</a>
+                </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                  reserved_ip, rfc1918, is_internal
+                </td>
+              </tr>
+              <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                  127.0.0.0/8, <a href="https://www.rfc-editor.org/rfc/rfc1122#page-31">RFC1122</a>: See section 3.2.1.3 regarding loopback addressing
+                </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                  reserved_ip, is_internal, is_loopback, rfc1122
+                </td>
+              </tr>
+              <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                  169.254.0.0/16, <a href="https://www.rfc-editor.org/rfc/rfc3927">RFC3927</a>: IPv4 link-local addressing (A.K.A. APIPA addressing)
+                </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                  reserved_ip, is_internal, rfc3297
+                </td>
+              </tr>
+              <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                  224.0.0.0/4, <a href="https://www.rfc-editor.org/rfc/rfc3171">RFC3171</a>: IPv4 Multicast addressing
+                </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                  multicast, reserved_ip, rfc3171
+                </td>
+              </tr>
+              <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                  fe80::/10, ff00::/8, ::1/128, ::/128, ::FFFF:0:0/96, <a href="https://www.rfc-editor.org/rfc/rfc4291.html#section-2.4">RFC4291</a>: See section 2.4, IPv6 Address Architecture
+                </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                  reserved_ip, is_internal, rfc4291
+                </td>
+              </tr>
+              <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                  fc00::/7, <a href="https://www.rfc-editor.org/rfc/rfc4193#section-3.1">RFC4193</a>: See section 3.1, IPv6 unique local unicast addressing
+                </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                  reserved_ip, is_internal, rfc4193
+                </td>
+              </tr>
+              <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                  2002::/16, <a href="https://www.rfc-editor.org/rfc/rfc3056#section-2">RFC3056</a>: IPv6 encapsulation of IPv4
+                </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                  reserved_ip, 6_to_4, rfc3056
+                </td>
+              </tr>
+              <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                  2001::/32, <a href="https://www.rfc-editor.org/rfc/rfc4380">RFC4380</a>: Teredo
+                </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                  reserved_ip, teredo, rfc4380
+                </td>
+              </tr>
+              <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                  192.0.2.0/24, 198.51.100.0/24, 203.0.113.0/24, <a href="https://www.rfc-editor.org/rfc/rfc5737">RFC5737</a>: IPv4 reserved address block for documentation
+                </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                  reserved_ip, is_illegal, rfc5737
+                </td>
+              </tr>
+              <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                  198.18.0.0/15, <a href="https://www.rfc-editor.org/rfc/rfc2544#appendix-C.2.2">RFC2544</a>: IPv4 reserved addresses for benchmark testing
+                </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                  reserved_ip, is_internal, rfc2544
+                </td>
+              </tr>
+              <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                  2001:db8::/32, <a href="https://www.rfc-editor.org/rfc/rfc3849">RFC3849</a>: IPv6 reserved address block for documentation
+                </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                  reserved_ip, is_illegal, rfc3849
+                </td>
+              </tr>
+              <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                  2001:10::/28, <a href="https://www.rfc-editor.org/rfc/rfc4843">RFC4843</a>: Orchid routing
+                </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                  reserved_ip, rfc4843
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        <p>Illuminate Core will detect when an IP in one of the key fields is in scope for any of the identified ranges and add values to the <code class="linecode">gim_tags</code> field.
+        The values added have some common values and some that are specific to the ranges, and will be prefixed with the context of the key field for which Core has identified.
+        For example, if the value <code class="linecode">source_ip</code> value is the IP address <code class="linecode">192.0.2.10</code> , Illuminate core will add the following values to the <code class="linecode">gim_tags</code> field:
+        </p>
         <ul>
-            <li>Ranges: 192.168.0.0/16, 172.16.0.0/12, 10.0.0.0/8, <a href="https://www.rfc-editor.org/rfc/rfc1918">RFC1918</a></li>
-            <li><a href="https://www.rfc-editor.org/rfc/rfc1122#page-31">RFC1122</a>: See section 3.2.1.3 regarding loopback addressing</li>
-            <li><a href="https://www.rfc-editor.org/rfc/rfc3927">RFC3927</a>: IPv4 link-local addressing (A.K.A. APIPA addressing)</li>
-            <li><a href="https://www.rfc-editor.org/rfc/rfc3171">RFC3171</a>: IPv4 Multicast addressing</li>
-            <li><a href="https://www.rfc-editor.org/rfc/rfc4291.html#section-2.4">RFC4291</a>: See section 2.4, IPv6 link-local addressing</li>
-            <li><a href="https://www.rfc-editor.org/rfc/rfc4193#section-3.1">RFC4193</a>: See section 3.1, IPv6 unique local unicast addressing</li>
-            <li><a href="https://www.rfc-editor.org/rfc/rfc3056#section-2">RFC3056</a>: IPv6 encapsulation of IPv4</li>
-            <li><a href="https://www.rfc-editor.org/rfc/rfc4380">RFC4380</a>: Toredo</li>
-            <li><a href="https://www.rfc-editor.org/rfc/rfc5737">RFC5737</a>: IPv4 reserved address block for documentation</li>
-            <li><a href="https://www.rfc-editor.org/rfc/rfc2544#appendix-C.2.2">RFC2544</a>: IPv4 reserved addresses for benchmark testing</li>
-            <li><a href="https://www.rfc-editor.org/rfc/rfc3849">RFC3849</a>: IPv6 reserved address block for documentation</li>
-            <li><a href="https://www.rfc-editor.org/rfc/rfc4843">RFC4843</a>: Orchid routing</li>
+            <li><code class="linecode">source_reserved_ip</code></li>
+            <li><code class="linecode">source_is_illegal</code></li>
+            <li><code class="linecode">source_rfc5737</code></li>
         </ul>
     </body>
-</html>
+</html>43
