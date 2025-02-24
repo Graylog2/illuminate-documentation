@@ -16,17 +16,8 @@
                 <p>Graylog Server with a valid enterprise license, running Graylog version 6.0.1+.</p>
             </li>
         </ul>
-        <p>
-            <section class="warningBox">
-                <div class="title"><b>Warning</b>:<span style="font-weight: normal;"> This spotlight requires a more recent version of Graylog due to a change in functionality. Fields will be improperly processed if using a version earlier than Graylog  4.3.0.</span></div>
-            </section>
-        </p>
-        <h2>Not Supported</h2>
-        <ul>
-            <li>
-                <p>N/A</p>
-            </li>
-        </ul>
+        
+        
         <h2>Stream Configuration</h2>
         <p>This technology pack includes one stream:</p>
         <ul>
@@ -52,12 +43,77 @@
             </section>
         </p>
         <h2>Log Format Example</h2>
-        <p><code class="linecode">id=firewall time="2022-11-25 16:30:33" fw="SN710_ABCD" tz=+0100 startime="2022-11-25 16:30:32" pri=5 confid=01 slotlevel=2 ruleid=208 srcif="vlan4" srcifname="20_SOMETHING" ipproto=tcp dstif="vlan3" dstifname="1000_XYZ" proto=http_proxy src=10.10.20.13 srcport=42006 srcportname=ephemeral_fw_tcp srcname=SOMENAME srcmac=xx:6b:8d:9a:da:13 dst=192.168.1.1 dstport=8080 dstportname=http_proxy dstname=Protect-DMZ ipv=4 sent=0 rcvd=0 duration=0.00 action=pass logtype="filter"</code>
+        <p><code class="linecode">NetFlowV5 [192.168.81.254]:67 <> [192.168.81.134]:68 proto:17 pkts:1 bytes:328</code>
         </p>
         <h2>Requirements</h2>
         <ul>
             <li>
-                <p>Configure NetFlow to transmit Syslog to your Graylog server Syslog input.</p>
+                <p>Configure NetFlow to transmit Syslog to your Graylog server Syslog input. Customer needs to use the NetFlow UDP. You also need to install fprobe. fprobe will send the collected flow data. <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>fprobe Installation Guide</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 20px;
+      line-height: 1.6;
+    }
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 800px;
+      margin: auto;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+    }
+    code {
+      background: #eee;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+    pre {
+      background: #eee;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    ul {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>fprobe Installation Guide</h1>
+    <p>You can now install <strong>fprobe</strong> using:</p>
+    <pre><code>sudo apt-get install fprobe</code></pre>
+    
+    <h2>Configuration</h2>
+    <p>fprobe requires two configuration parameters:</p>
+    <ul>
+      <li>The network interface on which to listen</li>
+      <li>The destination where the collector is listening (<code>127.0.0.1:2055</code> in this case)</li>
+    </ul>
+    <p>You can modify these settings in the configuration file:</p>
+    <pre><code>/etc/default/fprobe</code></pre>
+    
+    <h2>Starting fprobe</h2>
+    <p>Restart fprobe to apply the configuration:</p>
+    <pre><code>sudo service fprobe restart</code></pre>
+    
+    <h2>Verification</h2>
+    <p>If everything is configured correctly, new files will appear in <code>/var/cache/nfdump</code>. Verify by listing the files:</p>
+    <pre><code>ls -lh /var/cache/nfdump</code></pre>
+  </div>
+</body>
+</html>
+ </p>
             </li>
         </ul>
         <h2>What is Provided</h2>
@@ -65,9 +121,7 @@
             <li>
                 <p>Rules to normalize and enrich NetFlow log messages.</p>
             </li>
-            <li>
-                <p>A Network Overview Spotlight content pack (dashboard).</p>
-            </li>
+          
         </ul>
         <h2>NetFlow Log Message Processing</h2>
         <p>The Illuminate processing of NetFlow log messages provides the following:</p>
@@ -100,36 +154,8 @@
          
                   </tbody>
         </table>
-        <h2>Network Overview Spotlight Content Pack</h2>
-        <p>The Network Overview Spotlight content pack contains:</p>
-        <ul>
-            <li>
-                <p>Dashboard: Network Overview</p>
-            </li>
-            <ul>
-                <li>
-                    <p>Network Overview tab</p>
-                </li>
-                <p>
-                    <img src="" />
-                </p>
-                <p>
-                    <img src="" />
-                </p>
-                
-                <p>
-                    <img src="" />
-                </p>
-               
-            </ul>
-            <li>
-                <p></p>
-            </li>
-            <ul>
-            
-            </ul>
-           
-            </ul>
-        </ul>
+        <h2>NetFlow Overview Spotlight Content Pack</h2>
+        <p>It does not have a spotlight, but you can use the Illuminate:Core; Network Overview spotlight to show network related messages.</p>
+        
     </body>
 </html>
