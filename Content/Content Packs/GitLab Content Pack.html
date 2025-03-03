@@ -16,6 +16,30 @@
                 <p>This pack requies the use of the Raw HTTP input.</p>
             </li>
         </ul>
+        <h2><a name="Graylog"></a>Graylog Server Configuration</h2>
+        <ol>
+            <li>
+                <p>Create a new Raw HTTP input for receiving Cloudflare logs, unless one already exists. This input must be used for Cloudflare logs only.</p>
+            </li>
+            <li>
+                <p>Once created (or if the Raw HTTP input has already been created), click <i>Show received messages</i> to obtain the input ID (this will pull up a search window with the <i>All Time</i> timeframe). If there are a large number of logs, then you may want to adjust the timeframe to speed up the process.</p>
+            </li>
+            <li>
+                <p>Copy the <code class="linecode">gl2_source_input</code> value.</p>
+            </li>
+            <li>
+                <p>Navigate to <i>Enterprise</i> &gt;<i>Illuminate</i> and select the <i>Customization</i> tab.</p>
+            </li>
+            <li>
+                <p>Locate the <code class="linecode">lookup_adapter_input_routing</code> title and click <i>Edit</i> on the right. For the <code class="linecode">content_name</code> key, enter the <code class="linecode">gl2_source_input</code> ID copied earlier. For the <code class="linecode">input_id</code> value, enter <code class="linecode">gitlab</code>. (Note that the column names are reversed; this will be corrected in a future release).</p>
+            </li>
+            <li>
+                <p>Select <i>Configure value</i> to confirm.</p>
+            </li>
+            <li>
+                <p>If receiving Cloudflare logs on multiple inputs, repeat this process for each input.</p>
+            </li>
+        </ol>
         <h3>What is Provided</h3>
         <p>This pack includes parsing rules that convert GitLab logs into Graylog schema-compatible fields.</p>
         <h3>Setting up the Raw HTTP input</h3>
