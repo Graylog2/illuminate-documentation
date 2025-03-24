@@ -9,84 +9,17 @@
         </p>
         <p>NetFlow is a network protocol that collects and monitors IP traffic flow data, providing insights into network usage, security threats, and performance. It helps analyze traffic patterns, detect anomalies, and troubleshoot network issues by capturing details such as source/destination IPs, ports, protocols, and bandwidth usage.
         <ul>
+          
+              <h2>Requirement(s)</h2>
+        <ul>
             <li>
                 <p>NetFlowV5, NetFlowV9, IPFIX</p>
-            </li>
+                </li>
             <li>
                 <p>Graylog Server with a valid enterprise license, running Graylog version 6.0.1+.</p>
             </li>
         </ul>
-              <h2>Requirement(s)</h2>
-        <ul>
-            <li>
-                <p>Configure NetFlow to transmit to the NetFlow UDP input. 
-                    As an example, you can install fprobe. fprobe will send the collected flow data to NetFlow UDP input. <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>fprobe Installation Guide</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
-      margin: 20px;
-      line-height: 1.6;
-    }
-    .container {
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      max-width: 800px;
-      margin: auto;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    h1 {
-      color: #333;
-    }
-    code {
-      background: #eee;
-      padding: 2px 4px;
-      border-radius: 4px;
-    }
-    pre {
-      background: #eee;
-      padding: 10px;
-      border-radius: 4px;
-      overflow-x: auto;
-    }
-    ul {
-      margin: 10px 0;
-      padding-left: 20px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>fprobe Installation Guide</h1>
-    <p>You can now install <strong>fprobe</strong> using:</p>
-    <pre><code>sudo apt-get install fprobe</code></pre>
-    
-    <h2>Configuration</h2>
-    <p>fprobe requires two configuration parameters:</p>
-    <ul>
-      <li>The network interface on which to listen</li>
-      <li>The destination where the collector is listening (<code>127.0.0.1:2055</code> in this case)</li>
-    </ul>
-    <p>You can modify these settings in the configuration file:</p>
-    <pre><code>/etc/default/fprobe</code></pre>
-    
-    <h2>Starting fprobe</h2>
-    <p>Restart fprobe to apply the configuration:</p>
-    <pre><code>sudo service fprobe restart</code></pre>
-    
-    <h2>Verification</h2>
-    <p>If everything is configured correctly, new files will appear in <code>/var/cache/nfdump</code>. Verify by listing the files:</p>
-    <pre><code>ls -lh /var/cache/nfdump</code></pre>
-  </div>
-</body>
-</html>
- </p>
-        
+                
         <h2>Stream Configuration</h2>
         <p>This technology pack includes one stream:</p>
         <ul>
@@ -111,6 +44,8 @@
                 <div class="title" style="font-weight: normal;"><b>Hint</b>:  If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
             </section>
         </p>
+            <h2>Log Collection</h2>
+<p>NetFlow utilizies <a href="https://go2docs.graylog.org/current/getting_in_log_data/netflow_input.htm">the NetFlow input</a> that ingests multiple NetFlow product type logs in JSON format.</p>
         <h2>Log Format Example</h2>
         <p><code class="linecode">NetFlowV5 [192.168.81.254]:67 <> [192.168.81.134]:68 proto:17 pkts:1 bytes:328</code>
         </p>
