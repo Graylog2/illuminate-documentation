@@ -9,7 +9,7 @@
         <p>This preview compliance pack provides targeted visibility into Identification & Authentication (IAC), Network (NET), and Endpoint (END) events that support control requirements shared across NIST SP 800-53 Rev 5, PCI DSS v4.0, and US CMMC 2.0 Level 1. The spotlight includes dashboards and a daily report template with tailored widgets for compliance reporting.</p>
         <p>
             <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Hint</b>:  This is a preview pack. Features are subject to change, and more content is planned for future iterations.</div>
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:  This is a preview pack. Features are subject to change, and more content and usage guidance is planned for future iterations.</div>
             </section>
         </p>
         <h2>Supported Frameworks</h2>
@@ -34,44 +34,57 @@
                 <p>Graylog Illuminate 6.3.0 or later</p>
             </li>
         </ul>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p><i>Graylog Compliance:Unified Visibility (Preview)</i> dashboard</p>
+            </li>
+            <li>
+                <p><i>Graylog Compliance: Unified Visibility Report (Preview)</i> report template</p>
+            </li>
+        </ul>
         <h2 id="using-this-technology-pack">Using This Content Pack</h2>
         <h3 id="gim-categorization">GIM Categorization</h3>
-        <p><span>The Graylog Compliance </span>content pack uses events that have been categorized using Graylog Information Model (GIM) categorization codes, and in some cases additional schema-defined fields, and is not restricted to a specific product.</p>
-        <h3 id="lookup-tables">Lookup Tables</h3>
-        <p>The <span>The Graylog Compliance </span>content pack utilizes lookups that are part of Illuminate Core. These lookups are used by Illuminate Core to apply category data to events having one of the user fields <code class="linecode">user_name</code>, <code class="linecode">source_user_name</code>, or <code class="linecode">target_user_name</code>, creating or update the fields <code class="linecode">user_category</code>, <code class="linecode">source_user_category</code>, or <code class="linecode">target_user_category</code>, respectively.</p>
-        <p>The category values used by the <span>Graylog Compliance </span> content pack are:</p>
-        <ul>
-            <li><code class="linecode">privileged</code> - applied to accounts that have elevated/administrative privileges</li>
-            <li><code class="linecode">temp_account</code> - applied to accounts indicating that they are intended for temporary use</li>
-            <li><code class="linecode">emergency_account</code> - applied to accounts indicating that they are intended for emergency use</li>
-        </ul>
-        <p>The category values are assigned via the Illuminate Core lookup table titled "Illuminate:Core;Entity Enrichment;Static Accounts Priority Adapter". Entries can be added to this list with the following steps in Graylog:
-            <ol><li>Navigate to the <i>Enterprise</i> menu and select <i>Illuminate</i></li><li>Click on the <i>Customization</i> tab at the top left of the Illuminate page</li><li>Locate the lookup titled "Illuminate:Core;Entity Enrichment;Static Accounts Priority Adapter" and click on the <i>edit</i> button to the right</li><li>Add the account object name (user or group) in the <i>account name</i> column</li><li>Add one or more category values to the <i>category</i> column separating the values with a pipe character ("|")</li><li>click the <i>Configure value</i> button to save the changes</li></ol></p>
-        <h3 id="exportable-content">Exportable Content</h3>
-        <p>The dashboard "Graylog Compliance:Access Control Dashboard" includes a tab titled "Account Management Control Data" which includes a series of compliance control-focused data table widgets which can be used for exporting data from Graylog for use by other tools. To export data from any of the widgets follow these steps:</p>
-        <ol>
-            <li>Click on the actions drop-down (the down-pointing arrow) on the right of the widget containing the data to export and select "<i>Export</i>"</li>
-            <li>Customize the export properties and click "<i>Start Download</i>"</li>
-        </ol>
-        <p>The downloaded file will be located in either the default download directory for your browser, or wherever you selected to save the file.</p>
-        <h3 id="event-definitions">Report Generation</h3>
-        <p>The compliance content pack includes the following event definitions:</p>
-        <ol>
-            <li><code class="linecode">Graylog Compliance:Access Management - Account Lockout</code>
-                <ul>
-                    <li>Detect account locked events</li>
-                </ul>
-            </li>
-            <li><code class="linecode">Graylog Compliance:User Activity Event</code>
-                <ul>
-                    <li>Detect the following events: account created, account deleted, account modified, privileges assigned, privileges removed, account renamed, group member added, group member removed, account locked, account disabled, account unlocked, account enabled.</li>
-                </ul>
-            </li>
-        </ol>
-        <p>These event definitions can fulfill the notification requirements listed in some controls, in order to utilize this the events must be enabled and a notification must be added to the event definitions.</p>
-        <h2 id="packetbeat-spotlight-content-pack"><span>[TITLE]</span> Spotlight Content Pack</h2>
-        <p><span>[Title]</span> offers a dashboard with <span>[x]</span> tabs: <span>[list of tabs]</span>.</p>
-        <p><span>[Images may be inserted below.]</span>
+        <p>This Compliance pack uses events that have been categorized using Graylog Information Model (GIM) categorization codes, and in some cases additional schema-defined fields, and is not restricted to a specific product. Illuminate content that leverages Core enrichment will assign GIM categories automatically. Custom packs and pipeline rules can manually assign GIM categories as well for inclusion in this pack's dashboard widget searches.</p>
+        <h3 id="report-generation">Report Generation</h3>
+        <p>This Compliance pack incudes a prebuilt report template for exporting dashboard data. The report can be scheduled for regular delivery via email in accordance with compliance requirements of continuous logging and monitoring, and data storage over long periods of time.
+        <p>Please view the <a href="https://go2docs.graylog.org/current/interacting_with_your_log_data/reporting.html">documentation</a> for full details on report generation.
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:  Ensure that email configuration is set up and working in your Graylog environment before enabling report scheduling.</div>
+            </section>
+        </p>
+        <p>Scheduled Compliance reports can be configured with the following example workflow in Graylog:
+            <ol>
+                <li>Navigate to the <i>Enterprise</i> menu and select <i>Reports</i></li>
+                <li>Locate the report <i>Graylog Compliance: Unified Visibility Report (Preview)</i></li>
+                <li>Open the <i>Actions</i> dropdown button to the right and select <i>Edit</i></li>
+                <li>Go to the <i>Delivery</i> tab</li>
+                <li>Adjust any current settings as desired, such as the report delivery schedule</li>
+                <li>Add one or more recipients to the <i>Email recipients</i> input field</li>
+                <li>Optionally modify the report <i>Content</i> and <i>Style</i> to your specifications</li>
+                <li>Click the <i>Update</i> button to save the changes</li>
+            </ol>
+        </p>
+        <h2 id="spotlight-content-pack">Compliance Unified Visibility Spotlight Preview</h2>
+        <p>The Spotlight offers a dashboard with 3 tabs:</p>
+        <h3>Identification and Authentication (IAC)</h3>
+        <p>
+            <img src="../Resources/Images/Compliance Unified Visibility Content Pack/iac_1.png" />
+        </p>
+        <p>
+            <img src="../Resources/Images/Compliance Unified Visibility Content Pack/iac_2.png" />
+        </p>
+        <h3>Network Security (NET)</h3>
+        <p>
+            <img src="../Resources/Images/Compliance Unified Visibility Content Pack/net_1.png" />
+        </p>
+        <p>
+            <img src="../Resources/Images/Compliance Unified Visibility Content Pack/net_2.png" />
+        </p>
+        <h3>Endpoint Security (END)</h3>
+        <p>
+            <img src="../Resources/Images/Compliance Unified Visibility Content Pack/end_1.png" />
         </p>
     </body>
 </html>
