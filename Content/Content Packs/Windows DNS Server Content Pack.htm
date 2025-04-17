@@ -6,7 +6,9 @@
     </head>
     <body>
         <MadCap:snippetBlock src="Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>TBA</p>
+        <p>Windows DNS Server is a core Windows Server role that provides domain name resolution services for internal and external network resources. This content pack enables comprehensive parsing of both Analytical and Audit DNS logs, offering deep visibility into query activity across clients, DNS resolution behaviors and metrics over time, and configuration changes. These logs are critical for detecting malicious use of DNS and maintaining infrastructure integrity.</p>
+        <p><b>Analytical logs</b>, sourced from the Microsoft-Windows-DNSServer Event Tracing for Windows (ETW) provider, record every DNS query and response handled by the server. This high-volume telemetry is essential for monitoring name resolution patterns and identifying abnormal traffic such as DNS tunneling or data exfiltration. Designed for performance, ETW-based logging minimizes overhead even at high query rates.</p>
+        <p><b>Audit logs</b>, captured from the Microsoft-Windows-DNS-Server/Audit channel, focus on administrative operations — changes to zones, resource records, DNSSEC, and server settings. These events are vital for detecting unauthorized modifications, maintaining an audit trail, and ensuring DNS infrastructure integrity.</p>
         <h2>Supported Version(s)</h2>
         <ul>
             <li>Windows Server 2016 and later</li>
@@ -20,10 +22,13 @@
                 <p>Graylog 6.0.1+ with a valid Enterprise license</p>
             </li>
             <li>
-                <p>Windows DNS Server installed and DNS Analytic logs enabled on the system (see below)</p>
+                <p>Windows DNS Server installed and DNS Analytic/Audit logs enabled on the system (see below)</p>
             </li>
             <li>
                 <p>Filebeat agent version 8.13.0 and higher running standalone (see below)</p>
+            </li>
+            <li>
+                <p>Illuminate Core: DNS Processing Add-on Pack (optional for some spotlight widgets)</p>
             </li>
         </ul>
         <h2>Stream Configuration</h2>
@@ -120,11 +125,11 @@ filebeat.inputs:
                 <p>Field normalization and data enrichment for additional investigative context</p>
             </li>
             <li>
-                <p>Illuminate Spotlight dashboard to support DNS operational and administrative activity monitoring, provide useful insights into DNS patterns across the network, and highlight potential security threats</p>
+                <p>Illuminate Spotlight dashboard to support DNS transactional and administrative activity monitoring, provide useful insights into DNS patterns across the network, and highlight potential security threats</p>
             </li>
         </ul>
         <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
-        <p>The Windows DNS Server content pack supports the following Event IDs. Generic processing will be provided for any Event IDs not listed.</p>
+        <p>The Windows DNS Server content pack supports the following events. Generic processing will be provided for any Event IDs not listed.</p>
         <h3>Event IDs</h3>
         <table style="width: 100%;mc-table-style: url('Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -165,7 +170,49 @@ filebeat.inputs:
                 </tr>
             </tbody>
         </table>
+        <h3>GIM Categorization </h3>
+        <p>GIM categorization is provided for the following messages:</p>
+        <table style="width: 100%;mc-table-style: url('Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">&#160;</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">&#160;</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">&#160;</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">&#160;</td>
+                </tr>
+            </tbody>
+        </table>
         <h3>Parsed Fields</h3>
+        <p>This pack parses out the following fields. Note that this list is not comprehensive.</p>
         <table style="width: 100%;mc-table-style: url('Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -206,7 +253,7 @@ filebeat.inputs:
             </tbody>
         </table>
         <h2 id="spotlight-content-pack">Windows DNS Server Spotlight Content Pack</h2>
-        <p>Windows DNS Server offers a dashboard with 3 tabs:</p>
+        <p>Windows DNS Server Spotlight offers a dashboard with 3 tabs:</p>
         <h3>DNS Analytic Events</h3>
         <p>
             <img src="../Resources/Images/Windows DNS Server Content Pack/analytic_12.png" />
