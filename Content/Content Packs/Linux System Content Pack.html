@@ -64,7 +64,7 @@
         <p>The following log delivery methods are recommended:</p>
         <ul>
             <li>
-                <p>Rsyslog</p>
+                <p>Syslog daemons such as rsyslog and syslog-ng</p>
             </li>
             <li>
                 <p>Filebeat (with Graylog Sidecar)</p>
@@ -99,44 +99,84 @@
                 <div class="title"><b>Hint: </b><span style="font-weight: normal;">It is recommended to send <a href="https://www.ietf.org/rfc/rfc5424.txt">RFC 5424</a>-compliant syslog messages.</span>
                 </div>
             </section>
-            <h3>Filebeat Configuration</h3>
-            <ol>
-                <li>
-                    <p>Please refer to the official documentation to <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">set up Graylog Sidecar for Filebeat</a>.</p>
-                </li>
-                <li>
-                    <p>Create <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">a matching Beats input in Graylog</a>.</p>
-                </li>
-                <li>
-                    <p>Ensure that the option <i>Do not add Beats type as prefix</i> is <b>disabled</b>.</p>
-                </li>
-                <li>
-                    <p>Create an API access token and custom Linux Filebeat collector.</p>
-                </li>
-                <li>
-                    <p>Configure the collector to ship messages in syslog and auth.log to Graylog. The Filebeat input must add the field <code class="linecode">event_source_product: linux</code> for the parser to identify the log source as Linux.</p>
-                </li>
-                <li>
-                    <p>In addition, the option <code class="linecode">fields_under_root</code> must be set to <code class="linecode">true</code> for message identification to work. See the following example:</p>
-                    <MadCap:codeSnippet>
-                        <MadCap:codeSnippetCopyButton />
-                        <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">- input_type: log
-  paths:
-    - /var/log/auth.log
-    - /var/log/syslog
-  type: filestream
-  fields_under_root: true
-  fields:
-    event_source_product: linux</MadCap:codeSnippetBody>
-                    </MadCap:codeSnippet>
-                </li>
-                <li>
-                    <p>Install Graylog Sidecar on the client host.</p>
-                </li>
-                <li>
-                    <p>Edit the Graylog Sidecar client configuration with your Graylog server API URL and API access token.</p>
-                </li>
-            </ol>
+        </p>
+        <h3>Syslog-ng Configuration</h3>
+        <ol>
+            <li>
+                <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/syslog_inputs.html">Syslog input</a> in Graylog.</p>
+            </li>
+            <li>
+                <p>The field <code class="linecode">event_source_product</code> must be added to each message by the syslog-ng configuration for Illuminate to identify and process the logs as Linux logs.</p>
+                <p>Modify the configuration to set the custom field <code class="linecode">event_source_product</code> as <code class="linecode">linux</code> using a rewrite function. See the following example under the <i>Destinations</i> section of the configuration:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">########################
+# Destinations
+########################
+
+# Set custom field using rewrite.
+rewrite custom_field { set("linux" value(".SDATA.meta.event_source_product")); };
+
+# Define TCP syslog destination.
+destination d_graylog { syslog("YOUR GRAYLOG SERVER" port(514)); };</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+            <li>
+                <p>Under <i>Log paths</i> define the source, rewrite and destination. This example references the configurations set in the previous step:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">########################
+# Log paths
+########################
+
+# Send from the default source s_src to the custom destination d_graylog using the intermediary rewrite as configured above.
+log { source(s_src); rewrite(custom_field); destination(d_graylog); };</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+        </ol>
+        <h3>Filebeat Configuration</h3>
+        <ol>
+            <li>
+                <p>Please refer to the official documentation to <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">set up Graylog Sidecar for Filebeat</a>.</p>
+            </li>
+            <li>
+                <p>Create <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">a matching Beats input in Graylog</a>.</p>
+            </li>
+            <li>
+                <p>Ensure that the option <i>Do not add Beats type as prefix</i> is <b>disabled</b>.</p>
+            </li>
+            <li>
+                <p>Create an API access token and custom Linux Filebeat collector.</p>
+            </li>
+            <li>
+                <p>Configure the collector to ship messages in syslog and auth.log to Graylog. The Filebeat input must add the field <code class="linecode">event_source_product: linux</code> for the parser to identify the log source as Linux.</p>
+            </li>
+            <li>
+                <p>In addition, the option <code class="linecode">fields_under_root</code> must be set to <code class="linecode">true</code> for message identification to work. See the following example:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">- input_type: log
+paths:
+- /var/log/auth.log
+- /var/log/syslog
+type: filestream
+fields_under_root: true
+fields:
+event_source_product: linux</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+            <li>
+                <p>Install Graylog Sidecar on the client host.</p>
+            </li>
+            <li>
+                <p>Edit the Graylog Sidecar client configuration with your Graylog server API URL and API access token.</p>
+            </li>
+        </ol>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">Note that this pack currently has partial support for messages delivered using GELF. Parsing works for most event types, but some such as variants of IAM events do not get processed as intended when in GELF.</span>
+                </div>
+            </section>
         </p>
         <h2>What is Provided</h2>
         <ul>
