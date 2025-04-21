@@ -117,56 +117,54 @@ SpoolDir %ROOT%\data
 LogFile %ROOT%\data\nxlog.log
 LogLevel INFO
 
-<Extension logrotate>
+&lt;Extension logrotate&gt;
     Module  xm_fileop
-    <Schedule>
+    &lt;Schedule&gt;
         When    @daily
         Exec    file_cycle('%ROOT%\data\nxlog.log', 7);
-    </Schedule>
-</Extension>
+    &lt;/Schedule&gt;
+&lt;/Extension&gt;
 
-<Extension gelfExt>
+&lt;Extension gelfExt&gt;
     Module xm_gelf
     # Avoid truncation of the short_message field to 64 characters.
     ShortMessageLength 65536
-</Extension>
+&lt;/Extension&gt;
 
-<Input eventlog>
+&lt;Input eventlog&gt;
     Module im_msvistalog
     PollInterval 1
     SavePos True
     ReadFromLast True
 
-    <QueryXML>
-        <QueryList>
-            <Query Id='1'>
-                <Select Path="Microsoft-Windows-AppLocker/EXE and DLL">*</Select>
-                <Select Path="Microsoft-Windows-AppLocker/MSI and Script">*</Select>
-                <Select Path="Microsoft-Windows-AppLocker/Packaged app-Deployment">*</Select>
-                <Select Path="Microsoft-Windows-AppLocker/Packaged app-Execution">*</Select>
-            </Query>
-        </QueryList>
-    </QueryXML>
-</Input>
+    &lt;QueryXML&gt;
+        &lt;QueryList&gt;
+            &lt;Query Id='1'&gt;
+                &lt;Select Path="Microsoft-Windows-AppLocker/EXE and DLL"&gt;*&lt;/Select&gt;
+                &lt;Select Path="Microsoft-Windows-AppLocker/MSI and Script"&gt;*&lt;/Select&gt;
+                &lt;Select Path="Microsoft-Windows-AppLocker/Packaged app-Deployment"&gt;*&lt;/Select&gt;
+                &lt;Select Path="Microsoft-Windows-AppLocker/Packaged app-Execution"&gt;*&lt;/Select&gt;
+            &lt;/Query&gt;
+        &lt;/QueryList&gt;
+    &lt;/QueryXML&gt;
+&lt;/Input&gt;
 
-<Output gelf>
+&lt;Output gelf&gt;
     Module om_tcp
     Host ${user.graylog_host}
     Port 12201
     OutputType  GELF_TCP
-    <Exec>
+    &lt;Exec&gt;
         # These fields are needed for Graylog
         $gl2_source_collector = '${sidecar.nodeId}';
         $collector_node_id = '${sidecar.nodeName}';
-    </Exec>
-</Output>
+    &lt;/Exec&gt;
+&lt;/Output&gt;
 
-<Route route-1>
-    Path eventlog => gelf
-</Route></MadCap:codeSnippetBody>
+&lt;Route route-1&gt;
+    Path eventlog =&gt; gelf
+&lt;/Route&gt;</MadCap:codeSnippetBody>
                 </MadCap:codeSnippet>
-            </li>
-            <li>
                 <p>Install Graylog Sidecar on the client host.</p>
             </li>
             <li>
@@ -480,187 +478,187 @@ LogLevel INFO
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The directory location of the file</td>
                 </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_file_extension</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">EXE</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The extension of the filename</td>
-                </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_file_hash_length</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">32</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The length of the file hash string</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_file_original_name</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">PSLIST.EXE</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The original name of the file extracted from its FQBN</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_file_path_length</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">43</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The length of the file path string</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_file_x509_subject_common_name</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">MICROSOFT CORPORATION</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The common name field from the file's digital certificate</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_file_x509_subject_country</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">US</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The country field from the file's digital certificate</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_file_x509_subject_locality</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">REDMOND</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The locality field from the file's digital certificate</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_file_x509_subject_organization</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">MICROSOFT CORPORATION</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The organization that issued the file's digital signature</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_file_x509_subject_state_or_province</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">WASHINGTON</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The state or province field from the file's digital certificate</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_fqbn</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US\SYSINTERNALS PSLIST\PSLIST.EXE\1.41.0.00</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The FQBN (Fully Qualified Binary Name) that uniquely identifies the software publisher and version information, used by rules based on the file's digital signature if it exists</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_fqbn_length</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">95</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The length of the FQBN (Fully Qualified Binary Name)</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_full_file_path</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">C:\Users\testuser\Desktop\pslist.exe</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The full file path without use of environment variables</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_full_file_path_length</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">36</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The length of the full file path string</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_opcode</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Info</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The description of the Windows Event Opcode</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_opcode_value</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The numeric representation of the Windows Event Opcode</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_package</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">MICROSOFT.WINDOWSMAPS</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The name of the application package</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_package_length</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">36</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The length of the package name string</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_policy_name</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_file_extension</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">EXE</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The AppLocker policy associated with the event</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The extension of the filename</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_policy_name_length</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_file_hash_length</code>
                     </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">32</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The length of the file hash string</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_file_original_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">PSLIST.EXE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The original name of the file extracted from its FQBN</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_file_path_length</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">43</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The length of the policy name string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The length of the file path string</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_rule_id</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_file_x509_subject_common_name</code>
                     </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">{0A591A2E-66FC-40F5-A421-0E2B94D6D539}</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">MICROSOFT CORPORATION</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The ID of the AppLocker rule the application was evaluated against</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The common name field from the file's digital certificate</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_rule_name</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_file_x509_subject_country</code>
                     </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">(Default Rule) All files located in the Windows folder</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">US</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The name of the AppLocker rule the application was evaluated against</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The country field from the file's digital certificate</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_rule_name_length</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_file_x509_subject_locality</code>
                     </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">54</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">REDMOND</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The length of the rule name string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The locality field from the file's digital certificate</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_rule_sddl</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_file_x509_subject_organization</code>
                     </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">D:(XA;;FX;;;S-1-1-0;(APPID://PATH Contains "%WINDIR%\*"))</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">MICROSOFT CORPORATION</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The Security Descriptor Definition Language (SDDL) string defining rule permissions</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The organization that issued the file's digital signature</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_rule_sddl_length</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_file_x509_subject_state_or_province</code>
                     </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">57</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">WASHINGTON</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The state or province field from the file's digital certificate</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_fqbn</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">O=MICROSOFT CORPORATION, L=REDMOND, S=WASHINGTON, C=US\SYSINTERNALS PSLIST\PSLIST.EXE\1.41.0.00</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The FQBN (Fully Qualified Binary Name) that uniquely identifies the software publisher and version information, used by rules based on the file's digital signature if it exists</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_fqbn_length</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">95</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The length of the rule SDDL string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The length of the FQBN (Fully Qualified Binary Name)</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_user_type</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_full_file_path</code>
                     </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">User</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">C:\Users\testuser\Desktop\pslist.exe</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The type of account associated with the event</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The full file path without use of environment variables</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><code class="linecode">vendor_xml_name</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_full_file_path_length</code>
                     </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">RuleAndFileData</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">The Event Log XML element containing details about the event</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">36</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The length of the full file path string</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_opcode</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Info</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The description of the Windows Event Opcode</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_opcode_value</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The numeric representation of the Windows Event Opcode</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_package</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">MICROSOFT.WINDOWSMAPS</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The name of the application package</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_package_length</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">36</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The length of the package name string</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_policy_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">EXE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The AppLocker policy associated with the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_policy_name_length</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The length of the policy name string</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_rule_id</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">{0A591A2E-66FC-40F5-A421-0E2B94D6D539}</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The ID of the AppLocker rule the application was evaluated against</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_rule_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(Default Rule) All files located in the Windows folder</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The name of the AppLocker rule the application was evaluated against</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_rule_name_length</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">54</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The length of the rule name string</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_rule_sddl</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">D:(XA;;FX;;;S-1-1-0;(APPID://PATH Contains "%WINDIR%\*"))</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The Security Descriptor Definition Language (SDDL) string defining rule permissions</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_rule_sddl_length</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">57</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The length of the rule SDDL string</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_user_type</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The type of account associated with the event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2" style="height : 14.25px;">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><code class="linecode">vendor_xml_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">RuleAndFileData</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">The Event Log XML element containing details about the event</td>
                 </tr>
             </tbody>
         </table>
