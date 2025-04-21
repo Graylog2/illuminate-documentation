@@ -3,6 +3,150 @@
     <head><title>Illuminate Changelogs</title>
     </head>
     <body>
+        <h2>Illuminate 6.2.0</h2>
+        <p>Released:&#160;2025-02-06</p>
+        <h4>Added</h4>
+        <ul>
+            <li>
+                <p>MS365: Extract <code class="linecode">host_name</code> from AzureActiveDirectory (EntraID) Endpoint message metadata. (2599)</p>
+            </li>
+            <li>
+                <p>Illuminate Core: Add Internal/Enterprise Networks process/feature. (2584)</p>
+                <ul>
+                    <li>
+                        <p>This change adds a lookup named <code class="linecode">core_networks</code> to Illuminate core.  Illuminate customers can customize the adapter <code class="linecode">core_networks_adapter</code>, adding a CIDR-notation IP range and category values. Illuminate will detect when <code class="linecode">source_ip</code>/<code class="linecode">destination_ip</code>/<code class="linecode">host_ip</code> matches these CIDR ranges and add a related category field, <code class="linecode">source_category</code>/<code class="linecode">destination_category</code>/<code class="linecode">host_category</code>, with the values provided in the lookup.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>MS365: Extract email metadata from Exchange events. (2577)</p>
+                <ul>
+                    <li>
+                        <p>Extract Email metadata from Exchange events, including email subject and email parent folder path.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Windows Security: Added parsing for Linked Logon ID (<code class="linecode">user_linked_session_id</code>) - event 4624. (1890)</p>
+            </li>
+            <li>
+                <p>Sonicwall: Added and changed parsing for some fields. (2556)</p>
+                <ul>
+                    <li>
+                        <p>Added parsing for <code class="linecode">destination_nat_ip</code>, <code class="linecode">source_nat_ip</code>, <code class="linecode">destination_nat_port</code>, and <code class="linecode">source_nat_port</code>. Renamed <code class="linecode">vendor_referer</code> to <code class="linecode">http_referrer</code> and <code class="linecode">vendor_icmpCode</code> to <code class="linecode">network_icmp_code_number</code>. Added support for IPv6.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Linux: Added parsing for UFW logs. (2623)</p>
+            </li>
+            <li>
+                <p>Windows Security: Add support for Windows Event ID 4696 and 4703. (2053)</p>
+            </li>
+            <li>
+                <p>Linux: Added parsing for IPTable logs. (2634)</p>
+            </li>
+            <li>
+                <p>Core: Added lookup table that maps <code class="linecode">query_record_type</code> to <code class="linecode">query_record_type_code</code>. (2478)</p>
+            </li>
+            <li>
+                <p>Sonicwall: Added support for the new detection category in the dashboard. (2553)</p>
+            </li>
+            <li>
+                <p>AppLocker: <a href="Content Packs/Windows AppLocker Content Pack.htm">Windows AppLocker Content Pack</a> (2607)</p>
+                <ul>
+                    <li>
+                        <p>Windows AppLocker enables administrators to control which applications and files users can run,  including executables, dynamic-link libraries (DLLs), scripts, installers and packaged apps.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>MS365: Added parsing for Exchange Item Group auditing activity. (2601)</p>
+                <ul>
+                    <li>
+                        <p>This activity details information when multiple mailbox items are accessed or modified as part of one consolidated action and includes e-mail attachment extraction.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>MS365: Added parsing for Teams privacy setting changes to a team. (2586)</p>
+            </li>
+            <li>
+                <p>Curated Alerts: Adding <a href="Content Packs/Windows TruKno Sigma Rules Content Pack.html">Windows Threat Campaigns - Sigma Rules</a> (2547)</p>
+                <ul>
+                    <li>
+                        <p>A collection of Sigma rules selected from TruKno's Threat Detection Marketplace and curated by the Illuminate team.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Sonicwall: Added and changed categorization for some event codes. (2548)</p>
+                <ul>
+                    <li>
+                        <p>The following <code class="linecode">event_codes</code> are now categorized: 14, 36, 97, 263, 355, 356, 524, 526, 1573. The following <code class="linecode">event_code</code> has been changed: 1226 is now 129999 and not 180200, 120000.</p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h4>Fixed</h4>
+        <ul>
+            <li>
+                <p>Cloudflare: Possible indexing errors with <code class="linecode">vendor_edge_response_compression_ratio</code> data type. (2613)</p>
+            </li>
+            <li>
+                <p>Windows Security: Fixed the typos for ProcessCreation and AADInternals. (2578)</p>
+            </li>
+            <li>
+                <p>Updated stream routing rules with match pass logic where applicable. (2612)</p>
+                <ul>
+                    <li>
+                        <p>Stream routing rules should be set to match pass to take advantage of the <code class="linecode">_skip_default_gl_routing_</code> field when set.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Curated Alerts: Make Webserver and Linux pack visible (2620)</p>
+                <ul>
+                    <li>
+                        <p>The bundle now contains the Webserver and Linux Curated Alert packs.</p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h4>Changed</h4>
+        <ul>
+            <li>
+                <p>Sonicwall: Lowered license utilization. (2550)</p>
+                <ul>
+                    <li>
+                        <p>The message field is now the vendor message field to avoid data duplication. The following fields are now deleted if they are zero: <code class="linecode">destination_bytes_sent</code>, <code class="linecode">destination_packets_sent</code>, <code class="linecode">source_bytes_sent</code>, <code class="linecode">source_packets_sent</code>.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>MS365: Update Exchange parent folder item processing to extract individual fields. (2580)</p>
+            </li>
+            <li>
+                <p>Checkpoint FW: Properly named count related metric widget(s) in spotlight. (2527)</p>
+            </li>
+            <li>
+                <p>Core: Updated description for the <code class="linecode">core-sigma-field-map_adapter</code> data adapter so it accurately reflects the required key and value. (2568)</p>
+            </li>
+            <li>
+                <p>Curated Alerts: Added a <code class="linecode">gl-</code> prefix to the Sigma IDs (2637)</p>
+            </li>
+            <li>
+                <p>Meraki: Properly named count related metric widget(s) in spotlight. (2530)</p>
+            </li>
+            <li>
+                <p>MS365: Removed <code class="linecode">event_log_name</code> field. (2600)</p>
+                <ul>
+                    <li>
+                        <p>Removed the <code class="linecode">event_log_name</code> field which is better represented by <code class="linecode">vendor_record_type_code</code> and the lookup enhancements that come with it.</p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
         <h2>Illuminate 6.1.0</h2>
         <p>Released:&#160;2024-11-21</p>
         <h4>Added</h4>
