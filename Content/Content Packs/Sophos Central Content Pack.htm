@@ -1,15 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-    <head>
-        <link href="Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Sophos Central Content Pack</title>
+    <head><title>Sophos Central Content Pack</title>
         <link href="Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
-        <MadCap:snippetBlock src="Resources/Snippets/IlluminateBanner.flsnp" />
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
         <p>Sophos Central is a cloud-based unified security management platform that delivers centralized administration, threat detection, and policy enforcement across a range of security services encompassing network, endpoint, server, mobile, and email security. This content pack extracts fields from Sophos Central Endpoint Protection telemetry and event messages and normalizes them to align with the Graylog schema.</p>
-        </p>
         <h2>Supported Version(s)</h2>
-        <p>Sophos Central is a continuously updated managed service that does not feature version numbers. This pack was built and tested for integration with the <b>Sophos Central SIEM Integration v1 API</b>. In addition, parsing is designed around Sophos Central events sourced from Windows endpoints. Events from other OS platforms such as macOS may be supported, but not fully tested.</p>
+        <ul>
+            <li>
+                <p>Sophos Central is a continuously updated managed service that does not feature version numbers. This pack was built and tested for integration with the Sophos Central SIEM Integration v1 API. In addition, parsing is designed around Sophos Central events sourced from Windows endpoints. Events from other OS platforms such as macOS may be supported, but not fully tested.</p>
+            </li>
+        </ul>
         <h2>Requirements</h2>
         <ul>
             <li>
@@ -53,15 +55,15 @@
             </section>
         </p>
         <h2>Log Collection</h2>
-        <p>The new <b>Sophos Central Input</b> in Graylog 6.2.0 can be configured to securely access the Sophos Central SIEM Integration API for log data retrieval.</p>
+        <p>The new <MadCap:annotation MadCap:createDate="2025-04-21T13:36:45.9126264-08:00" MadCap:creator="AnnieZempel" MadCap:initials="AN" MadCap:comment="ADD LINK" MadCap:editor="AnnieZempel" MadCap:editDate="2025-04-21T13:36:48.8505109-08:00">Sophos Central Input</MadCap:annotation> in Graylog 6.2 can be configured to securely access the Sophos Central SIEM Integration API for log data retrieval.</p>
         <h3>Configuring a Sophos Central Input</h3>
-        <p>For Graylog to access Sophos Central logs via API, it needs API credentials.</p>
+        <p>For Graylog to access Sophos Central logs via API, it needs API credentials:</p>
         <ol>
             <li>
                 <p>Create API credentials in Sophos Central Admin. The assigned role should have read capabilities and access to queries, such as <i>Service Principal Super Admin</i>. A guide can be found <a href="https://docs.sophos.com/central/customer/help/en-us/ManageYourProducts/GlobalSettings/APICredentials/index.html">here</a>.</p>
             </li>
             <li>
-                <p>Copy the generated Client ID and Client Secret (store them securely).</p>
+                <p>Copy the generated Client ID and Client Secret and store them securely.</p>
             </li>
             <li>
                 <p>Launch a Sophos Central input in Graylog. When prompted, provide the previously obtained Sophos Client ID and Secret.</p>
@@ -70,23 +72,21 @@
                 <p>Optionally configure the following input options:</p>
                 <ul>
                     <li>
-                        <p>Ingest Alerts — whether to ingest Sophos Alerts in addition to Events</p>
+                        <p><b>Ingest Alerts</b>: Whether to ingest Sophos alerts in addition to events.</p>
                     </li>
                     <li>
-                        <p>Polling Interval — how often (in minutes) the input will check for new log data, recommended to leave at default 5 minutes</p>
+                        <p><b>Polling Interval</b>: How often (in minutes) the input will check for new log data, recommended to leave at default 5 minutes.</p>
                     </li>
                     <li>
-                        <p>Enable Throttling — stop reading new data for this input whenever the system falls behind on message processing and needs to catch up</p>
+                        <p><b>Enable Throttling</b>: If enabled, it will stop reading new data for this input whenever the system falls behind on message processing and needs to catch up.</p>
                     </li>
                 </ul>
             </li>
             <li>
                 <p>Save the input settings.</p>
             </li>
-            <li>
-                <p>If the input does not start automatically, select <i>Start Input</i> to begin retrieving and processing messages from the configured Sophos Central server.</p>
-            </li>
         </ol>
+        <p>If the input does not start automatically, select <i>Start Input</i> to begin retrieving and processing messages from the configured Sophos Central server.</p>
         <h2>Log Format Example</h2>
         <MadCap:codeSnippet>
             <MadCap:codeSnippetCopyButton />
@@ -94,37 +94,47 @@
             </MadCap:codeSnippetBody>
         </MadCap:codeSnippet>
         <h2 id="events-processed-by-this-technology-pack">Event Groups Processed</h2>
-        <p>Logs from event groups not included will have generic processing applied.</p>
+        <p>Logs from event groups not included will have generic processing applied:</p>
         <ul>
             <li>
-                <p>APPLICATION_CONTROL</p>
+                <p><code class="linecode">APPLICATION_CONTROL</code>
+                </p>
             </li>
             <li>
-                <p>DATA_LOSS_PREVENTION</p>
+                <p><code class="linecode">DATA_LOSS_PREVENTION</code>
+                </p>
             </li>
             <li>
-                <p>DENC</p>
+                <p><code class="linecode">DENC</code>
+                </p>
             </li>
             <li>
-                <p>MALWARE</p>
+                <p><code class="linecode">MALWARE</code>
+                </p>
             </li>
             <li>
-                <p>PERIPHERALS</p>
+                <p><code class="linecode">PERIPHERALS</code>
+                </p>
             </li>
             <li>
-                <p>PROTECTION</p>
+                <p><code class="linecode">PROTECTION</code>
+                </p>
             </li>
             <li>
-                <p>PUA</p>
+                <p><code class="linecode">PUA</code>
+                </p>
             </li>
             <li>
-                <p>SYSTEM_HEALTH</p>
+                <p><code class="linecode">SYSTEM_HEALTH</code>
+                </p>
             </li>
             <li>
-                <p>UPDATING</p>
+                <p><code class="linecode">UPDATING</code>
+                </p>
             </li>
             <li>
-                <p>WEB</p>
+                <p><code class="linecode">WEB</code>
+                </p>
             </li>
         </ul>
     </body>
