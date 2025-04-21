@@ -1,20 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" xml:lang="en-us">
     <head><title>Apache Tomcat Server Content Pack</title>
         <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
-        <p class="NormalWeb">Apache Tomcat Server on an Ubuntu system. This pack will parse out and configure Apache Tomcat access and Catalina logs.</p>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>This content pack is designed for Apache Tomcat servers running on Ubuntu systems. It parses and configures both Apache Tomcat access logs and Catalina logs.</p>
         <h2 class="Heading2">Supported Version(s)</h2>
         <ul>
             <li>
-                <p class="NormalWeb">Tested with Version 11.0.5<br /></p>
+                <p class="NormalWeb">Tested with Apache Tomcat version 11.0.5</p>
             </li>
         </ul>
-        <h2 class="Heading2">What is Provided?</h2>
+        <h2 class="Heading2">Requirements</h2>
         <ul>
             <li>
-                <p class="NormalWeb">Parsing rules to extract Apache Tomcat logs into Graylog schema-compatible fields. Apache Tomcat logs get the GIM code “180200” (http.communication).</p>
+                <p class="NormalWeb">The supported log delivery is via Filebeat with <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">Graylog Sidecar</a>.</p>
+            </li>
+            <li>
+                <p class="NormalWeb">The pack only supports Ubuntu and Linux versions with the same path and file structure.</p>
+            </li>
+            <li>
+                <p class="NormalWeb">The pack only supports the standard log folder for Ubuntu.</p>
             </li>
         </ul>
         <h2 class="Heading2">Stream Configuration</h2>
@@ -41,28 +48,23 @@
                 <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;If this index set is already defined, then nothing will be changed. Index settings can be adjusted as required after installation. </div>
             </section>
         </p>
+        <h2 class="Heading2">What is Provided?</h2>
+        <ul>
+            <li>
+                <p class="NormalWeb">Parsing rules to extract Apache Tomcat logs into Graylog schema-compatible fields. Apache Tomcat logs receive the GIM code <code class="linecode">180200</code> (<code class="linecode">http.communication</code>).</p>
+            </li>
+        </ul>
         <h2 class="Heading2">Log Format Example</h2>
         <h3>Access Logs</h3>
         <p><code class="linecode">"34.20.30.15 - - [28/Mar/2025:23:34:30 +0000] "PUT /stefan.session HTTP/1.1" 201 -"</code>
+        </p>
         <p><code class="linecode">"11.20.29.124 - admin [02/Mar/2023:18:58:17 +0530] "POST /host-manager/images/asf-logo.svg HTTP/1.1" 200 20486 X 400 "http://localhost:8080/host-manager/html" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" X-Forwarded-For="127.0.0.1"</code>
         </p>
         <h3>Catalina Logs </h3>
         <p><code class="linecode">26-Mar-2025 15:27:08.188 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]</code>
         </p>
-        <h2 class="Heading2">Requirements</h2>
-        <ul>
-            <li>
-                <p class="NormalWeb">Supported log delivery: Filebeat (with Sidecar)</p>
-            </li>
-            <li>
-                <p class="NormalWeb">The pack only supports Ubuntu and Linux versions with the same path and file structure. We may add support for other Linux systems at one point.</p>
-            </li>
-            <li>
-                <p class="NormalWeb">The pack only supports the standard log folder for Ubuntu.</p>
-            </li>
-        </ul>
-        <h3 class="Heading3">Input via Filebeat together with Graylog Sidecar</h3>
-        <p class="NormalWeb">Please use <a href="https://go2docs.graylog.org/5-0/getting_in_log_data/graylog_sidecar.html">the official Graylog Sidecar documentation</a> to configure your Graylog server and your client(s).</p>
+        <h2>Input via Filebeat together with Graylog Sidecar</h2>
+        <p class="NormalWeb">Please use <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">the official Graylog Sidecar documentation</a> to configure your Graylog server and your client(s).</p>
         <ol>
             <li>
                 <p class="NormalWeb">Create an input and an API key and set up Graylog Sidecar.<br /></p>
@@ -77,9 +79,9 @@
             </section>
         </p>
         <h2>Graylog Server Settings</h2>
-        <p class="NormalWeb">1. <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Create a global Beats input</a> in Graylog.</p>
-        <p class="NormalWeb">2. <a href="https://go2docs.graylog.org/current/setting_up_graylog/rest_api.html">Create a Graylog REST API access token</a> and save it.</p>
-        <p class="NormalWeb">3. Create a (Linux) filebeat configuration under <i>Sidercar </i>&gt;<i>&#160;Configuration</i> with a "filebeat on linux" collector.</p>
+        <p class="NormalWeb">1. Create <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">a global Beats input</a> in Graylog.</p>
+        <p class="NormalWeb">2. Create <a href="https://go2docs.graylog.org/current/setting_up_graylog/rest_api.html">a Graylog REST API access token</a> and save it.</p>
+        <p class="NormalWeb">3. Create a (Linux) filebeat configuration under <i>Sidercar </i>&gt;<i>&#160;Configuration</i> with a "Filebeat on Linux" collector.</p>
         <p class="NormalWeb">4. Configure the file and add:</p>
         <ul class="ul_2">
             <li class="NormalWeb">
@@ -105,8 +107,8 @@
                 <div class="title" style="font-weight: normal;"><b>Warning</b>:&#160;There must be two spaces in front of <code class="linecode">event_source_product</code> and <code class="linecode">- /var... </code>.</div>
             </section>
         </p>
-        <p class="NormalWeb">This setting will pull all logs in the - /opt/tomcat/updated/logs/* folder. If needed, only select access logs or catalina logs</p>
-        <p class="NormalWeb">5. Finally, save the configuration.</p>
+        <p class="NormalWeb">This setting will pull all logs in the <code class="linecode">- /opt/tomcat/updated/logs/*</code> folder. If needed, only select access logs or Catalina logs.</p>
+        <p class="NormalWeb">5. Finally, save the configuration to complete setup.</p>
         <h2>Configure a Client with Filebeat and Graylog Sidecar</h2>
         <p class="NormalWeb">1. Install Sidecar on the remote machine.<br /></p>
         <MadCap:codeSnippet>
@@ -141,7 +143,7 @@ sudo systemctl status graylog-sidecar</MadCap:codeSnippetBody>
         </MadCap:codeSnippet>
         <p>
             <section class="warningBox">
-                <div class="title" style="font-weight: normal;"><b>Warning</b>:&#160;The provided commands are only examples; please use your IP and API token. For example commands for Ubuntu, refer the <a href="https://go2docs.graylog.org/5-0/getting_in_log_data/graylog_sidecar.html#:~:text=Graylog Sidecar is a lightweight,the configurations of log collectors.">official documentation</a>.</div>
+                <div class="title" style="font-weight: normal;"><b>Warning</b>:&#160;The provided commands are only examples; please use your IP and API token. For example commands for Ubuntu, refer the <a href="https://go2docs.graylog.org/current/getting_in_log_data/install_sidecar_on_linux.htm">official documentation</a>.</div>
             </section>
         </p>
         <p class="NormalWeb">4. Install filebeats <a href="https://www.elastic.co/downloads/beats/filebeat">according to the documentation</a>. Or, here is <a href="https://www.elastic.co/downloads/beats/filebeat-oss">the download link</a> for the OSS version.</p>
@@ -164,17 +166,16 @@ sudo systemctl enable filebeat
 sudo systemctl start filebeat
 sudo systemctl status filebeat</MadCap:codeSnippetBody>
         </MadCap:codeSnippet>
-        <p class="NormalWeb">5. <i>Optional</i>. Edit the <code class="linecode">filebeat.ym</code>l file as needed. You do this via the Sidecar configuration in Graylog.<br />6. Start the deamon.<br />7. If there is a permission issue, you can resolve with:</p>
+        <p class="NormalWeb">5. (Optional) Edit the <code class="linecode">filebeat.ym</code>l file as needed. You do this via the Sidecar configuration in the Graylog interface.<br />6. Start the deamon.<br />7. If there is a permission issue, you can resolve with:</p>
         <MadCap:codeSnippet>
             <MadCap:codeSnippetCopyButton />
             <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo chown root filebeat.yml</MadCap:codeSnippetBody>
         </MadCap:codeSnippet>
         <p class="NormalWeb">8. In Graylog, assign a configuration to your machine.</p>
-        <h2 class="Heading2">Limitations</h2>
-        <ul>
-            <li>
-                <p class="NormalWeb">This pack is tested on an Ubuntu system it may or may not work with other Linux systems due to different path and file names. Error logs are not parsed.</p>
-            </li>
-        </ul>
+        <p>
+            <section class="warningBox">
+                <div class="title" style="font-weight: normal;"><b>Warning</b>:&#160;This pack was tested on Ubuntu and may not work as designed with other Linux-based systems due to different path and file names. Error logs are not parsed.</div>
+            </section>
+        </p>
     </body>
 </html>
