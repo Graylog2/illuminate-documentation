@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head> <title>GitLab Content Pack</title></head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>GitLab is a complete DevOps platform that provides Git-based source code management, CI/CD automation, security scanning, and project collaboration in a single application, available as both cloud-hosted and self-managed solutions. This pack parses GitLab logs.</p>
+        <h3>Requirement(s)</h3>
+        <ul>
+            <li>
+                <p>A Graylog server with a valid Enterprise license that is running Graylog version 6.1.3 .</p>
+            </li>
+            <li>
+                <p>This pack is tested with GitLab version 17.9.</p>
+            </li>
+            <li>
+                <p>This pack requires the use of the <a href="https://go2docs.graylog.org/current/getting_in_log_data/raw_http_input.htm">Raw HTTP input</a>.</p>
+            </li>
+        </ul>
+        <h3>What is Provided</h3>
+        <p>This pack includes parsing rules that convert GitLab logs into Graylog schema-compatible fields. It support all known <code class="linecode">event_types</code>.</p>
+        <h3>Setting up the Raw HTTP input</h3>
+        <p>Leverage <a href="https://go2docs.graylog.org/current/getting_in_log_data/raw_http_input.htm">Graylog's Raw HTTP input</a> to receive logs directly from GitLabs via its Audit Event Streaming functionality. You can define which types of logs to send and specify Graylog as the destination endpoint. This allows seamless log forwarding from GitLab to Graylog for centralized log analysis. </p>
+        <h4>Graylog Server Settings</h4>
+        <ol>
+            <li>
+                <p>Create a global Raw HTTP input in Graylog.</p>
+            </li>
+            <li>
+                <p>Configure the log source to the desired value and configure the field <code class="linecode">event_source_product</code> with the value <code class="linecode">GitLab-web</code>.</p>
+            </li>
+        </ol>
+        <h3>Log Format Examples:</h3>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton>&#160;</MadCap:codeSnippetCopyButton>
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">Application Logs
+{"id":3255712804,"author_id":26388820,"entity_id":67540197,"entity_type":"Project","details":{"add":"user_access","as":"Default role: Guest","member_id":122256555,"event_name":"member_created","author_name":"Stefan Tester","author_class":"User","target_id":26027514,"target_type":"User","target_details":"Stefan Tester","custom_message":"Membership created","ip_address":"2603:8080:2b20:9a50:12cd:7d27:1240:b8ea","entity_path":"testmegroupname/testing"},"ip_address":"2603:8080:2bf0:9a50:1422:7227:2240:b8ea","author_name":"Stefan Tester","entity_path":"testmegroupname/testing","target_details":"Stefan Tester","created_at":"2025-03-03T16:23:41.344Z","target_type":"User","target_id":26027514,"event_type":"member_created"}</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint:  </b><span style="font-weight: normal;">GitLab produces a wide range of json logs with a wide range of fields. Non-schema fields have a <code class="linecode">vendor_</code> prefix.</span>
+                </div>
+            </section>
+        </p>
+        <h2><a name="Graylog"></a>Graylog Server Configuration</h2>
+        <ol>
+            <li>
+                <p>Create a new Raw HTTP input for receiving Gitlab logs, unless one already exists. This input must be used for Gitlab logs only.</p>
+            </li>
+            <li>
+                <p>In GitLab, consult <a href="https://docs.gitlab.com/user/compliance/audit_event_streaming/">the GitLab documentation</a> to set up an HTTP destination. </p>
+            </li>
+            <li>
+                <p>Once created (or if the Raw HTTP input has already been created), click <i>Show received messages</i> to obtain the input ID. This will pull up a search window with the <i>All Time</i> timeframe. If there are a large number of logs, then you may want to adjust the timeframe to speed up the process.</p>
+            </li>
+            <li>
+                <p>Copy the <code class="linecode">gl2_source_input</code> value.</p>
+            </li>
+            <li>
+                <p>Navigate to <i>Enterprise</i> &gt;<i>Illuminate</i> and select the <i>Customization</i> tab.</p>
+            </li>
+            <li>
+                <p>Locate the <code class="linecode">lookup_adapter_input_routing</code> title and click <i>Edit</i> . For the <code class="linecode">content_name</code> key, enter the <code class="linecode">gl2_source_input</code> ID copied earlier. For the <code class="linecode">input_id</code> value, enter <code class="linecode">gitlab</code>. (Note that the column names are reversed).</p>
+            </li>
+            <li>
+                <p>Select <i>Configure value</i> to confirm.</p>
+            </li>
+            <li>
+                <p>If receiving GitLab logs on multiple inputs, repeat this process for each input.</p>
+            </li>
+        </ol>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton>&#160;</MadCap:codeSnippetCopyButton>
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">Application Logs
+{"id":3255712804,"author_id":26388820,"entity_id":67540197,"entity_type":"Project","details":{"add":"user_access","as":"Default role: Guest","member_id":122256555,"event_name":"member_created","author_name":"Stefan Tester","author_class":"User","target_id":26027514,"target_type":"User","target_details":"Stefan Tester","custom_message":"Membership created","ip_address":"2603:8080:2b20:9a50:12cd:7d27:1240:b8ea","entity_path":"testmegroupname/testing"},"ip_address":"2603:8080:2bf0:9a50:1422:7227:2240:b8ea","author_name":"Stefan Tester","entity_path":"testmegroupname/testing","target_details":"Stefan Tester","created_at":"2025-03-03T16:23:41.344Z","target_type":"User","target_id":26027514,"event_type":"member_created"}</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <h2>GitLab Spotlight Content Pack</h2>
+        <p>The GitLab content pack provides an Overview Dashboard, a Web Overview Dashboard, and a User Overview Dashboard.</p>
+        <h3>GitLab Events Overview Tab
+</h3>
+        <p>
+            <img src="../Resources/Images/Gitlab/GitLab_Events_Overview.png" alt="image.png" />
+        </p>
+        <h3>GitLab User Overview Tab
+</h3>
+        <p>
+            <img src="../Resources/Images/Gitlab/GitLab_User_Overview.png" alt="image.png" />
+        </p>
+        <h3>GitLab Web Overview Tab
+</h3>
+        <p>
+            <img src="../Resources/Images/Gitlab/GitLab_Web_Overview.png" alt="image.png" />
+        </p>
+    </body>
+</html>
