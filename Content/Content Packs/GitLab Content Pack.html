@@ -16,7 +16,31 @@
                 <p>This pack requires the use of the <a href="https://go2docs.graylog.org/current/getting_in_log_data/raw_http_input.htm">Raw HTTP input</a>.</p>
             </li>
         </ul>
-        <p>&#160;</p>
+        <h3>What is Provided</h3>
+        <p>This pack includes parsing rules that convert GitLab logs into Graylog schema-compatible fields. It support all known <code class="linecode">event_types</code>.</p>
+        <h3>Setting up the Raw HTTP input</h3>
+        <p>Leverage <a href="https://go2docs.graylog.org/current/getting_in_log_data/raw_http_input.htm">Graylog's Raw HTTP input</a> to receive logs directly from GitLabs via its Audit Event Streaming functionality. You can define which types of logs to send and specify Graylog as the destination endpoint. This allows seamless log forwarding from GitLab to Graylog for centralized log analysis. </p>
+        <h4>Graylog Server Settings</h4>
+        <ol>
+            <li>
+                <p>Create a global Raw HTTP input in Graylog.</p>
+            </li>
+            <li>
+                <p>Configure the log source to the desired value and configure the field <code class="linecode">event_source_product</code> with the value <code class="linecode">GitLab-web</code>.</p>
+            </li>
+        </ol>
+        <h3>Log Format Examples:</h3>
+        <MadCap:codeSnippet>
+            <MadCap:codeSnippetCopyButton>&#160;</MadCap:codeSnippetCopyButton>
+            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">Application Logs
+{"id":3255712804,"author_id":26388820,"entity_id":67540197,"entity_type":"Project","details":{"add":"user_access","as":"Default role: Guest","member_id":122256555,"event_name":"member_created","author_name":"Stefan Tester","author_class":"User","target_id":26027514,"target_type":"User","target_details":"Stefan Tester","custom_message":"Membership created","ip_address":"2603:8080:2b20:9a50:12cd:7d27:1240:b8ea","entity_path":"testmegroupname/testing"},"ip_address":"2603:8080:2bf0:9a50:1422:7227:2240:b8ea","author_name":"Stefan Tester","entity_path":"testmegroupname/testing","target_details":"Stefan Tester","created_at":"2025-03-03T16:23:41.344Z","target_type":"User","target_id":26027514,"event_type":"member_created"}</MadCap:codeSnippetBody>
+        </MadCap:codeSnippet>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint:  </b><span style="font-weight: normal;">GitLab produces a wide range of json logs with a wide range of fields. Non-schema fields have a <code class="linecode">vendor_</code> prefix.</span>
+                </div>
+            </section>
+        </p>
         <h2><a name="Graylog"></a>Graylog Server Configuration</h2>
         <ol>
             <li>
@@ -44,45 +68,24 @@
                 <p>If receiving GitLab logs on multiple inputs, repeat this process for each input.</p>
             </li>
         </ol>
-        <h3>What is Provided</h3>
-        <p>This pack includes parsing rules that convert GitLab logs into Graylog schema-compatible fields. It support all known <code class="linecode">event_types</code>.</p>
-        <h3>Setting up the Raw HTTP input</h3>
-        <p>You can leverage <a href="https://go2docs.graylog.org/current/getting_in_log_data/raw_http_input.htm">Graylog's Raw HTTP input</a> to receive logs directly from GitLabs via its Audit Event Streaming functionality. By configuring it, users can define which types of logs to send and specify Graylog as the destination endpoint. This allows seamless log forwarding from GitLab to Graylog for centralized log analysis. For detailed instructions, refer to <a href="https://go2docs.graylog.org/current/getting_in_log_data/cloudflare_logpush_with_raw_http_input.htm">the Graylog documentation on setting up GitLab with the Raw HTTP&#160;input</a>.</p>
-        <h4>Graylog Server Settings</h4>
-        <ol>
-            <li>
-                <p>Create a global Raw HTTP input in Graylog.</p>
-            </li>
-            <li>
-                <p>Configure the log source to the desired value and configure the field <code class="linecode">event_source_product</code> with the value <code class="linecode">GitLab-web</code>.</p>
-            </li>
-        </ol>
-        <h3>Log Format Examples:</h3>
         <MadCap:codeSnippet>
             <MadCap:codeSnippetCopyButton>&#160;</MadCap:codeSnippetCopyButton>
             <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">Application Logs
 {"id":3255712804,"author_id":26388820,"entity_id":67540197,"entity_type":"Project","details":{"add":"user_access","as":"Default role: Guest","member_id":122256555,"event_name":"member_created","author_name":"Stefan Tester","author_class":"User","target_id":26027514,"target_type":"User","target_details":"Stefan Tester","custom_message":"Membership created","ip_address":"2603:8080:2b20:9a50:12cd:7d27:1240:b8ea","entity_path":"testmegroupname/testing"},"ip_address":"2603:8080:2bf0:9a50:1422:7227:2240:b8ea","author_name":"Stefan Tester","entity_path":"testmegroupname/testing","target_details":"Stefan Tester","created_at":"2025-03-03T16:23:41.344Z","target_type":"User","target_id":26027514,"event_type":"member_created"}</MadCap:codeSnippetBody>
         </MadCap:codeSnippet>
-        <p>
-            <section class="infoBox">
-                <div class="title"><b>Hint:  </b><span style="font-weight: normal;">GitLab produces a wide range of json logs with a wide range of fields. Non schema fields get a vendor_ infront of the field name.</span>
-                </div>
-            </section>
-        </p>
-        <h3>GitLab Spotlight Content Pack</h3>
-        <p>The GitLab content pack provides an Overview Dashboard, a Web Overview Dashboard and a User Overview Dashboard.</p>
-                <h2 id="packetbeat-spotlight-content-pack">Packetbeat Spotlight Content Pack</h2>
-        <h3>Gitlab Events Overview Tab
+        <h2>GitLab Spotlight Content Pack</h2>
+        <p>The GitLab content pack provides an Overview Dashboard, a Web Overview Dashboard, and a User Overview Dashboard.</p>
+        <h3>GitLab Events Overview Tab
 </h3>
         <p>
             <img src="../Resources/Images/Gitlab/GitLab_Events_Overview.png" alt="image.png" />
         </p>
-        <h3>Gitlab User Overview Tab
+        <h3>GitLab User Overview Tab
 </h3>
         <p>
             <img src="../Resources/Images/Gitlab/GitLab_User_Overview.png" alt="image.png" />
         </p>
-        <h3>Gitlab Web Overview Tab
+        <h3>GitLab Web Overview Tab
 </h3>
         <p>
             <img src="../Resources/Images/Gitlab/GitLab_Web_Overview.png" alt="image.png" />
