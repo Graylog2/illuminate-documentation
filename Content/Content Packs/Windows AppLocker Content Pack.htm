@@ -117,53 +117,53 @@ SpoolDir %ROOT%\data
 LogFile %ROOT%\data\nxlog.log
 LogLevel INFO
 
-&amp;lt;Extension logrotate&amp;gt;
+&lt;Extension logrotate&gt;
     Module  xm_fileop
-    &amp;lt;Schedule&amp;gt;
+    &lt;Schedule&gt;
         When    @daily
         Exec    file_cycle('%ROOT%\data\nxlog.log', 7);
-    &amp;lt;/Schedule&amp;gt;
-&amp;lt;/Extension&amp;gt;
+    &lt;/Schedule&gt;
+&lt;/Extension&gt;
 
-&amp;lt;Extension gelfExt&amp;gt;
+&lt;Extension gelfExt&gt;
     Module xm_gelf
     # Avoid truncation of the short_message field to 64 characters.
     ShortMessageLength 65536
-&amp;lt;/Extension&amp;gt;
+&lt;/Extension&gt;
 
-&amp;lt;Input eventlog&amp;gt;
+&lt;Input eventlog&gt;
     Module im_msvistalog
     PollInterval 1
     SavePos True
     ReadFromLast True
 
-    &amp;lt;QueryXML&amp;gt;
-        &amp;lt;QueryList&amp;gt;
-            &amp;lt;Query Id='1'&amp;gt;
-                &amp;lt;Select Path="Microsoft-Windows-AppLocker/EXE and DLL"&amp;gt;*&amp;lt;/Select&amp;gt;
-                &amp;lt;Select Path="Microsoft-Windows-AppLocker/MSI and Script"&amp;gt;*&amp;lt;/Select&amp;gt;
-                &amp;lt;Select Path="Microsoft-Windows-AppLocker/Packaged app-Deployment"&amp;gt;*&amp;lt;/Select&amp;gt;
-                &amp;lt;Select Path="Microsoft-Windows-AppLocker/Packaged app-Execution"&amp;gt;*&amp;lt;/Select&amp;gt;
-            &amp;lt;/Query&amp;gt;
-        &amp;lt;/QueryList&amp;gt;
-    &amp;lt;/QueryXML&amp;gt;
-&amp;lt;/Input&amp;gt;
+    &lt;QueryXML&gt;
+        &lt;QueryList&gt;
+            &lt;Query Id='1'&gt;
+                &lt;Select Path="Microsoft-Windows-AppLocker/EXE and DLL"&gt;*&lt;/Select&gt;
+                &lt;Select Path="Microsoft-Windows-AppLocker/MSI and Script"&gt;*&lt;/Select&gt;
+                &lt;Select Path="Microsoft-Windows-AppLocker/Packaged app-Deployment"&gt;*&lt;/Select&gt;
+                &lt;Select Path="Microsoft-Windows-AppLocker/Packaged app-Execution"&gt;*&lt;/Select&gt;
+            &lt;/Query&gt;
+        &lt;/QueryList&gt;
+    &lt;/QueryXML&gt;
+&lt;/Input&gt;
 
-&amp;lt;Output gelf&amp;gt;
+&lt;Output gelf&gt;
     Module om_tcp
     Host ${user.graylog_host}
     Port 12201
     OutputType  GELF_TCP
-    &amp;lt;Exec&amp;gt;
+    &lt;Exec&gt;
         # These fields are needed for Graylog
         $gl2_source_collector = '${sidecar.nodeId}';
         $collector_node_id = '${sidecar.nodeName}';
-    &amp;lt;/Exec&amp;gt;
-&amp;lt;/Output&amp;gt;
+    &lt;/Exec&gt;
+&lt;/Output&gt;
 
-&amp;lt;Route route-1&amp;gt;
-    Path eventlog =&amp;gt; gelf
-&amp;lt;/Route&amp;gt;</MadCap:codeSnippetBody>
+&lt;Route route-1&gt;
+    Path eventlog =&gt; gelf
+&lt;/Route&gt;</MadCap:codeSnippetBody>
                 </MadCap:codeSnippet>
             </li>
             <li>
