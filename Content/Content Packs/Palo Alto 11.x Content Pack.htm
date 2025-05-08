@@ -13,7 +13,7 @@
         <h2>Supported Version(s)</h2>
         <ul>
             <li>
-            PAN OS 11.1
+            PAN-OS 11.1+
             </li>
         </ul>
         <h2>Requirements</h2>
@@ -58,6 +58,12 @@
             <li>Traffic</li>
             <li>User-ID</li>
         </ul>
+        <h4>Palo Alto Logs and CSV processing</h4>
+        <p>Illuminate processes the Palo Alto logs in CSV format but a common issue is that logs will have additional fields added in newer versions of PAN-OS.
+            In order to gracefully handle these additional fields this pack will capture them in placeholder fields that have the prefix <code class="linecode">additional_field_</code>
+            and a letter corresponding to the position of the field, with the letters <code class="linecode">a</code> through <code class="linecode">x</code> being used to capture the additional columns.
+            These fields will be temporary until an updated version of this pack can be released which properly labels these fields.
+        </p>
         <h3>IP Field Processing</h3>
         <p>Palo Alto devices have distinct fields for device IPv4 and IPv6 addresses. When one of these values is not present, it will log that field with the value <code class="linecode">0.0.0.0</code>.
             Illuminate will reassign the IPv6 address to the appropriate IP field: <code class="linecode">source_ip</code>, <code class="linecode">host_ip</code>, or <code class="linecode">destination_ip</code>.
@@ -3286,7 +3292,7 @@
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">User</code>
                             </td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><code class="linecode">source_user</code>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><code class="linecode">user_name*</code>
                             </td>
                         </tr>
                         <!-- Row 4 -->
@@ -3440,7 +3446,7 @@
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">User by Source</code>
                             </td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><code class="linecode">vendor_source_user</code>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><code class="linecode">user_name_by_source*</code>
                             </td>
                         </tr>
                         <!-- Row 26 -->
@@ -3477,6 +3483,13 @@
                 <!-- Additional text can be added here optionally using the p tag(s) -->
             </MadCap:dropDownBody>
         </MadCap:dropDown>
+        <section class="infoBox">
+            <div class="title" style="font-weight: normal;"><b>Note</b>:  prior to Illuminate 6.3.2 the <code class="linecode">User</code> was extracted as <code class="linecode">source_user</code>
+                and <code class="linecode">User by Source</code> was extracted as <code class="linecode">vendor_source_user</code>.</div>
+        </section>
+        <p>Illuminate will overwrite the "message" field for User ID logs, normally the CSV-formatted event data, into a more brief summary of the event in question.
+            The replacement message uses the template <code class="linecode">User-ID:{user_name} discovery:{vendor_log_subtype}, data source:{vendor_datasource} (name:{vendor_datasource_name}, type:{vendor_datasource_type}</code>.
+            For example: <code class="linecode">User-ID:corpuser discovery:login, data source:agent (name:CORPSYS1, type:)</code></p>
         <h2>Enrichments</h2>
         <p>Illuminate will enrich events with data to make working with events easier.</p>
         <h3><code class="linecode">application_risk</code>
