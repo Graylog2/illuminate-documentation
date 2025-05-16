@@ -1,1 +1,658 @@
-fi
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Bitdefender Telemetry Content Pack</title>
+    </head>
+    <body>
+        <p>This content pack is for Bitdefender and will parse Telemetry logs.&#160;Please note this content pack does not apply to all Bitdefender products. </p>
+        <h2>Supported Version(s)</h2>
+        <ul>
+            <li>
+                <p>GravityZone Version 6.56.0-1 and matching OnPrem Versions</p>
+            </li>
+        </ul>
+        <h2>Requirements</h2>
+        <ul>
+            <li>
+                <p>Graylog 6.1.2+</p>
+            </li>
+            <li>
+                <p>The Graylog server must be configured to accept TLS 1.2</p>
+            </li>
+            <li>
+                <p>Bitdefender GravityZone/Bitdefender OnPrem must be configured to send Syslog-formatted logs to a Graylog Syslog input</p>
+            </li>
+            <li>
+                <p>Bitdefender GravityZone/Bitdefender OnPrem must have the correct license to generate Telemetry data</p>
+            </li>
+        </ul>
+        <h2>Stream Configuration</h2>
+        <p>This technology pack includes one stream:</p>
+        <ul>
+            <li>
+                <p>"Illuminate:Bitdefender Telemetry Messages"</p>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:  If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
+            </section>
+        </p>
+        <h2>Index Set Configuration</h2>
+        <p>This technology pack includes one index set definition:</p>
+        <ul>
+            <li>“Bitdefender Logs"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:  If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
+            </section>
+        </p>
+        <h2>What is Provided?</h2>
+        <ul>
+            <li>
+                <p>Telemetry log parsing and a custom dashboard with four tabs</p>
+            </li>
+        </ul>
+        <h2>Limitations</h2>
+        <ul>
+            <li>
+                <p>Only Syslog-formatted logs are supported</p>
+            </li>
+        </ul>
+        <h2>Log Format Examples</h2>
+        <p>All 14 Bitdefender Telemetry logs are supported, see Bitdefender Telemetry Syslog documentation  <a href="https://www.bitdefender.com/business/support/en/77211-322695-security-telemetry-events-sent-to-siem.html">the Bitdefender Syslog documentation</a>:</p>
+        <h3>Example: terminate_process logs</h3>
+        <p><code class="linecode">{"ctc_version":"2.13.4.3","machine_name":"1022H2X64-N74","event_version":1,"event_name":"terminate_process","pid":7912,"datetime":1715023652647,"os_version":"Windows 10","company_id":"5b9bc2701da197f07a8b4567","hardware_id":"4D8E0E42-22F0-2D94-6823-C3863931877A-0050568E1657","os_family":"windows","os_platform":"x64","os_type":"client","product_version":"7.9.11.406"}</code>
+        </p>
+
+        <h2>Configure Bitdefender GravityZone Input in <MadCap:variable name="General.CompanyName" /></h2>
+        <p>See the <a href="https://go2docs.graylog.org/current/getting_in_log_data/bitdefender_gravityzone_input.htm">Graylog Bitdefender input documentation</a> for information on configuring this input. </p>
+
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:  GravityZone requires a TLS 1.2 connection. Your server must be configured to support TLS connection. </div>
+            </section>
+        </p>
+        <h2>Message Fields Included in This Pack</h2>
+        <p>Most fields are renamed. The prefix <code class="linecode">BitdefenderGZ</code> may be substituted with <code class="linecode">vendor_</code>. Other fields are mapped to Graylog schema fields.</p>
+        <table style="height: 324px;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" width="767" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 358px;" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 722px;" />
+            <col style="width: 700px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col style="width: 324px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <td class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><strong>Field Name</strong>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><strong>Mapped From</strong>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><strong>Example Value(s)</strong>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><strong>Field Type</strong>
+                    </td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1"><strong>Description</strong>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_category</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZAttackType(s)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;remote</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_category</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZExploitType</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;AVC Blocked</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_category</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZMalwareType</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;file</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_category</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZTargetType</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;http</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_signature</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZAttackType,&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;remote</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Only if MalwareName does not exist</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_signature</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZDetectionName</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_signature</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZExploitTechnique</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_signature</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZMalwareName</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_signature</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection_exploitTechnique</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_signature</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection_threatName</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;EICAR-Test-File</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">attacks_tactic_uid</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZAttCkId</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_ip</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dvc</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;10.10.10.10</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">email_from</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZEmailSender</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;stefan@graylog.com</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">email_subject</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZEmailSubject</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;Welcome</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_created</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZDate</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;2024-09-14T08:03:49.671Z</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;date</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_created</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZDetectionTime</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;2024-09-14T08:03:49.671Z</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">date&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_created</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZEventCreated</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;2024-09-14T08:03:49.671Z</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">date&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_created</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">start</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;2024-09-14T08:03:49.671Z</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">date&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">fname</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;example.exe</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_path</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZDetectionPath</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;c:\\myfile</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_path</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZFilePath</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;&#160;c:\\myfile</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_path</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZLocalPath</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;&#160;c:\\myfile</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_path</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">filePath</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;&#160;c:\\myfile</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_size</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZFileSize</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;&#160;257</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">hash</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">fileHash</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">hash_sha256</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZFileHashSha256</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_hostname</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZComputerFQDN</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;test-inst@graylog.com</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_hostname</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZHostName</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;test-inst</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_hostname</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">computer_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;test-inst</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_hostname</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dvchost</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;test-inst</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_hostname</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">shost</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;test-inst</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_id</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZEndpointId</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;5e2285febf225a545e22272b</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_request_path</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZRequest</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;http://example.com/account/support/</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_path</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZUrl</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;http://example.com/account/support/</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_iana_number</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZFwProtocolId</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;6</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_parent_path</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">sproc</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_id</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZComputerId</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;623c18fb122b8700396d6322</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZComputerIp</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;10.10.10.10</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZEventSourceIP</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;10.10.10.10</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZSourceIp</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;10.10.10.10</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_user_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZSUser</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;stefan</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_user_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">suser</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;stefanadmin</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZSDetectionUsername</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;stefan</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZSUserName</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;stefan</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection_username</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;Administrator</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">duser</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;stefan</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_attack_source</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZAttackSource</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;12.12.12.23</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_company_id</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZCompanyId</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;623228fb12f28700396d6222</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_company_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZCompanyName</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;Graylog</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_computer_fqdn</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZComputerFQDN</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;test@graylog.com</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_computer_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZComputerName</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;test-machine</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_control_block_type</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZApplicationControlBlockType</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;http_timelimiter</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_control_type</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZApplicationControlType</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;http</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_count</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZCount</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;2</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_count</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cnt</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;3</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_detection_level</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZDetectionLevel</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;2</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_detection_time</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZDetectionTime</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;2024-06-01T10:22:12.000Z</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;date</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_action</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZActionTaken</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;quarantine</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;array</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZDetectionAction</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_action</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZFinalStatus</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZMainAction</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_action</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">act</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection_action</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_description</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderName</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_end_date</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZEnd</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;2024-02-11T10:22:43.000Z</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_module</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZModule</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_module</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderName</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">If module does not exist</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_severity_level</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">severity</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;3</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;long</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">0 to 10</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_type</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BitdefenderGZEventType</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_incident_id</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BitdefenderGZIncidentId</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">&#160;</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">vendor_severity_score</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">BitdefenderGZSeverityScore</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">&#160;23</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">&#160;</td>
+                    <td style="width: 138.188px;" class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">&#160;</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>Categorization</h2>
+        <p>The following event types and modules are currently categorized:</p>
+        <table style="height: 114px;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');width: 1425px;" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><strong>vendor_event_module</strong>
+                    </th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><strong>GIM Event Type Code</strong>
+                    </th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1"><strong>GIM Event Type</strong>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">antiexploit</td>
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">171000</td>
+                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Malware Alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">avc</td>
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">171000</td>
+                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Malware Alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">exchange-malware</td>
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">171000</td>
+                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Malware Alert</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">fw</td>
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">129999</td>
+                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Network Messages</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">new-incident</td>
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">179999</td>
+                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Alert Default</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>Dashboard</h2>
+        <p>Bitdefender Telemetry Content Pack offers a dashboard with 5 tabs: Overview, Network Activity, File activity, a Process dashboard and a User Activity dashboard:</p>
+        <h3>Overview</h3>
+        <p>
+            <img src="../Resources/Images/Bitdefender GravityZone/Bitdefender Overview.png" />
+        </p>
+        <h3>New Incident </h3>
+        <p>
+            <img src="../Resources/Images/Bitdefender GravityZone/Bitdefender New Incident.png" />
+        </p>
+        <h3>HyperDetect Activity</h3>
+        <p>
+            <img src="../Resources/Images/Bitdefender GravityZone/Bitdefender HyperDetect.png" />
+        </p>
+    </body>
+</html>
