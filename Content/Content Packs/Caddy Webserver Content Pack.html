@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" xml:lang="en-us">
-    <head><title>Caddy Webserver Content Pack</title>
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Caddy Webserver Content Pack</title>
         <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
@@ -102,7 +103,7 @@
                 <div class="title" style="font-weight: normal;"><b>Warning</b>:&#160;There must be two spaces in front of <code class="linecode">event_source_product</code> and <code class="linecode">- /var... </code>.</div>
             </section>
         </p>
-        <p class="NormalWeb">This setting will pull all logs in the <code class="linecode">- /var/log/caddy/*</code> folder. If needed, adjust the Caddy config file to store the logs locally and chose the wanted path.</p>
+        <p class="NormalWeb">This setting will pull all logs in the <code class="linecode">- /var/log/caddy/*</code> folder. If needed, adjust the Caddy configuration file to store the logs locally and chose the wanted path.</p>
         <p class="NormalWeb">5. Finally, save the configuration to complete setup.</p>
         <h2>Configure a Client with Filebeat and Graylog Sidecar</h2>
         <p class="NormalWeb">1. Install Sidecar on the remote machine.<br /></p>
@@ -147,7 +148,7 @@ sudo systemctl status graylog-sidecar</MadCap:codeSnippetBody>
                 <p class="NormalWeb"> If you install it manually, install it again under <code class="linecode">/etc/filebeat</code>.<br /></p>
             </li>
             <li>
-                <p class="NormalWeb">If you install it via apt-get, then it is in the correct folder.</p>
+                <p class="NormalWeb">If you install it via <code class="linecode">apt-get</code>, then it is in the correct folder.</p>
             </li>
         </ul>
         <p class="NormalWeb">Example commands for Ubuntu:</p>
@@ -161,7 +162,7 @@ sudo systemctl enable filebeat
 sudo systemctl start filebeat
 sudo systemctl status filebeat</MadCap:codeSnippetBody>
         </MadCap:codeSnippet>
-        <p class="NormalWeb">5. (Optional) Edit the <code class="linecode">filebeat.ym</code>l file as needed. You do this via the Sidecar configuration in the Graylog interface.<br />6. Start the deamon.<br />7. If there is a permission issue, you can resolve with:</p>
+        <p class="NormalWeb">5. (<i>Optional</i>) Edit the <code class="linecode">filebeat.ym</code>l file as needed. You do this via the Sidecar configuration in the Graylog interface.<br />6. Start the deamon.<br />7. If there is a permission issue, you can resolve with:</p>
         <MadCap:codeSnippet>
             <MadCap:codeSnippetCopyButton />
             <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo chown root filebeat.yml</MadCap:codeSnippetBody>
@@ -172,244 +173,297 @@ sudo systemctl status filebeat</MadCap:codeSnippetBody>
                 <div class="title" style="font-weight: normal;"><b>Warning</b>:&#160;This pack was tested on Ubuntu and may not work as designed with other Linux-based systems due to different path and file names.</div>
             </section>
         </p>
-        <h3>Field mapping
+        <h3>Field Mapping
         </h3>
-<MadCap:dropDown>
-  <MadCap:dropDownHead>
-    <MadCap:dropDownHotspot>Fields List</MadCap:dropDownHotspot>
-  </MadCap:dropDownHead>
-  <MadCap:dropDownBody>
-    <table style="width: 100%;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
-      <thead>
-        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-          <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Illuminate Field</th>
-          <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Vendor Field</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_event_severity</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">level</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_event_description</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">msg</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_logger</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logger</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_event_duration</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">duration</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_bytes_sent</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">size</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">destination_bytes_sent</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">bytes_read</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_ts</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">ts</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">http_response_code</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">status</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">user_id</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">user_id</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_resp_headers_connection</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">resp_headers.Connection</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_resp_headers_content_type</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">resp_headers.Content-Type</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_resp_headers_location</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">resp_headers.Location</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_resp_headers_server</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">resp_headers.Server</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_resp_headers_alt_svc</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">resp_headers.Alt-Svc</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_resp_headers_content_encoding</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">resp_headers.Content-Encoding</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_resp_headers_content_security_policy</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">resp_headers.Content-Security-Policy</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_resp_headers_xcontent_type_options</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">resp_headers.X-Content-Type-Options</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_resp_headers_xframe_options</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">resp_headers.X-Frame-Options</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_resp_headers_xgraylog_node_id</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">resp_headers.X-Graylog-Node-Id</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_resp_headers_xua_compatible</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">resp_headers.X-Ua-Compatible</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_resp_headers_xruntime_microseconds</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">resp_headers.X-Runtime-Microseconds</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_resp_headers_content_length</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">resp_headers.Content-Length</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_ip</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.client_ip</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">http_host</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.host</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">http_request_method</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.method</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_http_version</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.proto</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">network_forwarded_ip</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.remote_ip</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">source_port</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.remote_port</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">http_request_path</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.uri</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_headers_accept</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Accept</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_headers_accept_encoding</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Accept-Encoding</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_headers_accept_language</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Accept-Language</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_headers_cache_control</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Cache-Control</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_headers_connection</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Connection</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_headers_content_type</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Content-Type</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_headers_cookie</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Cookie</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_headers_priority</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Priority</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_headers_xgraylog_no_session_extension</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.X-Graylog-No-Session-Extension</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_headers_sec_ch_ua</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Sec-Ch-Ua</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_headers_sec_ch_ua_mobile</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Sec-Ch-Ua-Mobile</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_headers_sec_ch_ua_platform</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Sec-Ch-Ua-Platform</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_headers_sec_fetch_dest</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Sec-Fetch-Dest</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_headers_sec_fetch_mode</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Sec-Fetch-Mode</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_headers_sec_fetch_site</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Sec-Fetch-Site</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_headers_sec_gpc</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Sec-Gpc</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">http_referrer</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Referer</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">http_user_agent</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.User-Agent</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_headers_xrequested_with</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.X-Requested-With</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_request_tls_cipher_suite</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.tls.cipher_suite</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_request_tls_proto</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.tls.proto</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_request_tls_resumed</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.tls.resumed</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_request_tls_server_name</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.tls.server_name</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_request_tls_version</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.tls.version</td>
-        </tr>
-        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-          <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_extra_relation_index</code></td>
-          <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">extra.relation_index</td>
-        </tr>
-      </tbody>
-    </table>
-  </MadCap:dropDownBody>
-</MadCap:dropDown>
-    
-        <h2 id="caddy-spotlight-content-pack">Caddy Webserver Spotlight Content Pack</h2>        
-         <p>Caddy Webserver offers a dashboard with one tab: Caddy Webserver Overview</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Fields List</MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table style="width: 100%;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Illuminate Field</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Vendor Field</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_event_severity</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">level</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_event_description</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">msg</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_logger</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logger</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_event_duration</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">duration</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_bytes_sent</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">size</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">destination_bytes_sent</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">bytes_read</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_ts</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">ts</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">http_response_code</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">status</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">user_id</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">user_id</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_resp_headers_connection</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">resp_headers.Connection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_resp_headers_content_type</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">resp_headers.Content-Type</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_resp_headers_location</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">resp_headers.Location</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_resp_headers_server</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">resp_headers.Server</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_resp_headers_alt_svc</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">resp_headers.Alt-Svc</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_resp_headers_content_encoding</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">resp_headers.Content-Encoding</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_resp_headers_content_security_policy</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">resp_headers.Content-Security-Policy</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_resp_headers_xcontent_type_options</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">resp_headers.X-Content-Type-Options</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_resp_headers_xframe_options</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">resp_headers.X-Frame-Options</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_resp_headers_xgraylog_node_id</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">resp_headers.X-Graylog-Node-Id</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_resp_headers_xua_compatible</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">resp_headers.X-Ua-Compatible</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_resp_headers_xruntime_microseconds</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">resp_headers.X-Runtime-Microseconds</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_resp_headers_content_length</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">resp_headers.Content-Length</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_ip</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.client_ip</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">http_host</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.host</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">http_request_method</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.method</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_http_version</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.proto</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">network_forwarded_ip</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.remote_ip</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">source_port</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.remote_port</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">http_request_path</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.uri</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_headers_accept</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Accept</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_headers_accept_encoding</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Accept-Encoding</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_headers_accept_language</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Accept-Language</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_headers_cache_control</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Cache-Control</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_headers_connection</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Connection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_headers_content_type</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Content-Type</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_headers_cookie</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Cookie</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_headers_priority</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Priority</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_headers_xgraylog_no_session_extension</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.X-Graylog-No-Session-Extension</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_headers_sec_ch_ua</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Sec-Ch-Ua</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_headers_sec_ch_ua_mobile</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Sec-Ch-Ua-Mobile</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_headers_sec_ch_ua_platform</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Sec-Ch-Ua-Platform</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_headers_sec_fetch_dest</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Sec-Fetch-Dest</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_headers_sec_fetch_mode</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Sec-Fetch-Mode</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_headers_sec_fetch_site</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Sec-Fetch-Site</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_headers_sec_gpc</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Sec-Gpc</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">http_referrer</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Referer</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">http_user_agent</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.User-Agent</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_headers_xrequested_with</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.X-Requested-With</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_request_tls_cipher_suite</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.tls.cipher_suite</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_request_tls_proto</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.tls.proto</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_request_tls_resumed</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.tls.resumed</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_request_tls_server_name</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.tls.server_name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_request_tls_version</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.tls.version</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><code class="linecode">vendor_extra_relation_index</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">extra.relation_index</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h2 id="caddy-spotlight-content-pack">Caddy Webserver Spotlight Content Pack</h2>
+        <p>Caddy Webserver offers a dashboard with one tab: Caddy Webserver Overview</p>
         <h3>Caddy Webserver Overview Tab
         </h3>
         <p>
