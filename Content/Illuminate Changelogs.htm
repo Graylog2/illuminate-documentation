@@ -3,6 +3,120 @@
     <head><title>Illuminate Changelogs</title>
     </head>
     <body>
+        <h2>Illuminate 6.4.0</h2>
+        <p>Released 2025-06-17</p>
+        <h4>Added</h4>
+        <ul>
+            <li>
+                <p>Apache HTTP: Added a dashboard for Access and Error logs. (2846)</p>
+            </li>
+            <li>
+                <p>Windows Security: Added parsing and categorization for Event ID 5136. (2763)</p>
+            </li>
+            <li>
+                <p>Bitdefender: Added support for Syslog Telemetry and Syslog On Premise events. (2774)</p>
+            </li>
+            <li>
+                <p><a href="Content Packs/Mimecast Content Pack.html">Mimecast Content Pack</a> (2242)</p>
+                <ul>
+                    <li>
+                        <p>Mimecast is a cloud-based cybersecurity provider specializing in email security, offering protection against phishing, malware, spam, and data leaks. It also delivers services for archiving, continuity, and threat intelligence to help organizations secure their communications and ensure compliance.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Linux Auditbeat: Added a lookup that maps the <code class="linecode">vendor_network_direction</code> field to the standardized <code class="linecode">network_direction</code> field. (2243)</p>
+                <ul>
+                    <li>
+                        <p>This update aligns with the Graylog schema to ensure consistency in field naming across content packs. The spotlight has also been updated to reflect this change, making it easier to search and filter by normalized network direction values.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Linux AuditD: Added pack to process Linux AuditD events. (2775)</p>
+                <ul>
+                    <li>
+                        <p>This pack adds support for processing Linux AuditD events.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Caddy Webserver: <a href="Content Packs/Caddy Webserver Content Pack.html">Caddy Webserver Content Pack</a> (2772)</p>
+                <ul>
+                    <li>
+                        <p>Caddy is a modern, open-source web server that automatically manages HTTPS certificates using Let's Encrypt. It serves static files, proxies requests, and supports advanced configurations with minimal effort.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>pfSense: Added support for Kea DHCP logs. (2572)</p>
+            </li>
+            <li>
+                <p>Fortigate: Add categorization for <code class="linecode">event_id</code> 32044 (delete event logs). (2795)</p>
+            </li>
+            <li>
+                <p>Linux System Logs: Add support for additional pam/sshd authentication logs. (2808)</p>
+            </li>
+            <li>
+                <p>Sophos Central: Added a spotlight. (2783)</p>
+                <ul>
+                    <li>
+                        <p>This spotlight supports endpoint events. It includes <i>Overview</i> and <i>Threat Event</i> tabs for quick visibility into diagnostic, application control, DLP, and threat detection events.</p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h4>Fixed</h4>
+        <ul>
+            <li>
+                <p>Illuminate: Assets processing doesn't work. (2641)</p>
+            </li>
+            <li>
+                <p>Fortigate: Changed field renaming. (2864)</p>
+                <ul>
+                    <li>
+                        <p>Changed the following field names: <code class="linecode">vendor_destination_device_mac</code> to <code class="linecode">destination_mac.</code></p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Core: Reserved IP address ranges out of date/missing ranges. (2653)</p>
+            </li>
+            <li>
+                <p>Sophos Central: Fixed the <code class="linecode">event_severity</code> level mapping values. (2812)</p>
+            </li>
+            <li>
+                <p>Crowdstrike: Fixed the <code class="linecode">alert_severity_level</code> from 3 to 2 in the <i>Low Severity Detections</i> widget in the <i>Detections</i> tab.  (2794)</p>
+            </li>
+            <li>
+                <p>Linux System Logs: Unhandled empty username in some SSH connection logs. (2793)</p>
+                <ul>
+                    <li>
+                        <p>SSH connection logs containing empty usernames now assign the <code class="linecode">user_name</code> field the value <code class="linecode">_NULL_</code>. In addition, relevant connection messages are now GIM categorized as 109999 (authentication.default). These messages could indicate intent to authenticate that failed or scanning activity where the connection was cut short by the client before authentication was prompted. Both cases are useful for monitoring.</p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h4>Changed</h4>
+        <ul>
+            <li>
+                <p>Fortigate: Changed field names and remove empty fields. (2778)</p>
+                <ul>
+                    <li>
+                        <p>Changed the following field names: <code class="linecode">vendor_policyname</code> to <code class="linecode">policy_name</code>, <code class="linecode">vendor_dstserver</code> to <code class="linecode">vendor_destination_server</code>, <code class="linecode">vendor_dsthwvendor</code> to <code class="linecode">vendor_destination_hw_interface</code>, <code class="linecode">vendor_dstintfrole</code> to <code class="linecode">vendor_destination_interface_role</code>, <code class="linecode">vendor_srchwvendor</code> to <code class="linecode">vendor_source_hw_interface</code>, <code class="linecode">vendor_srcintfrole</code> to <code class="linecode">vendor_source_interface_role</code>, <code class="linecode">vendor_dstserver</code> to <code class="linecode">vendor_destination_server</code>, and <code class="linecode">vendor_poluuid</code> to <code class="linecode">policy_uid</code>. Removed <code class="linecode">vendor_destination_server</code> and <code class="linecode">vendor_source_server</code> if they are <code class="linecode">0</code>.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Core DNS Processing: Updated <i>DNS Messages by Approval Over Time</i> dashboard widget to use static color assignments for clarity. (2656)</p>
+            </li>
+            <li>
+                <p>Bitdefender: Migrate from the deprecated alert category to the detection category. (2840)</p>
+            </li>
+            <li>
+                <p>Bitdefender: Using the correct more specific hash field names, e.g. <code class="linecode">hash_md5</code> is now <code class="linecode">file_hash_md5</code>. (2551)</p>
+            </li>
+        </ul>
         <h2>Illuminate 6.3.0</h2>
         <p>Released 2025-04-28</p>
         <h4>Known Issues</h4>
