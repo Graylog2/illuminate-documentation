@@ -4,7 +4,8 @@
         <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Bitdefender GravityZone Content Pack</title>
     </head>
     <body>
-        <p>This content pack is for Bitdefender GravityZone and will parse GravityZone logs.&#160;Please note this content pack does not apply to all Bitdefender products. </p>
+        <p>This content pack is for Bitdefender GravityZone and will parse Event Push events logs.&#160;Please note this content pack does not apply to all Bitdefender products. </p>
+        <p>This content pack is also for Bitdefender GravityZone On Premise and will parse Bitdefender Syslog events (Appliance).</p>
         <h2>Supported Version(s)</h2>
         <ul>
             <li>
@@ -20,10 +21,13 @@
                 <p>The Graylog server must be configured to accept TLS 1.2</p>
             </li>
             <li>
-                <p>The <a href="https://go2docs.graylog.org/current/getting_in_log_data/bitdefender_gravityzone_input.htm">Bitdefender GravityZone input</a> must be set up and correctly configured</p>
+                <p>The <a href="https://go2docs.graylog.org/current/getting_in_log_data/bitdefender_gravityzone_input.htm">Bitdefender GravityZone input</a> must be set up and correctly configured for Push Events</p>
             </li>
             <li>
-                <p>GravityZone must be configured to send CEF-formatted logs to the Graylog Bitdefender CEF input</p>
+                <p>For GravityZone Event Push events. GravityZone must be configured to send CEF-formatted logs to the Graylog Bitdefender CEF input.</p>
+            </li>
+            <li>
+                <p>For GravityZone Syslog/Appliance events. GravityZone must be configured to send Syslog-formatted logs to a Syslog UDP input. GravityZone does not support TCP.</p>
             </li>
         </ul>
         <h2>Stream Configuration</h2>
@@ -41,7 +45,7 @@
         <h2>Index Set Configuration</h2>
         <p>This technology pack includes one index set definition:</p>
         <ul>
-            <li>“Bitdefender Logs"</li>
+            <li>"Bitdefender Logs"</li>
         </ul>
         <p>
             <section class="infoBox">
@@ -51,20 +55,20 @@
         <h2>What is Provided?</h2>
         <ul>
             <li>
-                <p>GravityZone log parsing and a custom dashboard</p>
+                <p>GravityZone log parsing (Push Events and Syslog/Appliance Events), categorization and a custom dashboard.</p>
             </li>
         </ul>
         <h2>Limitations</h2>
         <ul>
             <li>
-                <p>Not all  log types/modules are officially supported</p>
+                <p>Only mentioned log types and fields on Bitdefender's documentation for version 6.56 are supported. Some undocumented fields may exist, these are not mapped to Graylog's schema. If these unknown fields are in a subarray, they may not get extracted.</p>
             </li>
             <li>
-                <p>Only CEF-formatted logs are supported</p>
+                <p>Only CEF-formatted logs are supported for Event Push events.</p>
             </li>
         </ul>
         <h2>Log Format Examples</h2>
-        <p>The following event types and modules have been verified for use with this content pack:</p>
+        <p>The following event types and modules have been verified for use with this content pack (Event Push events):</p>
         <h3>antiexploit</h3>
         <p><code class="linecode">CEF:0|Bitdefender|GravityZone|6.36.0-1|131234|Exploit Mitigation|10|BitdefenderGZModule=antiexploit BitdefenderGZCompanyId=2e222e8fb12fb8700396d6375 dvchost=TEST_ENDPOINT BitdefenderGZComputerFQDN=Graylog-endpoint.dsd.ro dvc=10.10.18.226 deviceExternalId=2e22eba5e8ee8c5b1852a9d7 BitdefenderGZEndpointId=2e22eba5e8ee8c5b1852a9d6 act=kill BitdefenderGZThreatName=EICAR-Test-File (not a virus) dvcpid=2000 BitdefenderGZExploitType=Flash/Generic BitdefenderGZParentProcess=4000 filePath=C:\\\\file15c8ba8b90ea1de127962f464.exe BitdefenderGZParentProcessPath=C:\\\\file25c8ba8b90ea1de127962f464.exe BitdefenderGZDetectionCve=cve string suser=stefan@graylog.com BitdefenderGZDetectionTime=2024-10-10T13:58:30.000Z</code>
         </p>
@@ -797,6 +801,49 @@
                 </tr>
             </tbody>
         </table>
+        <h2>Bitdefender Syslog events (from Bitdefender GravityZone On Premise)</h2>
+        <p>Bitdefender Syslog events are very similar to the Push events. If possible the same or an adjusted field mapping is used. Syslog Log fields may not have the BitdefenderGZ prefix.</p>
+  <h2>Example Application Control Configuration Steps</h2>
+  <ol>
+    <li>
+      Navigate to <strong>Policies &gt; Enable Application Control &gt; Add Rule</strong>.
+    </li>
+    <li>
+      Define the rule parameters:
+      <ul>
+        <li>Rule Type</li>
+        <li>File Path</li>
+        <li>Application Name</li>
+        <li>Users</li>
+        <li>Set an Action</li>
+      </ul>
+    </li>
+    <li>
+      Syslog notifications are generated by events that are also triggering a Notification to be sent to Syslog.
+    </li>
+    <li>
+      Access the <strong>bell icon</strong> in the top-right corner of your web console, then select the <strong>Notifications settings</strong> icon.
+    </li>
+    <li>
+      Enable <strong>Blocked Application</strong> and activate <em>“Log to syslog server”</em> under Visibility to ensure the notification is sent to Graylog.
+    </li>
+    <li>
+      Navigate to Configuration> Miscellaneous. Enable Syslog and add the SIEM Hostname/IP, Protocol- UDP, Input Port number and Event format.
+    </li>
+    <li>
+    Launch Syslog UDP input in Graylog with port number mentioned above.
+    </li>
+  </ol>
+        <h3>Bitdefender Syslog events message identification</h3>
+        <li>
+            These Syslog events do emit a prefilled application_name but may have a header with "gravityzone:". The pack should detect it and route the message into the correct stream. If the message does not have such a header, a static input field "device_product" with the value "GravityZone" can be used.
+        </li>
+        <li>
+            Filebeat is currently not supported/tested, but an identification rule exists. Add the static field "event_source_product" in the Filebeat configuration file with the value "GravityZone". Messages will go into the correct stream, but parsing may not work, unless field "facility" exists. 
+        </li>
+        <h3>Example Syslog Event</h3>
+        <p><code class="linecode">graylog gravityzone: [application-control] {"module":"application-control","product_installed":"BEST","user":{"id":"S-1-5-13","name":"SYSTEM"},"computer_name":"DESKTOP-TEST","computer_fqdn":"desktop-test","computer_ip":"192.168.40.11","computer_id":"222ab2a1d494e8a20f299845","mode":1,"scanMode":"production","filePath":"C:\\Users\\Defender\\Downloads\\AnyDesk.exe","fileVersion":"","productName":"","productVersion":"","publisher":"","fingerprint":"D99F9F19173473FF515A6956BC61BC22E84389","thumbprints":[],"ruleName":"","date":"2025-06-12T06:27:37.258Z","count":1}</code>
+        </p>
         <h2>Dashboard</h2>
         <p>Bitdefender GravityZone offers a dashboard with 3 tabs: Overview, New Incident, and HyperDetect Activity:</p>
         <h3>Overview</h3>
