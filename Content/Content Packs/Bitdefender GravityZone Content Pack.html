@@ -4,7 +4,13 @@
         <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Bitdefender GravityZone Content Pack</title>
     </head>
     <body>
-        <p>This content pack is for Bitdefender GravityZone and will parse GravityZone logs.&#160;Please note this content pack does not apply to all Bitdefender products. </p>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>This content pack is for Bitdefender GravityZone and will parse the Event Push Service API events logs.&#160;Additionally, it applies to Bitdefender GravityZone On Premise and will parse Bitdefender Syslog events (Appliance).</p>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> Please note this content pack does not apply to all Bitdefender products. </div>
+            </section>
+        </p>
         <h2>Supported Version(s)</h2>
         <ul>
             <li>
@@ -14,16 +20,19 @@
         <h2>Requirements</h2>
         <ul>
             <li>
-                <p>Graylog 6.1.2+</p>
+                <p>Graylog 6.1.2+ is required.</p>
             </li>
             <li>
-                <p>The Graylog server must be configured to accept TLS 1.2</p>
+                <p>The Graylog server must be configured to accept TLS 1.2.</p>
             </li>
             <li>
-                <p>The <a href="https://go2docs.graylog.org/current/getting_in_log_data/bitdefender_gravityzone_input.htm">Bitdefender GravityZone input</a> must be set up and correctly configured</p>
+                <p>The <a href="https://go2docs.graylog.org/current/getting_in_log_data/bitdefender_gravityzone_input.htm">Bitdefender GravityZone input</a> must be set up and correctly configured for Push Events.</p>
             </li>
             <li>
-                <p>GravityZone must be configured to send CEF-formatted logs to the Graylog Bitdefender CEF input</p>
+                <p>ForGravityZone Event Push events, GravityZone must be configured to send CEF-formatted logs to the Graylog Bitdefender CEF input.</p>
+            </li>
+            <li>
+                <p>For GravityZone Syslog/Appliance events, GravityZone must be configured to send Syslog-formatted logs to a Syslog UDP input. GravityZone does not support TCP.</p>
             </li>
         </ul>
         <h2>Stream Configuration</h2>
@@ -41,30 +50,30 @@
         <h2>Index Set Configuration</h2>
         <p>This technology pack includes one index set definition:</p>
         <ul>
-            <li>“Bitdefender Logs"</li>
+            <li>"Bitdefender Logs"</li>
         </ul>
         <p>
             <section class="infoBox">
                 <div class="title" style="font-weight: normal;"><b>Hint</b>:  If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
             </section>
         </p>
-        <h2>What is Provided?</h2>
+        <h2>What is Provided</h2>
         <ul>
             <li>
-                <p>GravityZone log parsing and a custom dashboard</p>
+                <p>GravityZone log parsing (Push Events and Syslog/Appliance Events), categorization, and a custom dashboard.</p>
             </li>
         </ul>
         <h2>Limitations</h2>
         <ul>
             <li>
-                <p>Not all  log types/modules are officially supported</p>
+                <p>Only the log types and fields officially documented by Bitdefender for <strong>GravityZone version 6.56</strong> are supported in this content pack. Any undocumented fields that may appear are <strong>not mapped</strong> to the Graylog schema. If such fields exist within a <em>subarray structure</em>, they may not be extracted or parsed by default.</p>
             </li>
             <li>
-                <p>Only CEF-formatted logs are supported</p>
+                <p>Only CEF-formatted logs are supported for Event Push events.</p>
             </li>
         </ul>
         <h2>Log Format Examples</h2>
-        <p>The following event types and modules have been verified for use with this content pack:</p>
+        <p>The following event types and modules have been verified for use with this content pack (Event Push events):</p>
         <h3>antiexploit</h3>
         <p><code class="linecode">CEF:0|Bitdefender|GravityZone|6.36.0-1|131234|Exploit Mitigation|10|BitdefenderGZModule=antiexploit BitdefenderGZCompanyId=2e222e8fb12fb8700396d6375 dvchost=TEST_ENDPOINT BitdefenderGZComputerFQDN=Graylog-endpoint.dsd.ro dvc=10.10.18.226 deviceExternalId=2e22eba5e8ee8c5b1852a9d7 BitdefenderGZEndpointId=2e22eba5e8ee8c5b1852a9d6 act=kill BitdefenderGZThreatName=EICAR-Test-File (not a virus) dvcpid=2000 BitdefenderGZExploitType=Flash/Generic BitdefenderGZParentProcess=4000 filePath=C:\\\\file15c8ba8b90ea1de127962f464.exe BitdefenderGZParentProcessPath=C:\\\\file25c8ba8b90ea1de127962f464.exe BitdefenderGZDetectionCve=cve string suser=stefan@graylog.com BitdefenderGZDetectionTime=2024-10-10T13:58:30.000Z</code>
         </p>
@@ -152,7 +161,7 @@
         <p>Please note that:&#160;</p>
         <ul>
             <li>
-                <p>A valid server url and port is required, e.g. <code class="linecode">https://mydomain_name.dev:5555/bitdefender</code>. Here the port is 5555. In a local instance or with a static IP, it is possible an IP&#160;may work. </p>
+                <p>A valid server url and port is required, e.g. <code class="linecode">https://mydomain_name.dev:5555/bitdefender</code>. In this example the port is 5555. In a local instance or with a static IP, it is possible an IP&#160;may work. </p>
             </li>
         </ul>
         <ul>
@@ -234,10 +243,10 @@
         <h2>Message Fields Included in This Pack</h2>
         <p>Most fields are renamed. The prefix <code class="linecode">BitdefenderGZ</code> may be substituted with <code class="linecode">vendor_</code>. Other fields are mapped to Graylog schema fields.</p>
         <table style="height: 324px;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" width="767" class="TableStyle-Alternate-Row-Color" cellspacing="21">
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 358px;" />
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 722px;" />
-            <col style="width: 700px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
-            <col style="width: 324px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 148px;" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 355px;" />
+            <col style="width: 307px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col style="width: 86px;" class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <thead>
                 <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
@@ -755,10 +764,10 @@
         </table>
         <h2>Categorization</h2>
         <p>The following event types and modules are currently categorized:</p>
-        <table style="height: 114px;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');width: 1425px;" class="TableStyle-Alternate-Row-Color" cellspacing="21">
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        <table style="height: 114px;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');width: 900px;" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 196px;" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 258px;" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 116px;" />
             <thead>
                 <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
                     <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><strong>vendor_event_module</strong>
@@ -771,32 +780,68 @@
             </thead>
             <tbody>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">antiexploit</td>
-                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">171000</td>
-                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Malware Alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">antiexploit</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">171000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Malware Alert</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">avc</td>
-                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">171000</td>
-                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Malware Alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">avc</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">171000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Malware Alert</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">exchange-malware</td>
-                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">171000</td>
-                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Malware Alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">exchange-malware</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">171000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Malware Alert</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">fw</td>
-                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">129999</td>
-                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Network Messages</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">fw</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">129999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Network Messages</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">new-incident</td>
-                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">179999</td>
-                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Alert Default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">new-incident</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">179999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Alert Default</td>
                 </tr>
             </tbody>
         </table>
+        <h2>Bitdefender Syslog/Application Control Events from Bitdefender GravityZone On Premise</h2>
+        <p>Bitdefender Syslog events are very similar to the Event Push events. If possible the same or an adjusted field mapping is used. Syslog Log fields may not have the BitdefenderGZ prefix.</p>
+        <h2>Example Application Control Configuration Steps</h2>
+        <ol>
+            <li>
+      Navigate to <strong style="font-weight: normal;"><i>Policies</i> &gt; <i>Enable Application Control</i> &gt; <i>Add Rule</i></strong>.
+    </li>
+            <li>
+      Define the rule parameters:
+      <ul><li>Rule Type</li><li>File Path</li><li>Application Name</li><li>Users</li><li>Set an Action</li></ul></li>
+            <li>
+      Syslog notifications are generated by events that are also triggering a Notification to be sent to Syslog.
+    </li>
+            <li>
+      Access the <strong style="font-weight: normal;">bell icon</strong> in the top-right corner of your web console, then select <strong style="font-weight: normal; font-style: italic;">Notifications settings</strong>.
+    </li>
+            <li>
+      Enable <strong style="font-weight: normal;">Blocked Application</strong> and activate <em>Log to syslog server</em> under <i>Visibility</i> to ensure the notification is sent to Graylog.
+    </li>
+            <li>
+      Navigate to <i>Configuration</i>&gt; <i>Miscellaneous</i>. Enable <i>Syslog</i> and add the <i>SIEM Hostname/IP</i>, <i>Protocol- UDP</i>, <i>Input Port</i>, and <i>Event Format</i>.
+    </li>
+            <li>
+    Launch the Syslog UDP input in Graylog with the port number mentioned above.
+    </li>
+        </ol>
+        <h3>Bitdefender Syslog events message identification</h3>
+        <p>
+            These Syslog events do emit a prefilled <code class="linecode">application_name</code> but may have a header with <code class="linecode">gravityzone:</code>. The pack should detect it and route the message into the correct stream. If the message does not have such a header, a static input field <code class="linecode">device_product</code> with the value <code class="linecode">GravityZone</code> can be used.
+        </p>
+        <p>
+            Filebeat is currently not supported, but an identification rule exists. Add the static field <code class="linecode">event_source_product</code> in the Filebeat configuration file with the value <code class="linecode">GravityZone</code>. Messages will go into the correct stream, but parsing may not work, unless field <code class="linecode">facility</code> exists. 
+        </p>
+        <h3>Example Syslog Event</h3>
+        <p><code class="linecode">graylog gravityzone: [application-control] {"module":"application-control","product_installed":"BEST","user":{"id":"S-1-5-13","name":"SYSTEM"},"computer_name":"DESKTOP-TEST","computer_fqdn":"desktop-test","computer_ip":"192.168.40.11","computer_id":"222ab2a1d494e8a20f299845","mode":1,"scanMode":"production","filePath":"C:\\Users\\Defender\\Downloads\\AnyDesk.exe","fileVersion":"","productName":"","productVersion":"","publisher":"","fingerprint":"D99F9F19173473FF515A6956BC61BC22E84389","thumbprints":[],"ruleName":"","date":"2025-06-12T06:27:37.258Z","count":1}</code>
+        </p>
         <h2>Dashboard</h2>
         <p>Bitdefender GravityZone offers a dashboard with 3 tabs: Overview, New Incident, and HyperDetect Activity:</p>
         <h3>Overview</h3>
