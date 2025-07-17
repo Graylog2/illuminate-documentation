@@ -1,47 +1,109 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<html lang="en" xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
     <head>
-        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" /><title> Linux Auditbeat Content Pack
-</title>
-        <!-- original-url : linux-auditbeat
-## article-id : 3a14acbf-0fb7-4598-8f13-84dd49068504
-## seo-title : Linux Auditbeat
-## description : 
-## Metadata_End -->
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Linux Auditbeat Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
         <p>The Illuminate Linux Auditbeat Spotlight for Graylog works with Graylog Illuminate Core and Elastic Auditbeat agent for Linux. The Auditbeat agent is a "lightweight shipper for audit data." The Auditbeat agent for Linux communicates with the Audit framework for LInux and adds processing, enrichment, and delivery of Linux audit messages.</p>
         <p>The Linux Auditbeat Spotlight comes ready to use with pre-built dashboard views including:</p>
         <ul>
-            <li>Linux Auditbeat Overview</li>
-            <li>Network Activity</li>
-            <li>Admin activity</li>
+            <li>
+                <p>Linux Auditbeat Overview</p>
+            </li>
+            <li>
+                <p>Network Activity</p>
+            </li>
+            <li>
+                <p>Admin Activity</p>
+            </li>
         </ul>
         <p>These built-in views can serve as a starting point for creating custom dashboards.</p>
-        <h2>Supported Version(s)</h2>
+        <h2 id="supported-versions">Supported Version(s)</h2>
         <p>This Spotlight supports Auditbeat for Linux versions 7-8 and will function with both the <a href="https://www.elastic.co/guide/en/beats/auditbeat/8.6/auditbeat-installation-configuration.html">Elastic-licensed</a> and Apache-licensed versions of Auditbeat.</p>
+        <ul>
+        </ul>
         <p>
             <section class="warningBox">
-                <div class="content">
-                    <p><b>Warning:</b> The Apache-licensed version of Auditbeat does NOT include the "system" module, which provides additional data sets not available in the Elastic-licensed version.</p>
+                <div class="content"><b>Warning: </b><span style="font-weight: normal;">The Apache-licensed version of Auditbeat does NOT include the "system" module, which provides additional data sets not available in the Elastic-licensed version.</span>
                 </div>
             </section>
         </p>
         <p>By default, <a href="https://go2docs.graylog.org/current/getting_in_log_data/getting_started_with_graylog_sidecar.htm">Graylog Sidecar</a> comes with the Apache-licensed version of Auditbeat. If you want to utilize the "system" module, you can install the Elastic-licensed version by adding the appropriate repo and installing Auditbeat alongside the bundled version.</p>
-        <h3>Install Elastic Version of Auditbeat</h3>
-        <p>For the APT package manager, run the following command:</p>
-        <MadCap:codeSnippet>
-            <MadCap:codeSnippetCopyButton />
-            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>A configured <a href="https://go2docs.graylog.org/5-0/getting_in_log_data/beats.html">Beats</a> input on Graylog server (See "Create Beats Input" below)</p>
+            </li>
+            <li>
+                <p>The "Beats type prefix" must be enabled</p>
+            </li>
+            <li>
+                <p>One or more Linux hosts with <a href="https://www.elastic.co/guide/en/beats/auditbeat/current/auditbeat-installation-configuration.html">Elastic Auditbeat</a> installed</p>
+            </li>
+            <li>
+                <p>Beats agents, including Auditbeat, can be managed using the <a href="https://go2docs.graylog.org/5-0/getting_in_log_data/graylog_sidecar.html">Graylog Sidecar</a></p>
+            </li>
+        </ul>
+        <p>
+            <section class="warningBox">
+                <div class="content"><b>Warning: </b><span style="font-weight: normal;">For Illuminate versions prior to Illuminate 2.2.2, the following <strong>must</strong> be added to the <code class="linecode">auditbeat.yml</code> configuration file or to the Auditbeat configuration in the Graylog sidecar configuration for Auditbeat:</span>
+                </div>
+                <div class="content"><span style="font-weight: normal;"><code class="linecode">fields event_source_product: linux_auditbeat</code></span>
+                </div>
+            </section>
+        </p>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>"Illuminate:Linux Auditbeat Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</span>
+                </div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"Linux Auditbeat Logs"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
+                </div>
+            </section>
+        </p>
+        <h2 id="log-format-example">Log Format Example</h2>
+        <p><code class="linecode">["type=CRED_ACQ msg=audit(1633670701.685:6873): pid=5205 uid=0 auid=4294967095 ses=4294970295 subj=unconfined msg='op=PAM:setcred grantors=pam_permit,pam_cap acct=\"root\" exe=\"/usr/sbin/cron\" hostname=? addr=? terminal=cron res=success'"]</code>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Parsing rules to extract, normalize, and enrich fields Linux Auditbeat logs into Graylog schema compatible fields</p>
+            </li>
+            <li>
+                <p>A spotlight providing overview dashboards for Linux Auditbeat events</p>
+            </li>
+        </ul>
+        <h2 id="log-collection">Log Collection</h2>
+        <h3>Install Elastic Auditbeat</h3>
+        <ol>
+            <li>
+                <p>For the APT package manager, run the following command:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
 echo "deb https://artifacts.elastic.co/packages/8.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-8.x.list</MadCap:codeSnippetBody>
-        </MadCap:codeSnippet>
-        <p>For the YUM package manager, run the following command:</p>
-        <MadCap:codeSnippet>
-            <MadCap:codeSnippetCopyButton />
-            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch
+                </MadCap:codeSnippet>
+            </li>
+            <li>
+                <p>For the YUM package manager, run the following command:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch
 cat &lt;&lt; EOF | sudo tee -a /etc/yum.repos.d/elastic-8.x.repo
 [elastic-8.x]
 name=Elastic repository for 8.x packages
@@ -51,643 +113,896 @@ gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
 enabled=1
 autorefresh=1
 type=rpm-md
-EOF
-</MadCap:codeSnippetBody>
-        </MadCap:codeSnippet>
-        <h3>Configure Auditbeat Log Collector in Graylog</h3>
-        <p>Next,  modify the Auditbeat log collector configuration. For more information on setting up Sidecar log collectors, see the Graylog documentation on <a href="https://go2docs.graylog.org/current/getting_in_log_data/set_up_sidecar_collectors.htm?Highlight=auditbeat#ReviewandEditDefaultCollectors">default collector configurations</a>. </p>
-        <ol>
-            <li>
-                <p>Navigate to <i>System</i> &gt; <i>Sidecars</i> and select the <i>Configurations</i> tab. </p>
-            </li>
-            <li>
-                <p>Then, under the <i>Log Collectors</i> menu, select <i>Edit</i>&#160;next to your Auditlog collector. </p>
-            </li>
-            <li>
-                <p>Modify the "Executable Path" field to point to the new Auditbeat agent's binary path, which is set to <code class="linecode">/usr/share/auditbeat/bin/auditbeat</code> by default. </p>
+EOF</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
             </li>
         </ol>
-        <p>Optionally, you can also opt to create a new Auditbeat log collector with this path rather than modify the default so that you do not overwrite the default log collector.&#160;Remember to give it a unique name, like "Auditbeat (Elastic-licensed)."</p>
-        <h2>Stream Configuration</h2>
-        <p>This technology pack includes one stream:</p>
-        <ul>
-            <li>“Illuminate:Linux Auditbeat Messages”</li>
-        </ul>
-        <section class="infoBox">
-            <div class="content">
-                <p><b>Hint:</b> If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</p>
-            </div>
-        </section>
-        <h2>Index Set Configuration</h2>
-        <p>This technology pack includes one index set definition:</p>
-        <ul>
-            <li>"Illuminate: Linux Auditbeat Messages"</li>
-        </ul>
-        <section class="infoBox">
-            <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
-            </div>
-        </section>
-        <h2>Log Format Example</h2>
-        <p><code data-backticks="1" class="linecode">["type=CRED_ACQ msg=audit(1633670701.685:6873): pid=5205 uid=0 auid=4294967095 ses=4294970295 subj=unconfined msg='op=PAM:setcred grantors=pam_permit,pam_cap acct=\"root\" exe=\"/usr/sbin/cron\" hostname=? addr=? terminal=cron res=success'"]</code>
-        </p>
-        <h2>Requirements</h2>
-        <ul>
-            <li>A configured <a href="https://go2docs.graylog.org/5-0/getting_in_log_data/beats.html">Beats</a> input on Graylog server (See “Create Beats Input” below)</li>
-            <li>The "Beats type prefix" must be enabled</li>
-            <li>One or more Linux hosts with <a href="https://www.elastic.co/guide/en/beats/auditbeat/current/auditbeat-installation-configuration.html">Elastic Auditbeat installed</a></li>
-            <li>Beats agents, including Auditbeat, can be managed using the <a href="https://go2docs.graylog.org/5-0/getting_in_log_data/graylog_sidecar.html">Graylog Sidecar</a></li>
-        </ul>
-        <section class="warningBox">
-            <div class="title"><strong>Warning:<b>&#160;</b></strong><span style="font-weight: normal;">For Illuminate versions prior to Illuminate 2.2.2,<b> </b>the following <b>must</b> be added to the <code class="linecode">auditbeat.yml</code> configuration file or to the Auditbeat configuration in the Graylog sidecar configuration for Auditbeat:</span>
-            </div>
-            <div class="content"><pre xml:space="preserve"><code data-code-id="section-1662669244890" class="linecode">fields event_source_product: linux_auditbeat
-</code></pre>
-            </div>
-        </section>
-        <h2>What is Provided</h2>
-        <ul>
-            <li>Parsing rules to extract Linux Auditbeat logs into Graylog schema compatible fields</li>
-            <li>Data lookup tables use in the normalization and enrichment of Linux Auditbeat log messages into the Graylog schema</li>
-            <li>Dashboards</li>
-        </ul>
-        <h3><span style="font-size: 18px;"><strong>Auditbeat Log Message Processing</strong></span>
-        </h3>
-        <p>The Illuminate processing of Linux Auditbeat messages provides the following:</p>
-        <ul>
-            <li>Field extraction, normalization and message enrichment for Linux Auditbeat log messages</li>
-            <li>GIM Categorization of the following messages:</li>
-        </ul>
-        <h4>Auditbeat Module: AuditD</h4>
-        <p><code class="linecode">| </code><code data-backticks="1" class="linecode">vendor_event_category</code><code class="linecode"> |</code>
-        </p>
-        <h4>Auditbeat Module: System</h4>
-        <h4>Auditbeat Module: File Integrity</h4>
-        <table style="mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+        <h3>Create a Beats Input</h3>
+        <p>One <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">beats input</a> can service multiple log sources; therefore, this step is not required if a beats input has already been configured.</p>
+        <ol>
+            <li>
+                <p>On the <em>Select Input</em> drop-down menu, select the <em>System</em> menu and then choose <em>Inputs</em>.</p>
+            </li>
+            <li>
+                <p>Select <em>Beats</em> from the <em>Select Input</em> drop-down menu.</p>
+            </li>
+            <li>
+                <p>Click <em>Launch New Input</em>.</p>
+            </li>
+            <li>
+                <p>Assign a node or select Global mode.</p>
+            </li>
+            <li>
+                <p>Set the Title, Bind Address, and listening Port. For example:</p>
+                <ol>
+                    <li>
+                        <p>Title: "Beats input 5044"</p>
+                    </li>
+                    <li>
+                        <p>Bind address: "0.0.0.0" to listen on all interfaces</p>
+                    </li>
+                    <li>
+                        <p>Port: "5044"</p>
+                    </li>
+                </ol>
+            </li>
+            <li>
+                <p><strong>Make sure the option "Do not add Beats type as prefix" is not selected</strong>. Pipeline processing rules reference incoming data by field name and the pipeline will not function correctly if this prefix is omitted.</p>
+            </li>
+            <li>
+                <p>Save the input settings.</p>
+            </li>
+            <li>
+                <p>If the input does not start automatically, select <em>Start Input</em> to begin listening for and processing new Beats messages (including Linux Auditbeat messages).</p>
+            </li>
+        </ol>
+        <h3>Create Graylog REST API Token</h3>
+        <ol>
+            <li>
+                <p>Navigate to the Graylog user configuration menu by selecting <em>System</em> &gt; <em>Users and Teams</em>.</p>
+            </li>
+            <li>
+                <p>Select the user for which to create a token and click <em>More Actions</em> and then <em>Edit Tokens</em>.</p>
+            </li>
+            <li>
+                <p>Provide a Token Name (e.g. <code class="linecode">linux_auditbeat</code>) and click <em>Create Token</em>.</p>
+            </li>
+            <li>
+                <p>Once the token is created, click <em>Copy to Clipboard</em> to retrieve the new API Access Token.</p>
+            </li>
+        </ol>
+        <h3>Install and Configure Graylog Sidecar Agent for Linux</h3>
+        <p>Consult <a href="https://go2docs.graylog.org/current/getting_in_log_data/install_sidecar_on_linux.htm">official documentation</a> for full explanations and instructions.</p>
+        <h3>Configure Auditbeat Log Collector in Graylog</h3>
+        <p>Next, modify the Auditbeat log collector configuration. For more information on setting up Sidecar log collectors, see the Graylog documentation on <a href="https://go2docs.graylog.org/current/getting_in_log_data/set_up_sidecar_collectors.htm?Highlight=auditbeat#ReviewandEditDefaultCollectors">default collector configurations</a>.</p>
+        <ol>
+            <li>
+                <p>Navigate to <em>System</em> &gt; <em>Sidecars</em> and select the <em>Configurations</em> tab.</p>
+            </li>
+            <li>
+                <p>Then, under the <em>Log Collectors</em> menu, select <em>Edit</em> next to your Auditlog collector.</p>
+            </li>
+            <li>
+                <p>Modify the "Executable Path" field to point to the new Auditbeat agent's binary path, which is set to <code class="linecode">/usr/share/auditbeat/bin/auditbeat</code> by default.</p>
+            </li>
+            <li>
+                <p>Edit the Graylog Sidecar client configuration with your Graylog server API URL and API access token.</p>
+            </li>
+        </ol>
+        <p>Optionally, you can also opt to create a new Auditbeat log collector with this path rather than modify the default so that you do not overwrite the default log collector. Remember to give it a unique name, like "Auditbeat (Elastic-licensed)."</p>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following messages:</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <thead>
                 <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Auditbeat Dataset</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Auditbeat Log Category</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">vendor_event_action</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">executed</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cell</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">cell</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">190000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process.execute</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">process started</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">bound-socket</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cell</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">cell</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">existing_package</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">connected-to</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cell</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">cell</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">bound-socket</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_flow</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">connected-to</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_stopped</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_flow</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">129999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_started</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_stopped</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">190100</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process.end</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">process stopped</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">existing_user</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_started</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">190000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process.execute</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">process started</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">existing_process</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">existing_user</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">119999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">iam message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">opened-file</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">existing_process</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">was-authorized</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">opened-file</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">201500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file.access</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">file accessed</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">started-session</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">was-authorized</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">109999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">acquired-credentials</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">started-session</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">109999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">authentication message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">disposed-credentails</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">acquired-credentials</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">109999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ended-session</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">disposed-credentials</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">109999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">authentication message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">changed-logon-id-to</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ended-session</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">109999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">wrote-to-file</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-login-id-to</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">109999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">authentication message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">started-service</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">wrote-to-file</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">stopped-service</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">started-service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">210000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.start</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service started</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_error</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">stopped-service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">210100</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.stop</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service stopped</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">attributes_modified</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_error</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">updated</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">attributes_modified</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">201000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file.modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">file modified</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">created</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">updated</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">201000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file.modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">file modified</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">created</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">200000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file.create</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">file created</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authenticated</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">deleted</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authenticated</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">109999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">moved</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">deleted</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">200100</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file.delete</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">file deleted</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">violated-apparmor-policy</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">moved</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">201000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file.modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">file modified</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">package_updated</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">violated-apparmor-policy</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">301002</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.host alert</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">hips alert</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ran-command</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">package_updated</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">refreshed-credentials</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ran-command</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_logout</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">refreshed-credentials</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">109999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">package_installed</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_logout</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">102500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.logoff</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">logoff</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">renamed</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">package_installed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_login</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">renamed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">201000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file.modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">file modified</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">accepted-connection-from</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_login</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">logged-in</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">accepted-connection-from</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">changed-password</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">logged-in</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">added-group-account-to</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-password</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111004</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">password change</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">package_removed</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">added-group-account-to</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">119999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">iam message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_changed</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">package_removed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">added-user-account</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_changed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">account modified</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_changed</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">added-user-account</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111007</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">group member added</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">password_changed</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_changed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">sent-to</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">password_changed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111004</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">password change</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_added</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">sent-to</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">129999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">deleted-group-account-from</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
-                        <br />
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">
-                        <br />
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_added</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">110000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object create</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account created</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">deleted-group-account-from</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">110501</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object delete</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">group deleted</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-audit-configuration</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">shutdown</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">boot</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">initial_scan</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">deleted-user-account</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_removed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">reboot</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">access-permission</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-promiscuous-mode-on-device</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">loaded-firewall-rule-to</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">received-from</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">created-directory</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-to-runlevel</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">changed-file-attributes-of</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-file-permissions-of</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">changed-file-ownership-of</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">symlinked</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">killed-pid</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">read-file</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">listen-for-connections</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-configuration</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">crashed-program</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-system-name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">violated-selinux-policy</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-role-to</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">relabeled-filesystem</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-selinux-enforcement</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">assigned-vm-resource</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">assigned-vm-id</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">issued-vm-control</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">opened-too-many-sessions-to</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">hostname_changed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">checked-metadata-of</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">mounted</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">unmounted</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">end</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-system-time</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">changed-identity-of</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-timestamp-of</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">failed-log-in-too-many-times-to</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">loaded-selinux-policy</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">assigned-user-role-to</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">removed-user-role-from</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">changed-selinux-boolean</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">error</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">adjusted-scheduling-policy-of</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">allocated-memory</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">checked-filesystem-metadata-of</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">loaded-kernel-module</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">unloaded-kernel-module</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">make-device</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">violated-seccomp-policy</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">message</td>
                 </tr>
             </tbody>
         </table>
-        <h3>Linux Auditbeat Spotlight Content Pack</h3>
-        <h2>Create a Beats Input</h2>
-        <section class="infoBox">
-            <div class="title"><b>Hint</b>:&#160;<span style="font-weight: normal;">One <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">beats input</a> can service multiple log sources; therefore, this step is not required if a beats input has already been configured.</span></div>
-        </section>
-        <ol>
-            <li>On the <em>Select Input</em> drop-down menu, select the <em>System</em> menu and then choose <em>Inputs</em>.</li>
-            <li>Select <em>Beats</em> from the <em>Select Input</em> drop-down menu.</li>
-            <li>Click <em>Launch New Input</em>.</li>
-            <li>Assign a node or select Global mode.</li>
-            <li>Set the Title, Bind Address, and listening Port. For example:<ol><li>Title: “Beats input 5044”</li><li>Bind address: “0.0.0.0” to listen on all interfaces</li><li>Port: “5044”</li></ol></li>
-            <li><strong>Make sure the option “Do not add Beats type as prefix” is not selected.</strong> Pipeline processing rules reference incoming data by field name and the pipeline will not function correctly if this prefix is omitted.</li>
-            <li>Save the input settings.</li>
-            <li>If the input does not start automatically, select Start Input to begin listening for and processing new Beats messages (including Linux Auditbeat messages).</li>
-        </ol>
     </body>
 </html>
