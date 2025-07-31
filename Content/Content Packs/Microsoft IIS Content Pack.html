@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Microsoft IIS Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Microsoft IIS (Internet Information Services) is a flexible, secure, and manageable web server developed by Microsoft for hosting websites, web applications, and services on Windows. It supports HTTP, HTTPS, FTP, FTPS, and more, and integrates tightly with ASP.NET, Windows authentication, and the broader Windows Server ecosystem.</p>
+        <h2 id="supported-versions">Supported/Tested Versions</h2>
+        <ul>
+            <li>
+                <p>Microsoft IIS 10, W3C Log format</p>
+            </li>
+            <li>
+                <p>Microsoft IIS 8, W3C Log format</p>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">This pack supports two formats for access logs. The Default W3C fields and all W3C fields in the default order.</span>
+                </div>
+            </section>
+        </p>
+        <p>
+            <section class="warningBox">
+                <div class="content"><b>Warning: </b><span style="font-weight: normal;">Custom formats are not supported.</span>
+                </div>
+            </section>
+        </p>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>Graylog 6.1.0+</p>
+            </li>
+        </ul>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>"Illuminate:Microsoft IIS Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</span>
+                </div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"Microsoft IIS Logs"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
+                </div>
+            </section>
+        </p>
+        <h2 id="log-collection">Log Collection</h2>
+        <p>This pack parses logs from the following sources:</p>
+        <ul>
+            <li>
+                <p>Filebeat</p>
+            </li>
+        </ul>
+        <h3>Filebeat Configuration</h3>
+        <ol>
+            <li>
+                <p>Please refer to the official documentation to <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">set up Graylog Sidecar for Filebeat</a>.</p>
+            </li>
+            <li>
+                <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> in Graylog.</p>
+            </li>
+            <li>
+                <p>Ensure that the option <em>Do not add Beats type as prefix</em> is <strong>disabled</strong>.</p>
+            </li>
+            <li>
+                <p>Create an API access token and custom Windows Filebeat collector.</p>
+            </li>
+            <li>
+                <p>Configure the collector to ship messages to Graylog (select the right path). The Filebeat input must add the field <code class="linecode">event_source_product: microsoft_iis</code> for the parser to identify the log source as Microsoft IIS.</p>
+            </li>
+            <li>
+                <p>In addition, the option <code class="linecode">fields_under_root</code> must be set to <code class="linecode">true</code> for message identification to work. See the following example:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">filebeat.inputs:
+- type: log
+enabled: true
+paths:
+- C:\inetpub\logs\LogFiles\W3SVC1\*.log
+fields:
+event_source_product: microsoft_iis
+fields_under_root: true</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+            <li>
+                <p>Adjust the file path in the config file if needed.</p>
+            </li>
+            <li>
+                <p>Install Graylog Sidecar on the client host.</p>
+            </li>
+            <li>
+                <p>Edit the Graylog Sidecar client configuration with your Graylog server API URL and API access token.</p>
+            </li>
+        </ol>
+        <h2 id="log-format-example">Log Format Example</h2>
+        <p>These are example logs for Microsoft IIS in W3C log format.</p>
+        <h4>W3C default Logs</h4>
+        <p><code class="linecode">#Fields: date time s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs(User-Agent) cs(Referer) sc-status sc-substatus sc-win32-status time-taken
+        2025-07-22 16:04:35 ::1 GET / - 80 - ::1 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/122.0.0.0+Safari/537.36+Edg/122.0.0.0 - 200 0 0 1127
+        2025-07-22 16:04:35 ::1 GET /iisstart.png - 80 - ::1 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/122.0.0.0+Safari/537.36+Edg/122.0.0.0 http://localhost/ 200 0 0 14
+        2025-07-22 16:04:35 ::1 GET /favicon.ico - 80 - ::1 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/122.0.0.0+Safari/537.36+Edg/122.0.0.0 http://localhost/ 404 0 2 7</code>
+        </p>
+        <h4>W3C all fields selected</h4>
+        <p><code class="linecode">#Fields: date time s-sitename s-computername s-ip cs-method cs-uri-stem cs-uri-query s-port cs-username c-ip cs-version cs(User-Agent) cs(Cookie) cs(Referer) cs-host sc-status sc-substatus sc-win32-status sc-bytes cs-bytes time-taken
+        2025-07-22 17:08:10 W3SVC1 WIN-I4KO2719DL6 ::1 GET / - 80 - ::1 HTTP/1.1 Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/122.0.0.0+Safari/537.36+Edg/122.0.0.0 - - localhost 304 0 0 166 780 86</code>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Rules to parse, normalize, and enrich Microsoft IIS messages.</p>
+            </li>
+        </ul>
+        <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
+        <p>The content pack supports the following log types. Generic processing will be provided for log types not listed.</p>
+        <ul>
+            <li>
+                <p>Access logs</p>
+            </li>
+        </ul>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following messages:</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Message Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Access Logs</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">180200</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">http</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">protocol</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">http.communication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">http communication</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Message Fields Included in This Pack</h3>
+        <h4>General Parsing for Default W3C Format</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Common Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field_Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example_Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field_Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_created</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2025-07-22 17:08:10</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">date</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Date and Time of the event created</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">::1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source IP address</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_request_method</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">GET</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP method used</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">/</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Requested URI path</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_uri_query</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Query string parameters</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">80</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Port on destination</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Authenticated user name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">::1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination IP address</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_user_agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/122.0.0.0+Safari/537.36+Edg/122.0.0.0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Client user agent</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_referrer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP referrer header</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_response_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP status code</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_sub_status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">10</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP substatus code</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_win32_status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">20</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Win32 status code</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">http_response_time</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">1127</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Time taken to serve request</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>Extended W3C Field Format</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field_Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example_Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field_Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_created</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2025-07-22 17:08:10</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">date</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Date and Time of the event created </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_sitename</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">W3SVC1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Web server site name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">WIN-I4KO2719DL6</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Web server hostname</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">::1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source IP address</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_request_method</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">GET</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP method used</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">/</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Requested path</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_uri_query</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Query string parameters</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">80</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Port on destination host</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Authenticated user name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">::1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">IP of destination</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">HTTP/1.1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP protocol version</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_user_agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/122.0.0.0+Safari/537.36+Edg/122.0.0.0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client user agent</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_cookie</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP cookie header</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_referrer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Referrer URL</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_host</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">localhost</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Target host</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_response_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">304</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP status code</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_sub_status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP substatus code</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_win32_status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Win32 status code</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_bytes_sent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">166</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Bytes sent to client</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_bytes_sent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">780</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Bytes received from client</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">http_response_time</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">86</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Request duration in ms</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h2 id="spotlight-content-pack">Microsoft IIS Content Pack</h2>
+        <p>This spotlight offers a dashboard with 1 tab:</p>
+        <h3>Overview</h3>
+        <p>
+            <img src="../Resources/Images/resources/microsoft_iis/microsoft_iis_dashboard.png" />
+        </p>
+    </body>
+</html>
