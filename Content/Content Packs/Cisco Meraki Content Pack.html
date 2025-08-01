@@ -1,57 +1,103 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<html lang="en" xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
     <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" /><title> Cisco Meraki Content Pack
-</title>
-        <!-- original-url : cisco-meraki
-## article-id : 0a701e78-19f6-45fb-b38b-828d4c3f5e4b
-## seo-title : Cisco Meraki
-## description : 
-## Metadata_End -->
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Cisco Meraki Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
         <p>Cisco Meraki is a hardware vendor and sells cloud-controlled security appliances (firewall), switches, and access points via a centralized managed platform. This technology pack will process Cisco Meraki logs, providing normalization and enrichment of common events of interest.</p>
-        <h2>Supported Version(s)</h2>
+        <h2 id="supported-versions">Supported Version(s)</h2>
         <ul>
-            <li>Up to MX16.9+</li>
-            <li>Up to MR 30.x</li>
+            <li>
+                <p>Up to MX16.9+</p>
+            </li>
+            <li>
+                <p>Up to MR30.x</p>
+            </li>
         </ul>
-        <h2>Supported Log MR Types</h2>
+        <h2 id="events-processed-by-this-technology-pack">Supported Log MR Types</h2>
         <p><code class="linecode">association</code>, <code class="linecode">disassociation</code>, <code class="linecode">wpa_auth</code>, <code class="linecode">wpa_deauth</code>, <code class="linecode">flows</code>, <code class="linecode">8021x_eap_failure</code>, <code class="linecode">8021x_deauth</code>, <code class="linecode">8021x_auth</code>, <code class="linecode">8021x_eap_success</code>, <code class="linecode">splash_auth</code>, <code class="linecode">mac_spoofing</code>, <code class="linecode">multiple_servers</code>, and <code class="linecode">device_packet_flood</code></p>
-        <h2>Stream Configuration</h2>
-        <p>This technology pack includes one stream:</p>
+        <h2 id="requirements">Requirements</h2>
         <ul>
-            <li>“Illuminate:Cisco Device Messages”</li>
+            <li>
+                <p>Configure Cisco Meraki to transmit Syslog to your Graylog server Syslog input.</p>
+            </li>
         </ul>
-        <p>If this stream is already created then nothing will be changed. This stream will be created if it does not exist, and it will be configured to route messages to the Cisco Devices index set. There should not be any rules configured for this stream.</p>
-        <h2>Index Set Configuration</h2>
-        <p>This technology pack includes one index set definition:</p>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
         <ul>
-            <li>“Cisco Devices Event Log Messages”</li>
+            <li>"Illuminate:Cisco Device Messages"</li>
         </ul>
-        <p>If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</p>
-        <h2>Log Format Examples</h2>
-        <p><code data-backticks="1" class="linecode">1 1619032507.590967163 ip_flow_end src=1.1.1.1 dst=2.2.2.2 protocol=icmp translated_dst_ip=4.4.4.4</code>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</span>
+                </div>
+            </section>
         </p>
-        <p><code data-backticks="1" class="linecode">1 1619032507.495518695 DEVICE_NAME flows src=1.1.1.1 dst=2.2.2.2 protocol=udp sport=1900 dport=1900 pattern: 1 all</code>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"Cisco Devices Event Log Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
+                </div>
+            </section>
         </p>
-        <h2>Requirements</h2>
+        <h2 id="log-format-example">Log Format Examples</h2>
+        <p><code class="linecode">1 1619032507.590967163 ip_flow_end src=1.1.1.1 dst=2.2.2.2 protocol=icmp translated_dst_ip=4.4.4.4</code>
+        </p>
+        <p><code class="linecode">1 1619032507.495518695 DEVICE_NAME flows src=1.1.1.1 dst=2.2.2.2 protocol=udp sport=1900 dport=1900 pattern: 1 all</code>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
         <ul>
-            <li>Configure Cisco Meraki to transmit Syslog to your Graylog server Syslog input.</li>
+            <li>
+                <p>Parsing rules to extract Cisco Meraki logs into Graylog schema compatible fields.</p>
+            </li>
         </ul>
-        <section class="warningBox">
-            <div class="title"><b>Meraki Syslog and Nanosecond Timestamps</b>
-            </div>
-            <div class="content">
-                <p>Cisco Meraki devices are sometimes configured to send epoch timestamps with nanoseconds; the Graylog syslog input cannot parse these messages and will drop them. If your device is configured to send nanosecond timestamps please configure a <code data-backticks="1" class="linecode">Raw/Plaintext UDP</code> input for Graylog and configure the Meraki to send logs to the raw input. This input must be configured to use a different port than any other existing UDP input. The parsing of epoch timestamps will be addressed in a future version of Graylog.</p>
-            </div>
-        </section>
-        <h2>What is Provided</h2>
-        <ul>
-            <li>Parsing rules to extract Cisco Meraki logs into Graylog schema compatible fields.</li>
-        </ul>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following messages:</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">vendor_event_type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type_code</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ip_flow_start</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">129999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ip_flow_end</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">129999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">flows</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">129999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ids_alerted</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">300000</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">urls</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">180100</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">109999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">security_filtering_file_scanned</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">300000</td>
+                </tr>
+            </tbody>
+        </table>
     </body>
 </html>
