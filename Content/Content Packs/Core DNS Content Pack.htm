@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head><title>Core DNS Content Pack</title>
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>The Core DNS Processing Illuminate content pack includes supplementary processing of DNS-related messages and a Spotlight pack to gain additional insights in to DNS-related log messages.</p>
+        <h2>Requirement(s)</h2>
+        <ul>
+            <li>A log source that includes DNS-related messages, either analyzed DNS traffic including DNS queries and/or network traffic logs that include traffic associated with DNS servers.</li>
+            <li>Graylog Server with a valid security license, running Graylog version 5.1.11 or later.</li>
+        </ul>
+        <h3>Graylog Server Requirement</h3>
+        <p>The Core DNS Processing Illuminate pack requires a Graylog Security license and Graylog 5.1.11 or later due to integration with the <a href="https://go2docs.graylog.org/5-2/what_more_can_graylog_do_for_me/asset_enrichment.htm">Graylog Security Asset Enrichment</a> functionality and the entropy generation functionality.</p>
+        <h2>Background</h2>
+        <h3>DNS</h3>
+        <p>DNS, or the Domain Name System, is one of the important protocols in modern networks and is also an important data point for security monitoring and incident response.</p>
+        <h2>Features</h2>
+        <h3>Asset Integration</h3>
+        <p>This pack, when enabled, will work with <a href="https://go2docs.graylog.org/5-2/what_more_can_graylog_do_for_me/asset_enrichment.htm">the Asset Enrichment feature</a> that is part of Graylog Security. It will allow users to identify approved DNS servers, allowing for identification of traffic to non-approved DNS servers.</p>
+        <h3>DNS Request Calculations</h3>
+        <p>This pack will enable the calculation of multiple data points related to DNS requests:</p>
+        <ul>
+            <li>DNS Query Request Length</li>
+            <li>DNS Query Response Length</li>
+            <li>DNS Query Entropy</li>
+            <li>DNS Server Approval Status</li>
+        </ul>
+        <h4>DNS Query Request/Response Length</h4>
+        <p>This is a simple count of the number of characters in a DNS request or response. This is valuable as it can be used, when measured in aggregate, to expose some attacks that use DNS for <a href="https://attack.mitre.org/techniques/T1048/">data exfiltration</a> and <a href="https://attack.mitre.org/techniques/T1071/004/">command control</a>.</p>
+        <h4>DNS Query Length</h4>
+        <p>When the field <code class="linecode">query_request</code> exists, this pack will generate the field <code class="linecode">query_request_length</code>.</p>
+        <h4>DNS Query Response Length</h4>
+        <p>When the field <code class="linecode">query_response</code> exists, this pack will generate the field <code class="linecode">query_response_length</code>.</p>
+        <p>The query response length is an approximate measurement of the response length. DNS responses can often include multiple values with a separator character. This measurement will include those characters.</p>
+        <h4>DNS Query Request Entropy Calculations</h4>
+        <p>This pack will calculate the entropy, using Shannon's entropy algorithm for the value of the field <code class="linecode">query_response</code> when that field exists, and assign it to the field <code class="linecode">query_request_entropy</code>.</p>
+        <p>Entropy, in this context, is the measurement of the variability of the data. Some attacks that use <a href="https://attack.mitre.org/techniques/T1568/002/">Domain Generation Algorithms (DGA)</a> can be detected by measuring the entropy of the DNS request value.</p>
+        <h4>DNS Server Approval Status</h4>
+        <p>This pack will work in concert with <a href="https://go2docs.graylog.org/5-2/what_more_can_graylog_do_for_me/asset_enrichment.htm">the Asset Enrichment functionality</a> included with Graylog Server and identify systems that have been identified as approved DNS servers. This can be used to detect misconfigured/unauthorized devices attached to your network and increase your situational awareness with respect to the operation of your network.</p>
+        <p>This pack will add the field <code class="linecode">approved_dns_server</code> with the boolean value of <code class="linecode">true</code> if the device has been identified as an approved DNS server and <code class="linecode">false</code> if it has not been identified as approved. Note that until a server has been identified as an approved DNS server that all DNS traffic will be considered unapproved.</p>
+        <h4>Configuring Approved DNS Servers</h4>
+        <p>
+            <section class="warningBox">
+                <div class="title" style="font-weight: bold;">Warning:&#160;<span style="font-weight: normal;">Some DNS log sources, such as Sysmon, do not log the destination server. These sources cannot be used to determine if the server is considered "approved."</span></div>
+            </section>
+        </p>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;It is possible to add approved external DNS server IPs in the assets page.</div>
+            </section>
+        </p>
+        <p>In order to define a device as an "approved" DNS server, it must be added to the asset list and assigned a category of <code class="linecode">approved_dns_servers</code>.</p>
+        <ol>
+            <li>
+                <p>In the Graylog web interface, select the drop-down menu <i>Security</i> and click on the <i>Assets</i> item in this menu.</p>
+            </li>
+            <li>
+                <p>If there are already assets defined, look for an existing entry for the DNS server to assign approval to. If there is already an asset entry for the DNS server to approve:</p>
+                <ol>
+                    <li>Click on the asset entry.</li>
+                    <li>Click in or tab to the <i>Categories</i> text box.</li>
+                    <li>Enter the text <code class="linecode">approved_dns_servers</code> and hit the Enter key.</li>
+                    <li>Click the <i>Next</i> button repeatedly until you see the <i>Save Asset</i> button.</li>
+                    <li>Click on the <i>Save Asset</i> button.</li>
+                </ol>
+            </li>
+            <li>
+                <p>If there is no existing asset entry:</p>
+                <ol>
+                    <li>Click on the <i>New Asset</i> button.</li>
+                    <li>Click on or tab to the <i>Asset Name</i> text box and enter an asset name.</li>
+                    <li>Click on or tab to the <i>IP Addresses</i> text box.</li>
+                    <li>Enter the IP address associated with the DNS server and hit the Enter button.</li>
+                    <li>Repeat this step for any additional IP addresses associated with the approved DNS server.</li>
+                    <li>Add any relevant information to the other fields for this asset.</li>
+                    <li>Click on the <i>Next</i> button to advance to the next page of the asset entry form.</li>
+                    <li>Fill out any of the additional fields desired in the asset entry, clicking the <i>Next</i> button when completed.</li>
+                    <li>Repeat this process for each page of the asset entry dialog.</li>
+                    <li>Click the <i>Save Entry</i> button on the last page of the asset entry dialog.</li>
+                </ol>
+            </li>
+        </ol>
+        <h2>DNS Processing Spotlight Content Pack</h2>
+        <p>The DNS Processing Spotlight content pack contains a dashboard that provides insights in to DNS activity collected in Graylog</p>
+        <p>Dashboard: Illuminate:DNS Analysis</p>
+        <p>DNS Activity Summary tab: A high-level view of categorized DNS events.</p>
+        <p>
+            <img src="../Resources/Images/DNS Processing/DNS_Analysis_activity_summary.png" />
+        </p>
+        <p>DNS Assets tab: Review DNS traffic to approved/unapproved DNS servers.<br /></p>
+        <p>
+            <img src="../Resources/Images/DNS Processing/DNS_Analysis_Assets.png" />
+        </p>
+    </body>
+</html>
