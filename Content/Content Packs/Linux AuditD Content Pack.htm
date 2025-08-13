@@ -297,8 +297,14 @@ local6.info stop</MadCap:codeSnippetBody>
         <p>The AuditD processing pack will modify AuditD logs, trimming the header metadata from the AuditD log message.</p>
         <p>This section will include examples of both the full messages, including the Syslog header and the resulting message after Illuminate has trimmed the header component from the message.</p>
         <h4>Syscall Log Example - Full Log</h4>
+        <p><code class="linecode">&lt;18&gt;node=testgoat01 type=SYSCALL msg=audit(1749212648.902:7315): arch=c00000b7 syscall=14 success=no exit=-61 a0=c698361a5470 a1=f324ec214fc8 a2=0 a3=31a60d86952b0 items=1 ppid=1 pid=18990 auid=1000 uid=1000 gid=1000 euid=1000 suid=1000 fsuid=1000 egid=1000 sgid=1000 fsgid=1000 tty=(none) ses=282 comm="systemd" exe="/usr/lib/systemd/systemd" subj=unconfined key="perm_mod" ARCH=aarch64 SYSCALL=removexattr AUID="usera" UID="usera" GID="usera" EUID="usera" SUID="usera" FSUID="usera" EGID="usera" SGID="usera" FSGID="usera</code>
+        </p>
         <h4>Syscall Log Example - Processed Log</h4>
+        <p><code class="linecode">&lt;18&gt;audit(1749212648.902:7315): arch=c00000b7 syscall=14 success=no exit=-61 a0=c698361a5470 a1=f324ec214fc8 a2=0 a3=31a60d86952b0 items=1 ppid=1 pid=18990 auid=1000 uid=1000 gid=1000 euid=1000 suid=1000 fsuid=1000 egid=1000 sgid=1000 fsgid=1000 tty=(none) ses=282 comm="systemd" exe="/usr/lib/systemd/systemd" subj=unconfined key="perm_mod" ARCH=aarch64 SYSCALL=removexattr AUID="usera" UID="usera" GID="usera" EUID="usera" SUID="usera" FSUID="usera" EGID="usera" SGID="usera" FSGID="usera"</code>
+        </p>
         <h4>CRED_DISP Log Example - Full Log</h4>
+        <p><code class="linecode">&lt;18&gt;node=rhel-machine type=CRED_DISP msg=audit(1746772858.810:7300): pid=53518 uid=1000 auid=1000 ses=13 subj=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023 msg='op=PAM:setcred grantors=pam_env,pam_fprintd acct="root" exe="/usr/bin/sudo" hostname=? addr=? terminal=/dev/pts/0 res=success' UID="company" AUID="company"</code>
+        </p>
         <h2>GIM Categorization</h2>
         <p>In most cases the AuditD logs will be categorized based on the AuditD event type, though for some generic event types, the <code class="linecode">op</code> property will be used alongside the event type for categorization.</p>
         <p>GIM categorization is provided for the following messages:</p>
