@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>GIM Category: iam</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <p>The Identity and Access Management (IAM) category covers events where accounts, groups, and related objects are created, modified, enabled, disabled, or deleted. It includes administrative actions such as privilege assignment, password resets, and changes to group membership or properties.
+
+IAM events are account-centric: each event must identify the account being acted upon (`user_name`), and in most cases, the initiating account (`source_user_name`). These events are highly security-relevant because they directly reflect changes to identities and their access capabilities.
+</p>
+        <h2>object create</h2>
+        <p>Object create events record the creation of IAM objects such as user accounts or groups. These events identify both the target account or group (`user_name`) and the actor that initiated the operation (`source_user_name`).
+
+Mapping guidance:
+- Use this subcategory when the directory, identity provider, or management API reports that an object was created. Do not use this for property changes on existing objects (see object modify).
+- If a platform emits separate events for request/approval and final creation, map the final creation to 'account created' or 'group created' and map earlier workflow steps to your vendor-specific fields; do not use object create for pending states.
+- Service-initiated provisioning (for example, automated sync from HRIS) should still be mapped to object create; the initiating service account should populate `source_user_name`.
+</p>
+            <h4>Required Fields</h4>
+            <ul>
+                <li><code>source_user_name</code></li>
+                <li><code>user_name</code></li>
+            </ul>
+            <h4>Optional Fields</h4>
+            <ul>
+                <li><code>user_domain</code></li>
+                <li><code>user_type</code></li>
+            </ul>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <colgroup>
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        </colgroup>
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">110000</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object create</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">account created</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">An account was created</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">110001</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object create</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">error</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">An error was encountered when creating an account</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">110002</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">iam.object create</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">group created</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">A group was created</td>
+            </tr>
+        </tbody>
+    </table>
+        <h2>object delete</h2>
+        <p>Object delete events record the removal of IAM objects such as user accounts or groups. These events identify both the account or group being removed (`user_name`) and the actor that initiated the deletion (`source_user_name`).
+
+Mapping guidance:
+- Use this subcategory only when the directory, identity provider, or management API confirms that an object has been deleted.
+- Do not use this for accounts that are disabled or locked; see the object disable subcategory instead.
+- For platforms that support staged deletion (soft delete), map the final deletion event here. Retention, recycle-bin, or disable operations should not be mapped to object delete.
+</p>
+            <h4>Required Fields</h4>
+            <ul>
+                <li><code>source_user_name</code></li>
+                <li><code>user_name</code></li>
+            </ul>
+            <h4>Optional Fields</h4>
+            <ul>
+                <li><code>user_domain</code></li>
+                <li><code>user_type</code></li>
+            </ul>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <colgroup>
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        </colgroup>
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">110500</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object delete</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">account deleted</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">An account was deleted</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">110501</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">iam.object delete</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">group deleted</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">A group account was deleted</td>
+            </tr>
+        </tbody>
+    </table>
+        <h2>object modify</h2>
+        <p>Object modify events capture changes to IAM objects such as user accounts or groups. These include updates to account properties, group properties, privilege assignments or removals, password changes or resets, and group membership changes. 
+
+Mapping guidance:
+- Use this subcategory for modifications that alter an account’s attributes or group relationships without creating, deleting, enabling, or disabling the object.
+- Privilege assignments and removals, group membership changes, and password resets should all be mapped here.
+- Use object enable/disable for changes to account status, and object delete for removal of objects.
+</p>
+            <h4>Required Fields</h4>
+            <ul>
+                <li><code>source_user_name</code></li>
+                <li><code>user_name</code></li>
+            </ul>
+            <h4>Optional Fields</h4>
+            <ul>
+                <li><code>user_domain</code></li>
+                <li><code>user_type</code></li>
+            </ul>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <colgroup>
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        </colgroup>
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111000</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">account modified</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">An account was modified</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111001</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">privileges assigned</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Privileges were assigned to an account</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111002</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">privileges removed</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Privileges were removed from an account</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111003</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">account renamed</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">An account was renamed</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111004</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">password change</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">An account password was changed</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111005</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">administrative password reset</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">An administrative account has reset a password for another account</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111006</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">error</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">An error was encountered when an attempt was made to modify an account</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111007</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">group member added</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">A group member was added to a group</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111008</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">group member removed</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">A group member was removed from a group</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">111009</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">iam.object modify</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">group properties modified</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">The properties of a group were modified</td>
+            </tr>
+        </tbody>
+    </table>
+        <h2>object disable</h2>
+        <p>Object disable events record when IAM objects such as user accounts are made inactive. This includes temporary account locks (for example, due to repeated failed logon attempts) and administrative disablement actions performed by an operator.
+
+Mapping guidance:
+- Use this subcategory for directory or identity provider events that mark an account as unusable without deleting it.
+- Do not use this for session termination (logoff) or for permanent account deletion; see the corresponding subcategories instead.
+</p>
+            <h4>Required Fields</h4>
+            <ul>
+                <li><code>source_user_name</code></li>
+                <li><code>user_name</code></li>
+            </ul>
+            <h4>Optional Fields</h4>
+            <ul>
+                <li><code>user_domain</code></li>
+                <li><code>user_type</code></li>
+            </ul>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <colgroup>
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        </colgroup>
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111500</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object disable</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">account locked</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">An account was locked</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">111501</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">iam.object disable</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">account disabled</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">An account was administratively disabled</td>
+            </tr>
+        </tbody>
+    </table>
+        <h2>object enable</h2>
+        <p>Object enable events record when IAM objects such as user accounts are reactivated or unlocked after being previously disabled. This includes administrative actions that enable accounts as well as system-driven unlocks.
+
+Mapping guidance:
+- Use this subcategory when an existing account is made active again, either through an administrative action or an automatic unlock.
+- Do not use this for new account creation; see the object create subcategory instead.
+</p>
+            <h4>Required Fields</h4>
+            <ul>
+                <li><code>source_user_name</code></li>
+                <li><code>user_name</code></li>
+            </ul>
+            <h4>Optional Fields</h4>
+            <ul>
+                <li><code>user_domain</code></li>
+                <li><code>user_type</code></li>
+            </ul>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <colgroup>
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        </colgroup>
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">112000</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object enable</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">account unlocked</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">An account was unlocked</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">112001</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object enable</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">account enabled</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">An account was administratively enabled</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">112002</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">iam.object enable</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">error</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">An error was encountered when an attempt to enable an account was made.</td>
+            </tr>
+        </tbody>
+    </table>
+        <h2>information</h2>
+        <p>Information events provide context about IAM objects or directory state that do not represent a create, modify, delete, enable, or disable action. These events often reflect queries or enumerations, such as listing group memberships.
+
+Although categorized as informational, these events can still be security-relevant. For example, group membership enumeration may indicate reconnaissance or privilege review activity.
+</p>
+            <h4>Required Fields</h4>
+            <ul>
+                <li><code>user_name</code></li>
+            </ul>
+            <h4>Optional Fields</h4>
+            <ul>
+                <li><code>user_domain</code></li>
+                <li><code>user_type</code></li>
+            </ul>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <colgroup>
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        </colgroup>
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">119500</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">iam.information</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">group membership enumerated</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">A group’s members were enumerated</td>
+            </tr>
+        </tbody>
+    </table>
+        <h2>default</h2>
+        <p>The default subcategory is a fallback for IAM-related events that do not clearly fit into another defined subcategory. It should be used sparingly, and only when no more specific mapping is available.
+
+Use the information subcategory (95) for events that provide context such as enumeration or queries. Use the default subcategory only for events that cannot be classified elsewhere in the IAM model.
+</p>
+            <h4>Required Fields</h4>
+            <ul>
+                <li><code>user_name</code></li>
+            </ul>
+            <h4>Optional Fields</h4>
+            <ul>
+                <li><code>user_domain</code></li>
+                <li><code>user_type</code></li>
+            </ul>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <colgroup>
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        </colgroup>
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">119999</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">iam</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">iam.default</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">iam message</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">IAM default message</td>
+            </tr>
+        </tbody>
+    </table>
+    </body>
+</html>
