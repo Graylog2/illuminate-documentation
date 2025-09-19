@@ -1,180 +1,158 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-<head>
-    <title>Graylog Information Model (GIM) Categories Reference</title>
-</head>
-<body>
-    <h2>About Graylog Information Models</h2>
-    <p>The Graylog Information Model (GIM) is a structured system for categorizing and normalizing event log messages. Each GIM category defines a consistent way to describe related events — for example, authentication activity, identity and access management changes, or network communications.</p>
-    <p>GIM is tightly integrated with the Graylog Field Mapping Schema. The schema provides normalized field names (such as `source_ip` or `user_name`), while GIM organizes those fields into categories and subcategories that describe the meaning of an event log message. Together, they provide a common language for working with security and operational data across different platforms.</p>
-    <p>Illuminate content — including dashboards, reports, and alerts — is built on top of GIM. By standardizing both the fields and the event categories, GIM ensures that content works consistently across vendor-specific event logs, allowing analysts to focus on what happened rather than how each vendor logs it.</p>
-    <p>The GIM can be understood as an information modeling layer: it abstracts diverse vendor log formats into a consistent, structured schema. This aligns raw event log messages with normalized categories, subcategories, and event type codes that describe the semantics of the activity.</p>
-    <p>Field tiers (required, recommended, optional) reflect a deliberate least-common-denominator approach. Required fields are those nearly universal across event sources, ensuring that dashboards, alerts, and reports work consistently. Recommended and optional fields preserve vendor richness without making content brittle or dependent on data that may not always exist.</p>
-    <p>This design represents a trade-off. Normalization simplifies multi-vendor analysis but may collapse vendor-specific detail. Optional fields capture that detail, but content built on them risks fragmentation. For cross-platform consistency, content should rely heavily on required fields, while recommended fields can be used to enhance content when present, but should not be treated as universally available. Optional fields provide depth in environments where they are available.</p>
-    <p>In practice, GIM supports not only dashboards and alerts but also investigative workflows. By unifying fields such as user, source, destination, and outcome, GIM allows analysts to pivot seamlessly across authentication, IAM, and network activity regardless of vendor log source.</p>
-    <h2>Required, Recommended, and Optional Fields</h2>
-    <p>Each GIM category defines a set of fields that may appear in event log messages. These are organized into three tiers: required, recommended, and optional.</p>
-    <p>Required fields form the foundation of the model. They represent the least common denominator of data available across most vendors and are guaranteed to be present for all events in the category. Content built on top of GIM, such as dashboards or alerts, will always rely on required fields to function consistently.</p>
-    <p>Recommended fields provide additional context that is frequently available but not universal. These fields improve the fidelity of dashboards and reports when present, but GIM content is not dependent on them.</p>
-    <p>Optional fields capture extra details that may only appear in specific products or environments. They allow for richer analysis when available, while still preserving compatibility across diverse event sources.</p>
-    <h2>Vendor Uniqueness</h2>
-    <p>Event log messages are produced differently by each vendor, even when describing the same type of activity. For example, one vendor may report a failed logon attempt with a specific error code, while another may only record it as a generic failure.</p>
-    <p>The Graylog Information Model addresses this by normalizing event data into consistent categories and fields. This allows content such as dashboards, correlation rules, and alerts to work reliably across different vendors without requiring custom logic for each one.</p>
-    <p>Vendor-specific details are not lost. They can still be preserved in optional fields or in vendor-specific extensions, but the core GIM mapping ensures that the most important attributes (such as the user, source, destination, and outcome) are consistently available for analysis.</p>
-    <h2>GIM Category List</h2>
-    <p>The following sections describe each category in the Graylog Information Model (GIM). Categories group related types of activity into a consistent structure, making it easier to build dashboards, alerts, and reports across multiple event sources.</p>
-    <p>Each category contains one or more subcategories, which provide finer distinctions within the activity type. Subcategories define the required, recommended, and optional fields for their events, along with event type codes that capture specific actions (for example, logon, logoff, or credential validation).</p>
-    <p>By organizing events into categories and subcategories, GIM ensures that related activities are normalized in a way that balances consistency with flexibility. This allows analysts to work with a clear, predictable structure while still preserving vendor-specific detail where available.</p>
-    <p>This section provides documentation for each GIM category and its usage context.
+    <head><title>Graylog Information Model (GIM) Categories Reference</title>
+    </head>
+    <body>
+        <h2>About Graylog Information Models</h2>
+        <p>The Graylog Information Model (GIM) is a structured system for categorizing and normalizing event log messages. Each GIM category defines a consistent way to describe related events — for example, authentication activity, identity and access management changes, or network communications.</p>
+        <p>GIM is tightly integrated with the Graylog Field Mapping Schema. The schema provides normalized field names (such as `source_ip` or `user_name`), while GIM organizes those fields into categories and subcategories that describe the meaning of an event log message. Together, they provide a common language for working with security and operational data across different platforms.</p>
+        <p>Illuminate content — including dashboards, reports, and alerts — is built on top of GIM. By standardizing both the fields and the event categories, GIM ensures that content works consistently across vendor-specific event logs, allowing analysts to focus on what happened rather than how each vendor logs it.</p>
+        <p>The GIM can be understood as an information modeling layer: it abstracts diverse vendor log formats into a consistent, structured schema. This aligns raw event log messages with normalized categories, subcategories, and event type codes that describe the semantics of the activity.</p>
+        <p>Field tiers (required, recommended, optional) reflect a deliberate least-common-denominator approach. Required fields are those nearly universal across event sources, ensuring that dashboards, alerts, and reports work consistently. Recommended and optional fields preserve vendor richness without making content brittle or dependent on data that may not always exist.</p>
+        <p>This design represents a trade-off. Normalization simplifies multi-vendor analysis but may collapse vendor-specific detail. Optional fields capture that detail, but content built on them risks fragmentation. For cross-platform consistency, content should rely heavily on required fields, while recommended fields can be used to enhance content when present, but should not be treated as universally available. Optional fields provide depth in environments where they are available.</p>
+        <p>In practice, GIM supports not only dashboards and alerts but also investigative workflows. By unifying fields such as user, source, destination, and outcome, GIM allows analysts to pivot seamlessly across authentication, IAM, and network activity regardless of vendor log source.</p>
+        <h2>Required, Recommended, and Optional Fields</h2>
+        <p>Each GIM category defines a set of fields that may appear in event log messages. These are organized into three tiers: required, recommended, and optional.</p>
+        <p>Required fields form the foundation of the model. They represent the least common denominator of data available across most vendors and are guaranteed to be present for all events in the category. Content built on top of GIM, such as dashboards or alerts, will always rely on required fields to function consistently.</p>
+        <p>Recommended fields provide additional context that is frequently available but not universal. These fields improve the fidelity of dashboards and reports when present, but GIM content is not dependent on them.</p>
+        <p>Optional fields capture extra details that may only appear in specific products or environments. They allow for richer analysis when available, while still preserving compatibility across diverse event sources.</p>
+        <h2>Vendor Uniqueness</h2>
+        <p>Event log messages are produced differently by each vendor, even when describing the same type of activity. For example, one vendor may report a failed logon attempt with a specific error code, while another may only record it as a generic failure.</p>
+        <p>The Graylog Information Model addresses this by normalizing event data into consistent categories and fields. This allows content such as dashboards, correlation rules, and alerts to work reliably across different vendors without requiring custom logic for each one.</p>
+        <p>Vendor-specific details are not lost. They can still be preserved in optional fields or in vendor-specific extensions, but the core GIM mapping ensures that the most important attributes (such as the user, source, destination, and outcome) are consistently available for analysis.</p>
+        <h2>GIM Category List</h2>
+        <p>The following sections describe each category in the Graylog Information Model (GIM). Categories group related types of activity into a consistent structure, making it easier to build dashboards, alerts, and reports across multiple event sources.</p>
+        <p>Each category contains one or more subcategories, which provide finer distinctions within the activity type. Subcategories define the required, recommended, and optional fields for their events, along with event type codes that capture specific actions (for example, logon, logoff, or credential validation).</p>
+        <p>By organizing events into categories and subcategories, GIM ensures that related activities are normalized in a way that balances consistency with flexibility. This allows analysts to work with a clear, predictable structure while still preserving vendor-specific detail where available.</p>
+        <p>This section provides documentation for each GIM category and its usage context.
 </p>
-    <ul>
-        <li>
-            <p>
-                <a href="Graylog_Information_Models/agent.html">
+        <ul>
+            <li>
+                <p><a href="/agent.html">
                     Agent
                 </a>
-            </p>
-        </li>
-        <li>
-            <p>
-                <a href="Graylog_Information_Models/alert.html">
+                </p>
+            </li>
+            <li>
+                <p><a href="Graylog_Information_Models/alert.html">
                     Alert
                 </a>
-            </p>
-        </li>
-        <li>
-            <p>
-                <a href="Graylog_Information_Models/audit.html">
+                </p>
+            </li>
+            <li>
+                <p><a href="Graylog_Information_Models/audit.html">
                     Audit
                 </a>
-            </p>
-        </li>
-        <li>
-            <p>
-                <a href="Graylog_Information_Models/authentication.html">
+                </p>
+            </li>
+            <li>
+                <p><a href="Graylog_Information_Models/authentication.html">
                     Authentication
                 </a>
-            </p>
-        </li>
-        <li>
-            <p>
-                <a href="Graylog_Information_Models/database.html">
+                </p>
+            </li>
+            <li>
+                <p><a href="Graylog_Information_Models/database.html">
                     Database
                 </a>
-            </p>
-        </li>
-        <li>
-            <p>
-                <a href="Graylog_Information_Models/detection.html">
+                </p>
+            </li>
+            <li>
+                <p><a href="Graylog_Information_Models/detection.html">
                     Detection
                 </a>
-            </p>
-        </li>
-        <li>
-            <p>
-                <a href="Graylog_Information_Models/dhcp.html">
+                </p>
+            </li>
+            <li>
+                <p><a href="Graylog_Information_Models/dhcp.html">
                     Dhcp
                 </a>
-            </p>
-        </li>
-        <li>
-            <p>
-                <a href="Graylog_Information_Models/driver.html">
+                </p>
+            </li>
+            <li>
+                <p><a href="Graylog_Information_Models/driver.html">
                     Driver
                 </a>
-            </p>
-        </li>
-        <li>
-            <p>
-                <a href="Graylog_Information_Models/file.html">
+                </p>
+            </li>
+            <li>
+                <p><a href="Graylog_Information_Models/file.html">
                     File
                 </a>
-            </p>
-        </li>
-        <li>
-            <p>
-                <a href="Graylog_Information_Models/http.html">
+                </p>
+            </li>
+            <li>
+                <p><a href="Graylog_Information_Models/http.html">
                     Http
                 </a>
-            </p>
-        </li>
-        <li>
-            <p>
-                <a href="Graylog_Information_Models/iam.html">
+                </p>
+            </li>
+            <li>
+                <p><a href="Graylog_Information_Models/iam.html">
                     Iam
                 </a>
-            </p>
-        </li>
-        <li>
-            <p>
-                <a href="Graylog_Information_Models/message.html">
+                </p>
+            </li>
+            <li>
+                <p><a href="Graylog_Information_Models/message.html">
                     Message
                 </a>
-            </p>
-        </li>
-        <li>
-            <p>
-                <a href="Graylog_Information_Models/messaging.html">
+                </p>
+            </li>
+            <li>
+                <p><a href="Graylog_Information_Models/messaging.html">
                     Messaging
                 </a>
-            </p>
-        </li>
-        <li>
-            <p>
-                <a href="Graylog_Information_Models/name_resolution.html">
+                </p>
+            </li>
+            <li>
+                <p><a href="Graylog_Information_Models/name_resolution.html">
                     Name_resolution
                 </a>
-            </p>
-        </li>
-        <li>
-            <p>
-                <a href="Graylog_Information_Models/network.html">
+                </p>
+            </li>
+            <li>
+                <p><a href="Graylog_Information_Models/network.html">
                     Network
                 </a>
-            </p>
-        </li>
-        <li>
-            <p>
-                <a href="Graylog_Information_Models/pipe.html">
+                </p>
+            </li>
+            <li>
+                <p><a href="Graylog_Information_Models/pipe.html">
                     Pipe
                 </a>
-            </p>
-        </li>
-        <li>
-            <p>
-                <a href="Graylog_Information_Models/process.html">
+                </p>
+            </li>
+            <li>
+                <p><a href="Graylog_Information_Models/process.html">
                     Process
                 </a>
-            </p>
-        </li>
-        <li>
-            <p>
-                <a href="Graylog_Information_Models/registry.html">
+                </p>
+            </li>
+            <li>
+                <p><a href="Graylog_Information_Models/registry.html">
                     Registry
                 </a>
-            </p>
-        </li>
-        <li>
-            <p>
-                <a href="Graylog_Information_Models/service.html">
+                </p>
+            </li>
+            <li>
+                <p><a href="Graylog_Information_Models/service.html">
                     Service
                 </a>
-            </p>
-        </li>
-        <li>
-            <p>
-                <a href="Graylog_Information_Models/system_time.html">
+                </p>
+            </li>
+            <li>
+                <p><a href="Graylog_Information_Models/system_time.html">
                     System_time
                 </a>
-            </p>
-        </li>
-        <li>
-            <p>
-                <a href="Graylog_Information_Models/wmi.html">
+                </p>
+            </li>
+            <li>
+                <p><a href="Graylog_Information_Models/wmi.html">
                     Wmi
                 </a>
-            </p>
-        </li>
-    </ul>
-</body>
+                </p>
+            </li>
+        </ul>
+    </body>
 </html>
