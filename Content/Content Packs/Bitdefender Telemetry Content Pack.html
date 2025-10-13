@@ -1,0 +1,379 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Bitdefender Telemetry Content Pack</title>
+    </head>
+    <body>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>This content pack is for Bitdefender and will parse Telemetry logs.&#160;</p>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> Please note this content pack does not apply to all Bitdefender products. </div>
+            </section>
+        </p>
+        <h2>Supported Version(s)</h2>
+        <ul>
+            <li>
+                <p>GravityZone Version 6.56.0-1 and matching OnPrem versions</p>
+            </li>
+        </ul>
+        <h2>Requirements</h2>
+        <ul>
+            <li>
+                <p>Graylog 6.1.2+</p>
+            </li>
+            <li>
+                <p>The Graylog server must be configured to accept TLS 1.2.</p>
+            </li>
+            <li>
+                <p>Bitdefender GravityZone/Bitdefender OnPrem must be configured to send Syslog-formatted logs to a <a href="https://go2docs.graylog.org/current/getting_in_log_data/syslog_inputs.html">Graylog Syslog input</a>.</p>
+            </li>
+            <li>
+                <p>Bitdefender GravityZone/Bitdefender OnPrem must have the correct license to generate Telemetry data.</p>
+            </li>
+        </ul>
+        <h2>Stream Configuration</h2>
+        <p>This technology pack includes one stream:</p>
+        <ul>
+            <li>
+                <p>"Illuminate:Bitdefender Telemetry Messages"</p>
+            </li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:  If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
+            </section>
+        </p>
+        <h2>Index Set Configuration</h2>
+        <p>This technology pack includes one index set definition:</p>
+        <ul>
+            <li>“Bitdefender Telemetry Logs"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:  If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
+            </section>
+        </p>
+        <h2>What is Provided?</h2>
+        <ul>
+            <li>
+                <p>Telemetry log parsing and a custom dashboard with four tabs.</p>
+            </li>
+        </ul>
+        <h2>Limitations</h2>
+        <ul>
+            <li>
+                <p>Only Syslog-formatted logs are supported.</p>
+            </li>
+        </ul>
+        <h2>Log Format Examples</h2>
+        <p>All 14 Bitdefender Telemetry logs are supported. See<![CDATA[  ]]><a href="https://www.bitdefender.com/business/support/en/77211-322695-security-telemetry-events-sent-to-siem.html">the Bitdefender Syslog documentation</a> for more information.</p>
+        <h3><code class="linecode">terminate_process</code> Logs Example</h3>
+        <p><code class="linecode">{"ctc_version":"2.13.4.3","machine_name":"1022H2X64-N74","event_version":1,"event_name":"terminate_process","pid":7912,"datetime":1715023652647,"os_version":"Windows 10","company_id":"5b9bc2701da197f07a8b4567","hardware_id":"4D8E0E42-22F0-2D94-6823-C3863931877A-0050568E1657","os_family":"windows","os_platform":"x64","os_type":"client","product_version":"7.9.11.406"}</code>
+        </p>
+        <h2>Configure Graylog Syslog Input</h2>
+        <p>
+            <section class="infoBox">
+                <div class="title" style="font-weight: normal;"><b>Hint</b>:  GravityZone/Telemetry requires a TLS 1.2 connection. Your server must be configured to support TLS connection. Issue a private key/certificate if needed.</div>
+            </section>
+        </p>
+        <p>Bitdefender GravityZone/Bitdefender OnPrem must be configured to send Syslog-formatted logs to a <a href="https://go2docs.graylog.org/current/getting_in_log_data/syslog_inputs.html">Graylog Syslog input</a>.</p>
+        <p>This pack rewrites the message field to reduce license utilization. To get the full message, set <i>Store full message</i> in the input settings to true.</p>
+        <p>The logs get identified via the <code class="linecode">application_name</code> "BitdefenderEdr." The static input field "Routed From" with the value "Route - Bitdefender Telemetry Logs" can also be used.</p>
+        <h2>Message Fields Included in This Pack</h2>
+        <p>Most fields are renamed. The prefix <code class="linecode">BitdefenderGZ</code> may be substituted with <code class="linecode">vendor_</code>. Other fields are mapped to Graylog schema fields.</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Fields List<span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table style="width: 100%;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Vendor Field</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Illuminate Field</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">host</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">host_hostname</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">value</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">registry_value</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">user_sid</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">user_id</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">user_name</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">user_name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">type_sz</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">file_type</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">type</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">file_type_id</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_path</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">source_file_path</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">sha</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">hash_sha256</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">process_sha</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">process_hash256</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">process_path</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">process_path</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">process_md5</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">process_hashmd5</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">port_source</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">source_port</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">port_dest</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">destination_port</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">pid</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">process_id</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">path</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">file_path</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">parent_user_name</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">process_parent_user_name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">parent_process_path</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">process_parent_path</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">parent_pid</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">process_parent_id</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">parent_cmdline</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">process_parent_command_line</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">operation</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">registry_operation</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">md5</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">hash_md5</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">machine_name</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">host_hostname</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">key_path</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">registry_path</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">ip_source</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">source_ip</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">ip_dest</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">destination_ip</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">direction</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network_direction</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">data_type_sz</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">registry_format_sz</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">data_type</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">registry_data_type_id</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">data</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">registry_value</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">cmdline</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">process_command_line</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">bytes_sent</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">source_bytes_sent</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">bytes_received</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">destination_bytes_sent</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><code class="linecode">bytes_read</code>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">source_bytes_sent</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h2>Categorization</h2>
+        <p>The following event types and modules are currently categorized:</p>
+        <table style="height: 114px;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');width: 900px;" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><strong>vendor_event_module</strong>
+                    </th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1"><strong>GIM Event Type Code</strong>
+                    </th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1"><strong>GIM Event Type</strong>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">log_on</td>
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000</td>
+                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">log_out</td>
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">102500</td>
+                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Logoff</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_create</td>
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">200000</td>
+                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">File Created</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_delete</td>
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">200100</td>
+                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">File deleted</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_modify</td>
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">201000</td>
+                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">File Modified</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_read</td>
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">209999</td>
+                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">File Default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_move</td>
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">209999</td>
+                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">File Default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_connection</td>
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">129999</td>
+                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Network Messages</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">reg_create_key</td>
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">250500</td>
+                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Registry Key Added</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">reg_delete_key</td>
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">250501</td>
+                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Registry Key Deleted</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">reg_delete_value</td>
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">250002</td>
+                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Registry Value Deleted</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">reg_modify_value</td>
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">250003</td>
+                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Registry Value Modified</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">terminate_process</td>
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">190100</td>
+                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Process Stopped</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">process_create</td>
+                    <td style="width: 199.328px;" class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">190000</td>
+                    <td style="width: 199.344px;" class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Process Created</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>Dashboard</h2>
+        <p>Bitdefender Telemetry Content Pack offers a dashboard with 5 tabs: Overview, Network Activity, File Activity, a Process Activity, and a User Activity dashboard:</p>
+        <h3>Overview</h3>
+        <p>
+            <img src="../Resources/Images/Bitdefender MDR/Bitdefender MDR Overview.png" />
+        </p>
+        <h3>Network Activity</h3>
+        <p>
+            <img src="../Resources/Images/Bitdefender MDR/Bitdefender MDR Network.png" />
+        </p>
+        <h3>File Activity</h3>
+        <p>
+            <img src="../Resources/Images/Bitdefender MDR/Bitdefender MDR File.png" />
+        </p>
+        <h3>Process Activity</h3>
+        <p>
+            <img src="../Resources/Images/Bitdefender MDR/Bitdefender MDR Process.png" />
+        </p>
+        <h3>User Activity</h3>
+        <p>
+            <img src="../Resources/Images/Bitdefender MDR/Bitdefender MDR User.png" />
+        </p>
+    </body>
+</html>

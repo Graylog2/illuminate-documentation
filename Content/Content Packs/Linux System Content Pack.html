@@ -88,9 +88,13 @@
                 <p>The simplest method is to set the field <code class="linecode">event_source_product</code> as <code class="linecode">linux</code> in the structured data portion of the syslog message. See the following example template configuration:</p>
                 <MadCap:codeSnippet>
                     <MadCap:codeSnippetCopyButton />
-                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">template(name="Custom_Linux_SyslogProtocol23Format" type="string" string="&lt;%PRI%&gt;1 %TIMESTAMP:::date-rfc3339% %HOSTNAME% %APP-NAME% %PROCID% %MSGID% [origin event_source_product=\"linux\"] %MSG%\n")
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">template(
+  name="custom_linux_syslog_5424"
+  type="string"
+  string="&lt;%PRI%&gt;1 %TIMESTAMP:::date-rfc3339% %HOSTNAME% %APP-NAME% %PROCID% %MSGID% [exampleSDID@12345 event_source_product=\"linux\"]%msg:::sp-if-no-1st-sp%%msg:::drop-last-lf%\n"
+)
 
-*.* action(type="omfwd" target="YOUR GRAYLOG SERVER" port="514" protocol="udp" template="Custom_Linux_SyslogProtocol23Format")</MadCap:codeSnippetBody>
+*.* action(type="omfwd" target="YOUR GRAYLOG SERVER" port="514" protocol="tcp" template="custom_linux_syslog_5424")</MadCap:codeSnippetBody>
                 </MadCap:codeSnippet>
             </li>
         </ol>
