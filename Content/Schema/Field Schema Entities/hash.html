@@ -5,7 +5,32 @@
     </head>
     <body>
         <h1>Hash Fields</h1>
-        <p></p>
+        <p>The hash sub-fields represent cryptographic hash values associated with digital objects 
+        described elsewhere in the log (for example, files, processes, scripts, or executables). 
+        These fields are not standalone entities; they are appended to top-level object names 
+        to express object-specific properties, such as <code class="linecode">file_hash_md5</code> or <code class="linecode">process_hash_sha256</code>.</p>
+        <p>Cryptographic hashes are fixed-length values derived from data using one-way mathematical 
+        functions such as MD5, SHA1, or SHA256. They serve as unique digital fingerprints that 
+        allow systems and analysts to verify the integrity or identity of an object without 
+        exposing its contents. In cybersecurity monitoring and digital forensics, hash values are 
+        commonly used to:</p>
+        <ul>
+            <li>Detect known malware or benign files through reputation and threat intelligence lookup.</li>
+            <li>Verify the integrity of executables, configurations, or downloaded artifacts.</li>
+            <li>Support correlation across diverse data sources by normalizing object identity.</li>
+        </ul>
+        <p>Each field in this group corresponds to a specific algorithm:</p>
+        <ul>
+            <li><code class="linecode">hash_md5</code> - 128-bit MD5 hash (legacy, collision-prone, often used for backward compatibility).</li>
+            <li><code class="linecode">hash_sha1</code> - 160-bit SHA1 hash (deprecated for integrity assurance but still encountered in older tools).</li>
+            <li><code class="linecode">hash_sha256</code> - 256-bit SHA2 hash (current best practice for integrity validation and threat correlation).</li>
+            <li><code class="linecode">hash_sha512</code> - 512-bit SHA2 hash (used when enhanced resistance to collisions is required).</li>
+            <li><code class="linecode">hash_imphash</code> - Import hash derived from PE (Portable Executable) import tables, 
+          commonly used to identify similar Windows executables or malware families.</li>
+        </ul>
+        <p>When defining object properties in logs, these fields provide consistent semantic meaning 
+        across different data sources, allowing for accurate normalization, correlation, and 
+        enrichment of security telemetry.</p>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />

@@ -5,10 +5,28 @@
         <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
-        <p>Messages related to named pipes, commonly used on Unix-style operating systems. Named pipes are one-way FIFO communication channel between programs that have a file system entry.
-</p>
+        <p>The Pipe category represents events related to the creation, deletion, and use of named pipes, 
+which are interprocess communication (IPC) mechanisms that appear as filesystem objects. 
+Named pipes provide a one-way or duplex communication channel between processes, 
+and are commonly used by operating systems and applications for exchanging data or signaling events. 
+Monitoring named pipe activity is valuable for detecting abnormal IPC behavior, 
+such as unauthorized process communications or persistence mechanisms used by malicious software.</p>
         <h2>add</h2>
-        <p>Events related to the creation of named pipes</p>
+        <p>Events that represent the creation of named pipes on a system. 
+        A named pipe is an interprocess communication (IPC) channel that appears as a filesystem object 
+        and allows data exchange between processes. 
+        Creation events indicate the establishment of such communication channels, 
+        whether for legitimate system operations or for ad-hoc or malicious data transfer. 
+        Monitoring these events helps identify new IPC endpoints that could be used for persistence or covert communication.</p>
+        <h4>Required Fields</h4>
+        <ul>
+            <li><code class="linecode">pipe_name</code></li>
+        </ul>
+        <h4>Recommended Fields</h4>
+        <ul>
+            <li><code class="linecode">process_name</code></li>
+            <li><code class="linecode">user_name</code></li>
+        </ul>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -35,12 +53,28 @@
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">pipe</td>
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">pipe.add</td>
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">pipe created</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">A named pipe has been created</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">A named pipe was created on the system. 
+    This typically occurs when an application or process sets up an interprocess communication (IPC) channel 
+    through the filesystem. Creation events can indicate legitimate application behavior or the setup 
+    of a custom communication channel by malware or scripts.
+    </td>
             </tr>
         </tbody>
     </table>
         <h2>remove</h2>
-        <p>Events related to the removal of named pipes</p>
+        <p>Events that represent the removal or deletion of named pipes from the filesystem. 
+        When a named pipe is removed, the IPC channel it provided is no longer available for communication. 
+        These events typically occur during normal cleanup or service shutdown but can also signal 
+        an attempt to conceal unauthorized IPC activity by deleting the evidence of a communication channel.</p>
+        <h4>Required Fields</h4>
+        <ul>
+            <li><code class="linecode">pipe_name</code></li>
+        </ul>
+        <h4>Recommended Fields</h4>
+        <ul>
+            <li><code class="linecode">process_name</code></li>
+            <li><code class="linecode">user_name</code></li>
+        </ul>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -67,12 +101,27 @@
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">pipe</td>
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">pipe.remove</td>
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">pipe deleted</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">A named pipe has been deleted</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">A named pipe was deleted or unlinked from the filesystem. 
+    This event indicates that an IPC channel was removed, ending the communication path between processes.
+    </td>
             </tr>
         </tbody>
     </table>
         <h2>state</h2>
-        <p>Events related the current state or state changes to a named pipe</p>
+        <p>Events that describe the operational state or state transitions of named pipes. 
+        These include successful or attempted connections between processes using pipes for communication. 
+        State events are important for understanding active IPC behavior — for example, 
+        when a process begins or ends communication through an existing pipe. 
+        Tracking state changes can help detect unexpected or unauthorized interprocess connections.</p>
+        <h4>Required Fields</h4>
+        <ul>
+            <li><code class="linecode">pipe_name</code></li>
+        </ul>
+        <h4>Recommended Fields</h4>
+        <ul>
+            <li><code class="linecode">process_name</code></li>
+            <li><code class="linecode">user_name</code></li>
+        </ul>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -99,12 +148,26 @@
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">pipe</td>
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">pipe.state</td>
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">pipe connected</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">A connection as been attempted between programs via a named pipe</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">A connection was established or attempted between processes via a named pipe. 
+    This event marks active or pending communication through an IPC channel.
+    </td>
             </tr>
         </tbody>
     </table>
         <h2>default</h2>
-        <p>Events related to named pipe activity</p>
+        <p>Events that relate to named pipe activity but do not fit into a more specific subcategory. 
+        These may include vendor-specific or informational messages related to named pipe usage. 
+        This subcategory ensures that all pipe-related events can be normalized and retained 
+        even if their exact purpose or type is unknown.</p>
+        <h4>Required Fields</h4>
+        <ul>
+            <li><code class="linecode">pipe_name</code></li>
+        </ul>
+        <h4>Recommended Fields</h4>
+        <ul>
+            <li><code class="linecode">process_name</code></li>
+            <li><code class="linecode">user_name</code></li>
+        </ul>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -131,7 +194,9 @@
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">pipe</td>
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">pipe.default</td>
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">pipe event</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Named pipe event message</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">A generic named pipe event that does not fit a more specific subcategory or event type. 
+    This serves as a fallback classification for vendor-specific or informational pipe activity.
+    </td>
             </tr>
         </tbody>
     </table>

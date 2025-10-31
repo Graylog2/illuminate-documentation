@@ -5,9 +5,17 @@
         <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
-        <p>Windows Management Instrumentation (WMI) related events.</p>
+        <p>The WMI category represents events related to the creation, modification, and execution of 
+Windows Management Instrumentation (WMI) components, including filters, consumers, and bindings. 
+WMI is a core subsystem in Windows used for management and automation, but it is also frequently abused 
+by attackers for persistence and lateral movement. 
+This category captures WMI-related activity to support detection, investigation, and baselining of 
+normal versus suspicious system behavior.</p>
         <h2>filter</h2>
-        <p>Events related to WMI filter activity</p>
+        <p>Events that describe the creation, modification, or removal of WMI filters. 
+        WMI filters define query-based conditions that determine when specific management actions 
+        or consumers should be executed. Changes to filters can indicate normal administrative activity 
+        or the setup of persistence mechanisms.</p>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -34,7 +42,10 @@
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">wmi</td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">wmi.filter</td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">wmi filter created</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">A WMI filter has been created.</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">A WMI filter was created on the system. 
+    WMI filters define query-based conditions that trigger actions through WMI consumers. 
+    Creation events may indicate legitimate administrative configuration or the setup of persistence by attackers.
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">240001</td>
@@ -42,12 +53,18 @@
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">wmi</td>
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">wmi.filter</td>
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">wmi filter removed</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">A WMI filter has been removed</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">A WMI filter was deleted or removed from the system. 
+    Filter removal may indicate cleanup after administrative configuration changes 
+    or attempts to conceal persistence mechanisms.
+    </td>
             </tr>
         </tbody>
     </table>
         <h2>consumer</h2>
-        <p>Events related to WMI consumer activity</p>
+        <p>Events that describe the creation, modification, or removal of WMI consumers. 
+        WMI consumers define actions executed when a filter condition is met, such as running a command 
+        or launching a script. Monitoring consumer activity is critical for detecting persistence or 
+        malicious code execution via WMI.</p>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -74,7 +91,11 @@
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">wmi</td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">wmi.consumer</td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">wmi consumer created</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">A WMI consumer has been created.</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">A WMI consumer was created on the system. 
+    Consumers define what actions occur when WMI filter conditions are met, 
+    such as executing commands, launching scripts, or writing data. 
+    These events are high-value indicators for persistence creation.
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">240501</td>
@@ -82,12 +103,16 @@
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">wmi</td>
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">wmi.consumer</td>
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">wmi consumer removed</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">A WMI consumer has been removed</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">A WMI consumer was deleted or removed. 
+    Removal can indicate decommissioning of management automation or cleanup of a persistence mechanism.
+    </td>
             </tr>
         </tbody>
     </table>
         <h2>binding</h2>
-        <p>Events related to WMI binding</p>
+        <p>Events that describe the creation or modification of WMI bindings. 
+        A binding associates a WMI filter with a consumer, forming a complete trigger-action pair. 
+        These events are essential for detecting persistence mechanisms that rely on WMI automation.</p>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -114,12 +139,16 @@
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">wmi</td>
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">wmi.binding</td>
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">wmi binding created</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">A WMI binding has been created.</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">A WMI binding was created or modified. 
+    A binding associates a filter with a consumer, enabling automated execution when the filter condition is met. 
+    Creation or modification of bindings is rare and often associated with persistent automation or malicious configuration.
+    </td>
             </tr>
         </tbody>
     </table>
         <h2>default</h2>
-        <p>Nessages related to WMI activity</p>
+        <p>Events related to general WMI activity that do not fit a more specific subcategory. 
+        This may include instrumentation queries, provider registrations, or generic system management operations.</p>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -146,7 +175,10 @@
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">wmi</td>
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">wmi.default</td>
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">wmi event</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">WMI Message</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">A general WMI-related event that does not fit into a specific subcategory. 
+    This may represent WMI provider activity, query execution, or other instrumentation events 
+    used for system management or monitoring.
+    </td>
             </tr>
         </tbody>
     </table>

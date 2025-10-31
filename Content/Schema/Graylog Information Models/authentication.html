@@ -7,28 +7,27 @@
     <body>
         <p>The authentication category covers events where accounts or services attempt to access, validate, or terminate sessions on a system.
 This includes, but is not limited to, logon activity, credential validation, and related events such as logoff, Kerberos requests, or policy checks.
-Authentication events in this category are account-centric: each event must identify a user or service account (user_name) and the application or system (application_name) where the activity occurred.
-</p>
+Authentication events in this category are account-centric: each event must identify a user or service account (<code class="linecode">user_name</code>) and the application or system (<code class="linecode">application_name</code>) where the activity occurred.</p>
         <h2>logon</h2>
-        <p>Logon events represent attempts to establish or resume an authenticated session on a system or service. The result should be captured in event_outcome (for example, success or failure). This is distinct from credential validation, which is the act of an authenticator checking submitted credentials.
-
-Mapping guidance:
-- If the platform emits separate records for logon and credential validation, assign a single, matching GIM code to each record respectively. Do not assign both codes to the same record.
-- If the platform emits only a logon record that implies credential validation (for example, "user 'administrator' logged on successfully"), assign both the 'logon' and 'credential validation' event type codes to that single record.
-- If the event reflects resuming an existing session without re-validating credentials (for example, a session reconnect), assign only the 'logon' code.
-</p>
-            <h4>Required Fields</h4>
-            <ul>
-                <li><code>application_name</code></li>
-                <li><code>destination_reference</code></li>
-                <li><code>event_outcome</code></li>
-                <li><code>source_reference</code></li>
-                <li><code>user_name</code></li>
-            </ul>
-            <h4>Optional Fields</h4>
-            <ul>
-                <li><code>user_domain</code></li>
-            </ul>
+        <p>Logon events represent attempts to establish or resume an authenticated session on a system or service. The result should be captured in <code class="linecode">event_outcome</code> (for example, success or failure). This is distinct from credential validation, which is the act of an authenticator checking submitted credentials.</p>
+        <p>Mapping guidance:</p>
+        <ul>
+            <li>If the platform emits separate records for logon and credential validation, assign a single, matching GIM code to each record respectively. Do not assign both codes to the same record.</li>
+            <li>If the platform emits only a logon record that implies credential validation (for example, "user 'administrator' logged on successfully"), assign both the 'logon' and 'credential validation' event type codes to that single record.</li>
+            <li>If the event reflects resuming an existing session without re-validating credentials (for example, a session reconnect), assign only the 'logon' code.</li>
+        </ul>
+        <h4>Required Fields</h4>
+        <ul>
+            <li><code class="linecode">application_name</code></li>
+            <li><code class="linecode">destination_reference</code></li>
+            <li><code class="linecode">event_outcome</code></li>
+            <li><code class="linecode">source_reference</code></li>
+            <li><code class="linecode">user_name</code></li>
+        </ul>
+        <h4>Optional Fields</h4>
+        <ul>
+            <li><code class="linecode">user_domain</code></li>
+        </ul>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -76,17 +75,15 @@ Mapping guidance:
         </tbody>
     </table>
         <h2>credential validation</h2>
-        <p>Credential validation events represent the act of an authentication system checking credentials provided by a user or service account. The outcome of this check (for example, success or failure) must be recorded in event_outcome.
-
-Credential validation is distinct from logon. A system may emit both a credential validation event and a separate logon event (for example, Windows with Kerberos or NTLM), or it may emit only a logon event that implies credential validation. In the latter case, the logon description provides mapping guidance for assigning both codes to the single logon event.
-</p>
-            <h4>Required Fields</h4>
-            <ul>
-                <li><code>application_name</code></li>
-                <li><code>event_outcome</code></li>
-                <li><code>source_reference</code></li>
-                <li><code>user_name</code></li>
-            </ul>
+        <p>Credential validation events represent the act of an authentication system checking credentials provided by a user or service account. The outcome of this check (for example, success or failure) must be recorded in <code class="linecode">event_outcome</code>.</p>
+        <p>Credential validation is distinct from logon. A system may emit both a credential validation event and a separate logon event (for example, Windows with Kerberos or NTLM), or it may emit only a logon event that implies credential validation. In the latter case, the logon description provides mapping guidance for assigning both codes to the single logon event.</p>
+        <h4>Required Fields</h4>
+        <ul>
+            <li><code class="linecode">application_name</code></li>
+            <li><code class="linecode">event_outcome</code></li>
+            <li><code class="linecode">source_reference</code></li>
+            <li><code class="linecode">user_name</code></li>
+        </ul>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -151,11 +148,11 @@ Credential validation is distinct from logon. A system may emit both a credentia
     </table>
         <h2>access notice</h2>
         <p>Access notices are events that are generated during authentication that provide additional information related to authentication</p>
-            <h4>Required Fields</h4>
-            <ul>
-                <li><code>application_name</code></li>
-                <li><code>user_name</code></li>
-            </ul>
+        <h4>Required Fields</h4>
+        <ul>
+            <li><code class="linecode">application_name</code></li>
+            <li><code class="linecode">user_name</code></li>
+        </ul>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -196,21 +193,18 @@ Credential validation is distinct from logon. A system may emit both a credentia
     </table>
         <h2>access policy</h2>
         <p>Access policy events record enforcement actions taken during authentication when an account, device, or session violates a defined policy.
-These events do not represent the credential validation process itself, but rather show when access is denied or restricted due to policy rules.
-
-Examples include:
-- Access policy violations (such as time-of-day restrictions or geo-blocking)
-- Device policy violations (such as requiring managed devices)
-- Account policy violations (such as expired or disabled accounts)
-
-Access policy events are security-relevant because they indicate that authentication was attempted but blocked or constrained by policy enforcement.
-</p>
-            <h4>Required Fields</h4>
-            <ul>
-                <li><code>application_name</code></li>
-                <li><code>source_reference</code></li>
-                <li><code>user_name</code></li>
-            </ul>
+        These events do not represent the credential validation process itself, but rather show when access is denied or restricted due to policy rules.</p>
+        <p>Examples include:
+        - Access policy violations (such as time-of-day restrictions or geo-blocking)
+        - Device policy violations (such as requiring managed devices)
+        - Account policy violations (such as expired or disabled accounts)</p>
+        <p>Access policy events are security-relevant because they indicate that authentication was attempted but blocked or constrained by policy enforcement.</p>
+        <h4>Required Fields</h4>
+        <ul>
+            <li><code class="linecode">application_name</code></li>
+            <li><code class="linecode">source_reference</code></li>
+            <li><code class="linecode">user_name</code></li>
+        </ul>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -258,17 +252,15 @@ Access policy events are security-relevant because they indicate that authentica
         </tbody>
     </table>
         <h2>kerberos request</h2>
-        <p>Kerberos request events represent authentication activity specific to the Kerberos protocol. These events capture the lifecycle of Kerberos ticket operations, including service ticket requests and renewals, ticket-granting ticket (TGT) requests, and errors encountered by the Kerberos subsystem.
-
-Kerberos request events are distinct from generic credential validation or logon events. They should be assigned when the authenticator records Kerberos-specific ticket activity, even if additional logon or credential validation events are also present.
-</p>
-            <h4>Required Fields</h4>
-            <ul>
-                <li><code>application_name</code></li>
-                <li><code>event_outcome</code></li>
-                <li><code>source_reference</code></li>
-                <li><code>user_name</code></li>
-            </ul>
+        <p>Kerberos request events represent authentication activity specific to the Kerberos protocol. These events capture the lifecycle of Kerberos ticket operations, including service ticket requests and renewals, ticket-granting ticket (TGT) requests, and errors encountered by the Kerberos subsystem.</p>
+        <p>Kerberos request events are distinct from generic credential validation or logon events. They should be assigned when the authenticator records Kerberos-specific ticket activity, even if additional logon or credential validation events are also present.</p>
+        <h4>Required Fields</h4>
+        <ul>
+            <li><code class="linecode">application_name</code></li>
+            <li><code class="linecode">event_outcome</code></li>
+            <li><code class="linecode">source_reference</code></li>
+            <li><code class="linecode">user_name</code></li>
+        </ul>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -324,15 +316,13 @@ Kerberos request events are distinct from generic credential validation or logon
         </tbody>
     </table>
         <h2>logoff</h2>
-        <p>Logoff events represent the termination of an authenticated session on a system or service. These events indicate when a user or service account intentionally ends a session, or when the system records a disconnect without fully terminating the session.
-
-Logoff events provide closure to the authentication lifecycle, complementing logon events. They are valuable for tracking session activity and distinguishing between normal logoff behavior and disconnected sessions that remain idle or open.
-</p>
-            <h4>Required Fields</h4>
-            <ul>
-                <li><code>application_name</code></li>
-                <li><code>user_name</code></li>
-            </ul>
+        <p>Logoff events represent the termination of an authenticated session on a system or service. These events indicate when a user or service account intentionally ends a session, or when the system records a disconnect without fully terminating the session.</p>
+        <p>Logoff events provide closure to the authentication lifecycle, complementing logon events. They are valuable for tracking session activity and distinguishing between normal logoff behavior and disconnected sessions that remain idle or open.</p>
+        <h4>Required Fields</h4>
+        <ul>
+            <li><code class="linecode">application_name</code></li>
+            <li><code class="linecode">user_name</code></li>
+        </ul>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -372,15 +362,13 @@ Logoff events provide closure to the authentication lifecycle, complementing log
         </tbody>
     </table>
         <h2>default</h2>
-        <p>The default subcategory is a fallback for authentication-related events that do not clearly fit into another defined subcategory. It should be used sparingly, and only when no more specific mapping is available.
-
-Default mappings are useful for capturing unclassified or vendor-specific authentication events, but relying heavily on this subcategory reduces the consistency and analytic value of the information model. Whenever possible, events should be assigned to a more specific authentication subcategory.
-</p>
-            <h4>Required Fields</h4>
-            <ul>
-                <li><code>application_name</code></li>
-                <li><code>user_name</code></li>
-            </ul>
+        <p>The default subcategory is a fallback for authentication-related events that do not clearly fit into another defined subcategory. It should be used sparingly, and only when no more specific mapping is available.</p>
+        <p>Default mappings are useful for capturing unclassified or vendor-specific authentication events, but relying heavily on this subcategory reduces the consistency and analytic value of the information model. Whenever possible, events should be assigned to a more specific authentication subcategory.</p>
+        <h4>Required Fields</h4>
+        <ul>
+            <li><code class="linecode">application_name</code></li>
+            <li><code class="linecode">user_name</code></li>
+        </ul>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
