@@ -22,12 +22,9 @@
         <p>These built-in views can serve as a starting point for creating custom dashboards.</p>
         <h2 id="supported-versions">Supported Version(s)</h2>
         <p>This Spotlight supports Auditbeat for Linux versions 7-8 and will function with both the <a href="https://www.elastic.co/guide/en/beats/auditbeat/8.6/auditbeat-installation-configuration.html">Elastic-licensed</a> and Apache-licensed versions of Auditbeat.</p>
-        <ul>
-        </ul>
         <p>
             <section class="warningBox">
-                <div class="content"><b>Warning: </b><span style="font-weight: normal;">The Apache-licensed version of Auditbeat does NOT include the "system" module, which provides additional data sets not available in the Elastic-licensed version.</span>
-                </div>
+                <div class="content"><b>Warning:</b> The Apache-licensed version of Auditbeat does <b>not</b> include the "system" module, which provides additional data sets not available in the Elastic-licensed version.</div>
             </section>
         </p>
         <p>By default, <a href="https://go2docs.graylog.org/current/getting_in_log_data/getting_started_with_graylog_sidecar.htm">Graylog Sidecar</a> comes with the Apache-licensed version of Auditbeat. If you want to utilize the "system" module, you can install the Elastic-licensed version by adding the appropriate repo and installing Auditbeat alongside the bundled version.</p>
@@ -48,9 +45,10 @@
         </ul>
         <p>
             <section class="warningBox">
-                <div class="content"><b>Warning: </b><span style="font-weight: normal;">For Illuminate versions prior to Illuminate 2.2.2, the following <strong>must</strong> be added to the <code class="linecode">auditbeat.yml</code> configuration file or to the Auditbeat configuration in the Graylog sidecar configuration for Auditbeat:</span>
-                </div>
-                <div class="content"><span style="font-weight: normal;"><code class="linecode">fields event_source_product: linux_auditbeat</code></span>
+                <div class="content">
+                    <p><b>Warning:</b> For Illuminate versions prior to Illuminate 2.2.2, the following <strong>must</strong> be added to the <code class="linecode">auditbeat.yml</code> configuration file or to the Auditbeat configuration in the Graylog sidecar configuration for Auditbeat:</p>
+                    <p><code class="linecode">fields event_source_product: linux_auditbeat</code>
+                    </p>
                 </div>
             </section>
         </p>
@@ -61,8 +59,7 @@
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</span>
-                </div>
+                <div class="content"><b>Hint:</b> If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
             </section>
         </p>
         <h2 id="index-set-configuration">Index Set Configuration</h2>
@@ -72,8 +69,7 @@
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
-                </div>
+                <div class="content"><b>Hint:</b> If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
             </section>
         </p>
         <h2 id="log-format-example">Log Format Example</h2>
@@ -121,36 +117,33 @@ EOF</MadCap:codeSnippetBody>
         <p>One <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">beats input</a> can service multiple log sources; therefore, this step is not required if a beats input has already been configured.</p>
         <ol>
             <li>
-                <p>On the <em>Select Input</em> drop-down menu, select the <em>System</em> menu and then choose <em>Inputs</em>.</p>
+                <p>Navigate to  <em>System &gt; Inputs</em>.</p>
             </li>
             <li>
-                <p>Select <em>Beats</em> from the <em>Select Input</em> drop-down menu.</p>
-            </li>
-            <li>
-                <p>Click <em>Launch New Input</em>.</p>
+                <p>Select <em>Beats</em> from the <em>Select input</em> dropdown, then click <i>Launch new input</i>.</p>
             </li>
             <li>
                 <p>Assign a node or select Global mode.</p>
             </li>
             <li>
-                <p>Set the Title, Bind Address, and listening Port. For example:</p>
-                <ol>
+                <p>Set the title, bind address, and listening port. For example:</p>
+                <ul>
                     <li>
-                        <p>Title: "Beats input 5044"</p>
+                        <p><b>Title</b>: "Beats input 5044"</p>
                     </li>
                     <li>
-                        <p>Bind address: "0.0.0.0" to listen on all interfaces</p>
+                        <p><b>Bind address</b>: "0.0.0.0" to listen on all interfaces</p>
                     </li>
                     <li>
-                        <p>Port: "5044"</p>
+                        <p><b>Port</b>: "5044"</p>
                     </li>
-                </ol>
+                </ul>
             </li>
             <li>
-                <p><strong>Make sure the option "Do not add Beats type as prefix" is not selected</strong>. Pipeline processing rules reference incoming data by field name and the pipeline will not function correctly if this prefix is omitted.</p>
+                <p><strong>Make sure the option "Do not add Beats type as prefix" is not selected</strong>. Pipeline processing rules reference incoming data by field name and the pipeline does not function correctly if this prefix is omitted.</p>
             </li>
             <li>
-                <p>Save the input settings.</p>
+                <p>Select <i>Launch input</i> to save your settings.</p>
             </li>
             <li>
                 <p>If the input does not start automatically, select <em>Start Input</em> to begin listening for and processing new Beats messages (including Linux Auditbeat messages).</p>
@@ -162,13 +155,13 @@ EOF</MadCap:codeSnippetBody>
                 <p>Navigate to the Graylog user configuration menu by selecting <em>System</em> &gt; <em>Users and Teams</em>.</p>
             </li>
             <li>
-                <p>Select the user for which to create a token and click <em>More Actions</em> and then <em>Edit Tokens</em>.</p>
+                <p>Select the user for which to create a token, click <em>More Actions</em>, then select <em>Edit tokens</em>.</p>
             </li>
             <li>
-                <p>Provide a Token Name (e.g. <code class="linecode">linux_auditbeat</code>) and click <em>Create Token</em>.</p>
+                <p>Provide a <i>Token Name</i> (e.g. <code class="linecode">linux_auditbeat</code>), then click <em>Create Token</em>.</p>
             </li>
             <li>
-                <p>Once the token is created, click <em>Copy to Clipboard</em> to retrieve the new API Access Token.</p>
+                <p>Click <em>Copy to Clipboard</em> to retrieve the new API access token.</p>
             </li>
         </ol>
         <h3>Install and Configure Graylog Sidecar Agent for Linux</h3>
@@ -180,16 +173,16 @@ EOF</MadCap:codeSnippetBody>
                 <p>Navigate to <em>System</em> &gt; <em>Sidecars</em> and select the <em>Configurations</em> tab.</p>
             </li>
             <li>
-                <p>Then, under the <em>Log Collectors</em> menu, select <em>Edit</em> next to your Auditlog collector.</p>
+                <p>In the <em>Log Collectors</em> section, select <em>Edit</em> next to your Auditlog collector.</p>
             </li>
             <li>
-                <p>Modify the "Executable Path" field to point to the new Auditbeat agent's binary path, which is set to <code class="linecode">/usr/share/auditbeat/bin/auditbeat</code> by default.</p>
+                <p>Modify the <i>Executable Path</i> field to point to the new Auditbeat agent's binary path, which is set to <code class="linecode">/usr/share/auditbeat/bin/auditbeat</code> by default.</p>
             </li>
             <li>
                 <p>Edit the Graylog Sidecar client configuration with your Graylog server API URL and API access token.</p>
             </li>
         </ol>
-        <p>Optionally, you can also opt to create a new Auditbeat log collector with this path rather than modify the default so that you do not overwrite the default log collector. Remember to give it a unique name, like "Auditbeat (Elastic-licensed)."</p>
+        <p>Optionally, you can create a new Auditbeat log collector with this path rather than modify the default so that you do not overwrite the default log collector. Remember to give it a unique name, like "Auditbeat (Elastic-licensed)."</p>
         <h3 id="gim-categorization">GIM Categorization</h3>
         <p>GIM categorization is provided for the following messages:</p>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
@@ -230,7 +223,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">bound-socket</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -238,7 +232,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">connected-to</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -246,7 +241,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_flow</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">129999</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.default</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network message</td>
                 </tr>
@@ -270,7 +266,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">existing_user</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">119999</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.default</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">iam message</td>
                 </tr>
@@ -278,7 +275,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">existing_process</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -294,7 +292,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">was-authorized</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">109999</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.default</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication message</td>
                 </tr>
@@ -302,7 +301,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">started-session</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">109999</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.default</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">authentication message</td>
                 </tr>
@@ -310,7 +310,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">acquired-credentials</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">109999</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.default</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication message</td>
                 </tr>
@@ -318,7 +319,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">disposed-credentials</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">109999</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.default</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">authentication message</td>
                 </tr>
@@ -326,7 +328,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ended-session</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">109999</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.default</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication message</td>
                 </tr>
@@ -334,7 +337,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-login-id-to</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">109999</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.default</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">authentication message</td>
                 </tr>
@@ -342,7 +346,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">wrote-to-file</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -366,7 +371,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_error</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -398,7 +404,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -406,7 +413,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authenticated</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">109999</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.default</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication message</td>
                 </tr>
@@ -430,7 +438,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">violated-apparmor-policy</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">301002</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert.host alert</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">hips alert</td>
                 </tr>
@@ -438,7 +447,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">package_updated</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -446,7 +456,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ran-command</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -454,7 +465,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">refreshed-credentials</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">109999</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.default</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication message</td>
                 </tr>
@@ -462,7 +474,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_logout</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">102500</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.logoff</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">logoff</td>
                 </tr>
@@ -470,7 +483,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">package_installed</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -486,7 +500,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_login</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
                 </tr>
@@ -494,7 +509,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">accepted-connection-from</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -502,7 +518,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">logged-in</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
                 </tr>
@@ -510,7 +527,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-password</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111004</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">password change</td>
                 </tr>
@@ -518,7 +536,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">added-group-account-to</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">119999</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.default</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">iam message</td>
                 </tr>
@@ -526,7 +545,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">package_removed</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -534,7 +554,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_changed</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">account modified</td>
                 </tr>
@@ -542,7 +563,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">added-user-account</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111007</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">group member added</td>
                 </tr>
@@ -550,7 +572,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_changed</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -558,7 +581,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">password_changed</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111004</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">password change</td>
                 </tr>
@@ -566,7 +590,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">sent-to</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">129999</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.default</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network message</td>
                 </tr>
@@ -574,7 +599,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_added</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">110000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object create</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account created</td>
                 </tr>
@@ -582,7 +608,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">deleted-group-account-from</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">110501</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object delete</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">group deleted</td>
                 </tr>
@@ -590,7 +617,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-audit-configuration</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -598,7 +626,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">shutdown</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -606,7 +635,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">boot</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -614,7 +644,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">initial_scan</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -622,7 +653,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">deleted-user-account</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -630,7 +662,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_removed</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -638,7 +671,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">reboot</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -646,7 +680,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">access-permission</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -654,7 +689,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-promiscuous-mode-on-device</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -662,7 +698,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">loaded-firewall-rule-to</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -670,7 +707,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">received-from</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -678,7 +716,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">created-directory</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -686,7 +725,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-to-runlevel</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -694,7 +734,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">changed-file-attributes-of</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -702,7 +743,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-file-permissions-of</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -710,7 +752,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">changed-file-ownership-of</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -718,7 +761,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">symlinked</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -726,7 +770,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">killed-pid</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -734,7 +779,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">read-file</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -742,7 +788,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">listen-for-connections</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -750,7 +797,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-configuration</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -758,7 +806,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">crashed-program</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -766,7 +815,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-system-name</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -774,7 +824,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">violated-selinux-policy</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -782,7 +833,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-role-to</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -790,7 +842,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">relabeled-filesystem</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -798,7 +851,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-selinux-enforcement</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -806,7 +860,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">assigned-vm-resource</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -814,7 +869,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">assigned-vm-id</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -822,7 +878,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">issued-vm-control</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -830,7 +887,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">opened-too-many-sessions-to</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -838,7 +896,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">hostname_changed</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -846,7 +905,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">checked-metadata-of</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -854,7 +914,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">mounted</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -862,7 +923,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">unmounted</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -870,7 +932,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">end</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -878,7 +941,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-system-time</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -886,7 +950,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">changed-identity-of</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -894,7 +959,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">changed-timestamp-of</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -902,7 +968,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">failed-log-in-too-many-times-to</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -910,7 +977,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">loaded-selinux-policy</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -918,7 +986,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">assigned-user-role-to</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -926,7 +995,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">removed-user-role-from</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -934,7 +1004,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">changed-selinux-boolean</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -942,7 +1013,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">error</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -950,7 +1022,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">adjusted-scheduling-policy-of</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -958,7 +1031,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">allocated-memory</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -966,7 +1040,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">checked-filesystem-metadata-of</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -974,7 +1049,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">loaded-kernel-module</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -982,7 +1058,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">unloaded-kernel-module</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
                 </tr>
@@ -990,7 +1067,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">make-device</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
                 </tr>
@@ -998,7 +1076,8 @@ EOF</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">violated-seccomp-policy</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">000000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">message</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"></td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">
+                    </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">message.log_message</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">message</td>
                 </tr>
