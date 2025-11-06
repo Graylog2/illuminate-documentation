@@ -63,31 +63,28 @@
         </ul>
         <h3>Configuration</h3>
         <p>Due to the generic formatting of CBS logs, identifying and parsing these logs can be difficult and</p>
-        <p>possibly match non-CBS logs.  To solve this problem, you must configure a CBS specific input on the Graylog server and use an Illuminate lookup override.  This configuration allows Illuminate to treat every log sent to this input as a CBS message by mapping the input ID to the CBS Illuminate identification rule.  This should be unique to CBS to ensure this pack processes only CBS logs.</p>
+        <p>possibly match non-CBS logs.  To solve this problem, you must configure a CBS-specific input on the Graylog server and use an Illuminate lookup override.  This configuration allows Illuminate to treat every log sent to this input as a CBS message by mapping the input ID to the CBS Illuminate identification rule.  This input should be unique to CBS to ensure this pack processes only CBS logs.</p>
         <ol>
             <li>
                 <p>Create a new <a href="https://go2docs.graylog.org/current/getting_in_log_data/syslog_inputs.html">Syslog input</a> in Graylog and choose an unused port.</p>
             </li>
             <li>
-                <p>Once created, click <strong>Show received messages</strong> to obtain the input ID (this will pull up a search window with the <strong>All Time</strong> timeframe.</p>
+                <p>Click <i>Show received messages</i> to obtain the input ID. This action  pulls up a search window with the <i>All Time</i> timeframe.</p>
             </li>
             <li>
-                <p>Copy the <strong>gl2_source_input</strong> value.</p>
+                <p>Copy the <code class="linecode">gl2_source_input</code> value.</p>
             </li>
             <li>
-                <p>Navigate to <strong>Enterprise</strong>, <strong>Illuminate</strong>, and click on the <strong>Customization</strong> tab.</p>
+                <p>Navigate to <i>Enterprise &gt; Illuminate</i>, then click the <i>Customization</i> tab.</p>
             </li>
             <li>
-                <p>Locate the <strong>lookup_adapter_input_routing</strong> title and click <strong>Edit</strong>.</p>
+                <p>Locate the <i>lookup_adapter_input_routing</i> title and click <i>Edit</i>.</p>
             </li>
             <li>
-                <p>For the <strong>content_name</strong> key, enter <strong>cisco_350</strong> and for the <strong>input_id</strong> value, enter the <strong>gl2_source_input</strong> ID copied earlier.</p>
+                <p>For <i>Key: <b>content_name</b></i>, enter <strong>cisco_350</strong>, and for the <i>Value: <b>input_id</b></i>, enter the <code class="linecode">gl2_source_input</code> ID copied earlier.</p>
             </li>
             <li>
-                <p>Click <strong>Configure value</strong> to confirm.</p>
-            </li>
-            <li>
-                <p>Now, all logs sent to the configured input and associated port will be identified as a CBS log and allow for proper Illuminate processing.</p>
+                <p>Click <i>Configure value</i> to confirm. Graylog identifies all logs sent to the configured input and associated port as  CBS logs, allowing for proper Illuminate processing.</p>
             </li>
             <li>
                 <p>Create Illuminate lookup override.</p>
@@ -157,160 +154,154 @@
         </ul>
         <h3>Message Fields Included in This Pack</h3>
         <h4>General Parsing</h4>
-        <MadCap:dropDown>
-            <MadCap:dropDownHead>
-                <MadCap:dropDownHotspot>Common Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-            </MadCap:dropDownHead>
-            <MadCap:dropDownBody>
-                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
-                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                    <thead>
-                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
-                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
-                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
-                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application_name</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">PNPAGENT</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">This field is generated by the Syslog input when analyzing the syslog message</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_ip</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">192.168.2.10</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">IP address of the destination host</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_port</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">22</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Port the client connects to</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_source</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">GL-SWITCH</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Syslog hostname in delivered message</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cisco_350</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The default event_source_product for CBS processed logs</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_interface</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">gi1/0/47</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The network interface(s) noted in the message</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.2.3</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IP address of the source host</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_port</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">12345</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Port from which the client initiates</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_name</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">some.user</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">User name tied to the message</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_crypto_cipher</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">aes256-ctr</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The cypher used to encrypt the communication</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_crypto_hmac</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">hmac-sha2-256</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The HMAC used in the communication</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_connection_id</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">14</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The connection ID associated with the connection</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_destination_file_name</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">mirror-config</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The destination file name noted in message</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_destination_protocol</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">flash</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The destination protocol noted in the message (flash/http/https/etc.)</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_destination_request_path</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">/system/configuration/mirror-config</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The destination file path</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_message</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Backoff PnP Request with &lt;callbackAfter&gt; has received: 24 Hours 0 Minutes 0 Seconds</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Main event message contained in log and will only exist for log types not noted as supported</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_outcome</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Bye Bye</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The outcome from the associated connection</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_outcome_code</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">11</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The outcome code from the associated connection</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_outcome_reason</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">identification exchange failed</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Additionally provided info related to the outcome of the associated connection</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_source_request_path</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">/system/configuration/startup-config</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The source file path</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_source_request_protocol</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">flash</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The source protocol noted in the message (flash/http/https/etc.)</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">vendor_subtype</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">BACKOFFCALLBACKAFTER</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">This field is extracted is the CBS message ID or event identifier</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </MadCap:dropDownBody>
-        </MadCap:dropDown>
+        <p>Common Fields List <span style="font-size: 8pt;">▼</span></p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">PNPAGENT</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">This field is generated by the Syslog input when analyzing the syslog message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_ip</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">192.168.2.10</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">IP address of the destination host</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_port</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">22</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Port the client connects to</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_source</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">GL-SWITCH</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Syslog hostname in delivered message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cisco_350</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The default event_source_product for CBS processed logs</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_interface</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">gi1/0/47</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The network interface(s) noted in the message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.2.3</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IP address of the source host</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_port</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">12345</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Port from which the client initiates</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">some.user</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">User name tied to the message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_crypto_cipher</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">aes256-ctr</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The cypher used to encrypt the communication</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_crypto_hmac</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">hmac-sha2-256</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The HMAC used in the communication</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_connection_id</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">14</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The connection ID associated with the connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_destination_file_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">mirror-config</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The destination file name noted in message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_destination_protocol</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">flash</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The destination protocol noted in the message (flash/http/https/etc.)</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_destination_request_path</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">/system/configuration/mirror-config</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The destination file path</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Backoff PnP Request with &lt;callbackAfter&gt; has received: 24 Hours 0 Minutes 0 Seconds</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Main event message contained in log and will only exist for log types not noted as supported</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_outcome</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Bye Bye</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The outcome from the associated connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_outcome_code</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">11</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The outcome code from the associated connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_outcome_reason</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">identification exchange failed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Additionally provided info related to the outcome of the associated connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_source_request_path</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">/system/configuration/startup-config</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The source file path</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_source_request_protocol</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">flash</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The source protocol noted in the message (flash/http/https/etc.)</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">vendor_subtype</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">BACKOFFCALLBACKAFTER</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">keyword</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">This field is extracted is the CBS message ID or event identifier</td>
+                </tr>
+            </tbody>
+        </table>
     </body>
 </html>
