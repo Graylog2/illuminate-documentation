@@ -3,6 +3,267 @@
     <head><title>Illuminate Changelogs</title>
     </head>
     <body>
+        <h2>Illuminate 7.0.0</h2>
+        <p>Released 2025-11-06</p>
+        <h4>Added</h4>
+        <ul>
+            <li>
+                <p>Symantec Proxysg: Added <code class="linecode">alert_severity_level</code> mapping based on <code class="linecode">event_action</code> where applicable. (419)</p>
+            </li>
+            <li>
+                <p>Checkpoint FW: Added support for additional <code class="linecode">vendor_event_action values</code>, important ones being <code class="linecode">encrypt</code> and <code class="linecode">decrypt</code>. (2917)</p>
+                <ul>
+                    <li>
+                        <p>Additionally, restructured EXISTING vendor fields to better align with log output for existing action/outcome related fields: <code class="linecode">vendor_event_outcome</code> is now <code class="linecode">vendor_event_action,</code> v<code class="linecode">endor_event_outcome_reason</code> is now <code class="linecode">vendor_event_action_reason</code>, <code class="linecode">vendor_event_action</code> is now <code class="linecode">vendor_event_operation</code>.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Bitdefender GravityZone: Added support for New Extended Incident logs. (3059)</p>
+                <ul>
+                    <li>
+                        <p>Added basic parsing for RPC formatted GravityZone logs for a possible future extension.  A matching RPC GravityZone Push input does not exist, but parsing can be tested via filebeat.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Windows Security: Added support for status code 0xC0000413 - STATUS_AUTHENTICATION_FIREWALL_DENIED. (2836)</p>
+            </li>
+            <li>
+                <p>Microsoft IIS Content Pack (1067)</p>
+                <ul>
+                    <li>
+                        <p>Microsoft IIS (Internet Information Services) is a flexible, secure, and manageable web server developed by Microsoft for hosting websites, web applications, and services on Windows. It supports HTTP, HTTPS, FTP, FTPS, and more, and integrates tightly with ASP.NET, Windows  authentication, and the broader Windows Server ecosystem.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>AWS Kinesis Content Pack (3076)</p>
+                <ul>
+                    <li>
+                        <p>Amazon Kinesis is a managed AWS service for real-time data streaming that lets you collect, process, and analyze large streams of data continuously. It is commonly used for analytics, log ingestion, and event-driven applications requiring near-instant processing. This pack parses and categorizes AWS VPC Flow logs via AWS Kinesis. Support for other log types might be added later.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>1password Content Pack (2993)</p>
+                <ul>
+                    <li>
+                        <p>1Password is a secure password manager and secret vault used to store and manage credentials, API keys, and sensitive information. It uses strong encryption to protect data, supports secret references for easy retrieval, and ensures sensitive values are never exposed in plain text. By centralizing secrets, 1Password improves security, reduces the risk of leaks, and simplifies credential management.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Cisco Business 350 Series (CBS): Cisco Business 350 Series Content Pack (2263)</p>
+                <ul>
+                    <li>
+                        <p>The Cisco Business 350 Series Switches are managed Layer 3 network switches designed for small and medium-sized businesses, offering advanced features like VLAN segmentation, static routing, and enhanced security in a simple, intuitive interface.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>F5 BIG-IP: Added a Content Pack that supports the AFM and ASM module. (1137)</p>
+            </li>
+        </ul>
+        <h4>Fixed</h4>
+        <ul>
+            <li>
+                <p>NetFlow: Fixed IPFIX message identification and added support for different set fields. (2851)</p>
+            </li>
+            <li>
+                <p>Bitdefender: Fixed wrong input name. (3115)</p>
+            </li>
+            <li>
+                <p>Cisco ISE: Modified base extraction regex to make syslog header info optional.  This will allow sending to a syslog or raw tcp input. (3004)</p>
+            </li>
+            <li>
+                <p>Symantec ProxySG: Moved <code class="linecode">alert_severity_level</code> lookup data to its own .csv to address lookup complaint of duplicate values. (3125)</p>
+            </li>
+            <li>
+                <p>Linux Auditbeat: Corrected issue mapping <code class="linecode">vendor_event_type</code>: changed-promiscuous-mode-on-device. (2928)</p>
+            </li>
+            <li>
+                <p>Cisco ISE: Fixed CmdSet parsing so the full command is returned as <code class="linecode">vendor_cmdset</code>, dropping CmdAV and CmdArgAV. (3019)</p>
+            </li>
+            <li>
+                <p>Bitdefender GravityZone: Fixed wrong search path in the <i>New Incidents Count</i> widget. (3007)</p>
+            </li>
+            <li>
+                <p>Curated Alerts: Improved rule: Illuminate - Windows Security - Active Directory Database Snapshot Via ADExplorer. (2583)</p>
+                <ul>
+                    <li>
+                        <p>The detector now covers execution of the 64-bit variant of ADExplorer to create database snapshots.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Core DNS Processing: Fixed filter causing inconsistent results in the dashboard. (2675)</p>
+            </li>
+        </ul>
+        <h4>Changed</h4>
+        <ul>
+            <li>
+                <p>NetFlow: Changed NetFlow IPv4/IPv6 renames and field types. (3074)</p>
+            </li>
+            <li>
+                <p>Cisco IOS: Streamlined identification rule logic to be more efficient. (2823)</p>
+            </li>
+            <li>
+                <p>Powershell: converted the use of multiple grok patterns per rule to use <code class="linecode">multi_grok</code>. (2669)</p>
+            </li>
+            <li>
+                <p>Microsoft Defender Antivirus: Standardized <code class="linecode">gim_event_type_code</code> mappings to align with detection categories. Reclassified subtype ids from alert to detection. (2563)</p>
+            </li>
+            <li>
+                <p>Snort: Standardized <code class="linecode">gim_event_type_code</code> mappings to align with detection categories. Reclassified subtype ids from alert to detection. (2567)</p>
+            </li>
+            <li>
+                <p>Stormshield: Standardized <code class="linecode">gim_event_type_code</code> mappings to align with detection categories. Reclassified subtype ids from alert to detection. (2559)</p>
+            </li>
+            <li>
+                <p>Palo Alto: Standardized <code class="linecode">gim_event_type_code</code> mappings to align with detection categories. Reclassified subtype ids from alert to detection. (2564)</p>
+            </li>
+            <li>
+                <p>Postfix: Converted the use of multiple grok patterns per rule to use <code class="linecode">multi_grok</code>. (2667)</p>
+            </li>
+            <li>
+                <p>Meraki: Converted the use of multiple grok patterns per rule to use <code class="linecode">multi_grok</code>. (2668)</p>
+            </li>
+            <li>
+                <p>SEPM: Converted the use of multiple grok patterns per rule to use <code class="linecode">multi_grok</code>. (2673)</p>
+            </li>
+            <li>
+                <p>Palo Alto: Renamed spotlight title. (2824)</p>
+            </li>
+            <li>
+                <p>Sophos Firewall: Converted the use of multiple grok patterns per rule to use <code class="linecode">multi_grok</code>. (2671)</p>
+            </li>
+            <li>
+                <p>Sonicwall: Standardized <code class="linecode">gim_event_type_code</code> mappings to align with detection categories. Reclassified subtype ids from alert to detection. (2553)</p>
+            </li>
+            <li>
+                <p>Schema: Modified index templates to copy hash-related fields to <code class="linecode">associated_hash</code>. (1940)</p>
+                <ul>
+                    <li>
+                        <p>Prior to this change, Illuminate only supported a number of common hash fields (<code class="linecode">hash_md5</code>, <code class="linecode">hash_sha256</code>, etc.) as part of the schema. Because hashes can be related to multiple types of sources (files, processes, etc.), a dynamic field mapping has been added that will copy any hash field (<code class="linecode">process_hash_*</code>, p<code class="linecode">rocess_parent_hash_*</code>, <code class="linecode">file_hash_*</code>, <code class="linecode">hash_md5</code>) to <code class="linecode">associated_hash</code>.  This will provide additional context to all hash objects.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Cisco Meraki: Standardized <code class="linecode">gim_event_type_code</code> mappings to align with detection categories. Reclassified subtype ids from alert to detection. (2557)</p>
+            </li>
+            <li>
+                <p>Symantec Endpoint: Standardized <code class="linecode">gim_event_type_code</code> mappings to align with detection categories. Reclassified subtype anomaly from alert to detection. (2561)</p>
+            </li>
+            <li>
+                <p>Palo Alto 11: Updated colors for widgets that reference <code class="linecode">event_action</code> to reflect schema. (687)</p>
+            </li>
+            <li>
+                <p>Fortigate: Standardized <code class="linecode">gim_event_type_code</code> mappings to align with detection categories. Reclassified subtypes such as virus, anomaly, and ips from alert to detection. (2376)</p>
+            </li>
+            <li>
+                <p>AWS Security Lake: Changed <code class="linecode">gim_event_category</code> from alert to detection. (2314)</p>
+                <ul>
+                    <li>
+                        <p>The dashboard now supports <code class="linecode">gim_event_categories</code> alert and detection. The event codes 200100, 200101, 200102, and 200199 changed the <code class="linecode">gim_category</code> from alert (179999) to detection (309999).</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Microsoft Defender Endpoint: Standardized <code class="linecode">gim_event_type_code</code> mappings to align with detection categories. Reclassified subtype virus from alert to detection. (2971)</p>
+            </li>
+            <li>
+                <p>Microsoft 365: Standardized <code class="linecode">gim_event_type_code</code> mappings to align with detection categories. Reclassified subtypes such as dlp and anomaly from alert to detection. (2565)</p>
+            </li>
+            <li>
+                <p>Bitdefender Telemetry: Change GIM code for network events. (2950)</p>
+                <ul>
+                    <li>
+                        <p>GIM codes for network events updated from 129999 (default) to 120200 (open) and 120300 (close) events.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Illuminate: Disabled dynamic date detection for all Illuminate indices. (3008)</p>
+                <ul>
+                    <li>
+                        <p>Dynamic date detection, enabled by default in OpenSearch, has lead to numerous reports of mapping errors due to a race condition with fields that do not use consistent formats, or even values. This change disables that behavior and makes it so that any date field must be explicitly mapped by the Illuminate index mapping templates.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Sophos Firewall: Standardized <code class="linecode">gim_event_type_code</code> mappings to align with detection categories. Reclassified subtypes such as virus, ATP, components anomaly, and signatures from alert to detection. (2558)</p>
+            </li>
+            <li>
+                <p>Cisco ASA: Standardized <code class="linecode">gim_event_type_code</code> mappings to align with detection categories. Reclassified subtypes such as ips, malware, AMP verdicts, and file inspection from alert to detection. (2374)</p>
+            </li>
+            <li>
+                <p>Okta: Standardized <code class="linecode">gim_event_type_code</code> mappings to align with detection categories. Reclassified subtype anomaly from alert to detection. (2441)</p>
+            </li>
+            <li>
+                <p>Pfsense: Standardized <code class="linecode">gim_event_type_code</code> mappings to align with detection categories. Reclassified event types such as snort, suricata, and sshguard attack from alert to detection. (2566)</p>
+            </li>
+            <li>
+                <p>Checkpoint: Standardized <code class="linecode">gim_event_type_code</code> mappings to align with detection categories. Reclassified subtype ips from  alert to detection. (2315)</p>
+            </li>
+            <li>
+                <p>Linux Auditbeat: Standardized <code class="linecode">gim_event_type_code</code> mappings to align with detection categories. Reclassified subtype <code class="linecode">violated-apparmor-policy</code> from alert to detection. (2377)</p>
+            </li>
+            <li>
+                <p>Zeek: Changed DNS request categorization to exclude NBSTAT. (2618)</p>
+            </li>
+            <li>
+                <p>Symantec SES: Standardized <code class="linecode">gim_event_type_code</code> mappings to align with detection categories. Reclassified subtype ids from alert to detection. (2562)</p>
+            </li>
+            <li>
+                <p>Symantec EDR: Standardized <code class="linecode">gim_event_type_code</code> mappings to align with detection categories. Reclassified subtypes such as reputation, ips, sonar, antivirus, sandbox, and ioc from alert to detection. (2560)</p>
+            </li>
+            <li>
+                <p>Crowdstrike: Standardized <code class="linecode">gim_event_type_code</code> mappings to align with detection categories. Reclassified default from alert to detection. (2399)</p>
+            </li>
+            <li>
+                <p>Core: Support MITRE ATT&amp;CK Enterprise <code class="linecode">attacks_technique_uid</code> &amp; <code class="linecode">attacks_tactic_uid</code> string values. (1711)</p>
+                <ul>
+                    <li>
+                        <p>MITRE ATT&amp;CK Enterprise <code class="linecode">attacks_technique_uid</code> &amp; <code class="linecode">attacks_tactic_uid</code> field values will now be enriched if their values are multi-value or strings.  Previously, the enrichment only handled multi-value data.</p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h4>Removed</h4>
+        <ul>
+            <li>
+                <p>Microsoft 365: Removed redundant type assignment in 22-o365_scc_categorize_alerts rule. (2957)</p>
+            </li>
+            <li>
+                <p>Bitdefender GravityZone: Removed a possible leading forward slash for the source field. (3058)</p>
+                <ul>
+                    <li>
+                        <p>The input creates a forward slash if the hostname is empty and will attach it to the IP. This fix removes the added forward slash.</p>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>Compliance Content: Removed deprecated 'Compliance Content Spotlight (Deprecated)' spotlight. (2959)</p>
+            </li>
+        </ul>
+        <h4>Deprecated</h4>
+        <ul>
+            <li>
+                <p>Palo Alto 9.1x (2716)</p>
+                <ul>
+                    <li>
+                        <p>The Palo Alto 9.1x Spotlight and associated processing content have been deprecated.</p>
+                    </li>
+                    <li>
+                        <p>Support for version 9.1x will be discontinued and the content will eventually be removed from Illuminate.</p>
+                    </li>
+                    <li>
+                        <p>Users should transition to the Palo Alto 11 Content Pack, which includes updated Spotlight content.</p>
+                    </li>
+                </ul>
+            </li>
+        </ul>
         <h2>Illuminate 6.4.0</h2>
         <p>Released 2025-06-17</p>
         <h4>Added</h4>
