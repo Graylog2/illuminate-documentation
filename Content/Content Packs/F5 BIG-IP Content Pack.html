@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
     <head>
         <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>F5 BIG-IP Content Pack</title>
@@ -7,21 +7,28 @@
     <body>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
         <p>F5 BIG-IP is an application delivery controller platform that combines load balancing, traffic management, and security services to optimize, secure, and scale networked applications.</p>
-        <h2 id="supported-versions">Supported Version(s)</h2>
+        <h2 id="supported-versions">Supported Versions</h2>
         <ul>
             <li>
-                <p>Tested with F5 BIG-IP ASM 17.5.1</p>
+                <p>F5 BIG-IP ASM 17.5.1</p>
             </li>
             <li>
-                <p>Tested with F5 BIG-IP AFM 17.5.1</p>
+                <p>F5 BIG-IP AFM 17.5.1</p>
             </li>
         </ul>
-        <h2 id="events-processed-by-this-technology-pack">Supported F5 BIG Log Types</h2>
-        <p><code class="linecode">ASM</code>, <code class="linecode">AFM</code>, <code class="linecode">for tmm logs: HTTP_RESPONSE, HTTP_REQUEST</code></p>
+        <h2 id="events-processed-by-this-technology-pack">Supported Log Types</h2>
+        <ul>
+            <li>
+                <p><code class="linecode">ASM</code>, <code class="linecode">AFM</code></p>
+            </li>
+            <li>
+                <p>For TMM logs: <code class="linecode">HTTP_RESPONSE</code>, <code class="linecode">HTTP_REQUEST</code></p>
+            </li>
+        </ul>
         <h2 id="requirements">Requirements</h2>
         <ul>
             <li>
-                <p>Configure F5 BIG-IP to transmit Syslog to your Graylog server Syslog input.</p>
+                <p>Configure F5 BIG-IP to transmit Syslog to your Graylog server <a href="https://go2docs.graylog.org/current/getting_in_log_data/syslog_inputs.html">Syslog input</a>.</p>
             </li>
         </ul>
         <h2 id="stream-configuration">Stream Configuration</h2>
@@ -31,8 +38,7 @@
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</span>
-                </div>
+                <div class="content"><b>Hint:</b> If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
             </section>
         </p>
         <h2 id="index-set-configuration">Index Set Configuration</h2>
@@ -42,8 +48,7 @@
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
-                </div>
+                <div class="content"><b>Hint:</b>If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
             </section>
         </p>
         <h2 id="log-collection">Log Collection</h2>
@@ -53,16 +58,16 @@
                 <p>Filebeat</p>
             </li>
             <li>
-                <p>Syslog - Beta support</p>
+                <p>Syslog (beta support)</p>
             </li>
             <li>
-                <p>CEF - Beta support</p>
+                <p>CEF (beta support)</p>
             </li>
         </ul>
         <h3>Filebeat Configuration</h3>
         <ol>
             <li>
-                <p>Please refer to the official documentation to <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">set up Graylog Sidecar for Filebeat</a>.</p>
+                <p>Refer to the official documentation to <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">set up Graylog Sidecar for Filebeat</a>.</p>
             </li>
             <li>
                 <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> in Graylog.</p>
@@ -77,7 +82,7 @@
                 <p>Configure the collector to ship messages to Graylog (select the right path). The Filebeat input must add the field <code class="linecode">event_source_product: f5_bigip</code> for the parser to identify the log source as F5 BIG-IP.</p>
             </li>
             <li>
-                <p>In addition, the option <code class="linecode">fields_under_root</code> must be set to <code class="linecode">true</code> for message identification to work. See the following example:</p>
+                <p>The option <code class="linecode">fields_under_root</code> must be set to <code class="linecode">true</code> for message identification to work. See the following example:</p>
                 <MadCap:codeSnippet>
                     <MadCap:codeSnippetCopyButton />
                     <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">filebeat.inputs:
@@ -91,7 +96,7 @@ fields_under_root: true</MadCap:codeSnippetBody>
                 </MadCap:codeSnippet>
             </li>
             <li>
-                <p>Adjust the file path in the config file if needed.</p>
+                <p>Adjust the file path in the configuration file if needed.</p>
             </li>
             <li>
                 <p>Install Graylog Sidecar on the client host.</p>
@@ -100,10 +105,10 @@ fields_under_root: true</MadCap:codeSnippetBody>
                 <p>Edit the Graylog Sidecar client configuration with your Graylog server API URL and API access token.</p>
             </li>
         </ol>
-        <h2 id="1">Sending logs via Syslog</h2>
-        <p>F5 BIG-IP does support Syslog. This content pack may support F5-BIG-IP Syslog for the modules ASM, and AFM.</p>
-        <h2 id="2">Sending logs in CEF Format</h2>
-        <p>F5 BIG-IP does support the CEF format. This content pack may work with CEF and Graylogs CEF Input, but due to a lack of example logs, the full function cannot guaranteed. If you want to use CEF and you have testlogs, please provide us with some sanitized samples.</p>
+        <h2 id="1">Sending Logs via Syslog</h2>
+        <p>F5 BIG-IP supports Syslog. This content pack may support F5-BIG-IP Syslog for the modules ASM, and AFM.</p>
+        <h2 id="2">Sending Logs in CEF Format</h2>
+        <p>F5 BIG-IP supports the CEF format. This content pack may work with CEF and Graylog's <a href="https://go2docs.graylog.org/current/getting_in_log_data/cef_inputs.htm">CEF Input</a>, but due to a lack of example logs, the full function cannot be guaranteed. If you want to use CEF and you have test logs, please provide us with some sanitized samples.</p>
         <h2 id="log-format-example">Log Format Examples</h2>
         <p><code class="linecode">Apr 10 09:25:46 172.16.1.2 ASM:unit_hostname="f5_01",management_ip_address="192.168.1.10",management_ip_address_2="N/A",http_class_name="/Common/App_WAF",web_application_name="/Common/App_WAF",policy_name="/Common/App_WAF",policy_apply_date="2025-04-08 2:29:51",violations="N/A",support_id="142371702665",request_status="passed",response_code="200",ip_client="11.10.5.46",route_domain="0",method="GET",protocol="HTTPS",query_string="",x_forwarded_for_header_value="11.10.5.2",sig_ids="N/A",sig_names="N/A",date_time="2025-04-10 2:25:46",severity="Informational",attack_type="N/A",geo_location="RO",ip_address_intelligence="N/A",username="N/A",session_id="C3c1eaf29ce05e59",src_port="51124",dest_port="443",dest_ip="172.16.1.11",sub_violations="N/A",virus_name="N/A",violation_rating="0",websocket_direction="N/A",websocket_message_type="N/A",device_id="N/A",staged_sig_ids="",staged_sig_names="",threat_campaign_names="N/A",staged_threat_campaign_names="N/A",blocking_exception_reason="N/A",captcha_result="not_received",microservice="N/A",tap_event_id="N/A",tap_vid="N/A",vs_name="/Common/vs-443-2021-apptest1.dom.ro-bkp",sig_cves="N/A",staged_sig_cves="N/A",uri="/notif/summary",fragment="",request="GET /notif/summary HTTP/1.1\r\nHost: apptest.dom.ro\r\nConnection: keep-alive\r\nsec-ch-ua-platform: %22Windows%22\r\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36\r\nsec-ch-ua: %22Google Chrome%22;v=%22135%22, %22Not-A.Brand%22;v=%228%22, %22Chromium%22;v=%22135%22\r\nsec-ch-ua-mobile: ?0\r\nAccept: */*\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\nAccept-Encoding: gzip, deflate, br, zstd\r\nAccept-Language: en-US,en;q=0.9,ro;q=0.8\r\nCookie: _ga=GA1.1.845057894.1744101172; SESSION=6dceff56-9d1e-421c-ab0e-820e91591bf8; _ga_X2KD43T4E2=GS1.1.1744263.4.1.14265953.0.0.0; TS67d45652027=08fbd28c49065a7bf1423084f5cc3e81130007f7d872e9d324682b29696</code>
         </p>
@@ -114,7 +119,7 @@ fields_under_root: true</MadCap:codeSnippetBody>
         <h2 id="what-is-provided">What is Provided</h2>
         <ul>
             <li>
-                <p>Parsing rules to extract F5 Big-IP logs (AFM, ASM) into Graylog schema compatible fields.</p>
+                <p>Parsing rules to extract F5 BIG-IP logs (AFM, ASM) into Graylog schema compatible fields.</p>
             </li>
             <li>
                 <p>Simple Dashboard with a general Overview and an Overview for ASM logs</p>
@@ -122,7 +127,7 @@ fields_under_root: true</MadCap:codeSnippetBody>
         </ul>
         <h3 id="gim-categorization">GIM Categorization</h3>
         <p>GIM categorization is provided for the following messages:</p>
-        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <table cellspacing="21" style="width: auto; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <thead>
@@ -281,8 +286,8 @@ fields_under_root: true</MadCap:codeSnippetBody>
                 </table>
             </MadCap:dropDownBody>
         </MadCap:dropDown>
-        <h2 id="spotlight-content-pack">F5 BIG-IP Content Pack</h2>
-        <p>This F5 BIG-IP spotlight has a general overview and a ASM overview dashboard</p>
+        <h2 id="spotlight-content-pack">F5 BIG-IP Spotlight Pack</h2>
+        <p>This F5 BIG-IP spotlight has a general overview and an ASM overview dashboard</p>
         <h3>F5 BIG-IP: Overview Tab</h3>
         <p>
             <img src="../Resources/Images/F5 BIG-IP/f5_big_ip_overview.png" />
