@@ -5,6 +5,27 @@
     </head>
     <body>
         <h1>Process Fields</h1>
+        <h2>Overview</h2>
+        <p>The <strong>process</strong> fields describe properties of running or executed processes as observed in operating system or application telemetry.<br>
+        They represent identifiers, executable names, command-line details, file paths, integrity attributes, and related parent or target process information.<br>
+        These fields provide a normalized view of process creation, interaction, and lifecycle activity across different platforms.</p>
+        <h2>Design and Usage</h2>
+        <p>The <code class="linecode">process</code> entity models the conceptual characteristics of a process independently of the operating system’s internal implementation details.<br>
+        It captures observable attributes such as IDs, command-line arguments, execution paths, and hierarchical relationships between processes.<br>
+        This structure supports consistent interpretation of process activity, allowing correlation with user actions, security events, or system operations.<br>
+        Subfields referencing parent or target processes enable representation of process lineage and interactions.</p>
+        <h2>Common Use Cases</h2>
+        <ul>
+            <li>Tracing process lineage to support investigations involving suspicious activity or unauthorized execution.  </li>
+            <li>Identifying executed commands and process invocation parameters.  </li>
+            <li>Correlating process events with authentication, privilege escalation, or policy evaluation.  </li>
+            <li>Analyzing targeted process interactions such as injection, signaling, or termination attempts.</li>
+        </ul>
+        <h2>Implementation Notes</h2>
+        <p>As a top-level entity, <code class="linecode">process</code> represents a single executed or running process and may be linked to related entities through parent or target identifiers.<br>
+        Process identifiers and unique IDs may vary across platforms; therefore, modeling should emphasize stable identifiers when available.<br>
+        Fields capturing command line, path, and working directory help maintain relational integrity and clarify execution context.<br>
+        If vendor-specific identifiers or naming conventions are present, both standardized and source-specific forms may be included to preserve semantic accuracy.</p>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -22,112 +43,184 @@
         </thead>
         <tbody>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_description</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Description of executed process.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">WMI Commandline Utility</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>process_description</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Human-readable description of the executed process.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>WMI Commandline Utility</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_command_line</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword/lowercase</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Full command line of executed process.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">c:\tmp\runme.exe, /tmp/runme</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>process_command_line</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Full command line used to invoke the process.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>c:\tmp\runme.exe, /tmp/runme</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_command_line_length</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Length of process_command_line.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">29347</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>process_command_line_length</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>long</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Character length of the process command line.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>29347</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_id</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword/lowercase</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process identifier associated with executed process.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">2045,0x3e7</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>process_id</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Numeric process identifier assigned to the executed process.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>2045,0x3e7</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_integrity_level</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Integrity level of executed process.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">medium, high, trusted</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>process_integrity_level</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Security integrity level associated with the executed process.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>medium, high, trusted</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_parent_command_line</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword/lowercase</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Full command line of parent process.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">c:\tmp\runme.exe, /tmp/runme</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>process_parent_command_line</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Full command line used to invoke the parent process.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>c:\tmp\runme.exe, /tmp/runme</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_parent_id</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword/lowercase</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process identifier associated with parent process.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">2045,0x3e7</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>process_parent_id</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Numeric process identifier assigned to the parent process.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>2045,0x3e7</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_parent_name</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword/lowercase</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">File name of parent process, excluding path.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">whoami, whoami.exe</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>process_parent_name</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>File name of the parent process, excluding the directory path.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>whoami, whoami.exe</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_parent_path</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword/lowercase</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Full path of parent process.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">C:\Windows\system32\whoami.exe, /usr/bin/whoami</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>process_parent_path</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Full file system path of the parent process executable.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>C:\Windows\system32\whoami.exe, /usr/bin/whoami</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_parent_uid</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">GUID or unique identifier for parent process that is not the process_id.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">{73123815-5caa-4e39-90dc-d25d4013bf15}</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>process_parent_uid</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Unique identifier for the parent process that is distinct from its numeric process identifier.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>{73123815-5caa-4e39-90dc-d25d4013bf15}</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_name</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword/lowercase</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">File name of executed process, excluding path.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">whoami, whoami.exe</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>process_name</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>File name of the executed process, excluding the directory path.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>whoami, whoami.exe</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_path</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword/lowercase</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Full path of executed process.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">C:\Windows\system32\whoami.exe, /usr/bin/whoami</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>process_path</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Full file system path of the executed process executable.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>C:\Windows\system32\whoami.exe, /usr/bin/whoami</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_target_id</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">The process ID of the targeted process of some action that was taken against that process.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">2045,0x3e7</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>process_target_id</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Numeric process identifier of the process targeted by an observed action.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>2045,0x3e7</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_target_name</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">The name of the targeted process of some action that was taken against that process.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">whoami, whoami.exe</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>process_target_name</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>File name of the process targeted by an observed action.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>whoami, whoami.exe</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_target_path</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">The full path and name of the targeted process of some action that was taken against that process.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">C:\Windows\system32\whoami.exe, /usr/bin/whoami</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>process_target_path</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Full file system path of the process targeted by an observed action.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>C:\Windows\system32\whoami.exe, /usr/bin/whoami</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_target_uid</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">The process unique identifier of the targeted process of some action that was taken against that running process.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">{73123815-5caa-4e39-90dc-d25d4013bf15}</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>process_target_uid</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Unique identifier for the process targeted by an observed action.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>{73123815-5caa-4e39-90dc-d25d4013bf15}</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_uid</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">GUID or unique identifier for executed process that is not the process_id.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">{73123815-5caa-4e39-90dc-d25d4013bf15}</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>process_uid</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Unique identifier for the executed process that is distinct from its numeric process identifier.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>{73123815-5caa-4e39-90dc-d25d4013bf15}</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">process_working_directory</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">The current working directory that the process was called from.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">C:\Windows\Temp</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>process_working_directory</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>Current working directory of the executed process.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2"><p>C:\Windows\Temp</p>
+    </td>
             </tr>
         </tbody>
     </table>

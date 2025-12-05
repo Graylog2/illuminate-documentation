@@ -5,6 +5,18 @@
     </head>
     <body>
         <h1>Host Fields</h1>
+        <h2>Overview</h2>
+        <p>The <strong>host</strong> entity represents a single physical or virtual device involved in an event. It provides a normalized view of system identity, addressing, and contextual attributes that characterize the device generating, receiving, or otherwise associated with the event.</p>
+        <h2>Design and Usage</h2>
+        <p>The host entity models device-level properties independently of vendor-specific terminology to maintain consistent interpretation across diverse telemetry sources. It supports scenarios where only one device is relevant to the event, such as endpoint activity, security detections, or system state reporting. When paired with other directional entities in networked events, host fields help clarify event semantics and maintain relational integrity.</p>
+        <h2>Common Use Cases</h2>
+        <ul>
+            <li>Describing the system where an action occurred when no network source or destination is applicable  </li>
+            <li>Normalizing device attributes such as hostname, operating system information, or hardware identifiers  </li>
+            <li>Supporting attribution and correlation across event types through stable identifiers</li>
+        </ul>
+        <h2>Implementation Notes</h2>
+        <p>As a top-level entity, host defines a coherent object representing a singular device. Its fields are designed to accommodate physical hosts, virtual machines, and partitioned systems without implying a specific platform or technology. Host attributes should be included whenever a device is implied but no directional role is established, ensuring consistent modeling across event categories.</p>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -22,81 +34,127 @@
         </thead>
         <tbody>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_device</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Identifier for a device (drive network adapter) connected to a system.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">\Device\HarddiskVolume2</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>host_device</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Identifier representing a hardware or logical device associated with the host.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>\Device\HarddiskVolume2</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_hostname</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword/lowercase</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">NetBIOS or dns hostname.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">corpdc01, corpdc01.local, lab01.corpdomain.com</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>host_hostname</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Name assigned to the host, including NetBIOS or DNS forms.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>corpdc01, corpdc01.local, lab01.corpdomain.com</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_id</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Host unique identifier (i.e.. SID for Microsoft).</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>host_id</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Unique identifier assigned to the host by the operating system or platform.</p>
+    </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_ip</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ip</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">IPv4 and IPv6 addresses.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">10.1.2.3, fe80:5cc3:11:4::2c</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>host_ip</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>ip</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>IP address assigned to the host, supporting both IPv4 and IPv6.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>10.1.2.3, fe80:5cc3:11:4::2c</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_ipv6</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ip</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">IPv6 addresses.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">fe80:5cc3:11:4::2c</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>host_ipv6</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>ip</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>IPv6 address associated with the host.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>fe80:5cc3:11:4::2c</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_mac</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">MAC address of host, colon-delimited and lower case.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">02:a1:f9:c2:d5:04</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>host_mac</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Link-layer hardware address of the host.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>02:a1:f9:c2:d5:04</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_reference</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword/lowercase</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mapped from host_ip or host_hostname in that order - allows a common field to reference for messages that do not provide both (note: CIDR search will not work against this field).</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">127.0.0.1, corpdc01, corpdc01.local, lab01.corpdomain.com</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>host_reference</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Canonical host reference value derived from available identifiers (e.g., host_hostname, host_ip) to support consistent attribution - CIDR search will not work against this field.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>127.0.0.1, corpdc01, corpdc01.local, lab01.corpdomain.com</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_region</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Name of region source device is located in.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">us-east-1</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>host_region</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Geographic or logical region associated with the host, including service-assigned region values distinct from geolocation fields.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>us-east-1</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_type_version</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Operating sytem version of host.</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>host_type_version</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Version information describing the operating system running on the host.</p>
+    </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_virtfw_hostname</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword/lowercase</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">For firewalls that operate as partitioned services this is the name of the logical device.</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>host_virtfw_hostname</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>For firewalls that operate as partitioned services this is the name of the logical device.</p>
+    </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_virtfw_id</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">For firewalls that operate as partitioned services this is the ID value of the logical device.</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>host_virtfw_id</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>For firewalls that operate as partitioned services this is the ID value of the logical device.</p>
+    </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_virtfw_uid</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Unique identifier such as a UUID value representing a virtual host.</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>host_virtfw_uid</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Unique identifier such as a UUID value representing a virtual host.</p>
+    </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">host_vm_name</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Virtual system name (not to be confused with the hostname).</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>host_vm_name</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>Virtual system name (not to be confused with the hostname).</p>
+    </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1"></td>
             </tr>
         </tbody>

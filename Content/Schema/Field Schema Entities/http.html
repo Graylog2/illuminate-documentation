@@ -5,6 +5,26 @@
     </head>
     <body>
         <h1>Http Fields</h1>
+        <h2>Overview</h2>
+        <p>The <strong>http</strong> fields describe properties of Hypertext Transfer Protocol (HTTP) requests and responses as observed in network and application telemetry.<br>
+        They represent logical components of HTTP transactions, including methods, paths, headers, versions, and payload characteristics.<br>
+        This entity provides a normalized view of client and server interactions that occur over HTTP or HTTPS.</p>
+        <h2>Design and Usage</h2>
+        <p>The <code class="linecode">http</code> entity defines a structured representation of request and response data across diverse logging sources.<br>
+        It captures transactional attributes such as message size, content type, user agent details, and server response information in order to support consistent analysis across vendors and protocols.<br>
+        As a top-level entity, <code class="linecode">http</code> is modeled independently of network session data but may be related to network or user entities through higher-level correlation when available.</p>
+        <h2>Common Use Cases</h2>
+        <ul>
+            <li>Analyzing web traffic patterns to support threat detection, anomaly identification, and categorization of browsing activity.  </li>
+            <li>Investigating client behavior through normalized user agent, URI, and request method information.  </li>
+            <li>Reviewing response codes and content metadata to identify service failures, redirects, or suspicious responses.  </li>
+            <li>Correlating HTTP activity with broader network telemetry to clarify event semantics and support incident investigations.</li>
+        </ul>
+        <h2>Implementation Notes</h2>
+        <p>As a top-level entity, <code class="linecode">http</code> represents a complete logical object describing an HTTP transaction.<br>
+        It should be modeled independently of vendor-specific field naming conventions while supporting hierarchical mappings to related entities such as <code class="linecode">network</code>, <code class="linecode">file</code>, or <code class="linecode">user</code> when applicable.<br>
+        The entity may appear in conjunction with connection-level data to maintain relational integrity across normalized telemetry.<br>
+        If a related entity is implied but not explicitly present, corresponding fields should be included to ensure consistent interpretation of HTTP request and response semantics.</p>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -22,130 +42,213 @@
         </thead>
         <tbody>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_application</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Layer 7 application name.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">facebook</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>http_application</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Identifies the application-layer service or platform associated with the HTTP transaction.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>facebook</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_bytes</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Sum of request + response bytes.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">29347485</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>http_bytes</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>long</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Total size of the request and response combined, measured in bytes.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>29347485</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_content_type</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mime type of http content.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">application/octet-stream</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>http_content_type</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Mime type of http content.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>application/octet-stream</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_headers</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Full list of http headers.</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>http_headers</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Full list of http headers.</p>
+    </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_host</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host: … header from request, if present.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Host: wwww.mycorp.local</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>http_host</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Value of the Host header provided in the HTTP request.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>Host: wwww.mycorp.local</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_referrer</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">“referer” header value if present.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">http://mycorp.local/</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>http_referrer</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Value of the 'Referer' header supplied by the client.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>http://mycorp.local/</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_request_bytes</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Size of request.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">239478</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>http_request_bytes</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>long</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Size of the HTTP request payload, measured in bytes.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>239478</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_method</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">HTTP request method.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GET, POST</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>http_request_method</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Method used in the HTTP request, such as GET or POST.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>GET, POST</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_request_path</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Need to review field length/truncation at 8192 characters (consider utf-8). Some may consider the path not to include the “query” (text after the last “/”), but this value may include it.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">/path/to/resource?option=test</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>http_request_path</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Path component of the HTTP request, which may include a query string depending on the source format.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>/path/to/resource?option=test</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_response_bytes</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Size of response.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">498274</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>http_response_bytes</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>long</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Size of HTTP response, measured in bytes.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>498274</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_response</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Text response mapped from the response code.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">OK, Moved Permanently</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>http_response</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Textual description associated with the HTTP response status.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>OK, Moved Permanently</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_response_code</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">integer</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Numeric server response code.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">200, 404, 500</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>http_response_code</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>integer</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Numeric status code returned by the server in response to the HTTP request.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>200, 404, 500</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_uri</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Full request string; Need to review field length/truncation at 8192 characters (consider utf-8).</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">https://www.graylog.org, https://www.graylog.org/blog, https://www.mycorp.local/workspaces/team#posts</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>http_uri</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Full URI referenced in the HTTP request.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>https://www.graylog.org, https://www.graylog.org/blog, https://www.mycorp.local/workspaces/team#posts</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_uri_category</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Categorization of associated web site/URL.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Suspicious, Games</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>http_uri_category</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Classification assigned to the destination URI based on content or reputation.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>Suspicious, Games</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_uri_stem</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">The target of the request. For Example: http://www.test.com/test.jsp?hello=y the URI stem is /test.jsp.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Default.htm</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>http_uri_stem</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>The target of the request. For Example: http://www.test.com/test.jsp?hello=y the URI stem is /test.jsp.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>Default.htm</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_uri_query</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">The query the client was trying to perform. Example http://www.test.com/test.jsp?hello=y the query is hello=y.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">hello=y</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>http_uri_query</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>The query the client was trying to perform. Example http://www.test.com/test.jsp?hello=y the query is hello=y.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>hello=y</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_user_agent</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User Agent string.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:74.0) Gecko/20100101 Firefox/74.0)</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>http_user_agent</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>User Agent string.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:74.0) Gecko/20100101 Firefox/74.0)</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_user_agent_name</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Attempted identification of the browser client usually based on user agent analysis.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Firefox</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>http_user_agent_name</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Attempted identification of the browser client usually based on user agent analysis.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>Firefox</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_user_agent_os</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Operating System of User Agent.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Windows 10</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>http_user_agent_os</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Operating System of User Agent.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>Windows 10</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_version</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">HTTP version.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">1.0, 1.1, 2.0</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>http_version</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>HTTP protocol version used in the request.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>1.0, 1.1, 2.0</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">http_xff</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">HTTP x-forwarded-for header value. Future: May map as IP, need to account for different ways this is presented.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">X-Forwarded-For: 10.1.2.3</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>http_xff</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>Value of the X-Forwarded-For header indicating one or more client IP addresses.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1"><p>X-Forwarded-For: 10.1.2.3</p>
+    </td>
             </tr>
         </tbody>
     </table>

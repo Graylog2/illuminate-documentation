@@ -5,7 +5,23 @@
     </head>
     <body>
         <h1>Destination Fields</h1>
-        <p>destinations are fields related to isolated systems running in a constrained or virtual environment.</p>
+        <h2>Overview</h2>
+        <p>The <strong>destination</strong> fields describe the target system, device, or endpoint involved in a network transaction, system interaction, or event correlation. These fields represent the entity that receives, hosts, or processes the action initiated by a source within telemetry data.</p>
+        <h2>Design and Usage</h2>
+        <p><code class="linecode">destination</code> represents the endpoint context of an event and is used to capture identifying, network, and system-level attributes of the target environment. It provides a normalized view of where data, connections, or operations are directed — whether to a physical host, virtual machine, cloud service, or logical network zone.<br>
+        These fields are typically modeled symmetrically with the <code class="linecode">source</code> entity to describe bidirectional communication or relational event structures.</p>
+        <h2>Common Use Cases</h2>
+        <ul>
+            <li>Identifying the target host, application, or service involved in a network or system event.  </li>
+            <li>Associating traffic or actions with specific regions, zones, or virtual systems.  </li>
+            <li>Analyzing directional flow in network telemetry (for example, from <code class="linecode">source</code> to <code class="linecode">destination</code>).  </li>
+            <li>Correlating activity across multi-tenant or segmented environments by destination IP, hostname, or virtual context.</li>
+        </ul>
+        <h2>Implementation Notes</h2>
+        <p>As a top-level entity, <code class="linecode">destination</code> defines a coherent object representing the receiving endpoint of a communication or operation.<br>
+        It should be modeled independently of vendor-specific naming conventions and supports hierarchical mappings, including NAT, virtual system, and region metadata.<br>
+        <code class="linecode">destination</code> fields commonly appear in conjunction with <code class="linecode">source</code> to provide complete directional context for events within normalized telemetry schemas.<br>
+        If a <code class="linecode">source</code> is implied but not explicitly defined, corresponding <code class="linecode">source</code> fields should be included to clarify event semantics and ensure consistent bidirectional modeling.</p>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -23,159 +39,254 @@
         </thead>
         <tbody>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_application_name</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Name of the application that is the target of the action defined in an event.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">facebook, twitter</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>destination_application_name</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Name of the application that is the target of the action defined in an event.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>facebook, twitter</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_bytes_sent</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Network bytes sent by destination to the source. Some sources may present this as source bytes received, bytes received, or similar.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">204235</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>destination_bytes_sent</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>long</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Network bytes sent by destination to the source. Some sources may present this as source bytes received, bytes received, or similar.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>204235</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_device_model</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Name of device model.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">iPad</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>destination_device_model</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Name of device model.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>iPad</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_device_vendor</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Device vendor name.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Apple, ASUS</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>destination_device_vendor</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Device vendor name.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>Apple, ASUS</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_domain</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword/lowercase</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Destination authentication domain context.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">corp.local</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>destination_domain</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Destination authentication domain context.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>corp.local</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_hostname</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword/lowercase</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Hostname of the destination device/system.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">corpdc01, vplaptop10</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>destination_hostname</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Hostname of the destination device/system.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>corpdc01, vplaptop10</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_ip</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ip</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">IPv4 or IPv6 address of the destination device.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">10.1.2.3, fe80:5cc3:11:4::2c</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>destination_ip</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>ip</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>IPv4 or IPv6 address of the destination device.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>10.1.2.3, fe80:5cc3:11:4::2c</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_nat_ip</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ip</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">translated IP address assigned by a network device performing the NAT function.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">10.1.2.3, fe80:5cc3:11:4::2c</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>destination_nat_ip</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>ip</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>translated IP address assigned by a network device performing the NAT function.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>10.1.2.3, fe80:5cc3:11:4::2c</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_nat_port</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">integer</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Translated network port assigned by a network device performing the NAT function.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">80, 443, 3389</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>destination_nat_port</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>integer</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Translated network port assigned by a network device performing the NAT function.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>80, 443, 3389</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_os_name</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Operating system type name of the destination device.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">IOS, Android</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>destination_os_name</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Operating system type name of the destination device.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>IOS, Android</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_os_version</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Operating system version number of the destination device.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">10.0, 22.04</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>destination_os_version</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Operating system version number of the destination device.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>10.0, 22.04</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_packets_sent</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Number of packets delivered to the destination endpoint from the source endpoint.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">230929</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>destination_packets_sent</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>long</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Number of packets delivered to the destination endpoint from the source endpoint.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>230929</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_port_iana_name</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">The IANA-registered service name associated with the network application. Illuminate Core will use this value to define destination_port in events that have destination_ip defined, if destination_port is not already defined</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">ssh, ftp</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>destination_port_iana_name</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>The IANA-registered service name associated with the network application. Illuminate Core will use this value to define destination_port in events that have destination_ip defined, if destination_port is not already defined</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>ssh, ftp</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_region</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Name of region source device is located in</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">us-east-1</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>destination_region</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Name of region source device is located in</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>us-east-1</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_id</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Identifying value for the destination such as a serial number</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">09VX93DD</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>destination_id</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Identifying value for the destination such as a serial number</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>09VX93DD</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_type</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Destination device information such as model number</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>destination_type</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Destination device information such as model number</p>
+    </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_vm_name</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Virtual system name (not to be confused with the hostname)</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">vsys01</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>destination_vm_name</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Virtual system name (not to be confused with the hostname)</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>vsys01</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_vsys_uuid</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Destination virtual system UUID</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">1f5398c7-4d84-4499-84ee-d5e9246c52f8</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>destination_vsys_uuid</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Destination virtual system UUID</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>1f5398c7-4d84-4499-84ee-d5e9246c52f8</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_zone</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Network zone for the destination</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">internal</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>destination_zone</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Network zone for the destination</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>internal</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_category</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">The category assigned to the destination device.</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>destination_category</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>The category assigned to the destination device.</p>
+    </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_location_name</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Field is derived either from an internal enterprise network definition or the Geo location fields if available.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Chicago, US, Datacenter 01, Bismark - Finance</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>destination_location_name</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Field is derived either from an internal enterprise network definition or the Geo location fields if available.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>Chicago, US, Datacenter 01, Bismark - Finance</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_mac</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">MAC address of the destination device.</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">a0:b4:44:01:a9:d1</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>destination_mac</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>MAC address of the destination device.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>a0:b4:44:01:a9:d1</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_priority</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Text value representing the priority of the destination device.
-    This will be added to all messages processed by Illuminate Core if destination_priority_level is defined and this value does not exist.
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>destination_priority</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">critical, high, medium, low, informational</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Text value representing the priority of the destination device.
+    This will be added to all messages processed by Illuminate Core if destination_priority_level is defined and this value does not exist.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>critical, high, medium, low, informational</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_priority_level</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">byte</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Numeric value representing the priority of the destination device, 1 = informational, 2 = low, 3 = medium, 4 = high, 5 = critical.
-    This will be added to all messages processed by Illuminate Core if destination_priority is defined and this value does not exist.
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>destination_priority_level</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">4</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>byte</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Numeric value representing the priority of the destination device, 1 = informational, 2 = low, 3 = medium, 4 = high, 5 = critical.
+    This will be added to all messages processed by Illuminate Core if destination_priority is defined and this value does not exist.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>4</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">destination_reference</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">keyword/lowercase</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">This value is usually mapped by Illuminate Core from the following fields: destination_ip, destination_hostname, destination_target, destination_vm_name, destination_mac.
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>destination_reference</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">IPv4, IPv6, corpdc01, corpdc01.east.local</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>This value is usually mapped by Illuminate Core from the following fields: destination_ip, destination_hostname, destination_target, destination_vm_name, destination_mac.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1"><p>IPv4, IPv6, corpdc01, corpdc01.east.local</p>
+    </td>
             </tr>
         </tbody>
     </table>
