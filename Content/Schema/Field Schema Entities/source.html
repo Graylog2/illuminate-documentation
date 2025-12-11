@@ -5,6 +5,26 @@
     </head>
     <body>
         <h1>Source Fields</h1>
+        <h2>Overview</h2>
+        <p>The <code class="linecode">source</code> fields describe the originating system, device, or network endpoint associated with an event.<br>
+        They represent identifying and network-related attributes that characterize where an action, connection, or message was initiated.<br>
+        The entity provides a consistent structure for referencing source-side information across heterogeneous platforms and event types.</p>
+        <p>The <code class="linecode">source</code> fields have the prefix <code class="linecode">source_</code> and describe the originating system or endpoint involved in the event.<br>
+        They are conceptually distinct from the top-level event field named <code class="linecode">source</code> that may represent the system responsible for sending or forwarding the log message.</p>
+        <h2>Design and Usage</h2>
+        <p>The <code class="linecode">source</code> entity models conceptual properties of the system or endpoint responsible for originating activity described in an event.<br>
+        Its fields capture device identifiers, network addresses, operating system metadata, and other attributes commonly associated with source context.<br>
+        As a top-level entity, <code class="linecode">source</code> supports reliable correlation and normalization across diverse logging formats and network environments.</p>
+        <h2>Common Use Cases</h2>
+        <ul>
+            <li>Associating activity with the device or endpoint that initiated a network connection or system action  </li>
+            <li>Normalizing heterogeneous source identifiers for use in detections, analytics, and investigative workflows  </li>
+            <li>Tracking attributes of originating systems to support behavioral baselining, asset classification, and forensic analysis</li>
+        </ul>
+        <h2>Implementation Notes</h2>
+        <p>As a top-level entity, <code class="linecode">source</code> represents the complete object describing the originating system or endpoint.<br>
+        Its fields should remain platform-neutral and consistently applied to preserve clarity across event types.<br>
+        If related entities such as <code class="linecode">destination</code> or <code class="linecode">network</code> are implied but not explicitly defined, corresponding fields may be included to clarify event semantics and maintain relational integrity.</p>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -26,7 +46,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>long</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Network bytes sent by source, some sources may present this as source bytes tx, bytes tx or something similar.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Amount of network data transmitted from the source, measured in bytes.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>29834710</p>
     </td>
@@ -36,7 +56,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Device Model Name.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Model designation of the source device.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>iPad</p>
     </td>
@@ -46,7 +66,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Device Vendor Name.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Manufacturer associated with the source device.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>Apple, ASUS</p>
     </td>
@@ -56,7 +76,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword/lowercase</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>NetBIOS or dns hostname, converted to lowercase.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Hostname of the source system, represented in lowercase.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>corpdc01, corpdc01.local, lab01.corpdomain.com</p>
     </td>
@@ -66,7 +86,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Identifying value for the source such as a serial number.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Identifier associated with the source device, such as a serial or hardware ID.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>09VX93DD</p>
     </td>
@@ -76,7 +96,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>ip</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>IPv4 and IPv6 addresses.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>IPv4 or IPv6 address assigned to the source.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>10.1.2.3, fe80:5cc3:11:4::2c</p>
     </td>
@@ -86,7 +106,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>ip</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Only IPv6 addresses.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>IPv6 address assigned to the source.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>fe80:5cc3:11:4::2c</p>
     </td>
@@ -96,7 +116,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>ip</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Translated IP address assigned by a network device performing the NAT function.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Translated IP address assigned to the source by a network address translation mechanism.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>10.1.2.3, fe80:5cc3:11:4::2c</p>
     </td>
@@ -106,7 +126,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>integer</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Translated network port assigned by a network device performing the NAT function.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Translated network port assigned to the source by a network address translation mechanism.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>2384</p>
     </td>
@@ -116,7 +136,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Operating System Name.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Name of the operating system running on the source device.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>IOS, Android</p>
     </td>
@@ -126,7 +146,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Version number of Operating System.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Version value associated with the operating system of the source.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>IOS 10.0</p>
     </td>
@@ -136,7 +156,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>long</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Count of packets sent by source.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Number of network packets transmitted from the source.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>23094823</p>
     </td>
@@ -146,7 +166,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>integer</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Numeric port, 0-65535.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Network port used by the source, represented as a value between 0 and 65535.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>45392</p>
     </td>
@@ -156,7 +176,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>The IANA-registered service name associated with the network application. Illuminate Core will use this value to define source_port in events that have source_ip defined if source_port is not already defined.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>IANA-registered service name associated with the source port.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>ssh, ftp</p>
     </td>
@@ -166,7 +186,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Name of region source device is located in.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Geographic or cloud region associated with the source device.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>us-east-1</p>
     </td>
@@ -176,7 +196,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Source device information such as model number.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Type or classification of the source device.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
             </tr>
@@ -185,7 +205,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Virtual system name (not to be confused with the hostname).</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Name of the virtual system associated with the source device.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
             </tr>
@@ -194,7 +214,8 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>Unique identifier associated with the source virtual system.</p>
+    </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2"></td>
             </tr>
         </tbody>

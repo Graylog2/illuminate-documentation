@@ -5,6 +5,26 @@
     </head>
     <body>
         <h1>Vendor Fields</h1>
+        <h2>Overview</h2>
+        <p>The <code class="linecode">vendor</code> fields describe information supplied directly by a product or technology that generated the event.<br>
+        They represent classifications, outcomes, severities, identifiers, and other attributes defined by the originating system to convey context specific to its internal logic or actions.<br>
+        The entity provides a normalized structure for referencing vendor-specific metadata while maintaining consistency across heterogeneous event sources.</p>
+        <h2>Design and Usage</h2>
+        <p>The <code class="linecode">vendor</code> entity models conceptual properties that originate from a product's own terminology or evaluation processes.<br>
+        Its fields capture descriptive labels, severity ratings, categorizations, and identifiers that reflect how the originating system characterizes the activity being reported.<br>
+        The <code class="linecode">vendor_*</code> fields generally preserve the values provided by the originating system to maintain fidelity with the source data.<br>
+        Normalized fields elsewhere in the schema may represent interpreted or standardized forms of these values, while the <code class="linecode">vendor_*</code> fields retain the product-defined representations used by the event source.</p>
+        <h2>Common Use Cases</h2>
+        <ul>
+            <li>Preserving vendor-defined descriptions and severity indicators to provide context for alerts and system-generated outcomes  </li>
+            <li>Enriching normalized event fields with additional detail that reflects the originating product's internal classification or decision logic  </li>
+            <li>Supporting investigations and analytics that incorporate both normalized and vendor-specific terminology</li>
+        </ul>
+        <h2>Implementation Notes</h2>
+        <p>As a top-level entity, <code class="linecode">vendor</code> represents metadata defined by the originating system and should retain its native values for clarity.<br>
+        The fields within this entity are intended to capture product-specific descriptions without altering their wording or meaning.<br>
+        In cases where source values must be transformed into a standardized format for consistent representation, the transformed form should preserve the conceptual meaning of the original data.<br>
+        If a related normalized field exists elsewhere in the schema, the <code class="linecode">vendor</code> fields may provide complementary detail that maintains fidelity with the source system's semantics.</p>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
         <colgroup>
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -26,7 +46,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>When the message is an alert this is the vendor-provided text description of the alert severity.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Vendor-defined textual indicator representing the severity of an alert.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>critical, high, medium, low</p>
     </td>
@@ -36,7 +56,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>integer</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>When the message is an alert this is the vendor-provided numeric value for the alert severity.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Vendor-defined numeric value representing the severity level of an alert.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>4, 3, 2, 1</p>
     </td>
@@ -46,7 +66,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Vendor defined action - Quick description of the service providing credential validation.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Vendor-defined value indicating the system or service responsible for validating credentials.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>Active Directory</p>
     </td>
@@ -56,7 +76,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Vendor-defined credential type.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Type of credential identified by the originating system.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>password, token</p>
     </td>
@@ -66,7 +86,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Vendor defined action - this should be a short, typically one-word, description of what action the event is describing. The value is to be used verbatim, including case, from the source log.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Vendor-defined label describing the action or behavior represented by the event.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>allow, deny, pass, fail</p>
     </td>
@@ -76,7 +96,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Vendor defined category of an event.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Category assigned by the originating system to classify the event.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>Removable Media, Registry, File System</p>
     </td>
@@ -86,7 +106,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Vendor defined description of the action with more detail than is included in vendor_event_action.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Vendor-defined descriptive text that provides additional detail about the event action.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
             </tr>
@@ -95,7 +115,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Vendor-defined result of the action defined in the message.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Vendor-defined result associated with the action recorded in the event.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>block, drop, report, allow, reject</p>
     </td>
@@ -105,7 +125,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Vendor-provided text detailing the reason for the vendor-provided action and/or outcome the message is describing.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Vendor-provided text describing the reason for the reported action or outcome.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
             </tr>
@@ -114,7 +134,7 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Vendor-defined text description of the severity rating.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Vendor-defined textual severity rating for the event.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>critical, high, medium, low, informational</p>
     </td>
@@ -124,92 +144,111 @@
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>integer</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Vendor-defined numeric severity rating for this event.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Vendor-defined numeric severity rating for the event.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>0, 1, 5, 10</p>
     </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>vendor_private_ip</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>vendor_event_timestamp</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>ip</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>date</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Date and time of the event as defined by the originating system, represented in a standardized date-time format.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>2024-10-03T07:38:31.407Z</p>
+    </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>vendor_private_ipv6</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>vendor_private_ip</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>ip</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Private network address reported by the originating system.</p>
+    </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>vendor_public_ip</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>vendor_private_ipv6</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>ip</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Private IPv6 address reported by the originating system.</p>
+    </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>vendor_public_ipv6</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>vendor_public_ip</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>ip</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Public network address reported by the originating system.</p>
+    </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>vendor_signin_protocol</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>vendor_public_ipv6</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>ip</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Public IPv6 address reported by the originating system.</p>
+    </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>vendor_subtype</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>vendor_signin_protocol</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Vendor-defined subtype of log - this differs from event_log_name as it refers more to the subject or category of log message.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Authentication or sign-in protocol identified by the originating system.</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>ids, dnsmasq, kernel, threat</p>
-    </td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>vendor_threat_suspected</p>
-    </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
-    </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>vendor_transaction_id</p>
-    </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
-    </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>vendor_transaction_type</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>vendor_subtype</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Vendor-defined subtype that characterizes the specific category or subject of the log message.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>ids, dnsmasq, kernel, threat</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>vendor_threat_suspected</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Indicator representing whether the originating system suspects a threat.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>vendor_transaction_id</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Identifier assigned by the originating system to represent a specific transaction or operation.</p>
+    </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>vendor_user_type</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>vendor_transaction_type</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>keyword</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"></td>
-                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Type of transaction or operation as defined by the originating system.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>vendor_user_type</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>Classification of the user as defined by the originating system.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2"></td>
             </tr>
         </tbody>
     </table>
