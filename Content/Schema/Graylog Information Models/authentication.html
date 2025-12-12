@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>GIM Category: authentication</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>GIM Category: authentication</h1>
+        <p>The authentication category covers events where accounts or services attempt to access, validate, or terminate sessions on a system.
+This includes, but is not limited to, logon activity, credential validation, and related events such as logoff, Kerberos requests, or policy checks.
+Authentication events in this category are account-centric: each event must identify a user or service account (<code class="linecode">user_name</code>) and the application or system (<code class="linecode">application_name</code>) where the activity occurred.</p>
+        <h2>logon</h2>
+        <p>Logon events represent attempts to establish or resume an authenticated session on a system or service. The result should be captured in <code class="linecode">event_outcome</code> (for example, success or failure). This is distinct from credential validation, which is the act of an authenticator checking submitted credentials.</p>
+        <p>Mapping guidance:</p>
+        <ul>
+            <li>If the platform emits separate records for logon and credential validation, assign a single, matching GIM code to each record respectively. Do not assign both codes to the same record.</li>
+            <li>If the platform emits only a logon record that implies credential validation (for example, "user 'administrator' logged on successfully"), assign both the 'logon' and 'credential validation' event type codes to that single record.</li>
+            <li>If the event reflects resuming an existing session without re-validating credentials (for example, a session reconnect), assign only the 'logon' code.</li>
+        </ul>
+        <h4>Required Fields</h4>
+        <ul>
+            <li><code class="linecode">application_name</code></li>
+            <li><code class="linecode">destination_reference</code></li>
+            <li><code class="linecode">event_outcome</code></li>
+            <li><code class="linecode">source_reference</code></li>
+            <li><code class="linecode">user_name</code></li>
+        </ul>
+        <h4>Optional Fields</h4>
+        <ul>
+            <li><code class="linecode">user_domain</code></li>
+        </ul>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <colgroup>
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        </colgroup>
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>100000</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>authentication</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>authentication.logon</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>logon</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>A user or service performed a logon activity</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>100003</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>authentication</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>authentication.logon</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>logon with alternate credentials</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>A user or service has provided alternate credentials when authenticating</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>100004</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>authentication</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>authentication.logon</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>session reconnect</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1"><p>A user or service has resumed an existing session that was disconnected from but was not terminated</p>
+    </td>
+            </tr>
+        </tbody>
+    </table>
+        <h2>credential validation</h2>
+        <p>Credential validation events represent the act of an authentication system checking credentials provided by a user or service account. The outcome of this check (for example, success or failure) must be recorded in <code class="linecode">event_outcome</code>.</p>
+        <p>Credential validation is distinct from logon. A system may emit both a credential validation event and a separate logon event (for example, Windows with Kerberos or NTLM), or it may emit only a logon event that implies credential validation. In the latter case, the logon description provides mapping guidance for assigning both codes to the single logon event.</p>
+        <h4>Required Fields</h4>
+        <ul>
+            <li><code class="linecode">application_name</code></li>
+            <li><code class="linecode">event_outcome</code></li>
+            <li><code class="linecode">source_reference</code></li>
+            <li><code class="linecode">user_name</code></li>
+        </ul>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <colgroup>
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        </colgroup>
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>100500</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>authentication</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>authentication.credential validation</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>credential validation</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>The validation of credentials provided by a user or service</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>100501</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>authentication</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>authentication.credential validation</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>error</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>An error was encountered when attempting to validate credentials provided by a user or service</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>100502</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>authentication</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>authentication.credential validation</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>mfa</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>The authenticating system asked for an additional authentication factor</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>100503</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>authentication</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>authentication.credential validation</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>sms_send_message</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>The authenticating system sent an authentication token via SMS</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>100504</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>authentication</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>authentication.credential validation</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>voice_call</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1"><p>The authenticating system sent an authentication token via a voice call</p>
+    </td>
+            </tr>
+        </tbody>
+    </table>
+        <h2>access notice</h2>
+        <p>Access notices are events that are generated during authentication that provide additional information related to authentication</p>
+        <h4>Required Fields</h4>
+        <ul>
+            <li><code class="linecode">application_name</code></li>
+            <li><code class="linecode">user_name</code></li>
+        </ul>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <colgroup>
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        </colgroup>
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>101000</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>authentication</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>authentication.access notice</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>special logon</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>The user logging on has elevated privileges</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>101001</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>authentication</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>authentication.access notice</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>error</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2"><p>There was a system error encountered during the authentication process</p>
+    </td>
+            </tr>
+        </tbody>
+    </table>
+        <h2>access policy</h2>
+        <p>Access policy events record enforcement actions taken during authentication when an account, device, or session violates a defined policy.
+        These events do not represent the credential validation process itself, but rather show when access is denied or restricted due to policy rules.</p>
+        <p>Examples include:
+        - Access policy violations (such as time-of-day restrictions or geo-blocking)
+        - Device policy violations (such as requiring managed devices)
+        - Account policy violations (such as expired or disabled accounts)</p>
+        <p>Access policy events are security-relevant because they indicate that authentication was attempted but blocked or constrained by policy enforcement.</p>
+        <h4>Required Fields</h4>
+        <ul>
+            <li><code class="linecode">application_name</code></li>
+            <li><code class="linecode">source_reference</code></li>
+            <li><code class="linecode">user_name</code></li>
+        </ul>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <colgroup>
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        </colgroup>
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>101500</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>authentication</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>authentication.access policy</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>access policy violation</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>The account attempting to access a system or service has committed a violation of a defined access policy</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>101501</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>authentication</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>authentication.access policy</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>device policy violation</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>The account attempting to access a system or service has committed a violation of a defined device policy</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>101502</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>authentication</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>authentication.access policy</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>account policy violation</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1"><p>The account attempting to access a system or service has committed a violation of a defined account policy</p>
+    </td>
+            </tr>
+        </tbody>
+    </table>
+        <h2>kerberos request</h2>
+        <p>Kerberos request events represent authentication activity specific to the Kerberos protocol. These events capture the lifecycle of Kerberos ticket operations, including service ticket requests and renewals, ticket-granting ticket (TGT) requests, and errors encountered by the Kerberos subsystem.</p>
+        <p>Kerberos request events are distinct from generic credential validation or logon events. They should be assigned when the authenticator records Kerberos-specific ticket activity, even if additional logon or credential validation events are also present.</p>
+        <h4>Required Fields</h4>
+        <ul>
+            <li><code class="linecode">application_name</code></li>
+            <li><code class="linecode">event_outcome</code></li>
+            <li><code class="linecode">source_reference</code></li>
+            <li><code class="linecode">user_name</code></li>
+        </ul>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <colgroup>
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        </colgroup>
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>102000</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>authentication</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>authentication.kerberos request</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>service ticket renewed</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>A Kerberos service ticket has been renewed</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>102001</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>authentication</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>authentication.kerberos request</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>service ticket requested</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>A Kerberos service ticket has been requested</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>102002</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>authentication</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>authentication.kerberos request</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>tgt request</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>A Kerberos ticket-granting ticket (TGT) has been requested</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>102003</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>authentication</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>authentication.kerberos request</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>error</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2"><p>The Kerberos system has encountered an error</p>
+    </td>
+            </tr>
+        </tbody>
+    </table>
+        <h2>logoff</h2>
+        <p>Logoff events represent the termination of an authenticated session on a system or service. These events indicate when a user or service account intentionally ends a session, or when the system records a disconnect without fully terminating the session.</p>
+        <p>Logoff events provide closure to the authentication lifecycle, complementing logon events. They are valuable for tracking session activity and distinguishing between normal logoff behavior and disconnected sessions that remain idle or open.</p>
+        <h4>Required Fields</h4>
+        <ul>
+            <li><code class="linecode">application_name</code></li>
+            <li><code class="linecode">user_name</code></li>
+        </ul>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <colgroup>
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        </colgroup>
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>102500</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>authentication</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>authentication.logoff</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>logoff</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>User has logged off from a system</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>102501</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>authentication</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>authentication.logoff</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>session disconnect</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2"><p>A user has disconnected from a system, leaving the user session idle and waiting for a reconnection</p>
+    </td>
+            </tr>
+        </tbody>
+    </table>
+        <h2>default</h2>
+        <p>The default subcategory is a fallback for authentication-related events that do not clearly fit into another defined subcategory. It should be used sparingly, and only when no more specific mapping is available.</p>
+        <p>Default mappings are useful for capturing unclassified or vendor-specific authentication events, but relying heavily on this subcategory reduces the consistency and analytic value of the information model. Whenever possible, events should be assigned to a more specific authentication subcategory.</p>
+        <h4>Required Fields</h4>
+        <ul>
+            <li><code class="linecode">application_name</code></li>
+            <li><code class="linecode">user_name</code></li>
+        </ul>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <colgroup>
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        </colgroup>
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>109999</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"></td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>authentication</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>authentication.default</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>authentication message</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1"><p>Messages related to authentication</p>
+    </td>
+            </tr>
+        </tbody>
+    </table>
+    </body>
+</html>
