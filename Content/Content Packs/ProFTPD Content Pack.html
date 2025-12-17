@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
     <head>
         <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>ProFTPD Server Content Pack</title>
@@ -7,9 +7,7 @@
     <body>
         <h1>ProFTPD Server Content Pack</h1>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>The ProFTPD Server Pack is designed to extract, normalize, and enrich ProFTPD event data for more effective analysis and monitoring.</p>
-        <p>It parses default logs and enhanced logs into structured fields and adds useful context like event categorization (e.g., authentication and file events).</p>
-        <p>This enables faster search, correlation, and dashboarding across diverse environments.</p>
+        <p>The ProFTPD Server content pack is designed to extract, normalize, and enrich ProFTPD event data for more effective analysis and monitoring. It parses default logs and enhanced logs into structured fields and adds useful context like event categorization (e.g. authentication and file events). This parsing and normalization enables faster search, correlation, and dashboard creation across diverse environments.</p>
         <h2 id="supported-versions">Supported Versions</h2>
         <p>This pack was constructed to work with both standard and enhanced logs.</p>
         <p>Custom log formats are not supported.</p>
@@ -22,7 +20,7 @@
             </li>
         </ul>
         <h2 id="log-collection">Log Collection and Delivery</h2>
-        <p>This pack is designed to collect ProFTPD logs delivered via Syslog via the local Rsyslog service, see the ProFTPD How-To website. Fine-tune wanted log types via Syslog Facility or Loglevel if needed. The application_name has to be proftpd.</p>
+        <p>This pack is designed to collect ProFTPD logs delivered via Syslog via the local Rsyslog service. See the ProFTPD <a href="http://www.proftpd.org/docs/">Project Documentation</a> site for configuration details. Fine-tune log types via Syslog Facility or Loglevel, if necessary. The <code class="linecode">application_name</code> has to be <code class="linecode">proftpd</code>.</p>
         <p>Beta support: Filebeat.</p>
         <ul>
             <li>
@@ -32,7 +30,7 @@
                 <p>Filebeat (Beta)</p>
             </li>
         </ul>
-        <h3>(Example) Rsyslog Configuration</h3>
+        <h3>Example: Rsyslog Configuration</h3>
         <ol>
             <li>
                 <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/syslog_inputs.html">Syslog input</a> in Graylog.</p>
@@ -65,7 +63,7 @@
                 <p>Configure the collector to ship messages in syslog and auth.log to Graylog. The Filebeat input must add the field <code class="linecode">event_source_product: proftpd</code> for the parser to identify the log source as ProFTPD.</p>
             </li>
             <li>
-                <p>In addition, the option <code class="linecode">fields_under_root</code> must be set to <code class="linecode">true</code> for message identification to work. See the following example:</p>
+                <p>Set the option <code class="linecode">fields_under_root</code> to <code class="linecode">true</code>. This step is also necessary for message identification to work. See the following example:</p>
                 <MadCap:codeSnippet>
                     <MadCap:codeSnippetCopyButton />
                     <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">- input_type: log
@@ -84,14 +82,15 @@ event_source_product: proftpd</MadCap:codeSnippetBody>
             <li>
                 <p>Edit the Graylog Sidecar client configuration with your Graylog server API URL and API access token.</p>
             </li>
-            <li>
-                <p>Note: Filebeat support is not tested. Only test it if Syslog is not possible.</p>
-            </li>
         </ol>
         <p>
+            <section class="warningBox">
+                <div class="content"><b>Warning</b>: Filebeat support is not tested and is offered only as a beta. You should attempt this method only if Syslog is not possible.</div>
+            </section>
+        </p>
+        <p>
             <section class="infoBox">
-                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If you are already sending logs to your Graylog instance using Rsyslog care must be taken to ensure that the changes provided do not interfere with your current configuration.</span>
-                </div>
+                <div class="content"><b>Hint:</b> If you are already sending logs to your Graylog instance using Rsyslog, be careful to ensure that the changes provided do not interfere with your current configuration.</div>
             </section>
         </p>
         <h2 id="requirements">Requirements</h2>
@@ -105,26 +104,16 @@ event_source_product: proftpd</MadCap:codeSnippetBody>
         <ul>
             <li>Illuminate:ProFTPD FTP Server Messages</li>
         </ul>
-        <p>
-            <section class="infoBox">
-                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</span>
-                </div>
-            </section>
-        </p>
+        <MadCap:snippetBlock src="../Resources/Snippets/Template Snippets/ConceptKASnippets/Hint-AutoSteamCongig.flsnp" />
         <h2 id="index-set-configuration">Index Set Configuration</h2>
         <p>This technology pack includes 1 index set definition:</p>
         <ul>
             <li>ProFTPD FTP Server Logs</li>
         </ul>
-        <p>
-            <section class="infoBox">
-                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
-                </div>
-            </section>
-        </p>
+        <MadCap:snippetBlock src="../Resources/Snippets/Template Snippets/ConceptKASnippets/Hint-AuthIndexSetConfig.flsnp" />
         <h2 id="log-format-example">Log Format Example</h2>
         <p>These are normal and enhanced ProFTPD example logs.</p>
-        <h4>ProFTPD Logs</h4>
+        <h3>ProFTPD Logs</h3>
         <p><code class="linecode">Oct 20 10:06:03 ftp01 proftpd[24523]: 10.0.0.15 (remote01[10.0.0.15]) - USER bob: Login successful.
         Oct 20 10:06:03 ftp01 proftpd[24523]: USER bob: Login successful.
         Oct 20 10:10:34 ftp01 proftpd[24688]: 192.168.10.55 (client01[192.168.10.55]) - USER alice (Login failed): Incorrect password.
@@ -152,19 +141,19 @@ event_source_product: proftpd</MadCap:codeSnippetBody>
         Oct 20 14:53:50 ftpserver proftpd[24123]: Maximum number of users (200) reached, refusing connection from 203.0.113.22
         </code>
         </p>
-        <h2 id="what-is-provided">What is Provided</h2>
+        <h2 id="what-is-provided">What Is Provided</h2>
         <ul>
             <li>
                 <p>Rules to parse, normalize, and enrich ProFTPD log messages</p>
             </li>
             <li>
-                <p>An ProFTPD Overview Dashboard that delivers an at-a-glance summary of key events.</p>
+                <p>A ProFTPD Overview Dashboard that delivers an at-a-glance summary of key events.</p>
             </li>
         </ul>
         <h3 id="gim-categorization">GIM Categorization</h3>
-        <p>In most cases the ProFTPD Messages will be categorized based on the Vendor Event Action field but some log types are generic and we may use a different way to categorize them.</p>
+        <p>In most cases, ProFTPD messages are categorized based on the Vendor Event Action field, but some log types are generic and we might use a different method to categorize them.</p>
         <p>GIM categorization is provided for the following messages:</p>
-        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <table cellspacing="21" style="mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -224,9 +213,9 @@ event_source_product: proftpd</MadCap:codeSnippetBody>
         </table>
         <h3>Message Fields Included in This Pack</h3>
         <h4>General Parsing</h4>
-        <p>This pack will apply normalization to standard and enhanced ProFTPD logs. Additionally, it will shorten the "message". Exiting headers and enhanced headers will be parsed but dropped to reduce license utilization.</p>
+        <p>This pack applies normalization to standard and enhanced ProFTPD logs. Additionally, it shortens the "message." Exiting headers and enhanced headers are parsed but dropped to reduce license utilization.</p>
         <p>Attached are the most common parsed fields for ProFTPD logs.</p>
-        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <table cellspacing="21" style="mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <thead>
@@ -318,7 +307,7 @@ event_source_product: proftpd</MadCap:codeSnippetBody>
         <p>This spotlight offers a dashboard with 1 tab:</p>
         <h3>Overview</h3>
         <p>
-            <img src="../Resources/Images//resources/proftpd_overview.png" />
+            <img src="../Resources/Images/ProFTPD Content Pack/proftpd_overview.png" />
         </p>
     </body>
 </html>
