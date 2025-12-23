@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <title>Network Fields</title>
+    </head>
+    <body>
+        <h1>Network Fields</h1>
+        <h2>Overview</h2>
+        <p>The <code class="linecode">network</code> fields describe properties of network connections, flows, and packet exchanges as represented in normalized telemetry. They capture attributes such as traffic direction, protocol details, transferred byte counts, and identifiers used to correlate activity across sources. This entity provides a unified conceptual model for interpreting diverse network data from sensors, appliances, and endpoint instrumentation.</p>
+        <h2>Design and Usage</h2>
+        <p>The <code class="linecode">network</code> entity represents a logical network flow or connection and supports consistent normalization across heterogeneous vendor formats. It abstracts connection-level properties, including transport protocol, packet counts, header and payload characteristics, and connection identifiers. As a top-level entity, <code class="linecode">network</code> should be modeled independently of host or process entities while still allowing correlation when those entities appear within the same telemetry.</p>
+        <h2>Common Use Cases</h2>
+        <ul>
+            <li>Analyzing network flow patterns for anomaly detection, threat analysis, and capacity monitoring.</li>
+            <li>Associating traffic with higher-level application behaviors, tunnel types, or protocol semantics.</li>
+            <li>Correlating connection identifiers and directionality with security alerts and endpoint activity.</li>
+            <li>Reviewing packet and byte distributions to understand flow behavior or investigate suspected exfiltration.</li>
+        </ul>
+        <h2>Implementation Notes</h2>
+        <p>As a top-level entity, <code class="linecode">network</code> defines a standalone representation of a network flow or packet exchange. It should support mappings to related entities such as <code class="linecode">endpoint</code>, <code class="linecode">process</code>, or <code class="linecode">tunnel</code> where applicable and maintain relational integrity across normalized telemetry. If a related entity is implied but not explicitly provided, corresponding fields should be included to clarify event semantics and maintain consistent connection modeling.</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <colgroup>
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        </colgroup>
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">field</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">field_type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">description</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">example_values</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>network_application</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Identifies the application-layer service or platform associated with the network activity.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>facebook, instagram</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>network_bytes</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>long</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Total number of bytes transferred during the network connection.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>71238</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>network_community_id</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Hash value representing a normalized identifier for the network flow.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>1:Q9We8WO3piVF8yEQBNJF4uiSVrI=</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>network_connection_duration</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Length of time the network connection was established.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>0:23:45</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>network_connection_uid</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Unique identifier assigned to the observed network connection.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>CMdzit1AMNsmfAIiQc</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>network_data_bytes</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>long</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Total number of bytes contained in the data payload of the connection.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>71238</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>network_direction</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Indicates the direction of the observed network flow.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>inbound, outbound, lateral</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>network_forwarded_ip</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>ip</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>IP address recorded as part of forwarding or proxy traversal.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>10.1.2.3, fe80:5cc3:11:4::2c</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>network_header_bytes</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>long</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Total number of bytes associated with packet header information.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>71238</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>network_iana_number</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>integer</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Numeric protocol identifier assigned by IANA at <a href="https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml">IANA protocol numbers regsitry</a>.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>6, 17, 41</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>network_icmp_type</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>ICMP message type associated with the observed traffic defined by <a href="https://www.iana.org/assignments/icmp-parameters/icmp-parameters.xhtml">IANA ICMP parameters registry</a>.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>echo, time exceeded</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>network_inner</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Indicates protocol or encapsulation information for inner traffic within a tunneled connection.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>network_interface_in</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Name of the interface that received the network traffic.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>gi0/1</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>network_interface_out</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Name of the interface that transmitted the network traffic.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>gi0/1</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>network_ip_version</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Indicates whether the connection used IPv4 or IPv6.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>4, 6</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>network_name</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Label or identifier assigned to the network flow, if provided by the source.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>network_packets</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>long</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Total number of packets transferred during the network connection.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>71238</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>network_protocol</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Network-layer protocol associated with the observed traffic.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>ipv4, ipv6, icmp</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>network_transport</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Transport-layer protocol used by the network connection.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>udp, tcp</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>network_tunnel_type</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Type of tunneling protocol associated with the network traffic.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>gre, ipsec</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>network_tunnel_duration</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>long</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Duration of an established tunnel, measured in seconds.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>2093847</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>network_type</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>This field is deprecated and will be removed from a future version fo the schema.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2"></td>
+            </tr>
+        </tbody>
+    </table>
+    </body>
+</html>

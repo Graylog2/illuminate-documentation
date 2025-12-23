@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <title>Email Fields</title>
+    </head>
+    <body>
+        <h1>Email Fields</h1>
+        <h2>Overview</h2>
+        <p>The <code class="linecode">email</code> fields describe properties of electronic mail (email) messages as observed in telemetry or event data. They represent logical components of an email object, including sender and recipient information, message routing, and content-related metadata. These fields support consistent modeling of email-related events across different log sources and security platforms.</p>
+        <h2>Design and Usage</h2>
+        <p>The <code class="linecode">email</code> entity provides a standardized structure for representing email message attributes that may originate from mail servers, gateways, or endpoint telemetry. It enables normalization of diverse vendor data into a coherent schema, capturing both message-level details (such as headers, identifiers, and message size) and contextual attributes (such as directionality and originating IP). As a top-level entity, <code class="linecode">email</code> should be modeled independently of transport or network-layer entities, while maintaining references to related actors or systems through linking identifiers when available.</p>
+        <h2>Common Use Cases</h2>
+        <ul>
+            <li>Correlating sender, recipient, and message identifiers across security telemetry to detect phishing or data exfiltration activity.</li>
+            <li>Analyzing attachment metadata for malware detection or suspicious file transfer analysis.</li>
+            <li>Mapping inbound and outbound message flows to determine lateral or cross-domain communication within an organization.</li>
+            <li>Enriching message-level data for content inspection, policy enforcement, or compliance logging.</li>
+        </ul>
+        <h2>Implementation Notes</h2>
+        <p>As a top-level entity, <code class="linecode">email</code> defines a self-contained conceptual object representing an email message. It should be modeled independently of vendor-specific schema variations, supporting hierarchical or relational mappings to entities such as <code class="linecode">user</code>, <code class="linecode">network</code>, or <code class="linecode">file</code> when applicable. <code class="linecode">email</code> fields may appear in conjunction with related entities to clarify event semantics and maintain relational integrity within normalized telemetry. If an associated <code class="linecode">network</code> or <code class="linecode">file</code> entity is implied but not explicitly defined, corresponding fields should be included to ensure directional and contextual consistency.</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <colgroup>
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        </colgroup>
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">field</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">field_type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">description</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">example_values</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>email_attachment_file_name</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>The file name(s) of an attachment.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>attachment.exe</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>email_attachment_file_size</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>long</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>The size in bytes of the attachments.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>1024</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>email_bcc</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>The email address of BCC recipient/email.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>corp_user@corp.local</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>email_cc</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>The email address of CC recipient/email.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>corp_user@corp.local</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>email_delivered_to</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>The Delivered-To email header field.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>corp_user@corp.local</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>email_direction</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Indicates the direction of the observed email flow. Must be either inbound, outbound or lateral, this should be mapped to these values if vendors provide network direction differently.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>inbound, outbound, lateral</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>email_from</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Per RFC 5322, specifies the address responsible for the actual transmission/sender of the message.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>corp_user@corp.local</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>email_message_id</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>The globally-unique message identifier.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p><a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#67;&#65;&#68;&#55;&#56;&#61;&#80;&#118;&#65;&#98;&#43;&#105;&#76;&#81;&#54;&#120;&#43;&#50;&#50;&#49;&#77;&#71;&#97;&#45;&#50;&#50;&#64;&#109;&#97;&#105;&#108;&#46;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#67;&#65;&#68;&#55;&#56;&#61;&#80;&#118;&#65;&#98;&#43;&#105;&#76;&#81;&#54;&#120;&#43;&#50;&#50;&#49;&#77;&#71;&#97;&#45;&#50;&#50;&#64;&#109;&#97;&#105;&#108;&#46;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>email_raw_header</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>The email authentication header.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>email_reply_to</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>The address that replies should be delivered to based on the value in the RFC 5322 Reply-To: header.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>corp_user@corp.local</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>email_size</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>long</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>The size of an email in bytes.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>234</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>email_subject</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>The email subject.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>RE: FWD: Testing</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>email_to</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>The email address of recipient/email.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>corp_user@corp.local</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>email_uid</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>The email unique identifier internally used by an email software to track a message.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>123456789A</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>email_x_originating_ip</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>The X-Originating-IP header identifying the email's originating IP address(es).</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>192.168.2.3</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>email_xmailer</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>Tool that created and sent the email.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2"><p>spambot</p>
+    </td>
+            </tr>
+        </tbody>
+    </table>
+    </body>
+</html>

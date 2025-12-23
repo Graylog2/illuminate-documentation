@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <title>Query Fields</title>
+    </head>
+    <body>
+        <h1>Query Fields</h1>
+        <h2>Overview</h2>
+        <p>The <code class="linecode">query</code> fields describe a name resolution operation performed to obtain resource information associated with a provided name. They represent protocol-agnostic properties of lookup activity that translate names into records, addresses, or related data. The entity defines a normalized structure that captures the essential attributes of resolution behavior independent of transport mechanisms or protocol-specific encodings.</p>
+        <h2>Design and Usage</h2>
+        <p>The <code class="linecode">query</code> entity models the conceptual characteristics of a lookup request and its corresponding result. It applies to DNS and other name resolution systems that follow a request and response pattern for retrieving resource information. The fields describe the requested name, the category and type of data being sought, the returned values, and the outcome of the resolution process. The model supports consistent interpretation of lookup events even when different protocols implement these semantics differently.</p>
+        <h2>Common Use Cases</h2>
+        <ul>
+            <li>Monitoring lookup activity to support threat detection and network forensics</li>
+            <li>Correlating resolution outcomes with application behavior and connection attempts</li>
+            <li>Investigating lookup failures, misconfigurations, or anomalous query patterns</li>
+        </ul>
+        <h2>Implementation Notes</h2>
+        <p>As a top-level entity, <code class="linecode">query</code> defines the complete object representing a single name resolution operation. It should be modeled independently of protocol-specific formats, while remaining compatible with standards such as DNS where applicable. Numeric identifiers and result values may align with DNS conventions, but normalization should reflect conceptual meaning rather than protocol encoding. If additional lookup mechanisms are introduced in the future, corresponding fields should be extended in a manner that maintains clarity and preserves the abstract representation of name resolution activity.</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <colgroup>
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        </colgroup>
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">field</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">field_type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">description</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">example_values</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>query_class</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Represents the namespace or category associated with the resolution request as defined by the applicable naming system.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>IN</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>query_record_type</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Identifies the type of resource information requested during the lookup operation.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>A, AAAA, MX, SRV</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>query_record_type_code</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Numeric identifier representing the resource record type requested by the lookup.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>1, 3, 5</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>query_request</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Name submitted for resolution during the lookup operation.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>www.graylog.org</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>query_request_length</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>long</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Number of characters contained in the name submitted for resolution.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>25</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>query_response</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Returned resource information associated with the resolved name.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>93.184.216.34</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>query_response_length</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>long</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Number of characters contained in the returned resolution data.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>25</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>query_result</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Indicates the outcome of the lookup operation.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>NXDOMAIN, NOERROR</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>query_result_code</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>Numeric identifier representing the outcome of the lookup, aligned with standard resolution result codes.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1"><p>0, 3</p>
+    </td>
+            </tr>
+        </tbody>
+    </table>
+    </body>
+</html>
