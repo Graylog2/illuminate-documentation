@@ -67,7 +67,28 @@
                 <p class="NormalWeb">There are two ways to deliver logs that are supported: Filebeat (with Sidecar) and rsyslog.</p>
             </li>
             <li>
-                <p class="NormalWeb">The pack supports a non-standard log folder as long as the name (<code class="linecode">access.log</code>) does not change.</p>
+                <p class="NormalWeb">When collecting logs with Filebeat there are file naming restrictions which are documented below.</p>
+            </li>
+        </ul>
+        <h3 class="Heading3">Allowed Filenames when using Filebeat</h3>
+        <p class="NormalWeb">
+            When using Filebeat to collect Apache HTTPD logs this processing pack uses the source file path to identify the log type and ensure logs are handled correctly.
+            Custom paths are supported, provided the filename ends with a recognized Apache log filename and extension,
+            separated by either a dot or an underscore. When a filename prefix is used, it must be separated from the
+            log filename by a non-alphanumeric character (for example, an underscore or dash). Examples include:
+        </p>
+        <ul>
+            <li>
+                <p><code class="linecode">/var/log/apache/site1_access.log</code></p>
+            </li>
+            <li>
+                <p><code class="linecode">/opt/apache/log/access.log</code></p>
+            </li>
+            <li>
+                <p><code class="linecode">/var/log/httpd/error_log</code></p>
+            </li>
+            <li>
+                <p><code class="linecode">/var/log/apache2/error.log</code></p>
             </li>
         </ul>
         <h3 class="Heading3">Input via Filebeat together with Graylog Sidecar</h3>
