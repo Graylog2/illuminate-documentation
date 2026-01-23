@@ -21,16 +21,16 @@
         <h2>Requirements</h2>
         <ul>
             <li>
-                <p>Graylog 6.1.0+ with a valid Enterprise license</p>
+                <p>Graylog 6.1.0+ with a valid Enterprise license.</p>
             </li>
             <li>
-                <p>Windows DNS Server installed and DNS Analytic/Audit logs enabled on the system</p>
+                <p>Windows DNS Server installed and DNS Analytic/Audit logs enabled on the system.</p>
             </li>
             <li>
-                <p>Filebeat agent version 8.13.0 and higher running standalone</p>
+                <p>Filebeat agent version 8.13.0 through 8.19.x running standalone; see <a href="#Log">Log Collection</a> for more information.</p>
             </li>
             <li>
-                <p>Illuminate Core: DNS Processing Add-on Pack (optional for some Spotlight widgets)</p>
+                <p>Illuminate Core: DNS Processing Add-on Pack (optional for some Spotlight widgets).</p>
             </li>
         </ul>
         <h2>Stream Configuration</h2>
@@ -57,17 +57,17 @@
                 <div class="title" style="font-weight: normal;"><b>Hint</b>:  If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
             </section>
         </p>
-        <h2>Log Collection</h2>
-        <p>This content pack requires Filebeat version 8.13.0 or higher for log collection due to the constraint that DNS Server Analytical logging exclusively relies on Event Tracing for Windows (ETW). Filebeat is one of the few log delivery agents that natively supports ETW through its ETW input module.</p>
-        <p>It is important to note that <b>Filebeat must be run standalone</b>, not bundled with Graylog Sidecar. This is because the bundled Filebeat version is below version 8.13.0, which is the minimum required for compatibility with ETW.</p>
-        <p>DNS Server Audit logs are enabled by default, but Analytic logs are not. Refer to the <a href="https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-r2-and-2012/dn800669(v=ws.11)#audit-and-analytic-event-logging">Microsoft documentation</a> on how to enable the DNS Server Analytic event log.</p>
+        <h2><a name="Log"></a>Log Collection</h2>
+        <p>This content pack requires a minimum Filebeat version of 8.17.0 and maximum version of 8.19.x for log collection due to the constraint that DNS Server Analytical logging exclusively relies on Event Tracing for Windows (ETW). Filebeat is one of the few log delivery agents that natively supports ETW through its ETW input module.</p>
+        <p>It is important to note that <b>Filebeat must be run standalone</b>, not bundled with Graylog Sidecar. The bundled Filebeat version does not include the required compatibility with ETW.</p>
+        <p>DNS Server Audit logs are enabled by default, but Analytic logs are not. Refer to the <a href="https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-r2-and-2012/dn800669(v=ws.11)#audit-and-analytic-event-logging" target="_blank">Microsoft documentation</a> on how to enable the DNS Server Analytic event log.</p>
         <p>
             <section class="infoBox">
                 <div class="title" style="font-weight: normal;"><b>Hint</b>:  While NXLog Enterprise Edition is able to consume DNS Server Analytical events via ETW using its im_etw module, it is not compatible with this content pack due to differences in field conventions and log structure. Only Filebeat is officially supported.</div>
             </section>
         </p>
         <h2>Filebeat Standalone Configuration Example</h2>
-        <p>Please refer to the <a href="https://www.elastic.co/docs/reference/beats/filebeat/filebeat-installation-configuration">official guide</a> to installing and configuring Filebeat for Windows.</p>
+        <p>Please refer to the <a href="https://www.elastic.co/docs/reference/beats/filebeat/filebeat-installation-configuration" target="_blank">official guide</a> to installing and configuring Filebeat for Windows.</p>
         <ol>
             <li>
                 <p>Create a <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> in Graylog. Ensure that the option <i>Do not add Beats type as prefix</i> is <b>disabled</b> (unchecked).</p>
@@ -118,7 +118,7 @@ filebeat.inputs:
                 <p>Ensure that DNS Server Analytic and Audit logs are enabled for the system.</p>
             </li>
         </ol>
-        <h2 id="what-is-provided">What is Provided</h2>
+        <h2 id="what-is-provided">What Is Provided</h2>
         <ul>
             <li>
                 <p>Parsing rules to extract Windows DNS Server Analytic and Audit event logs into Graylog schema compatible fields</p>
