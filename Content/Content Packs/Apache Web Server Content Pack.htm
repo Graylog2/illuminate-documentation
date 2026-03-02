@@ -1,272 +1,605 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-    <head><title>Apache HTTPD&#160;Content Pack</title>
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Apache HTTPD Content Pack</title>
         <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
-        <h1>
-            <MadCap:concept term="Endpoint Protection &amp; Endpoint Detection and Response" />Apache HTTPD&#160;Content Pack</h1>
+        <h1>Apache HTTPD Content Pack</h1>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p class="NormalWeb">Apache HTTP Server on a Linux system. This pack will parse out and configure Apache2 access logs. It supports two access log formats: <span class="Emphasis">Common</span> and <span class="Emphasis">Combined logs. And</span> it supports "normal" logs and virtual hosts logs.</p>
-        <h2 class="Heading2">Supported Version(s)</h2>
+        <p>Apache HTTP Server on a Linux system. This pack will parse out and configure Apache2 access logs. It supports two access log formats: Common and Combined logs. And it supports 'normal' logs and virtual hosts logs.</p>
+        <h2 id="supported-versions">Supported Version(s)</h2>
         <ul>
             <li>
-                <p class="NormalWeb">Version 2.4.<br /></p>
+                <p>Version 2.4</p>
             </li>
         </ul>
-        <h2>Tested rsyslog Version</h2>
+        <h2 id="versions">Tested Rsyslog Version</h2>
         <ul>
             <li>
-                <p class="NormalWeb">8.2212.0</p>
+                <p>8.2212.0</p>
             </li>
         </ul>
-        <h2 class="Heading2">What is Provided?</h2>
+        <h2 id="requirements">Requirements</h2>
         <ul>
             <li>
-                <p class="NormalWeb">Parsing rules to extract Apache logs into Graylog schema-compatible fields. Apache logs get the GIM code “180200” (http.communication).</p>
+                <p>Graylog 6.1.2+</p>
+            </li>
+            <li>
+                <p>There are two ways to deliver logs that are supported: Filebeat (with Sidecar) and rsyslog.</p>
+            </li>
+            <li>
+                <p>The pack supports a non-standard log folder as long as the name (access.log) does not change.</p>
             </li>
         </ul>
-        <h2 class="Heading2">Stream Configuration</h2>
-        <p class="NormalWeb">This technology pack includes one stream:</p>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
         <ul>
-            <li>
-                <p class="NormalWeb">"Illuminate:Apache2 Device Messages"</p>
-            </li>
-        </ul>
-        <p>
-            <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream. </div>
-            </section>
-        </p>
-        <h2 class="Heading2">Index Set Configuration</h2>
-        <p class="NormalWeb">This technology pack includes one index set definition:</p>
-        <ul>
-            <li>
-                <p class="NormalWeb">“Illuminate: Apache2 Messages”</p>
-            </li>
+            <li>"Illuminate:Apache2 Device Messages"</li>
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation. </div>
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</span>
+                </div>
             </section>
         </p>
-        <h2 class="Heading2">Log Format Example</h2>
-        <h3>Access Logs</h3>
-        <p><code class="linecode">[30/Jan/2023:15:06:52 +0000] "GET / HTTP/1.1" 200 3477 "-" “Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/109.0</code><code class="linecode">::1 - Stefan [07/Feb/2023:16:38:37 +0000] "GET /favicon.ico HTTP/1.1" 404 487 "http://localhost/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"</code>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"Illuminate: Apache2 Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
+                </div>
+            </section>
         </p>
-        <h3>Error Logs (beta, we support the following formats)</h3>
-        <p><code class="linecode">[Sun Jul 01 01:06:13 2022] [error] [client 1.2.3.4] File does not exist: /var/www/html/robots.txt</code><code class="linecode">[Wed Feb 01 00:00:01.584207 2023] [mpm_event:notice] [pid 745:tid 539654844431424] AH00999: Apache/9.4.41 (Ubuntu) configured -- resuming</code><code class="linecode">[Wed Jul 15 01:34:12.093005 2020] [proxy:error] [pid 139:tid 133316032] (13)Permission denied: AH00957: HTTP: attempt to connect to 127.0.0.1:9000 (127.0.0.1) failed</code>
+        <h2 id="log-format-example">Log Format Example</h2>
+        <h4>Access</h4>
+        <p><code class="linecode">[30/Jan/2023:15:06:52 +0000] "GET / HTTP/1.1" 200 3477 "-" “Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/109.0::1 - Stefan [07/Feb/2023:16:38:37 +0000] "GET /favicon.ico HTTP/1.1" 404 487 "http://localhost/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+        </code>
         </p>
-        <h3>Supported SSL Log format (beta support)</h3>
-        <p><code class="linecode">[13/Aug/2022:05:41:26 +0600] 192.168.0.100 TLSv1.2 ECDHE-RSA-AES128-GCM-SHA256 "GET /graylog/helper.php?cmd=gethelper HTTP/1.1" 1375</code>
+        <h4>Error Logs (beta, we support the following formats)</h4>
+        <p><code class="linecode">[Sun Jul 01 01:06:13 2022] [error] [client 1.2.3.4] File does not exist: /var/www/html/robots.txt[Wed Feb 01 00:00:01.584207 2023] [mpm_event:notice] [pid 745:tid 539654844431424] AH00999: Apache/9.4.41 (Ubuntu) configured -- resuming[Wed Jul 15 01:34:12.093005 2020] [proxy:error] [pid 139:tid 133316032] (13)Permission denied: AH00957: HTTP: attempt to connect to 127.0.0.1:9000 (127.0.0.1) failed
+        </code>
         </p>
-        <p>These SSL logs are custom logs; please configure your system accordingly. The custom file name is: <code class="linecode">httpd-ssl.log</code>. These are default fields/values. Logs with non-default fields or order will not work.</p>
-        <h2 class="Heading2">Requirements</h2>
+        <h4>Supported SSL Log format (beta support)</h4>
+        <p><code class="linecode">[13/Aug/2022:05:41:26 +0600] 192.168.0.100 TLSv1.2 ECDHE-RSA-AES128-GCM-SHA256 "GET /graylog/helper.php?cmd=gethelper HTTP/1.1" 1375
+        </code>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
         <ul>
             <li>
-                <p class="NormalWeb">There are two ways to deliver logs that are supported: Filebeat (with Sidecar) and rsyslog.</p>
-            </li>
-            <li>
-                <p class="NormalWeb">The pack supports a non-standard log folder as long as the name (<code class="linecode">access.log</code>) does not change.</p>
+                <p>Parsing rules to extract Apache logs into Graylog schema-compatible fields. Apache logs get the GIM code “180200” (http.communication).</p>
             </li>
         </ul>
-        <h3 class="Heading3">Input via Filebeat together with Graylog Sidecar</h3>
-        <p class="NormalWeb">Please use <a href="https://go2docs.graylog.org/5-0/getting_in_log_data/graylog_sidecar.html">the official Graylog Sidecar documentation</a> to configure your Graylog server and your client(s).</p>
+        <h3>Field Normalization</h3>
+        <h4>Normalize Fields</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Access Field List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_referrer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The referrer URL sent by the browser/client (the page that linked to this request), when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_method</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The HTTP method used for the request (for example: GET, POST, PUT), taken from the request line when it matches the expected format.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_request_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The path (and sometimes query string) requested (for example: /index.html or /api/v1/items?id=1), taken from the request line.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_response_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The HTTP status code the server returned (for example: 200, 404, 500).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_timestamp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">When the request happened, parsed from the timestamp in brackets in the access log.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_user_agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The client’s User-Agent string (browser/app identifier), when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The HTTP version used in the request (for example: 1.1 or 2.0), when included in the request line.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ident</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client identity value from the Apache ident field (rarely used).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_bytes</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">How many bytes were sent back in the response.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">rawrequest</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The full request text as logged, used when it doesn’t match the usual 'METHOD path HTTP/version' format.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Client hostname making the request, when the log records a name instead of an IP.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client IP address making the request.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Authenticated username for the request (if any).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>Normalize Fields</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Error Field List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">crypto_algorithm</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The TLS cipher/cipher-suite recorded for the connection, when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The target/server IP mentioned in the message, if one is referenced.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The target/server port mentioned in the message, if one is referenced.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_created</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">When the error log entry was written (taken from the date/time at the start of the log line, if present).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_error_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">An error code included in the log entry (often Apache-style), useful for grouping similar error types.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">A file or path mentioned in the message (for example, a config file path or a request/file path), when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The hostname referenced in the message when it’s explicitly provided.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The port associated with the referenced host/server, when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_host</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The host name or IP referenced in the message (often the server/virtual host being evaluated).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_referrer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The referring page URL mentioned in the message, if included.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_uri</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The requested URL/URI mentioned in the message (may include path and query string).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_user_agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">A product/version string mentioned in the message as a component identifier (not always a real HTTP User-Agent header in error logs).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The HTTP version referenced (for example, 1.1), when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The protocol label mentioned in the message (for example, HTTP), if included.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_command_line</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The command line Apache logged (common in startup/config messages), captured when the log includes it.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">A process ID mentioned inside the message text (if the message explicitly references a PID), which may be different from the logging PID.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_parent_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The Apache process ID (PID) that wrote this log entry.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_thread_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The thread ID (TID) that wrote the entry, if Apache is running in a threaded mode.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The client IP address involved in the event, if the log line includes a client context.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The client’s source port for the request that triggered the message, if included.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">tls_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The TLS version used for the connection (for example, TLSv1.2), when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The username mentioned in the message (for example, the authenticated user), when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_apache_error_module</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Which Apache component/module reported the message (for example: core, ssl, proxy), when shown in the log line.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_attribute</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The attribute name mentioned in an authorization message (for example, an LDAP attribute being checked), when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_auth_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Where Apache is checking authentication/authorization (for example, an LDAP server address or directory location), when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_backend_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The IP address of the backend server Apache is connecting to (often when acting as a proxy), when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_child_number</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The Apache child/worker number mentioned in the message, if included.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_command</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">A short command/signal name mentioned in the message (for example, a caught or received signal).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_error_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">A short error label from within the message (often a brief tag before a colon), when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The main action described by the message (for example: connected, denied, selected, compressed), pulled from the text when possible.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The main human-readable message text. Some parsing rules may trim it to remove extra prefixes/suffixes so it contains the most useful portion.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_outcome</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">A success/failure style word found in the message (for example: failed, accepting, successful), when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">How serious the message is (for example: error, warn, notice, info, debug, trace).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_ocsp_header</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">OCSP response header content shown in the message (for example, a header line like Content-Type: application/ocsp-response), when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">vendor_result</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Extra context about an auth/authorization decision (for example, which rule/requirement was evaluated), when present.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>Normalize Fields</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>TLS Field List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">crypto_algorithm</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The TLS cipher suite used for the connection (the encryption method), when logged (for example: ECDHE-RSA-AES128-GCM-SHA256).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_bytes_sent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">How many bytes the server sent back to the client for this request, when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_created</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">When the request was logged, taken from the bracketed timestamp in the log line (if that timestamp is included).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_method</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The HTTP method used (for example: GET, POST), taken from the request line when it matches the expected format.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_request_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The requested path (and sometimes query string), taken from the request line (for example: /index.html or /api/v1/items?id=1).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The HTTP version used in the request (for example: 1.1 or 2.0), when included in the request line.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">rawrequest</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The full request text as logged, used when it doesn’t match the usual 'METHOD path HTTP/version' format.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client hostname making the request, when the log records a name instead of an IP.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Client IP address making the request.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">tls_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">The TLS version negotiated for the connection (for example: TLSv1.2), when logged.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h2 id="log-collection">Log Collection</h2>
+        <h3>Input via Filebeat together with Graylog Sidecar</h3>
+        <p>Please use <a href="https://go2docs.graylog.org/5-0/getting_in_log_data/graylog_sidecar.html">the official Graylog Sidecar documentation</a>to configure your Graylog server and your client(s).</p>
         <ol>
             <li>
-                <p class="NormalWeb">Create an input and an API key and set up Graylog Sidecar.<br /></p>
+                <p>Create an input and an API key and set up Graylog Sidecar.</p>
             </li>
             <li>
-                <p class="NormalWeb">Add your client(s), e.g. web server.</p>
+                <p>Add your client(s), e.g. web server.</p>
             </li>
         </ol>
         <p>
             <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Hint</b>: It is possible to run the Apache Web Server and Graylog on the same machine.</div>
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">It is possible to run the Apache Web Server and Graylog on the same machine.</span>
+                </div>
             </section>
         </p>
-        <h2>Graylog Server Settings</h2>
-        <p class="NormalWeb">1. <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Create a global Beats input</a> in Graylog.</p>
-        <p class="NormalWeb">2. <a href="https://go2docs.graylog.org/current/setting_up_graylog/rest_api.html">Create a Graylog REST API access token</a> and save it.</p>
-        <p class="NormalWeb">3. Create a (Linux) filebeat configuration under <i>Sidercar </i>&gt;<i>&#160;Configuration</i> with a "filebeat on linux" collector.</p>
-        <p class="NormalWeb">4. Configure the file and add:</p>
-        <ul class="ul_2">
-            <li class="NormalWeb">
-                <p class="NormalWeb">The correct IP (Graylog server IP) under hosts.</p>
+        <h3>Graylog Server Settings</h3>
+        <ol>
+            <li>
+                <p>Create a <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">beats input</a></p>
             </li>
-            <li class="NormalWeb">
-                <p class="NormalWeb">The log source configured to the desired value and a field <code class="linecode">event_source_product</code> with the value <code class="linecode">apache_httpd</code>.</p>
+            <li>
+                <p>Create a <a href="https://go2docs.graylog.org/current/setting_up_graylog/rest_api.html">REST API</a> access token</p>
             </li>
-        </ul>
-        <MadCap:codeSnippet>
-            <MadCap:codeSnippetCopyButton />
-            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">filebeat.inputs:
+            <li>
+                <p>Create a (Linux) filebeat configuration under Sidercar &gt; <em>Configuration</em> with a <strong>filebeat on linux</strong> collector.</p>
+            </li>
+            <li>
+                <p>Configure the file and add:</p>
+            </li>
+            <li>
+                <p>The correct IP (Graylog server IP) under <code class="linecode">hosts</code>.</p>
+            </li>
+            <li>
+                <p>The log source configured to the desired value and a field <code class="linecode">event_source_product</code> with the value <code class="linecode">apache_httpd</code>.</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">filebeat.inputs:
 - input_type: log
-  paths:
-    - /var/log/apache2/access.log
-    - /var/log/apache2/error.log
-    - /var/log/apache2/httpd-ssl.log
-  type: filestream
-  fields_under_root: true
-  fields:
-    event_source_product: apache_httpd</MadCap:codeSnippetBody>
-        </MadCap:codeSnippet>
+paths:
+- /var/log/apache2/access.log
+- /var/log/apache2/error.log
+- /var/log/apache2/httpd-ssl.log
+type: filestream
+fields_under_root: true
+fields:
+event_source_product: apache_httpd</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+            <li>
+                <p>This will only log Apache access logs, but you can add error logs, etc.</p>
+            </li>
+            <li>
+                <p>Finally, save the configuration.</p>
+            </li>
+        </ol>
         <p>
             <section class="warningBox">
-                <div class="title" style="font-weight: normal;"><b>Warning</b>:&#160;There must be two spaces in front of <code class="linecode">event_source_product</code> and <code class="linecode">- /var... </code>.</div>
+                <div class="content"><b>Warning: </b><span style="font-weight: normal;">There must be two spaces in front of <code class="linecode">event_source_product</code> and <code class="linecode">- /var...</code> .</span>
+                </div>
             </section>
         </p>
-        <p class="NormalWeb">This will only log Apache access logs, but you can add error logs, etc.</p>
-        <p class="NormalWeb">5. Finally, save the configuration.</p>
-        <h2>Configure a Client with Filebeat and Graylog Sidecar</h2>
-        <p class="NormalWeb">1. Install Sidecar on the remote machine.<br /></p>
-        <MadCap:codeSnippet>
-            <MadCap:codeSnippetCopyButton />
-            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">wget https://packages.graylog2.org/repo/packages/graylog-sidecar-repository_1-5_all.deb
+        <h2 id="collection">Collection</h2>
+        <h3>Configure a Client with Filebeat and Graylog Sidecar</h3>
+        <p>Please refer to the official documentation to <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">set up Graylog Sidecar for Filebeat</a>.</p>
+        <ol>
+            <li>
+                <p>Install Sidecar on the remote machine.</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">wget https://packages.graylog2.org/repo/packages/graylog-sidecar-repository_1-5_all.deb
 sudo dpkg -i graylog-sidecar-repository_1-5_all.deb
-sudo apt-get update &amp;&amp; sudo apt-get install graylog-sidecar</MadCap:codeSnippetBody>
-        </MadCap:codeSnippet>
-        <p class="NormalWeb">2. Edit the <code class="linecode">/etc/graylog/sidecar/sidecar.yml</code> file and configure:</p>
-        <ul>
-            <li>
-                <p class="NormalWeb"><code class="linecode">server_url</code>: GraylogServerIP</p>
+sudo apt-get update && sudo apt-get install graylog-sidecar</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
             </li>
             <li>
-                <p class="NormalWeb"><code class="linecode">server_api_token</code>: Your API token<br /></p>
-            </li>
-        </ul>
-        <MadCap:codeSnippet>
-            <MadCap:codeSnippetCopyButton />
-            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo gedit /etc/graylog/sidecar/sidecar.yml
+                <p>Edit the <code class="linecode">/etc/graylog/sidecar/sidecar.yml</code> file and configure:</p>
+                <ol>
+                    <li>
+                        <p><code class="linecode">server_url</code>: GraylogServerIP</p>
+                    </li>
+                    <li>
+                        <p><code class="linecode">server_api_token</code>: Your API token</p>
+                    </li>
+                </ol>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo gedit /etc/graylog/sidecar/sidecar.yml
 server_url: "http://192.168.122.52:9000/api/"
-server_api_token: "65ol7edseo24mub8o7pu86h2rsr8j9fjjpimtrm9nrpbjso7cnv"
-</MadCap:codeSnippetBody>
-        </MadCap:codeSnippet>
-        <p class="NormalWeb">3. Install, enable, and verify the Sidecar service. </p>
-        <MadCap:codeSnippet>
-            <MadCap:codeSnippetCopyButton />
-            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo graylog-sidecar -service install
+server_api_token: "65ol7edseo24mub8o7pu86h2rsr8j9fjjpimtrm9nrpbjso7cnv"</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+            <li>
+                <p>Install, enable, and verify the Sidecar service.</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo graylog-sidecar -service install
 sudo systemctl enable graylog-sidecar
 sudo systemctl start graylog-sidecar
 sudo systemctl status graylog-sidecar</MadCap:codeSnippetBody>
-        </MadCap:codeSnippet>
-        <p>
-            <section class="warningBox">
-                <div class="title" style="font-weight: normal;"><b>Warning</b>:&#160;The provided commands are only examples; please use your IP and API token. For example commands for Ubuntu, refer the <a href="https://go2docs.graylog.org/5-0/getting_in_log_data/graylog_sidecar.html#:~:text=Graylog Sidecar is a lightweight,the configurations of log collectors.">official documentation</a>.</div>
-            </section>
-        </p>
-        <p class="NormalWeb">4. Install filebeats <a href="https://www.elastic.co/downloads/beats/filebeat">according to the documentation</a>. Or, here is <a href="https://www.elastic.co/downloads/beats/filebeat-oss">the download link</a> for the OSS version.</p>
-        <ul>
-            <li>
-                <p class="NormalWeb"> If you install it manually, install it again under <code class="linecode">/etc/filebeat</code>.<br /></p>
+                </MadCap:codeSnippet>
             </li>
             <li>
-                <p class="NormalWeb">If you install it via apt-get, then it is in the correct folder.</p>
+                <p>Install filebeats <a href="https://www.elastic.co/downloads/beats/filebeat">according to the documentation</a>. Or, here is <a href="https://www.elastic.co/downloads/beats/filebeat-oss">the download link</a> for the OSS version.</p>
+                <ol>
+                    <li>
+                        <p>If you install it manually, install it again under <code class="linecode">/etc/filebeat</code>.</p>
+                    </li>
+                    <li>
+                        <p>If you install it via apt-get, then it is in the correct folder.</p>
+                    </li>
+                </ol>
             </li>
-        </ul>
-        <p class="NormalWeb">Example commands for Ubuntu:</p>
-        <MadCap:codeSnippet>
-            <MadCap:codeSnippetCopyButton />
-            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-sudo apt-get install apt-transport-https
-echo "deb https://artifacts.elastic.co/packages/oss-8.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-8.x.list
-sudo apt-get update &amp;&amp; sudo apt-get install filebeat
-sudo systemctl enable filebeat
-sudo systemctl start filebeat
-sudo systemctl status filebeat</MadCap:codeSnippetBody>
-        </MadCap:codeSnippet>
-        <p class="NormalWeb">5. <i>Optional</i>. Edit the <code class="linecode">filebeat.ym</code>l file as needed. You do this via the Sidecar configuration in Graylog.<br />6. Start the deamon.<br />7. If there is a permission issue, you can resolve with:</p>
-        <MadCap:codeSnippet>
-            <MadCap:codeSnippetCopyButton />
-            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo chown root filebeat.yml</MadCap:codeSnippetBody>
-        </MadCap:codeSnippet>
-        <p class="NormalWeb">8. In Graylog, assign a configuration to your machine.</p>
-        <h2>Requirements for Input via rsyslog</h2>
-        <ul class="ul_3">
-            <li class="NormalWeb">
-                <p class="NormalWeb">A configured UDP (or <code class="linecode">TCP_syslog</code> input on Graylog server).</p>
+            <li>
+                <p>Example commands for Ubuntu:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo gedit /etc/graylog/sidecar/sidecar.yml
+server_url: "http://192.168.122.52:9000/api/"
+server_api_token: "65ol7edseo24mub8o7pu86h2rsr8j9fjjpimtrm9nrpbjso7cnv"</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
             </li>
-            <li class="NormalWeb">
-                <p class="NormalWeb">Installation of rsyslog via <a href="https://www.rsyslog.com/ubuntu-repository/">the official documentation</a>.</p>
+            <li>
+                <p><em>Optional</em>. Edit the <code class="linecode">filebeat.yml</code> file as needed. You do this via the Sidecar configuration in Graylog.</p>
             </li>
-            <li class="NormalWeb">
-                <p class="NormalWeb">A configured <code class="linecode">rsyslog.conf</code>.</p>
+            <li>
+                <p>Start the deamon.</p>
             </li>
-        </ul>
-        <p class="NormalWeb"><span class="Emphasis">For example  <code class="linecode">/etc/rsyslog.conf</code> with a UDP input at 1514 on IP 192.168.122.52:</span>
-        </p>
-        <MadCap:codeSnippet>
-            <MadCap:codeSnippetCopyButton />
-            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve"># provides UDP syslog reception
+            <li>
+                <p>If there is a permission issue, you can resolve with:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo gedit /etc/graylog/sidecar/sidecar.yml
+server_url: "http://192.168.122.52:9000/api/"
+server_api_token: "65ol7edseo24mub8o7pu86h2rsr8j9fjjpimtrm9nrpbjso7cnv"</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+            <li>
+                <p>In Graylog, assign a configuration to your machine.</p>
+            </li>
+        </ol>
+        <h3>Requirements for Input via Rsyslog</h3>
+        <ol>
+            <li>
+                <p>A configured UDP (or <code class="linecode">TCP_syslog</code> input on Graylog server).</p>
+            </li>
+            <li>
+                <p>Installation of Rsyslog via <a href="https://www.rsyslog.com/ubuntu-repository/">the official documentation</a></p>
+            </li>
+            <li>
+                <p>A configured <code class="linecode">rsyslog.conf</code>.</p>
+            </li>
+            <li>
+                <p>For example <code class="linecode">/etc/rsyslog.conf</code> with a UDP input at 1514 on IP 192.168.122.52:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve"># provides UDP syslog reception
 $ModLoad imudp
 $UDPServerRun 1514
 *.* @192.168.122.52:1514;RSYSLOG_SyslogProtocol23Format</MadCap:codeSnippetBody>
-        </MadCap:codeSnippet>
-        <ul class="ul_3">
-            <li class="NormalWeb">
-                <p class="NormalWeb">A configured <code class="linecode">02-apache2.conf</code>.</p>
+                </MadCap:codeSnippet>
             </li>
-        </ul>
-        <p class="NormalWeb">You might need to create the configuration file with:</p>
-        <MadCap:codeSnippet>
-            <MadCap:codeSnippetCopyButton />
-            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo gedit /etc/rsyslog.d/02-apache2.conf</MadCap:codeSnippetBody>
-        </MadCap:codeSnippet>
-        <p class="NormalWeb">If it is in the correct folder, rsyslog will load the file automatically after restarting the rsyslog service.</p>
-        <p class="NormalWeb">Example for <code class="linecode">02-apache2.conf</code> to log access, ssl, and error logs:</p>
-        <MadCap:codeSnippet>
-            <MadCap:codeSnippetCopyButton />
-            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">module(load="imfile" PollingInterval="10" statefile.directory="/var/spool/rsyslog")
+            <li>
+                <p>A configured <code class="linecode">02-apache2.conf</code>.</p>
+            </li>
+            <li>
+                <p>You might need to create the configuration file with:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo gedit /etc/rsyslog.d/02-apache2.conf</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+            <li>
+                <p>If it is in the correct folder, Rsyslog will load the file automatically after restarting the Rsyslog service.</p>
+            </li>
+            <li>
+                <p>Example for <code class="linecode">02-apache2.conf</code> to log access, ssl, and error logs:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">module(load="imfile" PollingInterval="10" statefile.directory="/var/spool/rsyslog")
 input(type="imfile"
-      File="/var/log/apache2/access.log"
-      Tag="apache2_http_access"
-      Severity="info"
-      Facility="local6")
+File="/var/log/apache2/access.log"
+Tag="apache2_http_access"
+Severity="info"
+Facility="local6")
 input(type="imfile"
-      File="/var/log/apache2/error.log"
-      Tag="apache2_http_error"
-      Severity="info"
-      Facility="local6")
+File="/var/log/apache2/error.log"
+Tag="apache2_http_error"
+Severity="info"
+Facility="local6")
 input(type="imfile"
-      File="/var/log/apache2/httpd-ssl.log"
-      Tag="apache2_http_ssl"
-      Severity="info"
-      Facility="local6")
+File="/var/log/apache2/httpd-ssl.log"
+Tag="apache2_http_ssl"
+Severity="info"
+Facility="local6")
 local6.access        @192.168.122.40:1514</MadCap:codeSnippetBody>
-        </MadCap:codeSnippet>
+                </MadCap:codeSnippet>
+            </li>
+            <li>
+                <p>Use this command to restart the service on Ubuntu:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo systemctl restart rsyslog</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+            <li>
+                <p>You can check the status with:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo systemctl status rsyslog</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+            <li>
+                <p>Note that red lines may indicate problems.</p>
+            </li>
+        </ol>
         <p>
             <section class="warningBox">
-                <div class="title" style="font-weight: normal;"><b>Warning</b>:&#160;This configuration is for UDP. UDP is not a reliable protocol, so consider if TCP is a better option for your organization. After installing rsyslog there might be active default rules (e.g. 50-default.conf) that log system, kernel, and other logs. Deactivate them if not needed. </div>
+                <div class="content"><b>Warning: </b><span style="font-weight: normal;">This configuration is for UDP. UDP is not a reliable protocol, so consider if TCP is a better option for your organization. After installing rsyslog there might be active default rules (e.g. 50-default.conf) that log system, kernel, and other logs. Deactivate them if not needed.</span>
+                </div>
             </section>
         </p>
-        <p class="NormalWeb">Use this command to restart the service on Ubuntu:</p>
-        <MadCap:codeSnippet>
-            <MadCap:codeSnippetCopyButton />
-            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo systemctl restart rsyslog</MadCap:codeSnippetBody>
-        </MadCap:codeSnippet>
-        <p class="NormalWeb">You can check the status with:</p>
-        <p class="NormalWeb">
-            <MadCap:codeSnippet>
-                <MadCap:codeSnippetCopyButton />
-                <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo systemctl status rsyslog</MadCap:codeSnippetBody>
-            </MadCap:codeSnippet>
-        </p>
-        <p class="NormalWeb">Note that red lines may indicate problems.</p>
-        <h2 class="Heading2">Limitations</h2>
-        <ul>
-            <li>
-                <p class="NormalWeb">Error logs are beta; most formats compatible. </p>
-            </li>
-        </ul>
-        <h2>Dashboard</h2>
-        <p>Apache HTTPD offers a dashboard with 2 tabs: Overview, New Incident, and HyperDetect Activity:</p>
+        <h2 id="limitations">Limitations</h2>
+        <p>Error logs are beta; most formats compatible.</p>
+        <h2 id="spotlight-content-pack">Apache HTTPD Content Pack</h2>
+        <p>Apache HTTPD offers a dashboard with 2 tabs: Overview and Error Messages:</p>
         <h3>Overview</h3>
         <p>
-            <img src="../Resources/Images/Apache HTTPD/apache_httpd_overview.png" />
+            <img src="../Resources/Images/resources/apache_httpd/apache_httpd_overview.png" />
         </p>
-        <h3>Error </h3>
+        <h3>Error</h3>
         <p>
-            <img src="../Resources/Images/Apache HTTPD/apache_httpd_error.png" />
+            <img src="../Resources/Images/resources/apache_httpd/apache_httpd_error.png" />
         </p>
     </body>
 </html>
