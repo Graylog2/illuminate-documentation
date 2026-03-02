@@ -1,0 +1,810 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>PostgreSQL Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>PostgreSQL Content Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>PostgreSQL is an open-source relational database management system designed for reliability, standards compliance, and extensibility. It supports advanced data types, complex queries, transactional integrity, and robust access controls. PostgreSQL generates detailed operational, authentication, and query logs that can be parsed and enriched for monitoring and security analysis. This enables efficient search, correlation, and detection of database activity across diverse environments.</p>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>Graylog 7.0.0+ with a valid Enterprise license</p>
+            </li>
+            <li>
+                <p>PostgreSQL with logging_collection is on</p>
+            </li>
+            <li>
+                <p>Graylog Sidecar or stand-alone Filebeat agent installed on PostgreSQL system(s)</p>
+            </li>
+        </ul>
+        <h2 id="supported-versions">Supported Versions</h2>
+        <ul>
+            <li>
+                <p>PostgreSQL 18</p>
+            </li>
+        </ul>
+        <h2 id="log-collection">Log Collection and Delivery</h2>
+        <p>This pack was designed to use the Elastic Filebeat agent for log delivery. This can be configured easily using the Graylog Sidecar. The collection of PostgreSQL logs should be performed from the manager and all agents.</p>
+        <p>This configuration requires that the account used to run the Graylog Sidecar/Filebeat agent have the necessary permissions to access the PostgreSQL log files. When running Sidecar/Filebeat with a non-root service account it will be necessary to grant that service account account access to the log files.</p>
+        <h3>Configuring PostgreSQL</h3>
+        <p>The PostgreSQL should be configured to generate stderr-formatted events see ${postgresql.conf}. The jsonlog format is in beta and not fully tested. To use it, set the event_source_product in the filebeat configuration file to postgresql_json. The csvlog and syslog format is not supported.</p>
+        <h3>Configuring Sidecar</h3>
+        <ol>
+            <li>
+                <p>Please refer to the official documentation to <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">set up Graylog Sidecar for Filebeat</a>.</p>
+            </li>
+            <li>
+                <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> in Graylog.</p>
+            </li>
+            <li>
+                <p>Ensure that the option <em>Do not add Beats type as prefix</em> is <strong>disabled</strong>.</p>
+            </li>
+            <li>
+                <p>Add the following example configuration snippet to your Filebeat configuration:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">- type: filestream
+id: postgresql-filestream
+enabled: true
+paths:
+# Default PostgreSQL log paths (Debian/Ubuntu)
+- /var/log/postgresql/*.log
+# Default PostgreSQL log paths (RHEL/CentOS)
+- /var/lib/pgsql/data/log/*.log
+fields_under_root: true
+fields:
+event_source_product: postgresql</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+        </ol>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">The configuration snippet provided is not a fully functional filebeat configuration, it is only the section that adds PostgreSQL log ingestion to an existing filebeat configuration using the default PostgreSQL paths.</span>
+                </div>
+            </section>
+        </p>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>Illuminate:PostgreSQL Messages</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</span>
+                </div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>PostgreSQL Logs</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
+                </div>
+            </section>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Rules to parse, normalize, and enrich PostgreSQL log messages.</p>
+            </li>
+        </ul>
+        <h2 id="log-format-example">PostgreSQL Logs Format Examples</h2>
+        <p>PostgreSQL has two log types. Some logs are directly related to database activities like updating a table, others are about the status of the database. Logs can be parsed with and without the header.</p>
+        <h4>database.commands</h4>
+        <p><code class="linecode">statement: CREATE ROLE myuser
+        GRANT analyst TO postgres;
+        INSERT INTO dml_test VALUES (1);
+        statement: INSERT INTO sales_archive SELECT * FROM sales WHERE sale_date &lt; '2025-01-01';
+        2026-02-13 05:02:38.447 GMT [1492] user=etl_user db=warehouse app=psql - CONN:1332777 client=10.10.5.23 LOG:  statement: INSERT INTO sales_archive SELECT * FROM sales WHERE sale_date &lt; '2025-01-01';
+        </code>
+        </p>
+        <h4>status.messages</h4>
+        <p><code class="linecode">connection authorized: user=postgres database=postgres application_name=pgAdmin 4 - DB:postgres
+        </code>
+        </p>
+        <h3 id="gim-categorization">GIM Categorization - PostgreSQL logs</h3>
+        <p>Categorization is assigned according to the vendor_event_action value.</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">vendor_event_action</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Description</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ALTER ROLE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Database role database was modified</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">account modified</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ALTER TABLE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Database table structure was modified</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">159999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">database message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication failed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Database user authentication attempt failed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">credential validation</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authorization denied</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Database authorization request was denied</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">100000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.logon</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">connection authenticated</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Database connection was successfully authenticated</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">credential validation</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">connection authorized</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Database connection was successfully authorized</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">100000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.logon</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">connection received</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Incoming database connection was received</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120200</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.open</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection initiated</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">CREATE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Database object creation was performed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">159999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">database message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">CREATE DATABASE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">New database was successfully created</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">151002</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">database.add</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">create database</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">CREATE ROLE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">New database role was successfully created</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">110000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account modified</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">CREATE TABLE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">New database table was successfully created</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">151001</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">database.add</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">add table</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DELETE FROM</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Database records were deleted from table</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">151500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database.delete</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">delete rows</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">disconnection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Database client disconnected from server</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">102501</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logoff</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">session disconnect</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DROP DATABASE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Existing database was permanently removed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">151502</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database.delete</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">drop database</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DROP ROLE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Existing database role was removed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">110500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">account modified</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DROP TABLE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Existing database table was removed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">151501</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database.delete</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">drop table</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DROP USER</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Existing database role was removed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">110500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">account modified</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">failed authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Database authentication attempt was unsuccessful</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">100500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">credential validation</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">GRANT</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Database privileges were granted to role</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">account modified</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">INSERT INTO</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">New records were inserted into table</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">151000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database.add</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">insert rows</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">log in</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User successfully logged into database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100501</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">permission denied</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Database permission request was denied</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">100501</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">RESET</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Database session database was reset</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">159999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">database.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">database message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">REVOKE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Database privileges were revoked from role</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">159999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">database message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">SELECT</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Database records were queried from table</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">150000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">database.query</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">database query</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SET</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Database session database was changed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">159999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">database message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">shut down</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Database system was shut down</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">210100</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.stop</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service stopped</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">terminating connection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Database connection was forcibly terminated</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120300</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.close</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection ended</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">TRUNCATE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Database table contents were truncated</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">151500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">database.delete</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">delete rows</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TRUNCATE TABLE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Database table contents were truncated</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">151500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database.delete</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">delete rows</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">UPDATE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Database records were updated in table</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">150500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">database.update</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">update rows</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Message Fields Included in This Pack</h3>
+        <p>Most relevant PostgreSQL fields</p>
+        <h4>PostgreSQL Log Field Normalization</h4>
+        <p>Used Database Fields:</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Original Field Name</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">action</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">INSERT, SELECT</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Native action</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">application_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">application_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">pgAdmin 4</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client application name</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">client</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">::1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Client source IP address</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_database_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">postgres</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The database name</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_aggregate</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_aggregate</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">sum</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The database aggregate function name</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_column</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_column</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">customer_id</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The column name referenced in a database statement</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_constraint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_constraint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">orders_pkey</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The database constraint name</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_constraint_type</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_constraint_type</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">PRIMARY KEY</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The type of database constraint such as PRIMARY KEY or FOREIGN KEY</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_datatype</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_datatype</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">VARCHAR(255)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The data type defined or modified in a database statement</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">now()</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The default value defined for a column</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_extension</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_extension</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">hstore</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The database extension name</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_foreign_table</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_foreign_table</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">remote_orders</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The foreign table name defined via foreign data wrapper</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_function</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_function</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">calculate_tax</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The database function name</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_index</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_index</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">idx_orders_created_at</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The database index name</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_new_column</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_new_column</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">tracking_id</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The new column name after rename or creation</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_new_database_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_new_database_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">inventory</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The new database name after rename</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_new_owner</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_new_owner</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">app_user</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The new owner assigned to a database object</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_new_table</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_new_table</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">orders_archive</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The new table name after rename</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_old_column</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_old_column</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">old_status</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The previous column name before rename or alteration</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_old_table</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_old_table</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">orders_backup</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The previous table name before rename</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_parameter</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_parameter</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">log_statement</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The configuration parameter name modified in a statement</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_policy</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_policy</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_isolation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The row-level security policy name</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_procedure</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_procedure</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">update_account_balance</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The database procedure name</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_publication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_publication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">orders_pub</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The logical replication publication name</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_schema</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_schema</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">public</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The database schema name</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_sequence</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_sequence</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">order_id_seq</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The database sequence name</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_server</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_server</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">foreign_srv_1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The foreign server name used for external connections</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_source_table</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_source_table</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">sales</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The source table used in statements like INSERT ... SELECT or CREATE TABLE AS</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_subscription</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_subscription</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">orders_sub</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The logical replication subscription name</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_table_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_table_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">orders</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The database table name</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_trigger</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_trigger</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">update_timestamp</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The database trigger name</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_type</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_type</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">status_enum</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The database type name such as ENUM or composite type</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_view</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_view</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">active_users</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The database view name</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_where_column</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_where_column</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">sale_date</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The column referenced in a WHERE clause</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_where_value</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">db_where_value</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2025-01-01</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The value used in a WHERE clause condition</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_with_options</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_with_options</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">fillfactor=70</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The WITH clause options defined in a statement</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">error_severity</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_severity</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ERROR</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">PostgreSQL native severity level</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_line_num</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_file_line</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1072</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source code line number</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">postgres.c</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source code file generating log</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">func_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_function</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">exec_simple_query</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">PostgreSQL internal function name</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mapped</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_category</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Normalized event category</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Mapped</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_error_description</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">invalid_password</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mapped</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_outcome</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">failure</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Derived event outcome</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Mapped</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_severity</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">error</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Normalized event severity</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mapped</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_severity_level</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Mapped numeric severity level</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">pid</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_id</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2310</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">PostgreSQL backend process ID</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">port</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_port</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">58806</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Client source port</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">query_id</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_query_id</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">123456789</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">PostgreSQL query identifier</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">remote_host</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10.10.5.21</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Remote client IP address</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">remote_port</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_port</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">55151</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Remote client port</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">session_id</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">session_id</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">6971a5f3.1898</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">PostgreSQL session identifier</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">session_start</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">session_start</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2026-01-22 04:22:11 GMT</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Session start time</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">sql_state_code</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_error_code</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">42804</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">PostgreSQL SQLSTATE error code</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">target_user</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">target_user_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">John</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">If an administrator changes the user John, John is the target_user_name</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">timestamp</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_created</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2026-01-13 07:01:11.112 GMT</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Original PostgreSQL log timestamp</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">txid</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">transaction_id</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Transaction ID</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_name</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">postgres</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">It is the user that does an activity.</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">vtxid</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">virtual_transaction_id</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">1/7</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Virtual transaction ID</td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
