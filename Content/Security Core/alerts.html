@@ -1,0 +1,502 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Alerts</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>Alerts</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>The following table lists all alert event definitions included in Security Core. Each alert includes a name, description, any associated search filters, and any custom queries used.</p>
+        <h3>Alert Reference</h3>
+        <p>Security Core alerts are organized by attack surface: Identity, Endpoint, Perimeter, Web, Data, Cloud, and Malware.</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Alert Name</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Description</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Search Filters</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Queries</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Account Logged On from Multiple Sources (Security Core:Identity)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Show accounts that have logged on to the same application from multiple sources in a given time period. This can be used to detect potential credential abuse.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Account Logged On from Multiple Sources Exemptions</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">gim_event_subcategory:("authentication.logon" OR "authentication.credential validation")</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">AWS Resource Assigned Root Level Permissions (Security Core:Cloud)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">This alert triggers when a resource policy change event assigns the AWS managed AdministratorAccess policy (arn:aws:iam::aws:policy/AdministratorAccess). This policy grants full administrative permissions across the AWS account, including root-level access to all services and resources. The alert helps detect potentially high-risk privilege escalations or overly permissive access assignments.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Cloud Resource Policy Changes; AWS Administrator Access</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Cloud Logging Disabled (Security Core:Cloud)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">This alert triggers when a StopLogging action is detected, indicating that cloud logging has been disabled. Disabling logging reduces visibility into account activity and may be an attempt to evade detection after malicious or unauthorized actions. This alert helps identify potential tampering with audit trails or security monitoring controls.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">AWS Cloud Logging Stopped</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Cloud Resource Exposed to the Internet (Security Core:Cloud)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">This alert triggers when a security group ingress rule is authorized (AuthorizeSecurityGroupIngress) that results in a resource being exposed to the internet (internet_exposure:true). This typically indicates that inbound access has been opened from a public source (e.g., 0.0.0.0/0 or ::/0). The alert helps detect potentially risky configuration changes that could expose cloud resources to unauthorized external access.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">AWS Security Group With Internet Ingress</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Cloud Root Account Used to Modify a Resource (Security Core:Cloud)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">This alert triggers when the AWS root account (user_type:Root) is used to create, update, or delete a cloud resource. Root accounts have unrestricted privileges and should not be used for routine administrative tasks. This alert helps identify high-risk activity, potential credential compromise, or violations of security best practices related to privileged account usage.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Create, Update, Delete Events; Cloud Root Account</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Credential Access - LSASS Memory Access (Security Core: Endpoint)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Detects attempts to directly access LSASS process memory, which contains cached credentials, hashes, and Kerberos tickets and is the most common mechanism for credential dumping on Windows.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Credential Access; Process Accessed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Critical File Modified (Security Core:Endpoint)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Identify file modification events.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">gim_event_subcategory:file.modify</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Cross Site Request Forgery Detected By Web Device (Security Core:Web)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">This alert triggers when a web security device detects activity consistent with a Cross-Site Request Forgery (CSRF) attack, based on event categorization or vendor-specific detection fields. CSRF attacks attempt to trick authenticated users into performing unintended actions within a web application, potentially leading to unauthorized transactions or account changes. This alert helps identify malicious attempts to exploit trusted user sessions.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Cross Site Request Forgery Signal</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Cross Site Scripting Detected By Web Device (Security Core:Web)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">This alert triggers when a web security device detects activity consistent with a Cross-Site Scripting (XSS) attack, identified through event categorization or vendor-specific detection fields. XSS attacks attempt to inject malicious scripts into web applications, which can execute in users' browsers and lead to session hijacking, credential theft, or website defacement. This alert helps identify and respond to attempts to exploit web application vulnerabilities.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Cross Site Scripting Signal</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DB Create (Security Core: Database)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Triggers when a new database instance or schema is created, enabling monitoring and alerting on database provisioning activities.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Create Database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DB Delete (Security Core: Database)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Triggers when a database table is deleted, indicating potential schema modification or destructive activity that may impact data integrity and application functionality.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Drop Database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DB Drop User (Security Core: Database)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Triggers when a database user or role is removed from the system, potentially impacting authentication, access control, and privilege assignments.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Drop User</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DB Table Drop (Security Core: Database)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Triggers when a database table is dropped, indicating potential schema modification or destructive activity that may impact data integrity and application functionality.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Drop Table</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Default Account Disabled (Security Core:Identity)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A default account has been disabled, which may indicate an administrative action taken to reduce risk or a potential response to suspicious activity.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Account Disabled; Default Account</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Default Account Enabled (Security Core:Identity)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A default system account has been enabled, which may indicate unauthorized account manipulation or an attempt to establish persistence using known credentials.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Default Account; Account Enabled</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Disable Local Firewall - Windows CLI (Security Core:Endpoint)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Detects Windows firewall disable attempts via command execution.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">event_log_name:security AND event_code:4688 AND process_command_line:(/.<em>.netsh.</em>.advfirewall.<em>.state.</em>.off.<em>/ OR /.</em>.Set-NetFirewallProfile.<em>.Enabled.</em>.False.*/)</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DNS traffic to unapproved DNS Server (Security Core:Perimeter)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">This event definition requires a data source that provides DNS traffic, an enabled Illuminate pack that processes that source's DNS data, and the Illuminate pack "Core DNS Processing Add-on." This enables use of the Assets functionality to identify approved DNS servers, allowing the rule to detect DNS traffic associated with unapproved servers.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">destination_port:53 OR <em>exists</em>:query_request AND approved_dns_server:false</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Email with Malicious URL Present (Security Core:Web)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">This alert triggers when an email message contains a URL categorized as malware, phishing, or command-and-control (C2) based on threat intelligence, vendor detection fields, event categorization, or alert signatures. Malicious URLs in email are commonly used to deliver malware, harvest credentials, or establish attacker-controlled communications. This alert helps identify and respond to potentially harmful links delivered through email.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Known Bad URL Categories; Email Message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Excessive Failed DNS Lookups (Security Core: Perimeter)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Detects an unusually high count of failed DNS lookup responses within a short time window.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">gim_event_type:"dns error"</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Excessive Network Intrusion Detections per Host (Security Core: Perimeter)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Detects when a single host generates multiple (&gt;10) network intrusion related detections within a short time window, indicating potential active compromise or scanning activity.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">gim_event_type:("ids_detection" OR "network_detection")</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Excessive Outbound Connections from Single Host (Security Core: Endpoint)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Detects a single host generating an abnormally high number of outbound network connections within a short time window.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">event_code:3 AND gim_event_type:"network connection" AND gim_tags:source_is_internal</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Excessive Remote Connections by User (Security Core: Endpoint)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Detects excessive remote network connection activity initiated by a single user within a short time window.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">gim_tags:remote_access AND gim_event_category:authentication AND NOT gim_tags:source_is_internal</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Guest or temporary user enabled (Security Core:Identity)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A guest or temporary user account was enabled, which may indicate an attempt to grant short-term or external access and should be reviewed to ensure it is authorized.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Account Enabled; SC:Guest or Temporary Account</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">High/Critical Severity Malware Detected (Security Core:Malware)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">This detection identifies high or critical severity alerts generated by security controls such as AV, EDR, IDS, or IPS. These alerts typically indicate behavior already assessed by a specialized security product as strongly malicious or highly suspicious.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">gim_event_category:detection AND alert_severity_level:&gt;3</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">High/Critical Severity Network Intrusion Detection (Security Core: Perimeter)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Identifies a high or critical severity network intrusion detection.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">alert_severity:("high" OR "critical") AND gim_event_type:("ids_detection" OR "network_detection")</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Incoming TCP Connection to Monitored Port (Security Core:Perimeter)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">This looks for incoming traffic to ports identified in the lookup adapter security_core_monitored_incoming_tcp_ports_adapter by filtering events where the destination_category contains "is_internal" and the source_category does not.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Direction:Inbound; TCP Monitored Port Connection Exemption; Monitored ports in - TCP</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network_transport:tcp</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Large Outbound Transfer - Greater than 100MB (Security Core:Perimeter)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">This event will detect when a host that has transferred over 100MB in a 5 minute period.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">source_category:is_internal AND <em>exists</em>:network_bytes</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Large Outbound Transfer - Greater than 5GB (Security Core:Perimeter)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">This event will detect when a host that has transferred over 5GB in a 5 minute period.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">source_category:is_internal AND <em>exists</em>:network_bytes</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Logon Attempt to an Expired/Disabled Account (Security Core:Identity)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Detects an authentication attempt using an expired user account, which may indicate misuse of stale credentials or unauthorized access activity. Currently Windows only, no GIM mapping.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Logon; Event Outcome: failure; Expired Status Code</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Logon Attempt to an Unknown Account (Security Core:Identity)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Detects a logon attempt using an account that does not exist in the environment, which may indicate account enumeration or misconfigured authentication activity. Currently Windows only, no GIM mapping.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Logon; Event Outcome: failure; Unknown Status Code</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Malware Detected on Boundary Device (Security Core:Malware)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">This identifies malware detections on systems with the host category "boundary_device".</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">gim_event_subcategory:(detection.host_detection OR detection.default) AND (host_category:boundary_device OR associated_asset_category:boundary_device)</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Malware Outbreak - Horizontal (Security Core:Malware)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">This detection will identify when a single host-based detection signature (identified by the gim_event_subcategory:detection.host_detection) is detected on 3 or more systems in a 30 minute time period.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">gim_event_subcategory:detection.host_detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Malware Outbreak - Vertical (Security Core:Malware)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">This detection will identify when a single host has multiple distinct detection signatures in a 30 minute time period.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">gim_event_subcategory:detection.host_detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Multiple Logins to service account in short time frame from different source (Security Core:Identity)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Detects a service account authenticating multiple times within a short period from different source systems, which may indicate credential misuse or lateral movement.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Service Account</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Multiple POST requests in a short timeframe to known bad domain (Security Core:Web)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">This alert triggers when multiple HTTP POST requests are sent within a short timeframe to a known malicious domain categorized as malware, phishing, or command-and-control (C2).</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">HTTP POST Requests; Known Bad URL Categories</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Multiple Unique Network Intrusion Signatures For Host (Security Core: Perimeter)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Triggers when one source IP generates at least five unique intrusion signatures within five minutes.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">gim_event_type:("ids_detection" OR "network_detection")</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Office Application Spawning Child Process (Security Core:Endpoint)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">This detection identifies Microsoft Office applications spawning child processes that are not required for normal document rendering or collaboration workflows. It triggers when Office binaries (e.g., Word, Excel, PowerPoint, Access, Visio, OneNote, Publisher, Equation Editor) start command interpreters, scripting engines, system utilities, proxy execution binaries, or remote administration tools.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">gim_event_category:process AND gim_event_type:"process started" AND process_parent_name:(WINWORD.EXE OR WORDVIEW.EXE OR MSPUB.EXE OR EXCEL.EXE OR MSACCESS.EXE OR EQNEDT32.EXE OR ONENOTE.EXE OR POWERPNT.EXE OR VISIO.EXE) AND process_name:(cmd.exe OR powershell.exe OR wscript.exe OR cscript.exe OR mshta.exe OR rundll32.exe OR regsvr32.exe OR bitsadmin.exe OR certutil.exe OR curl.exe OR ssh.exe OR net.exe OR whoami.exe OR net1.exe OR installutil.exe OR odbcconf.exe OR msiexec.exe OR gpupdate.exe OR setspn.exe OR dsquery.exe OR klist.exe OR wmic.exe OR schtasks.exe OR cmdkey.exe OR sc.exe OR winrs.exe OR msbuild.exe OR presentationhost.exe)</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Possible Data Transfer to File Upload Site from Critical Asset (Security Core:Web)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">This alert triggers when a device categorized as a critical asset communicates with websites classified as online storage, backup, or file upload services.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">URLs Categorised As File Upload Sites; Critical Asset</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Possible Known Malicious File Extensions Detected by Web (Security Core:Web)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">This alert triggers when web traffic contains indicators of potentially malicious file extensions such as .exe, .js, .docm, or .xlsm.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Common File Extension Signals</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Possible Large Data Transfer to File Upload Site (Security Core:Web)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">This alert triggers when more than 1 GB of data (source_bytes_sent &gt; 1000000000) is transferred to websites categorized as online storage, backup, or file upload services.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">URLs Categorised As File Upload Sites; Critical Asset</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Potential Key Pair Created for AWS Root Account (Security Core:Cloud)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">This alert triggers when an AWS access key is created (CreateAccessKey) and no user_name is associated with the event, which may indicate the key was created for the AWS root account.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">AWS Access Key Creation; Cloud Root Account</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Potential Password Spraying (Security Core:Identity)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Detect attempts against multiple accounts from one source IP. See MITRE ATT&amp;CK technique T1110.003.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Event Outcome: failure; Credential Validation or Logon</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Potential Phishing Email (Security Core:Web)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">This alert triggers when an inbound email (email_direction:inbound) is identified as potentially containing phishing content, based on URL categorization, vendor detection fields, event categorization, or alert signatures indicating phishing activity.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">URLs Categorised As Phishing; Incoming Email Message; Email Message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Potential Phishing Email Against Privileged User (Security Core:Web)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">This alert triggers when an inbound email identified as phishing is received by a privileged user or associated with a privileged asset.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Incoming Email Message; URLs Categorised As Phishing; Privileged Account; Email Message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Privileged Account Enabled (Security Core:Identity)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A privileged account was enabled, which may indicate an attempt to restore elevated access and should be reviewed to ensure it was authorized.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Account Enabled; Privileged Account</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Privileged Account Locked (Security Core:Identity)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A privileged account was locked, which may indicate suspicious activity, misconfiguration, or an attempt to disrupt administrative access.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Account Locked; Privileged Account</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Privileged Account or Group Access Removal (Security Core:Identity)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A privileged account or privileged group had their access removed. Deleting or disabling privileged identities can be used to disrupt administrative control, slow incident response, and remove or reduce legitimate access paths used for recovery.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">SC:Access Removal (Medium)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">(user_category:privileged OR group_category:privileged)</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Privileged Account or Group Disabled or Deleted (Security Core:Identity)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A privileged account or privileged group had their access removed. Deleting or disabling privileged identities can be used to disrupt administrative control, slow incident response, and remove or reduce legitimate access paths used for recovery.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SC:Access Removal (Medium)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">(user_category:privileged OR group_category:privileged)</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Privileged Account Unlocked (Security Core:Identity)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A privileged account was unlocked, potentially restoring administrative access and requiring verification to ensure the action was authorized and expected.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Privileged Account; Account Unlocked</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Privileged Group Membership Change (Security Core:Identity)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Detects changes to the membership of privileged groups. These groups grant elevated administrative access, and any modification directly impacts who can perform sensitive or high-risk actions within the environment.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SC:Privileged Group Membership Change -&gt; gim_event_type:("group member added" OR "group member removed") AND group_category:privileged</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Privileges Assigned to Account (Security Core:Identity)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Detect when elevated/special privileges are assigned to an account. This event only includes direct privilege assignment, and not privileges assigned by group membership.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">event_code:4704 AND privilege_assigned_category:elevated_privilege</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Privileges Assigned to New Account (Security Core:Identity)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Detect when elevated/special privileges are assigned to an account that is newly created. This event only includes direct privilege assignment, and not privileges assigned by group membership.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">gim_event_category:iam AND (gim_event_type:"account created" OR (gim_event_type:"privileges assigned" AND privilege_assigned_category:elevated_privilege))</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process Executed with Non-Executable Extension (Security Core: Endpoint)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Detects execution of files with non-standard executable extensions, which may indicate masquerading or payload staging.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process Started; Non Executable Launch</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Public Access Allowed to Cloud Storage Bucket (Security Core:Cloud)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">This alert triggers when an S3 bucket policy is modified (gim_event_type:"resource policy change") to allow access (Effect=allow) to all principals (Principal:*). This configuration grants public access to the bucket, potentially exposing sensitive data to the internet.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Cloud Resource Policy Changes; Public s3 Access</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Registry Modification - Defense Evasion (Security Core: Endpoint)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Detects registry changes to Windows Defender or AMSI configuration performed by high-risk processes, indicating attempts to weaken security controls.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Registry Modification - Defense Evasion; Registry Value Set</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Registry Modification - Persistence via Run/RunOnce (Security Core: Endpoint)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Detects modifications to Run or RunOnce registry values that establish automatic execution for persistence across user logon or system restart.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Registry Modification - Persistence; Registry Value Set</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Registry Modification - Privileged Hive Access (Security Core: Endpoint)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Detects registry value modifications in privileged HKLM SOFTWARE or SYSTEM hives by high-risk processes, indicating likely misuse of elevated privileges.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Registry Modification - Privileged Hive Access; Registry Value Set</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Registry Modification - Process Identity (Security Core: Endpoint)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Detects registry value modifications performed by scripting engines or common legitimate executables that are frequently abused by attackers to change system or user configuration.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Registry Modification - Process; Registry Value Set</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Repeated Authentication Attempts Against a Single Account (Security Core:Identity)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Detects repeated failed authentication attempts that may indicate a brute-force attack aimed at compromising user credentials.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Authentication; Event Outcome: failure</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Service Installation - Windows CLI (Security Core:Endpoint)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Detects when a new service is installed.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">gim_event_type:"service installed"</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">SQL Injection Detected By Web Device (Security Core:Web)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">This alert triggers when a web security device detects activity consistent with a SQL injection attack, identified through event categorization or vendor-specific detection fields.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">SQL Injection Signal</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Successful RDP Logon from External Source (Security Core: Perimeter)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Detects a successful Remote Desktop authentication where the source IP is identified as external to the organization.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">event_code:4624 AND windows_logon_type:10 AND NOT source_category:is_internal</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">System Driver Loaded - Windows CLI (Security Core:Endpoint)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A kernel-mode system driver was loaded into memory on the host.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">gim_event_type:"system driver loaded"</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">System Time Changed (Security Core: Endpoint)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Detects changes to the system clock, which attackers may perform to evade detection, disrupt log correlation, or manipulate time-based security controls.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">System Time Modification; System Time Changed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Traffic to known Phishing domains (Security Core:Web)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">This alert triggers when web traffic is identified as communicating with domains categorized as phishing (http_uri_category:"phishing").</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">URLs Categorised As Phishing</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Transient Account Lifecycle Activity Detected (Security Core:Identity)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">An account was created and deleted within a short period of time. Short-lived accounts may be used to perform actions while minimizing audit exposure, and can be associated with temporary access, staging activity, or attempts to evade detection.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SC:Account Creation or Deletion</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Transient Group Membership Change Detected (Security Core:Identity)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A user account was added to and removed from the same group within a short period of time. This behavior may indicate temporary privilege assignment used to perform actions while minimizing exposure, and is commonly associated with privilege escalation, persistence staging, or defense evasion techniques.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">SC:Group Membership Change (Member Identified)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                    </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Use of Breakglass Accounts (Security Core:Identity)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Detection of activity involving breakglass (emergency) accounts, which may indicate elevated access used outside of normal operational procedures.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Breakglass Account</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>
