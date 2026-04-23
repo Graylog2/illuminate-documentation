@@ -1,84 +1,884 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-    <head><title>Cisco IOS Content Pack</title>
-        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
-    </head>
-    <body>
-        <h1>
-            <MadCap:concept term="Vendor:Cisco" />Cisco IOS&#160;Content Pack</h1>
-        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>Proprietary software used in Cisco routers and switches, enabling robust management of network traffic, including data, voice, and video across various communications environments.</p>
-        <p>This technology pack will process Cisco IOS logs, providing normalization and enrichment of those events.</p>
-        <h2>Supported Version(s)</h2>
-        <ul>
-            <li>Cisco IOS XE 17.14.x</li>
-        </ul>
-        <h2>Requirements</h2>
-        <ul>
-            <li>Cisco IOS XE 17.14.x</li>
-            <li>Graylog 5.2.6+</li>
-        </ul>
-        <h2>Stream Configuration</h2>
-        <p>This technology pack includes one stream:</p>
-        <ul>
-            <li>"Illuminate:Cisco Device Messages "</li>
-        </ul>
-        <p>
-            <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Hint</b>:  If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
-            </section>
-        </p>
-        <h2>Index Set Configuration</h2>
-        <p>This technology pack includes one index set definition:</p>
-        <ul>
-            <li>"Cisco Devices Event Log Messages"</li>
-        </ul>
-        <p>
-            <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Hint</b>:  If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
-            </section>
-        </p>
-        <h2>Log Collection</h2>
-        <ul>
-            <li>Users can choose to send logs via syslog or raw format. Cisco products often include timestamps in logs that may not be compatible with Graylog. If this occurs, we recommend users send logs via raw.</li>
-        </ul>
-        <h2>Log Format Example</h2>
-        <h3><span class="HTMLCode_1">SEC-6-IPACCESSLOGP</span>
-        </h3>
-        <p class="NormalWeb"><code class="linecode">Aug 17 02:41:39.326: %SEC-6-IPACCESSLOGP: list 105 denied udp 192.168.12.157(55250) -&gt; 192.168.12.255(11550), 1 packet</code>
-        </p>
-        <h3><span class="HTMLCode_1">URLF-6-URL_ALLOWED</span>
-        </h3>
-        <p class="NormalWeb"><code class="linecode">Mar 12 18:46:11: %URLF-6-URL_ALLOWED: Access allowed for URL http://www.websense.com/; client 10.54.192.6:54123 server 192.168.0.1:80
-</code>
-        </p>
-        <h2 id="what-is-provided">What is Provided</h2>
-        <ul>
-            <li>We provide parsing rules to normalize and enrich Cisco IOS log messages.</li>
-            <li>We provide categorization for the following log types:
-<ul><li>SEC-6-IPACCESSLOGRP</li><li>SEC-6-IPACCESSLOGSP</li><li>SEC-6-IPACCESSLOGP</li><li>SEC-6-IPACCESSLOGDP</li><li>SEC-6-IPACCESSLOGNP</li><li>LINK-3-UPDOWN</li><li>LINK-5-CHANGED</li><li>LINEPROTO-5-UPDOWN</li><li>CRYPTO-5-SESSION_STATUS</li><li>AUTHMGR-5-SECURITY_VIOLATION</li><li>SYS-5-CONFIG_I</li><li>SEC_LOGIN-5-LOGIN_SUCCESS</li><li>SEC_LOGIN-4-LOGIN_FAILED</li><li>AAA-5-USER_LOCKED</li><li>AAA-5-USER_UNLOCKED</li><li>SEC-6-IPACCESSLOGRL</li><li>URLF-4-URL_BLOCKED</li><li>URLF-6-URL_ALLOWED</li><li>URLF-4-SITE_BLOCKED</li><li>URLF-6-SITE_ALLOWED</li><li>URLF-5-SERVER_UP</li><li>URLF-3-SERVER_DOWN</li><li>URLF-3-ALLOW_MODE</li></ul></li>
-        </ul>
-        <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
-        <p>The Cisco IOS content pack supports identification for all events, but parsing, normalization, and categorization are supported for the events listed above.</p>
-        <h2 id="packetbeat-spotlight-content-pack">Packetbeat Spotlight Content Pack</h2>
-        <p>Cisco IOS offers a dashboard with three tabs: an overview tab, a network tab, and a tab for an overview of Authentication events.</p>
-        <h3>Cisco IOS Overview Tab
-</h3>
-        <p>
-            <img src="../Resources/Images/Cisco_IOS_Overview.png" />
-        </p>
-        <h3>Cisco IOS Authentication Tab
-</h3>
-        <p>
-            <img src="../Resources/Images/Cisco_IOS_authentication.png" />
-        </p>
-        <p>
-            <img src="../Resources/Images/Cisco_IOS_authentication_2.png" />
-        </p>
-        <h3>CISCO IOS Network Overview Tab
-</h3>
-        <p>
-            <img src="../Resources/Images/Cisco_IOS_Network_Overview.png" />
-        </p>
-    </body>
+
+<head>
+    <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
+    <title>Cisco IOS Content Pack</title>
+    <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+</head>
+
+<body>
+    <h1>Cisco IOS Content Pack</h1>
+    <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+    <p>Proprietary software used in Cisco routers and switches for robust network traffic management including data,
+        voice, and video across communications environments.</p>
+    <p>This technology pack will process Cisco IOS syslog messages, providing normalization and enrichment of common
+        events of interest.</p>
+    <h2 id="supported-versions">Supported Version(s)</h2>
+    <ul>
+        <li>
+            <p>Cisco IOS XE 17.14.x</p>
+        </li>
+    </ul>
+    <h2 id="requirements">Requirements</h2>
+    <ul>
+        <li>
+            <p>Cisco IOS XE 17.14.x</p>
+        </li>
+        <li>
+            <p>Graylog 5.2.6+</p>
+        </li>
+    </ul>
+    <h2 id="stream-configuration">Stream Configuration</h2>
+    <p>This technology pack includes 1 stream:</p>
+    <ul>
+        <li>"Illuminate:Cisco Device Messages"</li>
+    </ul>
+    <p>
+    <section class="infoBox">
+        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
+                activation of this pack then it will be created and configured to route messages to this stream and the
+                associated index set. There should not be any stream rules configured for this stream.</span>
+        </div>
+    </section>
+    </p>
+    <h2 id="index-set-configuration">Index Set Configuration</h2>
+    <p>This technology pack includes 1 index set definition:</p>
+    <ul>
+        <li>Cisco Devices Event Log Messages</li>
+    </ul>
+    <p>
+    <section class="infoBox">
+        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
+                nothing will be changed. If this index set does not exist, then it will be created with retention
+                settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
+                installation.</span>
+        </div>
+    </section>
+    </p>
+    <h2 id="log-collection">Log Collection and Delivery</h2>
+    <p>Users may send logs via syslog or raw format (TCP or UDP). Cisco products often include timestamps in logs that
+        may not be compatible with Graylog. If this occurs, we recommend you send logs to a raw input.</p>
+    <h3>Syslog or RAW Input</h3>
+    <ol>
+        <li>
+            <p>Configure the Cisco IOS device to send syslog to your Graylog server: <code
+                    class="linecode">logging host &lt;graylog-ip&gt;</code></p>
+        </li>
+        <li>
+            <p>Set the logging severity level: <code class="linecode">logging trap informational</code></p>
+        </li>
+        <li>
+            <p>Enable timestamps: <code class="linecode">service timestamps log datetime msec</code></p>
+        </li>
+        <li>
+            <p>See the <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_inputs.htm">Graylog
+                    documentation</a> for information on creating a Syslog or RAW/Plaintext input.</p>
+        </li>
+    </ol>
+    <h2 id="log-format-example">Log Format Examples</h2>
+    <p>These are example logs for the various processed log types.</p>
+    <h4>SEC_LOGIN - Authentication Events</h4>
+    <p><code class="linecode">Mar 12 18:46:11: %SEC_LOGIN-5-LOGIN_SUCCESS: Login Success [user: vijay.rana] [Source: 172.17.27.132] [localport: 22] at 13:13:16 IST Fri Apr 7 2023
+        Mar 12 18:46:11: %SEC_LOGIN-4-LOGIN_FAILED: Login failed [user: admin] [Source: 172.17.27.132] [localport: 22] [Reason: Login Authentication Failed] at 13:12:59 IST Fri Apr 7 2023
+        </code>
+    </p>
+    <h4>AAA - Account Lock/Unlock Events</h4>
+    <p><code class="linecode">Jul 12 00:33:29: %AAA-5-USER_LOCKED: User user1 locked out on authentication failure.
+        Jul 12 00:19:44: %AAA-5-USER_UNLOCKED: User cisco unlocked by console (cierswbv5-te-lab19-sc, SJ)
+        </code>
+    </p>
+    <h4>SEC - IP Access List Log Events</h4>
+    <p><code class="linecode">Aug 17 02:41:39.326: %SEC-6-IPACCESSLOGP: list 105 denied udp 192.168.12.157(55250) -&gt; 192.168.12.255(11550), 1 packet
+        Aug 17 02:43:20.346: %SEC-6-IPACCESSLOGSP: list INBOUND-ON-F11 denied igmp 192.168.110.10 -&gt; 224.0.0.2 (20), 1 packet
+        Feb 8 03:11:47.272: %SEC-6-IPACCESSLOGRP: list 105 denied igmp 198.51.100.197 -&gt; 224.0.0.22, 1 packet
+        Aug 17 02:43:28.403: %SEC-6-IPACCESSLOGDP: list 150 denied icmp 192.168.12.202 -&gt; 198.51.100.1 (3/3), 32 packets
+        Feb 9 03:11:47.272: %SEC-6-IPACCESSLOGNP: list INBOUND denied 113 192.168.110.10 -&gt; 224.0.0.2 (20), 1 packet
+        Aug 17 02:43:28.403: %SEC-6-IPACCESSLOGRL: access-list logging rate-limited or missed 23 packets
+        </code>
+    </p>
+    <h4>URLF - URL Filtering Events</h4>
+    <p><code class="linecode">Mar 12 18:46:11: %URLF-4-URL_BLOCKED: Access denied URL http://www.google.com; client 12.54.192.6:54678 server 64.192.14.2:80
+        Mar 12 18:46:11: %URLF-6-URL_ALLOWED: Access allowed for URL http://www.websense.com/; client 10.54.192.6:54123 server 192.168.0.1:80
+        Mar 12 18:46:11: %URLF-4-SITE_BLOCKED: Access denied for the site 'www.sports.com'; client 10.54.192.6:34557 server 172.24.50.12:80
+        Mar 12 18:46:11: %URLF-6-SITE_ALLOWED: Client 10.0.0.39:2848 accessed server 80.239.156.195:80
+        Mar 12 18:46:11: %URLF-3-SERVER_DOWN: 8.8.8.8
+        Mar 12 18:46:11: %URLF-5-SERVER_UP: 8.8.8.8
+        Mar 12 18:46:11: %URLF-3-ALLOW_MODE: Connection to all URL filter servers are down and ALLOW MODE is ON
+        </code>
+    </p>
+    <h4>AUTHMGR, CRYPTO, SYS, LINK, LINEPROTO, SSH, PARSER, SNMP Events</h4>
+    <p><code class="linecode">Apr 25 14:30:38: %AUTHMGR-5-SECURITY_VIOLATION: Security violation on GigabitEthernet0/15, New MAC address 00:1B:44:11:3A:B7 is seen
+        Apr 25 10:31:02: %CRYPTO-5-SESSION_STATUS: Crypto tunnel is down, destination: 192.168.1.2
+        Apr 25 10:17:45: %SYS-5-CONFIG_I: Configured from console by user1 on vty0 (10.1.1.1)
+        Feb 8 08:52:05.068: %LINK-3-UPDOWN: Interface GigabitEthernet0/1, changed state to up
+        Feb 14 09:40:10.326: %LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/1, changed state to up
+        Feb 14 12:02:38: %LINK-5-CHANGED: Interface FastEthernet0/1, changed state to administratively down
+
+        Apr 25 14:30:45: %SSH-5-SSH2_SESSION: SSH2 Session request from 192.168.100.50 (tty = 0) using crypto cipher 'aes256-ctr', hmac 'hmac-sha2-256' Succeeded
+        Apr 25 14:31:22: %SSH-5-SSH2_CLOSE: SSH2 Session from 192.168.100.50 (tty = 0) for user 'admin' using crypto cipher 'aes256-ctr', hmac 'hmac-sha2-256' closed
+        Apr 25 14:32:10: %SSH-4-SSH2_UNEXPECTED_MSG: Unexpected message type has arrived. Terminating the connection from 192.168.100.75
+        Apr 25 10:18:02: %PARSER-5-CFGLOG_LOGGEDCMD: User:admin  logged command:interface GigabitEthernet0/0
+        Apr 25 14:33:05: %SNMP-3-AUTH_FAILURE: Authentication failure for SNMP request from host 192.168.1.100
+        </code>
+    </p>
+    <h2 id="what-is-provided">What is Provided</h2>
+    <ul>
+        <li>
+            <p>Parsing rules for normalization and enrichment of Cisco IOS syslog messages.</p>
+        </li>
+        <li>
+            <p>Categorization for 30 log types including SEC, LINK, LINEPROTO, CRYPTO, AUTHMGR, SYS, SEC_LOGIN, AAA,
+                URLF, SSH, PARSER, and SNMP event categories.</p>
+        </li>
+    </ul>
+    <h3 id="gim-categorization">GIM Categorization</h3>
+    <p>GIM categorization is provided for the following messages:</p>
+    <MadCap:dropDown>
+        <MadCap:dropDownHead>
+            <MadCap:dropDownHotspot>GIM Categorization <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+        </MadCap:dropDownHead>
+        <MadCap:dropDownBody>
+            <table cellspacing="21"
+                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
+                class="TableStyle-Alternate-Row-Color">
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <thead>
+                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">vendor_event_type</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">SEC_LOGIN-5-LOGIN_SUCCESS</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SEC_LOGIN-4-LOGIN_FAILED</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">100500</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.credential
+                            validation</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">credential validation</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">AAA-5-USER_LOCKED</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111500</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object disable</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">account locked</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">AAA-5-USER_UNLOCKED</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">112000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object enable</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account unlocked</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">SEC-6-IPACCESSLOGRP</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.network connection</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SEC-6-IPACCESSLOGSP</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network connection</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">SEC-6-IPACCESSLOGP</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.network connection</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SEC-6-IPACCESSLOGDP</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network connection</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">SEC-6-IPACCESSLOGNP</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.network connection</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SEC-6-IPACCESSLOGRL</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network connection</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">URLF-4-URL_BLOCKED</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180300|120000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http / network</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.proxied / network.network
+                            connection</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http proxied communication /
+                            network connection</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">URLF-6-URL_ALLOWED</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">180300|120000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http / network</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http.proxied / network.network
+                            connection</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">http proxied communication /
+                            network connection</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">URLF-4-SITE_BLOCKED</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180300|120000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http / network</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.proxied / network.network
+                            connection</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http proxied communication /
+                            network connection</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">URLF-6-SITE_ALLOWED</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network connection</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">URLF-3-SERVER_DOWN</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.network connection</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">URLF-6-SERVER_DOWN</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network connection</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">URLF-5-SERVER_UP</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.network connection</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">URLF-6-SERVER_UP</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network connection</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">URLF-3-ALLOW_MODE</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.network connection</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">AUTHMGR-5-SECURITY_VIOLATION</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">101501</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.access policy</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">device policy violation</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">CRYPTO-5-SESSION_STATUS</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.network connection</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SYS-5-CONFIG_I</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">211000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.configuration</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service configuration change</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">SSH-5-SSH2_SESSION</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SSH-5-SSH2_CLOSE</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.close</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection ended</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">SSH-4-SSH2_UNEXPECTED_MSG</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100500</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.credential
+                            validation</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">credential validation</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">PARSER-5-CFGLOG_LOGGEDCMD</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">211000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.configuration</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service configuration change</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">SNMP-3-AUTH_FAILURE</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">100500</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">authentication</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">authentication.credential
+                            validation</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">credential validation</td>
+                    </tr>
+                </tbody>
+            </table>
+        </MadCap:dropDownBody>
+    </MadCap:dropDown>
+    <h3>Message Fields Included in This Pack</h3>
+    <h4>General Fields</h4>
+    <p>These fields are extracted from all Cisco IOS syslog messages.</p>
+    <MadCap:dropDown>
+        <MadCap:dropDownHead>
+            <MadCap:dropDownHotspot>General Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+        </MadCap:dropDownHead>
+        <MadCap:dropDownBody>
+            <table cellspacing="21"
+                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
+                class="TableStyle-Alternate-Row-Color">
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <thead>
+                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">CISCO-IOS</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Identifies the log source as
+                            Cisco IOS</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_facility</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SEC_LOGIN</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The Cisco IOS facility component
+                            extracted from the event type (e.g. SEC, AAA, URLF)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_subtype</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">LOGIN_SUCCESS</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The Cisco IOS mnemonic component
+                            extracted from the event type</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_severity</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">notice</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The Cisco IOS severity label
+                            mapped from the numeric severity level</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_severity_level</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">5</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The numeric Cisco IOS severity
+                            level (0=emergency through 7=debug)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_severity</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">low</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The GIM severity label mapped
+                            from the vendor severity level</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_severity_level</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The GIM severity level
+                            (1=informational through 5=critical)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">gim_event_type_code</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">100000</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">The GIM event type code assigned
+                            to this event</td>
+                    </tr>
+                </tbody>
+            </table>
+        </MadCap:dropDownBody>
+    </MadCap:dropDown>
+    <h4>Authentication Fields (SEC_LOGIN)</h4>
+    <p>Additional fields extracted for SEC_LOGIN login success and failure events.</p>
+    <MadCap:dropDown>
+        <MadCap:dropDownHead>
+            <MadCap:dropDownHotspot>Authentication Fields <span style="font-size: 8pt;">▼</span>
+            </MadCap:dropDownHotspot>
+        </MadCap:dropDownHead>
+        <MadCap:dropDownBody>
+            <table cellspacing="21"
+                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
+                class="TableStyle-Alternate-Row-Color">
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <thead>
+                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application_name</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cisco-ios</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Set to 'cisco-ios' for SEC_LOGIN
+                            events</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_name</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">admin</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The username that attempted to
+                            log in</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">172.17.27.132</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The source IP address of the
+                            login attempt</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_port</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">22</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The local port used for the login
+                            session</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_outcome</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">success</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The normalized outcome: success
+                            or failure</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_outcome</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Success</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The raw outcome string extracted
+                            from the log</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">vendor_event_outcome_reason</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Login Authentication Failed</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">The reason for login failure, if
+                            provided</td>
+                    </tr>
+                </tbody>
+            </table>
+        </MadCap:dropDownBody>
+    </MadCap:dropDown>
+    <h4>IAM Fields (AAA)</h4>
+    <p>Additional fields extracted for AAA account lock and unlock events.</p>
+    <MadCap:dropDown>
+        <MadCap:dropDownHead>
+            <MadCap:dropDownHotspot>IAM Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+        </MadCap:dropDownHead>
+        <MadCap:dropDownBody>
+            <table cellspacing="21"
+                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
+                class="TableStyle-Alternate-Row-Color">
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <thead>
+                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_name</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user1</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The username that was locked or
+                            unlocked</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">source_user_name</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">console (hostname, SJ)</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">The user or entity that performed
+                            the unlock action (AAA-5-USER_UNLOCKED only)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </MadCap:dropDownBody>
+    </MadCap:dropDown>
+    <h4>ACL Log Fields (SEC-6-IPACCESSLOG*)</h4>
+    <p>Fields extracted from IP access list log events (6 variants: LOGP, LOGSP, LOGRP, LOGDP, LOGNP, LOGRL).</p>
+    <MadCap:dropDown>
+        <MadCap:dropDownHead>
+            <MadCap:dropDownHotspot>ACL Log Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+        </MadCap:dropDownHead>
+        <MadCap:dropDownBody>
+            <table cellspacing="21"
+                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
+                class="TableStyle-Alternate-Row-Color">
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <thead>
+                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.12.157</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source IP address from the ACL
+                            log entry</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_port</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">55250</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source port from the ACL log
+                            entry (TCP/UDP)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.12.255</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination IP address from the
+                            ACL log entry</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_port</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">11550</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination port from the ACL log
+                            entry (TCP/UDP)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">udp</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The network protocol (tcp, udp,
+                            icmp, igmp, etc.)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_action</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">blocked</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The normalized action: allowed or
+                            blocked</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">denied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The raw action string from the
+                            log (denied, permitted, etc.)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_list_id</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">105</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The ACL name or number that
+                            triggered the log entry</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_packet_count</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The number of packets matched by
+                            this ACL entry</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_icmp_type</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The ICMP type number (ICMP events
+                            only)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">icmp_code</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">3</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">The ICMP code number (ICMP events
+                            only)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </MadCap:dropDownBody>
+    </MadCap:dropDown>
+    <h4>URL Filter Fields (URLF-*)</h4>
+    <p>Fields extracted from URL filtering events (URL_BLOCKED, URL_ALLOWED, SITE_BLOCKED, SITE_ALLOWED, SERVER_DOWN,
+        SERVER_UP, ALLOW_MODE).</p>
+    <MadCap:dropDown>
+        <MadCap:dropDownHead>
+            <MadCap:dropDownHotspot>URL Filter Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+        </MadCap:dropDownHead>
+        <MadCap:dropDownBody>
+            <table cellspacing="21"
+                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
+                class="TableStyle-Alternate-Row-Color">
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <thead>
+                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10.54.192.6</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source IP address of the client
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_port</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">54678</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source port of the client
+                            connection</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">64.192.14.2</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination IP address of the
+                            server</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_port</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">80</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination port of the server
+                            connection</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_uri</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http://www.google.com</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The URL or site name that was
+                            filtered (URL_BLOCKED, URL_ALLOWED, SITE_BLOCKED)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_action</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">blocked</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The normalized action: allowed or
+                            blocked</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">denied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The raw action string from the
+                            log</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">network_transport</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">NETWORK_TRANSPORT_NOT_DEFINED
+                        </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Set to a static placeholder as
+                            transport is not present in these logs</td>
+                    </tr>
+                </tbody>
+            </table>
+        </MadCap:dropDownBody>
+    </MadCap:dropDown>
+    <h4>Other Event Fields (AUTHMGR, CRYPTO, SYS, LINK, LINEPROTO, SSH, PARSER, SNMP)</h4>
+    <p>Fields extracted from network infrastructure, device management, SSH session, configuration logging, and SNMP
+        authentication events.</p>
+    <MadCap:dropDown>
+        <MadCap:dropDownHead>
+            <MadCap:dropDownHotspot>Other Event Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+        </MadCap:dropDownHead>
+        <MadCap:dropDownBody>
+            <table cellspacing="21"
+                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
+                class="TableStyle-Alternate-Row-Color">
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <thead>
+                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_interface_name</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">GigabitEthernet0/1</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The network interface name (LINK,
+                            LINEPROTO, AUTHMGR events)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_interface_state</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">up</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The interface or tunnel state
+                            (LINK, LINEPROTO, CRYPTO events)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.1.2</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination IP of the VPN tunnel
+                            (CRYPTO events)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">mac_address</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">00:1B:44:11:3A:B7</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The MAC address of the violating
+                            device (AUTHMGR-SECURITY_VIOLATION)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10.1.1.1</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source IP of the managing
+                            terminal (SYS-CONFIG_I) or SSH/SNMP client</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_crypto_cipher</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">aes256-ctr</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The encryption cipher used in the
+                            SSH session (SSH events)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_crypto_hmac</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">hmac-sha2-256</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The HMAC algorithm used in the
+                            SSH session (SSH events)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_tty_line</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The TTY line number of the SSH
+                            session (SSH events)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_name</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">admin</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Username of the SSH session user
+                            (SSH-5-SSH2_CLOSE, PARSER-5-CFGLOG_LOGGEDCMD)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_description</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">interface GigabitEthernet0/0</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The command text that was entered
+                            and logged (PARSER-5-CFGLOG_LOGGEDCMD)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_outcome</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">success</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The normalized event outcome
+                            (SSH-5-SSH2_SESSION: success; SNMP-3-AUTH_FAILURE: failure)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">vendor_event_outcome</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Succeeded</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">The raw outcome string from the
+                            log</td>
+                    </tr>
+                </tbody>
+            </table>
+        </MadCap:dropDownBody>
+    </MadCap:dropDown>
+    <h2 id="spotlight-content-pack">Cisco IOS Spotlight</h2>
+    <p>The Cisco IOS Spotlight offers an overview dashboard with three tabs: Overview, Network, and Authentication.</p>
+    <h3>Overview</h3>
+    <p>
+        <img src="../Resources/Images/resources/overview.png" />
+    </p>
+    <h3>Network</h3>
+    <p>
+        <img src="../Resources/Images/resources/network.png" />
+    </p>
+    <h3>Authentication</h3>
+    <p>
+        <img src="../Resources/Images/resources/authentication.png" />
+    </p>
+    <p>
+        <img src="../Resources/Images/resources/authentication_2.png" />
+    </p>
+</body>
+
 </html>
