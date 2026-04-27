@@ -3,41 +3,38 @@
 
 <head>
     <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
-    <title>Mimecast Content Pack</title>
+    <title>F5 BIG-IP Content Pack</title>
     <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
 </head>
 
 <body>
-    <h1>Mimecast Content Pack</h1>
+    <h1>F5 BIG-IP Content Pack</h1>
     <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-    <p>Mimecast is a cloud-based cyber security provider specializing in email security and offering protection against
-        phishing, malware, spam, and data leaks. It also delivers services for archiving, continuity, and threat
-        intelligence to help organizations secure their communications and ensure compliance.</p>
-    <h2 id="supported-versions">Supported Versions</h2>
+    <p>F5 BIG-IP is an application delivery controller platform that combines load balancing,</p>
+    <p>traffic management, and security services to optimize, secure, and scale networked applications.</p>
+    <h2 id="supported-versions">Supported Version(s)</h2>
     <ul>
         <li>
-            <p>Mimecast API 2.0</p>
+            <p>Tested with F5 BIG-IP ASM 17.5.1 and legacy syslog format</p>
+        </li>
+        <li>
+            <p>Tested with F5 BIG-IP AFM 17.5.1 and legacy syslog format</p>
         </li>
     </ul>
     <h2 id="requirements">Requirements</h2>
     <ul>
         <li>
-            <p>Graylog 6.2.3+ with a valid Enterprise license</p>
+            <p>Graylog 6.3.7+</p>
+        </li>
+        <li>
+            <p>Configure F5 BIG-IP to transmit Syslog to your Graylog server Syslog input or use Filebeat.</p>
         </li>
     </ul>
     <h2 id="stream-configuration">Stream Configuration</h2>
     <p>This technology pack includes 1 stream:</p>
     <ul>
-        <li>Illuminate:Mimecast Messages</li>
+        <li>"Illuminate:F5 Messages"</li>
     </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
-                activation of this pack then it will be created and configured to route messages to this stream and the
-                associated index set. There should not be any stream rules configured for this stream.</span>
-        </div>
-    </section>
-    </p>
     <p>
     <section class="infoBox">
         <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
@@ -49,7 +46,7 @@
     <h2 id="index-set-configuration">Index Set Configuration</h2>
     <p>This technology pack includes 1 index set definition:</p>
     <ul>
-        <li>Mimecast Logs</li>
+        <li>"F5 Bigip Messages"</li>
     </ul>
     <p>
     <section class="infoBox">
@@ -60,248 +57,201 @@
         </div>
     </section>
     </p>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
-                nothing will be changed. If this index set does not exist, then it will be created with retention
-                settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
-                installation.</span>
-        </div>
-    </section>
+    <h2 id="log-collection">Log Collection and Delivery</h2>
+    <p>This pack parses logs from the following sources:</p>
+    <ul>
+        <li>
+            <p>Filebeat</p>
+        </li>
+        <li>
+            <p>Legacy and RFC 5424 Syslog format - Beta support</p>
+        </li>
+        <li>
+            <p>CEF - Beta support</p>
+        </li>
+    </ul>
+    <h3>Filebeat Configuration</h3>
+    <ol>
+        <li>
+            <p>Please refer to the official documentation to <a
+                    href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">set up Graylog
+                    Sidecar for Filebeat</a>.</p>
+        </li>
+        <li>
+            <p>Create a matching <a
+                    href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> in
+                Graylog.</p>
+        </li>
+        <li>
+            <p>Ensure that the option <em>Do not add Beats type as prefix</em> is <strong>disabled</strong>.</p>
+        </li>
+        <li>
+            <p>Create an API access token and custom Windows Filebeat collector.</p>
+        </li>
+        <li>
+            <p>Configure the collector to ship messages to Graylog (select the right path). The Filebeat input must add
+                the field <code class="linecode">event_source_product: f5_bigip</code> for the parser to identify the
+                log source as F5 BIG-IP.</p>
+        </li>
+        <li>
+            <p>In addition, the option <code class="linecode">fields_under_root</code> must be set to <code
+                    class="linecode">true</code> for message identification to work. See the following example:</p>
+            <MadCap:codeSnippet>
+                <MadCap:codeSnippetCopyButton />
+                <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False"
+                    xml:space="preserve">filebeat.inputs:
+                    - type: log
+                    enabled: true
+                    paths:
+                    - /var/log/f5/*.log
+                    fields:
+                    event_source_product: f5_bigip
+                    fields_under_root: true</MadCap:codeSnippetBody>
+            </MadCap:codeSnippet>
+        </li>
+        <li>
+            <p>Adjust the file path in the config file if needed.</p>
+        </li>
+        <li>
+            <p>Install Graylog Sidecar on the client host.</p>
+        </li>
+        <li>
+            <p>Edit the Graylog Sidecar client configuration with your Graylog server API URL and API access token.</p>
+        </li>
+    </ol>
+    <h3>Sending logs via Syslog in the legacy key-value format</h3>
+    <ol>
+        <li>
+            <p>F5 BIG-IP supports Syslog. This content pack may support F5 BIG-IP Syslog for the modules ASM and AFM.
+            </p>
+        </li>
+    </ol>
+    <h3>Sending logs via Syslog in the modern RFC-5424 format for v13.x+</h3>
+    <ol>
+        <li>
+            <p>F5 BIG-IP supports Syslog. This content pack may support F5 BIG-IP Syslog for the modules ASM and AFM.
+                This format might need a special flag.</p>
+        </li>
+    </ol>
+    <h3>Sending logs in CEF Format</h3>
+    <ol>
+        <li>
+            <p>F5 BIG-IP supports the CEF format. This content pack may work with CEF and Graylog's CEF Input, but due
+                to a lack of example logs, full functionality cannot be guaranteed. If you want to use CEF and you have
+                test logs, please provide us with some sanitized samples.</p>
+        </li>
+    </ol>
+    <h2 id="log-format-example"></h2>
+    <p>These are example logs for various processed log types.</p>
+    <h4>F5 Log Example 1</h4>
+    <p><code class="linecode">Apr 10 09:25:46 172.16.1.2 ASM:unit_hostname="f5_01",management_ip_address="192.168.1.10",management_ip_address_2="N/A",http_class_name="/Common/App_WAF",web_application_name="/Common/App_WAF",policy_name="/Common/App_WAF",policy_apply_date="2025-04-08 2:29:51",violations="N/A",support_id="142371702665",request_status="passed",response_code="200",ip_client="11.10.5.46",route_domain="0",method="GET",protocol="HTTPS",query_string="",x_forwarded_for_header_value="11.10.5.2",sig_ids="N/A",sig_names="N/A",date_time="2025-04-10 2:25:46",severity="Informational",attack_type="N/A",geo_location="RO",ip_address_intelligence="N/A",username="N/A",session_id="C3c1eaf29ce05e59",src_port="51124",dest_port="443",dest_ip="172.16.1.11",sub_violations="N/A",virus_name="N/A",violation_rating="0",websocket_direction="N/A",websocket_message_type="N/A",device_id="N/A",staged_sig_ids="",staged_sig_names="",threat_campaign_names="N/A",staged_threat_campaign_names="N/A",blocking_exception_reason="N/A",captcha_result="not_received",microservice="N/A",tap_event_id="N/A",tap_vid="N/A",vs_name="/Common/vs-443-2021-apptest1.dom.ro-bkp",sig_cves="N/A",staged_sig_cves="N/A",uri="/notif/summary",fragment="",request="GET /notif/summary HTTP/1.1\r\nHost: apptest.dom.ro\r\nConnection: keep-alive\r\nsec-ch-ua-platform: %22Windows%22\r\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36\r\nsec-ch-ua: %22Google Chrome%22;v=%22135%22, %22Not-A.Brand%22;v=%228%22, %22Chromium%22;v=%22135%22\r\nsec-ch-ua-mobile: ?0\r\nAccept: */*\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\nAccept-Encoding: gzip, deflate, br, zstd\r\nAccept-Language: en-US,en;q=0.9,ro;q=0.8\r\nCookie: _ga=GA1.1.845057894.1744101172; SESSION=6dceff56-9d1e-421c-ab0e-820e91591bf8; _ga_X2KD43T4E2=GS1.1.1744263.4.1.14265953.0.0.0; TS67d45652027=08fbd28c49065a7bf1423084f5cc3e81130007f7d872e9d324682b29696
+        </code>
     </p>
-    <h2 id="log-collection">Log Collection</h2>
-    <p>Mimecast utilizes the Mimecast input that ingests multiple Mimecast content types in JSON format. See <a
-            href="https://go2docs.graylog.org/current/getting_in_log_data/mimecast_input.htm">the Graylog
-            documentation</a> for information on how to launch a new Mimecast input.</p>
-    <h3>Configuration Example</h3>
-    <p>
-        <img src="../Resources/Images/Mimecast Content Pack/input_config.png" />
+    <h4>F5 Log Example 2</h4>
+    <p><code class="linecode">Apr 10 2:25:46 172.16.1.2 AFM:acl_rule_name="",action="Open",hostname="bigip-3.pme-ds.f5.com",bigip_mgmt_ip="192.168.73.33",context_name="/Common/topaz3-all3",context_type="Virtual Server",date_time="Oct 04 2012 13:18:04",dest_ip="10.3.1.200",dest_port="443",device_product="Advanced Firewall Module",device_vendor="F5",device_version="11.3.0.2095.0",drop_reason="",errdefs_msgno="23003137",errdefs_msg_name="Network Event",ip_protocol="TCP",severity="8",partition_name="Common",route_domain="0",source_ip="10.3.1.101",source_port="39329",vlan="/Common/external"
+        </code>
     </p>
-    <h2 id="log-format-example">Log Format Example</h2>
-    <p><code class="linecode">{"id":"eNoVzt0KgjAAQOF32e0EdWrNoIvZn6UGYZKKNzqHWaai2y4Wv","auditType":"User Logged On","user":"user@domain.com","eventTime":"2025-06-12T14:53:56+0000","eventInfo":"Successful authentication for user@domain.com &lt;Domain User&gt;, Date: 2025-06-12, Time: 16:53:56 SAST, IP: 192.168.100.100, Application: SMTP-MTA2, Method: Cloud","category":"authentication_logs"}
+    <h4>F5 Log Example 3</h4>
+    <p><code class="linecode">Apr 10 2:24:59 172.16.1.2 1 2025-04-10T2:25:46.854685+03:00 f5_short tmm 8545 23003147 [F5@12276 hostname="f5_01" bigip_mgmt_ip="192.168.1.10" bigip_mgmt_ip2="::" client_ip="46.97.34.38" client_ip_geo_location="RO" client_port="28220" client_request_uri="/version.json"]
+        </code>
+    </p>
+    <h4>F5 Log Example 4</h4>
+    <p><code class="linecode">&lt;134&gt;1 2025-11-18T10:28:07+0100 185.158.193.21 BIG-IP 42 ID42 - client_ip="34.12.45.139" client_port="26807" target_ip="185.22.11.21" target_port="443" nat_source_ip="34.12.45.139" nat_source_port="26807" nat_destination_ip="185.22.11.21" nat_destination_port="443" route_domain="0" vlan="/Common/external" proto="TCP" tcp_flags="SYN,ACK" tcp_seq="12345678" tcp_ack="87654321" bytes_in="512" bytes_out="2048" packets_in="6" packets_out="14" policy_name="/Common/AFM_Policy_Prod" rule_name="/Common/rule_allow_https" rule_action="accept" action="accept" drop_reason="none" event_type="network" session_id="987654321" flow_id="54321" context_type="virtual-server" context_name="/Common/www.example.com_vs" device_vendor="F5" device_product="Advanced Firewall Manager" device_version="17.1.0" hostname="bigip-prod-1.example.com" mgmt_ip="192.168.1.10" severity="info" info="HTTPS traffic allowed by rule"
         </code>
     </p>
     <h2 id="what-is-provided">What is Provided</h2>
     <ul>
         <li>
-            <p>Rules to parse, normalize, and enrich Mimecast content pack messages.</p>
+            <p>Rules to parse, normalize, and enrich F5 BIG-IP log messages (ASM, AFM, mcpd, LTM/tmm)</p>
         </li>
         <li>
-            <p>A dashboard displaying events and statistics of interest.</p>
+            <p>GIM categorization for DNS events, network events, mcpd service events, and LTM connection-opened events
+            </p>
         </li>
         <li>
-            <p>Saved search highlighting key information using a user_email parameter.</p>
+            <p>Dashboards that deliver a general Overview and an ASM-focused Overview</p>
         </li>
     </ul>
     <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
-    <p>The content pack supports the following log types. Generic processing will be provided for log types not listed.
-    </p>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Event List <span style="font-size: 8pt;">&#9660;</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <ul>
-                <li>
-                    <p>User Logged On</p>
-                </li>
-                <li>
-                    <p>Unauthorized API Request</p>
-                </li>
-                <li>
-                    <p>Case Action</p>
-                </li>
-                <li>
-                    <p>Review Set Action</p>
-                </li>
-                <li>
-                    <p>Discovery Case Adjustments</p>
-                </li>
-                <li>
-                    <p>Logon Authentication Failed</p>
-                </li>
-                <li>
-                    <p>Logon Requires Challenge</p>
-                </li>
-                <li>
-                    <p>Completed Directory Sync</p>
-                </li>
-                <li>
-                    <p>New Policy</p>
-                </li>
-                <li>
-                    <p>Existing Policy Changed</p>
-                </li>
-                <li>
-                    <p>Mimecast Support Login</p>
-                </li>
-                <li>
-                    <p>Content Definition Adjustments</p>
-                </li>
-                <li>
-                    <p>Existing Route Changed</p>
-                </li>
-                <li>
-                    <p>New Delivery Route</p>
-                </li>
-                <li>
-                    <p>Profile Group (Address) Log Entry</p>
-                </li>
-                <li>
-                    <p>Account Updated</p>
-                </li>
-                <li>
-                    <p>API Application Created</p>
-                </li>
-                <li>
-                    <p>User Password Changed</p>
-                </li>
-                <li>
-                    <p>User Settings Updated</p>
-                </li>
-                <li>
-                    <p>User Locked</p>
-                </li>
-            </ul>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
+    <p>The content pack supports the following log types.</p>
+    <ul>
+        <li>
+            <p>ASM</p>
+        </li>
+        <li>
+            <p>AFM</p>
+        </li>
+        <li>
+            <p>mcpd</p>
+        </li>
+        <li>
+            <p>LTM/tmm (HTTP_RESPONSE, HTTP_REQUEST)</p>
+        </li>
+    </ul>
     <h3 id="gim-categorization">GIM Categorization</h3>
-    <p>GIM categorization is provided for the following messages:</p>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Log Type</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Subcategory</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Event Type Code</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User Logged On</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">100000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Logon Requires Challenge</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.credential
-                            validation</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">100502</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mimecast Support Login</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">100000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Unauthorized API Request</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.access policy</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">101500</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Logon Authentication Failed</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">100000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">User Password Changed</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">111004</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User Settings Updated</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">111000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">User Locked</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object disable</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">111500</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Profile Group (Address) Log Entry
-                        </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">111007</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Existing Policy Changed</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">audit</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">audit.default</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">229999</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Existing Route Changed</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">audit</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">audit.default</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">229999</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">New Delivery Route</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">audit</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">audit.default</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">229999</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Completed Directory Sync</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">audit</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">audit.default</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">229999</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">New Policy</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">audit</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">audit.default</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">229999</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Content Definition Adjustments
-                        </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">audit</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">audit.default</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">229999</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Message View</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">messaging</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">messaging.default</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">139999</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Message Search</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">messaging</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">messaging.default</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">139999</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
+    <p>F5 BIG-IP logs are categorized based on the vendor_event_type field. DNS events map to name resolution,</p>
+    <p>network events map to network connection, mcpd application events map to the service default code,</p>
+    <p>and LTM connection-opened events map to network connection initiated.</p>
+    <table cellspacing="21"
+        style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
+        class="TableStyle-Alternate-Row-Color">
+        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Vendor Event Type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DNS Event</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">149999</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution.default</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dns message</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Network Event</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network connection</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.network connection</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">mcpd (application_name)</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">219999</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.default</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service event</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">LTM Connection opened</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">120200</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">network</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">network.open</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">network connection initiated</td>
+            </tr>
+        </tbody>
+    </table>
     <h3>Message Fields Included in This Pack</h3>
-    <h4>Fields of Note</h4>
+    <h4>General Parsing</h4>
     <MadCap:dropDown>
         <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            <MadCap:dropDownHotspot>Common Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
         </MadCap:dropDownHead>
         <MadCap:dropDownBody>
             <table cellspacing="21"
@@ -311,8 +261,10 @@
                 <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
                 <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
                 <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
                 <thead>
                     <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Original Field Name</th>
                         <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
                         <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
                         <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
@@ -321,208 +273,262 @@
                 </thead>
                 <tbody>
                     <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">part of the header</td>
                         <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">SMTP-MTA2</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Application extracted from
-                            'Application' reference from .eventInfo in JSON body</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ASM</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Application Name or Syslog
+                            Application Name</td>
                     </tr>
                     <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dest_ip</td>
                         <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">8.8.8.8</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination IP associated with
-                            the event pulled from 'Remote IP' from .eventInfo in JSON body</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">172.16.1.11</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination IP address</td>
                     </tr>
                     <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dest_port</td>
                         <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_port</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">25</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">443</td>
                         <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination port extracted from
-                            .eventInfo in JSON body</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination Port</td>
                     </tr>
                     <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">email_from</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">person@domain</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Extracted from .from in JSON body
-                        </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">hostname</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_hostname</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">bigip-3.pme-ds.f5.com</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Hostname of the F5 instance</td>
                     </tr>
                     <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">email_subject</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Test Message</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Extracted from .subject in JSON
-                            body</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">email_to</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">another_person@domain.com</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Extracted from .to in JSON body
-                        </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mapped</td>
                         <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_action</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">logon</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Normalized action derived from
-                            vendor_event_action via lookup</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">allowed</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Mapped Event Action</td>
                     </tr>
                     <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_created</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2025-06-13T14:30:03+0000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">date</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Timestamp extracted from
-                            .eventTime or .viewed in JSON body</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Mapped</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_severity</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">informational</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">mapped Event Severity</td>
                     </tr>
                     <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_outcome</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">success</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Normalized outcome
-                            (success/failure) derived from vendor_event_action via lookup</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mapped</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_severity_level</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">mapped Event Severity Level</td>
                     </tr>
                     <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_source</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                            JvuS6F0rQmdeSSqcrF8xSAA1BFbYC1Lqkk1A5</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The client_id set in the Mimecast
-                            v2 input</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">method</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_method</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">GET</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP method used</td>
                     </tr>
                     <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">mimecast_v2</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Created via input. This will
-                            always be the same.</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ip_protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_transport</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">tcp</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Network Transport</td>
                     </tr>
                     <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_uid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">JvuVUt30eqQpG3S6F0rQmdeSSqc</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Extracted from .id in the JSON
-                            body.</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">response_code</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_response_code</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">200</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP Response Code used</td>
                     </tr>
                     <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.1.100</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source IP that generated the
-                            activity. Extracted from 'IP' from .eventInfo in JSON body</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">uri</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_uri</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">/notif/summary</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP URI used</td>
                     </tr>
                     <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">https</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Network Protocol</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">session_id</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">session_id</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">C3c1eaf29ce05e59</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">used Session ID</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">src_ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">11.10.5.46</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source IP address</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">src_port</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_port</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">51124</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source Port</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">username</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_name</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Tom</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">User Name</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">nat_source_ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_nat_ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.12.34.5</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source NAT IP</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">nat_source_port</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_nat_port</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">35</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source NAT port</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">nat_destination_ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_nat_ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.2.4</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination NAT IP</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">nat_destination_port</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_nat_port</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">23</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination NAT port</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">bot_signature_name</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_signature</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">StrixBot</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Name of a detected bot</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">violation_id</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_signature_id</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3455646</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">ID of a violation</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">proto</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">tcp</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network protocol</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">tcp</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network protocol</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">mgmt_ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_bigip_mgmt_ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.3.4</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Management IP</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">bytes_in</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_bytes_sent</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">324</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Traffic to the device</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">bytes_out</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_bytes_sent</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">756</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Outgoing traffic</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">packets_in</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_packets_sent</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">324</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Traffic to the device</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">packets_out</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_packets_sent</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">756</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Outgoing traffic</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Derived from source_ip</td>
                         <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_reference</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">192.168.1.100</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Set from source_ip for GIM
-                            enforcement; falls back to SOURCE_REFERENCE_NOT_DEFINED</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">10.3.1.101</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source reference for GIM
+                            enforcement</td>
                     </tr>
                     <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_user_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">admin@domain.com</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The user who performed the action
-                            (actor). Set for IAM events.</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Derived from destination_ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_reference</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10.3.1.200</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination reference for GIM
+                            enforcement</td>
                     </tr>
                     <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_domain</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">example.com</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Extracted domain from user
-                            related e-mail's in JSON body</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Set by mcpd GIM rule</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service_name</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">mcpd</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Service name for GIM service
+                            enforcement</td>
                     </tr>
                     <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_email</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">person@domain.com</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Extracted user e-mail from JSON
-                            body</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">mcpd event description</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_pool_member</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2001:20:5004:1606::89:8790</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Pool member address from mcpd
+                            status events</td>
                     </tr>
                     <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_email_display_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Random Person</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The display name extracted from
-                            .eventInfo in JSON body</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">person</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Multi-value field containing all
-                            user_name references in full JSON body</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Account type. Set for IAM events.
-                        </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Successful Authentication</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Vendor's event action reference
-                            extracted from .eventInfo in JSON body</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_category</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication_logs</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Extracted from .category in JSON
-                            body</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_message</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Successful authentication for
-                            person@domain.com ...</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Full .eventInfo from JSON body
-                        </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_method</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Cloud</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Extracted from 'Method' reference
-                            from .eventInfo in JSON body</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User Logged On</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Event type extracted from
-                            .auditType in JSON body</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">vendor_subtype</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">audit_events</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Created via input and associated
-                            configuration</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">mcpd event description</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">vendor_monitor_status</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">down</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Pool member monitor status
+                            (up/down)</td>
                     </tr>
                 </tbody>
             </table>
         </MadCap:dropDownBody>
     </MadCap:dropDown>
-    <h2 id="spotlight-content-pack">Mimecast Spotlight Content Pack</h2>
-    <p>This spotlight offers a dashboard with 2 tabs:</p>
+    <h2 id="spotlight-content-pack">F5 BIG-IP Content Pack</h2>
+    <p>This F5 BIG-IP spotlight has a general overview and a ASM overview dashboard</p>
     <h3>Overview</h3>
     <p>
-        <img src="../Resources/Images/Mimecast Content Pack/overview1.png" />
+        <img src="../Resources/Images/resources/f5_bigip/f5_big_ip_overview.png" />
     </p>
+    <h3>ASM Overview</h3>
     <p>
-        <img src="../Resources/Images/Mimecast Content Pack/overview2.png" />
-    </p>
-    <p>
-        <img src="../Resources/Images/Mimecast Content Pack/overview3.png" />
-    </p>
-    <h3>Saved Search</h3>
-    <p>
-        <img src="../Resources/Images/Mimecast Content Pack/saved_search1.png" />
+        <img src="../Resources/Images/resources/f5_bigip/f5_big_ip_asm_overview.png" />
     </p>
 </body>
 
