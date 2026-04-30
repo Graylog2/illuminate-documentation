@@ -1,211 +1,702 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-    <head>
-        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Metricbeat Content Pack</title>
-        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
-    </head>
-    <body>
-        <h1>Metricbeat Content Pack</h1>
-        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>Metricbeat is a lightweight agent that collects system and service performance metrics. This pack normalizes and enriches Metricbeat data for consistent host and resource monitoring.</p>
-        <p>The Metricbeat Spotlight comes ready to use with pre-built dashboard views including:</p>
-        <ul>
-            <li>
-                <p>Metricbeat Overview</p>
-            </li>
-            <li>
-                <p>Saved Search: Host Investigator</p>
-            </li>
-        </ul>
-        <h2 id="supported-versions">Supported Version(s)</h2>
-        <ul>
-            <li>
-                <p>Metricbeat 7.x and 8.x</p>
-            </li>
-        </ul>
-        <h2 id="requirements">Requirements</h2>
-        <ul>
-            <li>
-                <p>Graylog version 6.2 or higher</p>
-            </li>
-            <li>
-                <p>A configured <a href="https://go2docs.graylog.org/5-0/getting_in_log_data/beats.html">Beats</a> input on Graylog server (See <a href="#One">Create Beats Input</a>.)</p>
-            </li>
-        </ul>
-        <h2 id="stream-configuration">Stream Configuration</h2>
-        <p>This technology pack includes 1 stream:</p>
-        <ul>
-            <li>"Illuminate:Metricbeat Messages"</li>
-        </ul>
-        <p>
-            <section class="infoBox">
-                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</span>
-                </div>
-            </section>
-        </p>
-        <h2 id="index-set-configuration">Index Set Configuration</h2>
-        <p>This technology pack includes 1 index set definition:</p>
-        <ul>
-            <li>"Metricbeat Logs"</li>
-        </ul>
-        <p>
-            <section class="infoBox">
-                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
-                </div>
-            </section>
-        </p>
-        <h2 id="log-format-example">Log Format Examples</h2>
-        <p><code class="linecode">{"timestamp":1761766791.724,"version":"1.1","host":"CGARCIA-LT","short_message":"-","_gim_event_type_code":"[000000]","_original_message":"-","_event_received_time":"2025-10-29T19:39:51.724Z","_vendor_agent_id":"0b3ba278-e625-4187-a9a5-da5e0872de25","_gl2_remote_ip":"192.168.81.1","_gl2_remote_port":58328,"_vendor_metricbeat_@metadata_version":"9.2.0","_metricbeat_system_cpu_idle_pct":17.8609,"_illuminate_message_size_post":1127,"_event_source":"CGARCIA-LT","_gl2_source_input":"68fbad34d84a7eddaca6c0f5","_metricbeat_metricset_period":10000,"_vendor_host_cpu_idle_norm_pct":0.893,"_metricbeat_agent_ephemeral_id":"ecd68133-69ca-4b5e-939a-ae9dde8c26bc","_gl2_processing_timestamp":"2025-10-29 19:39:51.725","_illuminate_message_size_pre":1053,"_gim_event_type":"[message]","_vendor_service_type":"system","_gl2_source_node":"158f7e92-8da4-4b45-982c-ee2dd302b99f","_gl2_processing_duration_ms":16,"_gim_event_category":"[message]","_gl2_accounted_message_size":1281,"_metricbeat_system_cpu_system_pct":1.0922,"_gim_event_subcategory":"[message.log_message]","_streams":"[68ffb26f31d55d7ace4789e6]","_event_duration":1000,"_gl2_message_id":"01K8RQQPHC000VRGEVFW37X3E7","_metricbeat_host_cpu_usage":0.107,"_event_source_hostname":"CGARCIA-LT","_vendor_event_type":"cpu","_event_start":"2025-10-29T19:39:52.416Z","_timestamp_original_recorded":"2025-10-29T19:39:52.416Z","_vendor_event_source_version":"9.2.0","_vendor_host_cpu_core_count":20,"_vendor_host_cpu_total_norm_pct":0.107,"_gl2_receive_timestamp":"2025-10-29 19:39:51.709","_beats_type":"metricbeat","_vendor_ecs_version":"8.0.0","_vendor_host_cpu_user_norm_pct":0.0523,"_vendor_event_category":"system.cpu","_event_source_product":"metricbeat","_vendor_metricbeat_@metadata_type":"_doc","_metricbeat_system_cpu_total_pct":2.1391,"_metricbeat_system_cpu_user_pct":1.0469,"_illuminate_message_overhead_perc":7.027540360873694,"_vendor_host_cpu_system_norm_pct":0.0546,"_vendor_metricbeat_@metadata_beat":"metricbeat","_illuminate_message_overhead":74,"_vendor_product":"system"}
+
+<head>
+    <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
+    <title>Metricbeat Content Pack</title>
+    <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+</head>
+
+<body>
+    <h1>Metricbeat Content Pack</h1>
+    <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+    <p>Metricbeat is a lightweight agent that collects system and service performance metrics. This pack normalizes and
+        enriches Metricbeat data for consistent host and resource monitoring.</p>
+    <p>The Metricbeat Spotlight comes ready to use with pre-built dashboard views including:</p>
+    <ul>
+        <li>
+            <p>Metricbeat Overview</p>
+        </li>
+        <li>
+            <p>Saved Search: Host Investigator</p>
+        </li>
+    </ul>
+    <h2 id="supported-versions">Supported Version(s)</h2>
+    <ul>
+        <li>
+            <p>Metricbeat 7.x and 8.x</p>
+        </li>
+    </ul>
+    <h2 id="requirements">Requirements</h2>
+    <ul>
+        <li>
+            <p>Graylog version 6.2.0+</p>
+        </li>
+        <li>
+            <p>A configured <a href="https://go2docs.graylog.org/5-0/getting_in_log_data/beats.html">Beats</a> input on
+                Graylog server (See "Create Beats Input" below)</p>
+        </li>
+    </ul>
+    <h2 id="stream-configuration">Stream Configuration</h2>
+    <p>This technology pack includes 1 stream:</p>
+    <ul>
+        <li>"Illuminate:Metricbeat Messages"</li>
+    </ul>
+    <p>
+    <section class="infoBox">
+        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
+                activation of this pack then it will be created and configured to route messages to this stream and the
+                associated index set. There should not be any stream rules configured for this stream.</span>
+        </div>
+    </section>
+    </p>
+    <h2 id="index-set-configuration">Index Set Configuration</h2>
+    <p>This technology pack includes 1 index set definition:</p>
+    <ul>
+        <li>"Metricbeat Logs"</li>
+    </ul>
+    <p>
+    <section class="infoBox">
+        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
+                nothing will be changed. If this index set does not exist, then it will be created with retention
+                settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
+                installation.</span>
+        </div>
+    </section>
+    </p>
+    <h2 id="log-format-example">Log Format Examples</h2>
+    <p><code class="linecode">{"timestamp":1761766791.724,"version":"1.1","host":"CGARCIA-LT","short_message":"-","_gim_event_type_code":"[000000]","_original_message":"-","_event_received_time":"2025-10-29T19:39:51.724Z","_vendor_agent_id":"0b3ba278-e625-4187-a9a5-da5e0872de25","_gl2_remote_ip":"192.168.81.1","_gl2_remote_port":58328,"_vendor_metricbeat_@metadata_version":"9.2.0","_metricbeat_system_cpu_idle_pct":17.8609,"_illuminate_message_size_post":1127,"_event_source":"CGARCIA-LT","_gl2_source_input":"68fbad34d84a7eddaca6c0f5","_metricbeat_metricset_period":10000,"_vendor_host_cpu_idle_norm_pct":0.893,"_metricbeat_agent_ephemeral_id":"ecd68133-69ca-4b5e-939a-ae9dde8c26bc","_gl2_processing_timestamp":"2025-10-29 19:39:51.725","_illuminate_message_size_pre":1053,"_gim_event_type":"[message]","_vendor_service_type":"system","_gl2_source_node":"158f7e92-8da4-4b45-982c-ee2dd302b99f","_gl2_processing_duration_ms":16,"_gim_event_category":"[message]","_gl2_accounted_message_size":1281,"_metricbeat_system_cpu_system_pct":1.0922,"_gim_event_subcategory":"[message.log_message]","_streams":"[68ffb26f31d55d7ace4789e6]","_event_duration":1000,"_gl2_message_id":"01K8RQQPHC000VRGEVFW37X3E7","_metricbeat_host_cpu_usage":0.107,"_event_source_hostname":"CGARCIA-LT","_vendor_event_type":"cpu","_event_start":"2025-10-29T19:39:52.416Z","_timestamp_original_recorded":"2025-10-29T19:39:52.416Z","_vendor_event_source_version":"9.2.0","_vendor_host_cpu_core_count":20,"_vendor_host_cpu_total_norm_pct":0.107,"_gl2_receive_timestamp":"2025-10-29 19:39:51.709","_beats_type":"metricbeat","_vendor_ecs_version":"8.0.0","_vendor_host_cpu_user_norm_pct":0.0523,"_vendor_event_category":"system.cpu","_event_source_product":"metricbeat","_vendor_metricbeat_@metadata_type":"_doc","_metricbeat_system_cpu_total_pct":2.1391,"_metricbeat_system_cpu_user_pct":1.0469,"_illuminate_message_overhead_perc":7.027540360873694,"_vendor_host_cpu_system_norm_pct":0.0546,"_vendor_metricbeat_@metadata_beat":"metricbeat","_illuminate_message_overhead":74,"_vendor_product":"system"}
         </code>
-        </p>
-        <h2 id="what-is-provided">What is Provided</h2>
-        <ul>
-            <li>
-                <p>Rules to parse, normalize, and enrich Metricbeat log messages</p>
-            </li>
-            <li>
-                <p>A spotlight providing Overview dashboards for Metricbeat events, including host-level CPU, memory, paging, and filesystem utilization</p>
-            </li>
-        </ul>
-        <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
-        <p>The content pack supports the following log types:</p>
-        <ul>
-            <li>
-                <p>system.cpu</p>
-            </li>
-            <li>
-                <p>system.memory</p>
-            </li>
-            <li>
-                <p>system.filesystem</p>
-            </li>
-            <li>
-                <p>system.network</p>
-            </li>
-            <li>
-                <p>system.process</p>
-            </li>
-            <li>
-                <p>system.load</p>
-            </li>
-        </ul>
-        <h3>Message Fields Included in This Pack</h3>
-        <h4>General Parsing</h4>
-        <MadCap:dropDown>
-            <MadCap:dropDownHead>
-                <MadCap:dropDownHotspot>Common Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-            </MadCap:dropDownHead>
-            <MadCap:dropDownBody>
-                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
-                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                    <thead>
-                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
-                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
-                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
-                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">metricbeat</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source product that generated the event</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_id</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">abcd1234efgh5678ijkl9012mnop3456</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Unique identifier of the reporting host</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_name</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">metricbeat-demo-host</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Name of the host reporting metrics</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_category</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">system.cpu</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">High-level category of the Metricbeat event</td>
-                        </tr>
-                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">vendor_event_type</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">cpu</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">keyword</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Specific type of Metricbeat event</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </MadCap:dropDownBody>
-        </MadCap:dropDown>
-        <h2 id="log-collection">Log Collection</h2>
-        <h3>Create a Beats Input</h3>
-        <p><a name="One"></a>One <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">beats input</a> can service multiple log sources; therefore, this step is not required if a beats input has already been configured.</p>
-        <ol>
-            <li>
-                <p>On the <em>Select Input</em> drop-down menu, select the <em>System</em> menu and then choose <em>Inputs</em>.</p>
-            </li>
-            <li>
-                <p>Select <em>Beats</em> from the <em>Select Input</em> drop-down menu.</p>
-            </li>
-            <li>
-                <p>Click <em>Launch New Input</em>.</p>
-            </li>
-            <li>
-                <p>Assign a node or select Global mode.</p>
-            </li>
-            <li>
-                <p>Set the Title, Bind Address, and listening Port. For example:</p>
-                <ol>
-                    <li>
-                        <p>Title: "Beats input 5044"</p>
-                    </li>
-                    <li>
-                        <p>Bind address: "0.0.0.0" to listen on all interfaces</p>
-                    </li>
-                    <li>
-                        <p>Port: "5044"</p>
-                    </li>
-                </ol>
-            </li>
-            <li>
-                <p><strong>Make sure the option "Do not add Beats type as prefix" is not selected</strong>. Pipeline processing rules reference incoming data by field name and the pipeline will not function correctly if this prefix is omitted.</p>
-            </li>
-            <li>
-                <p>Save the input settings.</p>
-            </li>
-            <li>
-                <p>If the input does not start automatically, select <em>Start Input</em> to begin listening for and processing new Beats messages (including Metricbeat messages).</p>
-            </li>
-        </ol>
-        <h3>Metricbeat Log Collection (Windows and Linux)</h3>
-        <p>Metricbeat collects <strong style="font-weight: normal;">system and service performance metrics</strong> from both Windows and Linux hosts.</p>
-        <p>
-            <ul>
-                <li>On <strong style="font-weight: normal;">Windows</strong>, it gathers data such as CPU, memory, disk, and network usage using the <em>system</em> module.</li>
-            </ul>
-        </p>
-        <p>
-            <ul>
-                <li>On <strong style="font-weight: normal;">Linux</strong>, it collects similar host metrics along with process and filesystem statistics.</li>
-            </ul>
-        </p>
-        <p>All metrics are sent in JSON format through the configured <strong style="font-weight: normal;">Beats input</strong> (port 5044 by default) to Graylog for parsing and visualization.</p>
-        <h2 id="spotlight-content-pack">Metricbeat Content Pack</h2>
-        <p>This spotlight offers a dashboard with 2 tabs:</p>
-        <h3>Overview</h3>
-        <p>
-            <img src="../Resources/Images/Metricbeat/overview.png" />
-        </p>
-        <h3>Host Investigator</h3>
-        <p>
-            <img src="../Resources/Images/Metricbeat/saved_search.png" />
-        </p>
-    </body>
+    </p>
+    <h2 id="what-is-provided">What is Provided</h2>
+    <ul>
+        <li>
+            <p>Rules to parse, normalize, and enrich Metricbeat log messages</p>
+        </li>
+        <li>
+            <p>Graylog Information Model message categorization for process and system metric events</p>
+        </li>
+        <li>
+            <p>A spotlight providing overview dashboards for Metricbeat events and a saved search including host-level
+                CPU, memory, paging, and filesystem utilization</p>
+        </li>
+    </ul>
+    <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
+    <p>The content pack supports the following log types:</p>
+    <ul>
+        <li>
+            <p>system.cpu</p>
+        </li>
+        <li>
+            <p>system.memory</p>
+        </li>
+        <li>
+            <p>system.filesystem</p>
+        </li>
+        <li>
+            <p>system.fsstat</p>
+        </li>
+        <li>
+            <p>system.network</p>
+        </li>
+        <li>
+            <p>system.process</p>
+        </li>
+        <li>
+            <p>system.process.summary</p>
+        </li>
+        <li>
+            <p>system.socket.summary</p>
+        </li>
+        <li>
+            <p>system.load</p>
+        </li>
+        <li>
+            <p>system.uptime</p>
+        </li>
+    </ul>
+    <h3 id="gim-categorization">GIM Categorization</h3>
+    <p>GIM categorization is provided for the following event categories. Only system.process events receive a specific
+        GIM code; all other metric types are categorized as generic messages.</p>
+    <table cellspacing="21"
+        style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
+        class="TableStyle-Alternate-Row-Color">
+        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Category</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Subcategory</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Event Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">system.process</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">199990</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process.default</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">process message</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">system.cpu</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">system.filesystem</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">system.fsstat</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">system.load</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">system.memory</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">system.network</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">system.process.summary</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">000000</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">message.log_message</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">system.socket.summary</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">system.uptime</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">000000</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">message</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">message.log_message</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">message</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>Message Fields Included in This Pack</h3>
+    <h4>General Parsing</h4>
+    <MadCap:dropDown>
+        <MadCap:dropDownHead>
+            <MadCap:dropDownHotspot>Common Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+        </MadCap:dropDownHead>
+        <MadCap:dropDownBody>
+            <table cellspacing="21"
+                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
+                class="TableStyle-Alternate-Row-Color">
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <thead>
+                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">metricbeat</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source product that generated the
+                            event</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_source</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">metricbeat-demo-host</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Host reporting metrics</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_id</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">abcd1234efgh5678ijkl9012mnop3456
+                        </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Unique identifier of the
+                            reporting host</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_architecture</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">x86_64</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Host CPU architecture</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_os_name</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Ubuntu</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Host operating system name</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_os_type</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">linux</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Host operating system type</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_os_kernel_release</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">5.15.0-91-generic</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Host kernel release version</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_os_version</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">22.04</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Host OS version</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_ip_list</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">[192.168.1.10, fe80::1]</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">array</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">List of host IP addresses</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_mac_list</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">[00:0c:29:ab:cd:ef]</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">array</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">List of host MAC addresses</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_category</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">system.cpu</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">High-level category of the
+                            Metricbeat event</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_type</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cpu</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Specific type of Metricbeat event
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_service_type</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">system</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Metricbeat service type</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_duration</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1234567</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Event collection duration in
+                            nanoseconds</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cpu_utilization_total</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0.1234</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">float</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Total CPU utilization
+                            (normalized)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cpu_utilization_iowait</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0.001</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">float</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">CPU iowait utilization
+                            (normalized)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cpu_utilization_user</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0.05</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">float</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">CPU user utilization (normalized)
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cpu_utilization_system</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0.03</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">float</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">CPU system utilization
+                            (normalized)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cpu_utilization_steal</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0.0</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">float</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">CPU steal utilization
+                            (normalized)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cpu_cores</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Number of CPU cores</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">memory_total_bytes</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">68411056128</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Total memory in bytes</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">memory_utilization_used</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0.4288</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">float</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Memory utilization percentage
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">memory_paging_total_bytes</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">72706023424</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Total swap/paging space in bytes
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">memory_paging_utilization_used
+                        </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0.5165</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">float</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Swap/paging utilization
+                            percentage</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">filesystem_device</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">/dev/sda1</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Filesystem device name</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">filesystem_mount_point</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">/</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Filesystem mount point</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">filesystem_type</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ext4</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Filesystem type</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">filesystem_total_bytes</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">107374182400</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Total filesystem size in bytes
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">filesystem_used_bytes</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">53687091200</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Used filesystem space in bytes
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">filesystem_free_bytes</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">53687091200</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Free filesystem space in bytes
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">filesystem_utilization_used</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0.50</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">float</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Filesystem utilization percentage
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_name</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">eth0</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Network interface name</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_bytes_sent</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">152243268</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Bytes received on interface
+                            (inbound)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_bytes_sent</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">42077017</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Bytes sent from interface
+                            (outbound)</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_packets_sent</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">226974</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Packets received on interface
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_packets_sent</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">160209</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Packets sent from interface</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_name</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">nginx</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Process name</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_id</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1234</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Process ID</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_parent_id</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Parent process ID</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_command_line</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">/usr/sbin/nginx -g daemon on</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Full process command line</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_path</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">/usr/sbin/nginx</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Process executable path</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_command_args</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">[-g, daemon on]</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">array</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Process command arguments</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_user_name</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">www-data</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">User running the process</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">system_uptime_seconds</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">86400</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">System uptime in seconds</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_fsstat_count</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Number of filesystems</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_fsstat_total_size_total
+                        </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2046020284416</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Total size across all filesystems
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_fsstat_total_size_used
+                        </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">864241790976</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Used space across all filesystems
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_fsstat_total_size_free
+                        </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1181778493440</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Free space across all filesystems
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_metricbeat_system_load_1
+                        </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0.01</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">float</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">1-minute load average</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_metricbeat_system_load_5
+                        </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0.04</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">float</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">5-minute load average</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_metricbeat_system_load_15
+                        </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0.07</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">float</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">15-minute load average</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            vendor_metricbeat_system_load_cores</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Number of cores for load
+                            calculation</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_process_summary_total</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">365</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Total number of processes</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_process_summary_running
+                        </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">12</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Number of running processes</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_socket_all_count</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Total socket count</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_socket_all_listening</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">38</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Total listening sockets</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_socket_tcp_all_count</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">TCP socket count</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_socket_tcp_all_established
+                        </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">43</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Established TCP connections</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">vendor_socket_udp_all_count</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">80</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">UDP socket count</td>
+                    </tr>
+                </tbody>
+            </table>
+        </MadCap:dropDownBody>
+    </MadCap:dropDown>
+    <h2 id="log-collection">Log Collection</h2>
+    <h3>Create a Beats Input</h3>
+    <p>One <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">beats input</a> can
+        service multiple log sources; therefore, this step is not required if a beats input has already been configured.
+    </p>
+    <ol>
+        <li>
+            <p>On the <em>Select Input</em> drop-down menu, select the <em>System</em> menu and then choose
+                <em>Inputs</em>.</p>
+        </li>
+        <li>
+            <p>Select <em>Beats</em> from the <em>Select Input</em> drop-down menu.</p>
+        </li>
+        <li>
+            <p>Click <em>Launch New Input</em>.</p>
+        </li>
+        <li>
+            <p>Assign a node or select Global mode.</p>
+        </li>
+        <li>
+            <p>Set the Title, Bind Address, and listening Port. For example:</p>
+            <ol>
+                <li>
+                    <p>Title: "Beats input 5044"</p>
+                </li>
+                <li>
+                    <p>Bind address: "0.0.0.0" to listen on all interfaces</p>
+                </li>
+                <li>
+                    <p>Port: "5044"</p>
+                </li>
+            </ol>
+        </li>
+        <li>
+            <p><strong>Make sure the option "Do not add Beats type as prefix" is not selected</strong>. Pipeline
+                processing rules reference incoming data by field name and the pipeline will not function correctly if
+                this prefix is omitted.</p>
+        </li>
+        <li>
+            <p>Save the input settings.</p>
+        </li>
+        <li>
+            <p>If the input does not start automatically, select <em>Start Input</em> to begin listening for and
+                processing new Beats messages (including Metricbeat messages).</p>
+        </li>
+    </ol>
+    <h3>Metricbeat Log Collection (Windows and Linux)</h3>
+    <p>Metricbeat collects <strong>system and service performance metrics</strong> from both Windows and Linux hosts.
+    </p>
+    <p>
+    <ul>
+        <li>On <strong>Windows</strong>, it gathers data such as CPU, memory, disk, and network usage using the
+            <em>system</em> module.</li>
+    </ul>
+    </p>
+    <p>
+    <ul>
+        <li>On <strong>Linux</strong>, it collects similar host metrics along with process and filesystem statistics.
+        </li>
+    </ul>
+    </p>
+    <p>All metrics are sent in JSON format through the configured <strong>Beats input</strong> (port 5044 by default) to
+        Graylog for parsing and visualization.</p>
+    <h2 id="spotlight-content-pack">Metricbeat Content Pack</h2>
+    <p>This spotlight offers a dashboard with 2 tabs:</p>
+    <h3>Overview</h3>
+    <p>
+        <img src="../Resources/Images/resources/overview.png" />
+    </p>
+    <h3>Host Investigator</h3>
+    <p>
+        <img src="../Resources/Images/resources/host_investigator.png" />
+    </p>
+</body>
+
 </html>
