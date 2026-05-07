@@ -3,179 +3,239 @@
 
 <head>
     <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
-    <title>Core DNS Processing Content Pack</title>
+    <title>Compliance Unified Visibility Content Pack (Preview)</title>
     <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
 </head>
 
 <body>
-    <h1>Core DNS Processing Content Pack</h1>
+    <h1>Compliance Unified Visibility Content Pack (Preview)</h1>
     <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-    <p>The Core DNS Processing Illuminate content pack includes supplementary processing of DNS-related messages and a
-        Spotlight pack to gain additional insights in to DNS-related log messages.</p>
-    <h2 id="requirements">Requirement(s)</h2>
-    <ul>
-        <li>
-            <p>A log source that includes DNS-related messages, either analyzed DNS traffic including DNS queries and/or
-                network traffic logs that include traffic associated with DNS servers.</p>
-        </li>
-        <li>
-            <p>Graylog Server with a valid security license, running Graylog version 5.1.11 or later.</p>
-        </li>
-    </ul>
-    <h2 id="requirement">Graylog Server Requirement</h2>
-    <p>The Core DNS Processing Illuminate pack requires a Graylog Security license and Graylog 5.1.11 or later due to
-        integration with the <a
-            href="https://go2docs.graylog.org/5-2/what_more_can_graylog_do_for_me/asset_enrichment.htm">Graylog Security
-            Asset Enrichment</a> functionality and the entropy generation functionality.</p>
-    <h2 id="background">Background</h2>
-    <h2 id="dns">DNS</h2>
-    <p>DNS, or the Domain Name System, is one of the important protocols in modern networks and is also an important
-        data point for security monitoring and incident response.</p>
-    <h2 id="features">Features</h2>
-    <h2 id="integration">Asset Integration</h2>
-    <p>This pack, when enabled, will work with <a
-            href="https://go2docs.graylog.org/5-2/what_more_can_graylog_do_for_me/asset_enrichment.htm">the Asset
-            Enrichment feature</a> that is part of Graylog Security. It will allow users to identify approved DNS
-        servers, allowing for identification of traffic to non-approved DNS servers.</p>
-    <h2 id="calculations">DNS Request Calculations</h2>
-    <p>This pack will enable the calculation of multiple data points related to DNS requests:</p>
-    <ul>
-        <li>
-            <p>DNS Query Request Length</p>
-        </li>
-        <li>
-            <p>DNS Query Response Length</p>
-        </li>
-        <li>
-            <p>DNS Query Entropy</p>
-        </li>
-        <li>
-            <p>DNS Server Approval Status</p>
-        </li>
-    </ul>
-    <h2 id="length">DNS Query Request/Response Length</h2>
-    <p>This is a simple count of the number of characters in a DNS request or response. This is valuable as it can be
-        used, when measured in aggregate, to expose some attacks that use DNS for <a
-            href="https://attack.mitre.org/techniques/T1048/">data exfiltration</a> and <a
-            href="https://attack.mitre.org/techniques/T1071/004/">command control</a>.</p>
-    <h2 id="length">DNS Query Length</h2>
-    <p>When the field <code class="linecode">query_request</code> exists, this pack will generate the field <code
-            class="linecode">query_request_length</code>.</p>
-    <h2 id="length">DNS Query Response Length</h2>
-    <p>When the field <code class="linecode">query_response</code> exists, this pack will generate the field <code
-            class="linecode">query_response_length</code>.</p>
-    <p>The query response length is an approximate measurement of the response length. DNS responses can often include
-        multiple values with a separator character. This measurement will include those characters.</p>
-    <h2 id="calculations">DNS Query Request Entropy Calculations</h2>
-    <p>This pack will calculate the entropy, using Shannon's entropy algorithm for the value of the field <code
-            class="linecode">query_response</code> when that field exists, and assign it to the field <code
-            class="linecode">query_request_entropy</code>.</p>
-    <p>Entropy, in this context, is the measurement of the variability of the data. Some attacks that use <a
-            href="https://attack.mitre.org/techniques/T1568/002/">Domain Generation Algorithms (DGA)</a> can be detected
-        by measuring the entropy of the DNS request value.</p>
-    <h2 id="status">DNS Server Approval Status</h2>
-    <p>This pack will work in concert with <a
-            href="https://go2docs.graylog.org/5-2/what_more_can_graylog_do_for_me/asset_enrichment.htm">the Asset
-            Enrichment functionality</a> included with Graylog Server and identify systems that have been identified as
-        approved DNS servers. This can be used to detect misconfigured/unauthorized devices attached to your network and
-        increase your situational awareness with respect to the operation of your network.</p>
-    <p>This pack will add the field <code class="linecode">approved_dns_server</code> with the boolean value of <code
-            class="linecode">true</code> if the device has been identified as an approved DNS server and <code
-            class="linecode">false</code> if it has not been identified as approved. Note that until a server has been
-        identified as an approved DNS server that all DNS traffic will be considered unapproved.</p>
-    <h2 id="servers">Configuring Approved DNS Servers</h2>
-    <p>
-    <section class="warningBox">
-        <div class="content"><b>Warning: </b><span style="font-weight: normal;">Some DNS log sources, such as Sysmon, do
-                not log the destination server. These sources cannot be used to determine if the server is considered
-                "approved."</span>
-        </div>
-    </section>
-    </p>
+    <p>This preview compliance pack provides targeted visibility into Identification and Authentication (IAC), Network
+        (NET), and Endpoint (END) events that support control requirements shared across NIST SP 800-53 Rev 5, PCI DSS
+        v4.0, and US CMMC 2.0 Level 1. The Spotlight includes dashboards and a daily report template with tailored
+        widgets for compliance reporting.</p>
     <p>
     <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">It is possible to add approved external DNS
-                server IPs in the assets page.</span>
+        <div class="title"><b>Hint: </b><span style="font-weight: normal;">This is a preview pack. Features are subject
+                to change, and more content and usage guidance is planned for future iterations.</span>
         </div>
     </section>
     </p>
-    <p>In order to define a device as an "approved" DNS server, it must be added to the asset list and assigned a
-        category of <code class="linecode">approved_dns_servers</code>.</p>
+    <h2 id="supported-versions">Supported Frameworks</h2>
+    <p>This pack currently supports a subset of controls from the following compliance frameworks:</p>
+    <ul>
+        <li>
+            <p>NIST SP 800-53 Rev 5</p>
+        </li>
+        <li>
+            <p>PCI DSS v4.0</p>
+        </li>
+        <li>
+            <p>US CMMC 2.0 Level 1</p>
+        </li>
+    </ul>
+    <h2 id="requirements">Requirements</h2>
+    <ul>
+        <li>
+            <p>Graylog 6.1.6+ with a valid Security license</p>
+        </li>
+        <li>
+            <p>Graylog Illuminate 6.3.0 or later</p>
+        </li>
+    </ul>
+    <h2 id="what-is-provided">What is Provided</h2>
+    <ul>
+        <li>
+            <p>Graylog Compliance: Unified Visibility (Preview) dashboard</p>
+        </li>
+        <li>
+            <p>Graylog Compliance: Unified Visibility Report (Preview) report template</p>
+        </li>
+    </ul>
+    <h2 id="pack">Using This Content Pack</h2>
+    <p></p>
+    <h2 id="categorization">GIM Categorization</h2>
+    <p>This compliance pack uses events that have been categorized using Graylog Information Model (GIM) categorization
+        codes and in some cases additional schema-defined fields. It is not restricted to a specific product. Illuminate
+        content that leverages Core enrichment will assign GIM categories automatically where applicable. Custom packs
+        and pipeline rules can manually assign GIM categories as well for inclusion in this pack's dashboard widget
+        searches.</p>
+    <p>Refer to the <a href="https://go2docs.graylog.org/illuminate-current/event_messages/event_messages.html">event
+            messages documentation</a> for a complete list of GIM categorizations, and the <a
+            href="https://go2docs.graylog.org/illuminate-current/enrichments/enrichments.html">enrichments
+            documentation</a> for more information on Illuminate enrichments.</p>
+    <h2 id="events">Identification and Authentication (IAC) Events</h2>
+    <p>For widgets pertaining to Identification and Authentication (IAC) events, the following GIM event types are
+        utilized:</p>
+    <ul>
+        <li>
+            <p>account created</p>
+        </li>
+        <li>
+            <p>account deleted</p>
+        </li>
+        <li>
+            <p>account modified</p>
+        </li>
+        <li>
+            <p>account renamed</p>
+        </li>
+        <li>
+            <p>account disabled</p>
+        </li>
+        <li>
+            <p>account enabled</p>
+        </li>
+        <li>
+            <p>account locked</p>
+        </li>
+        <li>
+            <p>account unlocked</p>
+        </li>
+        <li>
+            <p>group member added</p>
+        </li>
+        <li>
+            <p>group member removed</p>
+        </li>
+        <li>
+            <p>password change</p>
+        </li>
+        <li>
+            <p>administrative password reset</p>
+        </li>
+        <li>
+            <p>access policy violation</p>
+        </li>
+        <li>
+            <p>account policy violation</p>
+        </li>
+        <li>
+            <p>credential validation</p>
+        </li>
+        <li>
+            <p>logon</p>
+        </li>
+    </ul>
+    <p>
+    <section class="infoBox">
+        <div class="title"><b>Hint: </b><span style="font-weight: normal;">Widgets related to account management are
+                primarily geared towards events processed by the Illuminate Windows Security Content Pack.</span>
+        </div>
+    </section>
+    </p>
+    <h2 id="categories">Network (NET) Event Categories</h2>
+    <p>For widgets pertaining to Network (NET) events, the following GIM event categories are utilized:</p>
+    <ul>
+        <li>
+            <p>network</p>
+        </li>
+        <li>
+            <p>authentication</p>
+        </li>
+    </ul>
+    <h2 id="tags">Network (NET) GIM Tags</h2>
+    <p>For widgets pertaining to Network (NET) events, the following GIM tags are utilized:</p>
+    <ul>
+        <li>
+            <p>remote_access (used in conjunction with <code class="linecode">gim_event_category: authentication</code>)
+            </p>
+        </li>
+        <li>
+            <p>source_is_internal</p>
+        </li>
+        <li>
+            <p>destination_is_internal</p>
+        </li>
+    </ul>
+    <h2 id="events">Endpoint (END) Events</h2>
+    <p>For widgets pertaining to Endpoint (END) events, the following GIM event categories are utilized:</p>
+    <ul>
+        <li>
+            <p>alert</p>
+        </li>
+        <li>
+            <p>detection</p>
+        </li>
+    </ul>
+    <p>
+    <section class="infoBox">
+        <div class="title"><b>Hint: </b><span style="font-weight: normal;">Widgets under Endpoint (END) events are
+                currently scoped via widget search filters to the following Illuminate content packs: Microsoft
+                Defender, <a
+                    href="https://go2docs.graylog.org/illuminate-current/content_packs/microsoft_defender_for_endpoint_content_pack.htm">Microsoft
+                    Defender for Endpoint</a>, <a
+                    href="https://go2docs.graylog.org/illuminate-current/content_packs/crowdstrike_falcon_content_pack.htm">Crowdstrike
+                    Falcon EDR</a>, <a
+                    href="https://go2docs.graylog.org/illuminate-current/content_packs/symantec_endpoint_detection_and_response_content_pack.htm">Symantec
+                    EDR</a>, and <a
+                    href="https://go2docs.graylog.org/illuminate-current/content_packs/symantec_endpoint_content_pack.htm">Symantec
+                    Endpoint Protection</a>.</span>
+        </div>
+    </section>
+    </p>
+    <h2 id="generation">Report Generation</h2>
+    <p>This compliance pack includes a prebuilt report template for exporting dashboard data. The report can be
+        scheduled for regular delivery via email in accordance with compliance requirements of continuous logging and
+        monitoring and data storage over long periods of time.</p>
+    <p>Please view the <a
+            href="https://go2docs.graylog.org/current/interacting_with_your_log_data/reports.html">reporting
+            documentation</a> for full details on report generation.</p>
+    <p>
+    <section class="infoBox">
+        <div class="title"><b>Hint: </b><span style="font-weight: normal;">Ensure that email configuration is set up
+                successfully in your Graylog environment before you enable report scheduling.</span>
+        </div>
+    </section>
+    </p>
+    <p>Scheduled compliance reports can be configured with the following example workflow in Graylog:</p>
     <ol>
         <li>
-            <p>In the Graylog web interface, select the drop-down menu <strong>Security</strong> and click on the
-                <strong>Assets</strong> item in this menu.</p>
+            <p>Navigate to the <strong>Enterprise</strong> menu and select <strong>Reports</strong>.</p>
         </li>
         <li>
-            <p>If there are already assets defined, look for an existing entry for the DNS server to assign approval to.
-                If there is already an asset entry for the DNS server to approve:</p>
-            <ol>
-                <li>
-                    <p>Click on the asset entry.</p>
-                </li>
-                <li>
-                    <p>Click in or tab to the <strong>Categories</strong> text box.</p>
-                </li>
-                <li>
-                    <p>Enter the text <code class="linecode">approved_dns_servers</code> and hit the
-                        <strong>Enter</strong> key.</p>
-                </li>
-                <li>
-                    <p>Click the <strong>Next</strong> button repeatedly until you see the <strong>Save Asset</strong>
-                        button.</p>
-                </li>
-                <li>
-                    <p>Click on the <strong>Save Asset</strong> button.</p>
-                </li>
-            </ol>
+            <p>Locate the report <strong>Graylog Compliance: Unified Visibility Report (Preview)</strong>.</p>
         </li>
         <li>
-            <p>If there is no existing asset entry:</p>
-            <ol>
-                <li>
-                    <p>Click on the <strong>New Asset</strong> button.</p>
-                </li>
-                <li>
-                    <p>Click on or tab to the <strong>Asset Name</strong> text box and enter an asset name.</p>
-                </li>
-                <li>
-                    <p>Click on or tab to the <strong>IP Addresses</strong> text box.</p>
-                </li>
-                <li>
-                    <p>Enter the IP address associated with the DNS server and hit the <strong>Enter</strong> button.
-                    </p>
-                </li>
-                <li>
-                    <p>Repeat this step for any additional IP addresses associated with the approved DNS server.</p>
-                </li>
-                <li>
-                    <p>Add any relevant information to the other fields for this asset.</p>
-                </li>
-                <li>
-                    <p>Click on the <strong>Next</strong> button to advance to the next page of the asset entry form.
-                    </p>
-                </li>
-                <li>
-                    <p>Fill out any of the additional fields desired in the asset entry, clicking the
-                        <strong>Next</strong> button when completed.</p>
-                </li>
-                <li>
-                    <p>Repeat this process for each page of the asset entry dialog.</p>
-                </li>
-                <li>
-                    <p>Click the <strong>Save Entry</strong> button on the last page of the asset entry dialog.</p>
-                </li>
-            </ol>
+            <p>Open the <strong>Actions</strong> dropdown button to the right and select <strong>Edit</strong>.</p>
+        </li>
+        <li>
+            <p>Navigate to the <strong>Delivery</strong> tab.</p>
+        </li>
+        <li>
+            <p>Adjust any current settings as desired, such as the report delivery schedule.</p>
+        </li>
+        <li>
+            <p>Add one or more recipients to the <strong>Email recipients</strong> input field.</p>
+        </li>
+        <li>
+            <p>(Optional) Modify the report <strong>Content</strong> and <strong>Style</strong> to your specifications.
+            </p>
+        </li>
+        <li>
+            <p>Click the <strong>Update</strong> button to save the changes.</p>
         </li>
     </ol>
-    <h2 id="spotlight-content-pack">DNS Processing Spotlight Content Pack</h2>
-    <p>The DNS Processing Spotlight content pack contains a dashboard that provides insights in to DNS activity
-        collected in Graylog</p>
-    <p>Dashboard: <strong>Illuminate:DNS Analysis</strong></p>
-    <p>DNS Activity Summary tab: A high-level view of categorized DNS events.</p>
-    <p><img alt="DNS Activity Summary" src="../Resources/Images/resources/dns_analysis_activity_summary.png"></p>
-    <p>DNS Assets tab: Review DNS traffic to approved/unapproved DNS servers.</p>
-    <p><img alt="DNS Assets" src="../Resources/Images/resources/dns_analysis_assets.png"></p>
+    <h2 id="spotlight-content-pack">Compliance Unified Visibility Spotlight Preview</h2>
+    <p>The Spotlight pack offers a dashboard with 3 tabs:</p>
+    <h3>Identification and Authentication (IAC)</h3>
+    <p>
+        <img src="../Resources/Images/resources/iac_1.png" />
+    </p>
+    <p>
+        <img src="../Resources/Images/resources/iac_2.png" />
+    </p>
+    <h3>Network Security (NET)</h3>
+    <p>
+        <img src="../Resources/Images/resources/net_1.png" />
+    </p>
+    <p>
+        <img src="../Resources/Images/resources/net_2.png" />
+    </p>
+    <h3>Endpoint Security (END)</h3>
+    <p>
+        <img src="../Resources/Images/resources/end_1.png" />
+    </p>
 </body>
 
 </html>
