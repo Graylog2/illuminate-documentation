@@ -1,213 +1,205 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-
-<head>
-    <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
-    <title>Cloudflare Content Pack</title>
-    <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
-</head>
-
-<body>
-    <h1>Cloudflare Content Pack</h1>
-    <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-    <p>Cloudflare is a comprehensive cloud web-based security and performance platform that works by filtering out
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Cloudflare Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>
+            <MadCap:concept term="Networking" />Cloudflare Content Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Cloudflare is a comprehensive cloud web-based security and performance platform that works by filtering out
         malicious traffic, preventing cyberattacks like DDoS, and optimizing content delivery to ensure faster loading
         times for users. This technology pack processes Cloudflare logs with normalization and enrichment for HTTP
         Request, Firewall Event, DNS, WAF, and account-scoped dataset log types (Access Requests, Audit Logs, Gateway
         DNS, Gateway HTTP).</p>
-    <h2 id="supported-versions">Supported Version(s)</h2>
-    <ul>
-        <li>
-            <p>Cloudflare 2024.10.2</p>
-        </li>
-    </ul>
-    <h2 id="requirements">Requirements</h2>
-    <ul>
-        <li>
-            <p>Cloudflare Logpush configured to deliver logs to Graylog via a Raw HTTP input.</p>
-        </li>
-        <li>
-            <p>Graylog Enterprise version 6.1.0 or later.</p>
-        </li>
-        <li>
-            <p>The input routing lookup must be configured to map the Raw HTTP input ID to 'cloudflare' under Enterprise
+        <h2 id="supported-versions">Supported Version(s)</h2>
+        <ul>
+            <li>
+                <p>Cloudflare 2024.10.2</p>
+            </li>
+        </ul>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>Cloudflare Logpush configured to deliver logs to Graylog via a Raw HTTP input.</p>
+            </li>
+            <li>
+                <p>Graylog Enterprise version 6.1.0 or later.</p>
+            </li>
+            <li>
+                <p>The input routing lookup must be configured to map the Raw HTTP input ID to 'cloudflare' under Enterprise
                 &gt; Illuminate &gt; Customization.</p>
-        </li>
-    </ul>
-    <h2 id="stream-configuration">Stream Configuration</h2>
-    <p>This technology pack includes 1 stream:</p>
-    <ul>
-        <li>"Illuminate:Cloudflare Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
+            </li>
+        </ul>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>"Illuminate:Cloudflare Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
                 activation of this pack then it will be created and configured to route messages to this stream and the
                 associated index set. There should not be any stream rules configured for this stream.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="index-set-configuration">Index Set Configuration</h2>
-    <p>This technology pack includes 1 index set definition:</p>
-    <ul>
-        <li>"Cloudflare Event Log Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
+                </div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"Cloudflare Event Log Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
                 nothing will be changed. If this index set does not exist, then it will be created with retention
                 settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
                 installation.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="what-is-provided">What is Provided</h2>
-    <ul>
-        <li>
-            <p>Parsing rules to extract Cloudflare logs into Graylog schema-compatible fields.</p>
-        </li>
-        <li>
-            <p>GIM categorization for HTTP Request, Firewall Event, DNS, WAF, Access Request, Audit, Gateway DNS, and
+                </div>
+            </section>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Parsing rules to extract Cloudflare logs into Graylog schema-compatible fields.</p>
+            </li>
+            <li>
+                <p>GIM categorization for HTTP Request, Firewall Event, DNS, WAF, Access Request, Audit, Gateway DNS, and
                 Gateway HTTP logs (see table below).</p>
-        </li>
-        <li>
-            <p>Firewall and WAF event action mapping for all Cloudflare actions (block, allow, challenge, etc.).</p>
-        </li>
-        <li>
-            <p>Cloudflare Spotlight dashboard.</p>
-        </li>
-    </ul>
-    <h3 id="gim-categorization">GIM Categorization</h3>
-    <p>GIM categorization is provided for the following log types:</p>
-    <table cellspacing="21"
-        style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-        class="TableStyle-Alternate-Row-Color">
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <thead>
-            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Log Type</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DNS logs</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">140000</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution.dns request</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dns query</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Firewall events (all)</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network connection</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Firewall events (blocked)</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">300001</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.network_detection</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network_detection</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">HTTP Request logs</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">180100</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http.request</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">http request</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">WAF logs</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180100</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.request</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http request</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">WAF logs (blocked)</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">300001</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.network_detection</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network_detection</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Access Requests</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000|100500</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+            </li>
+            <li>
+                <p>Firewall and WAF event action mapping for all Cloudflare actions (block, allow, challenge, etc.).</p>
+            </li>
+            <li>
+                <p>Cloudflare Spotlight dashboard.</p>
+            </li>
+        </ul>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following log types:</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Log Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DNS logs</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">140000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution.dns request</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dns query</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Firewall events (all)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network connection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Firewall events (blocked)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">300001</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.network_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network_detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">HTTP Request logs</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">180100</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http.request</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">http request</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">WAF logs</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180100</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.request</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http request</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">WAF logs (blocked)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">300001</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.network_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network_detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Access Requests</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000|100500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
                     authentication.logon|authentication.credential validation</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon|credential validation</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Audit Logs</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">229999</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">audit</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">audit.default</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">audit event</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Gateway DNS</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">140000</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution.dns request</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dns query</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Gateway HTTP</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">180200</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">http</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">http.communication</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">http communication</td>
-            </tr>
-        </tbody>
-    </table>
-    <h2 id="log-collection">Log Collection</h2>
-    <p>Cloudflare logs are delivered via <a href="https://developers.cloudflare.com/logs/about/">Logpush</a> to a
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon|credential validation</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Audit Logs</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">229999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">audit</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">audit.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">audit event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Gateway DNS</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">140000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution.dns request</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dns query</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Gateway HTTP</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">180200</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">http</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">http.communication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">http communication</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2 id="log-collection">Log Collection</h2>
+        <p>Cloudflare logs are delivered via <a href="https://developers.cloudflare.com/logs/about/">Logpush</a> to a
         Graylog Raw HTTP input.</p>
-    <h3>Graylog Server Configuration</h3>
-    <ol>
-        <li>
-            <p>Create a dedicated <a
-                    href="https://go2docs.graylog.org/current/getting_in_log_data/raw_plain_text_inputs.html">Raw HTTP
+        <h3>Graylog Server Configuration</h3>
+        <ol>
+            <li>
+                <p>Create a dedicated <a href="https://go2docs.graylog.org/current/getting_in_log_data/raw_plain_text_inputs.html">Raw HTTP
                     input</a> for Cloudflare logs.</p>
-        </li>
-        <li>
-            <p>Access the input's received messages to obtain the input ID (<code
-                    class="linecode">gl2_source_input</code> value).</p>
-        </li>
-        <li>
-            <p>Navigate to Enterprise &gt; Illuminate &gt; Customization tab.</p>
-        </li>
-        <li>
-            <p>Edit <code class="linecode">lookup_adapter_input_routing</code> and map the input ID to <code
-                    class="linecode">cloudflare</code>.</p>
-        </li>
-        <li>
-            <p>Repeat for multiple inputs as needed.</p>
-        </li>
-    </ol>
-    <h2 id="spotlight-content-pack">Cloudflare Spotlight</h2>
-    <p>The Cloudflare Spotlight offers two dashboard tabs: Overview and HTTP Overview.</p>
-    <h3>Overview</h3>
-    <p>
-        <img src="../Resources/Images/resources/cloudflare_overview.png" />
-    </p>
-    <h3>HTTP Overview</h3>
-    <p>
-        <img src="../Resources/Images/resources/cloudflare_http_overview.png" />
-    </p>
-    <p>
-        <img src="../Resources/Images/resources/cloudflare_http_overview_2.png" />
-    </p>
-</body>
-
+            </li>
+            <li>
+                <p>Access the input's received messages to obtain the input ID (<code class="linecode">gl2_source_input</code> value).</p>
+            </li>
+            <li>
+                <p>Navigate to <i>Enterprise</i> &gt; <i>Illuminate</i> &gt; <i>Customization</i> tab.</p>
+            </li>
+            <li>
+                <p>Edit <code class="linecode">lookup_adapter_input_routing</code> and map the input ID to <code class="linecode">cloudflare</code>.</p>
+            </li>
+            <li>
+                <p>Repeat for multiple inputs as needed.</p>
+            </li>
+        </ol>
+        <h2 id="spotlight-content-pack">Cloudflare Spotlight</h2>
+        <p>The Cloudflare Spotlight offers two dashboard tabs: Overview and HTTP Overview.</p>
+        <h3>Overview</h3>
+        <p>
+            <img src="../Resources/Images/Cloudflare/cloudflare_overview.png" />
+        </p>
+        <h3>HTTP Overview</h3>
+        <p>
+            <img src="../Resources/Images/Cloudflare/cloudflare_http_overview.png" />
+        </p>
+        <p>
+            <img src="../Resources/Images/Cloudflare/cloudflare_http_overview_2.png" />
+        </p>
+    </body>
 </html>
