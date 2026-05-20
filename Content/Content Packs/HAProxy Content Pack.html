@@ -1,765 +1,741 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-
-<head>
-    <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
-    <title>HAProxy LoadBalancer Content Pack</title>
-    <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
-</head>
-
-<body>
-    <h1>HAProxy LoadBalancer Content Pack</h1>
-    <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-    <p>HAProxy is an open-source software solution that provides a high-performance and highly available TCP and HTTP
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>HAProxy LoadBalancer Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>
+            <MadCap:concept term="Networking" />HAProxy LoadBalancer Content Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>HAProxy is an open-source software solution that provides a high-performance and highly available TCP and HTTP
         load balancer and proxy server. This technology pack will process HAProxy logs, providing normalization and
         enrichment of common events of interest.</p>
-    <h2 id="supported-versions">Supported Version(s)</h2>
-    <ul>
-        <li>
-            <p>Tested with HAProxy version 2.9</p>
-        </li>
-    </ul>
-    <h2 id="requirements">Requirements</h2>
-    <ul>
-        <li>
-            <p>Logging via syslog (RFC 5424 format recommended) or Filebeat with Graylog Sidecar.</p>
-        </li>
-        <li>
-            <p>HAProxy HTTP/TCP server on a Linux system.</p>
-        </li>
-        <li>
-            <p>A syslog or Beats input configured in Graylog matching the IP, port, and protocol for log reception.</p>
-        </li>
-    </ul>
-    <h2 id="stream-configuration">Stream Configuration</h2>
-    <p>This technology pack includes 1 stream:</p>
-    <ul>
-        <li>"Illuminate:HAProxy LoadBalancer Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
+        <h2 id="supported-versions">Supported Version(s)</h2>
+        <ul>
+            <li>
+                <p>Tested with HAProxy version 2.9</p>
+            </li>
+        </ul>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>Logging via syslog (RFC 5424 format recommended) or Filebeat with Graylog Sidecar.</p>
+            </li>
+            <li>
+                <p>HAProxy HTTP/TCP server on a Linux system.</p>
+            </li>
+            <li>
+                <p>A syslog or Beats input configured in Graylog matching the IP, port, and protocol for log reception.</p>
+            </li>
+        </ul>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>"Illuminate:HAProxy LoadBalancer Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
                 activation of this pack then it will be created and configured to route messages to this stream and the
                 associated index set. There should not be any stream rules configured for this stream.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="index-set-configuration">Index Set Configuration</h2>
-    <p>This technology pack includes 1 index set definition:</p>
-    <ul>
-        <li>"HAProxy LoadBalancer Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
+                </div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"HAProxy LoadBalancer Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
                 nothing will be changed. If this index set does not exist, then it will be created with retention
                 settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
                 installation.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="log-collection">Log Collection</h2>
-    <p>HAProxy supports the following log delivery methods:</p>
-    <ul>
-        <li>
-            <p>Syslog (RFC 5424 format recommended)</p>
-        </li>
-        <li>
-            <p>Filebeat with Graylog Sidecar</p>
-        </li>
-    </ul>
-    <h3>Syslog Configuration</h3>
-    <p>Configure HAProxy to send logs via syslog to your Graylog server.</p>
-    <ol>
-        <li>
-            <p>Create a <a href="https://go2docs.graylog.org/current/getting_in_log_data/syslog.html">Syslog input</a>
+                </div>
+            </section>
+        </p>
+        <h2 id="log-collection">Log Collection</h2>
+        <p>HAProxy supports the following log delivery methods:</p>
+        <ul>
+            <li>
+                <p>Syslog (RFC 5424 format recommended)</p>
+            </li>
+            <li>
+                <p>Filebeat with Graylog Sidecar</p>
+            </li>
+        </ul>
+        <h3>Syslog Configuration</h3>
+        <p>Configure HAProxy to send logs via syslog to your Graylog server.</p>
+        <ol>
+            <li>
+                <p>Create a <a href="https://go2docs.graylog.org/current/getting_in_log_data/syslog.html">Syslog input</a>
                 in Graylog matching the IP, port, and protocol for log reception.</p>
-        </li>
-        <li>
-            <p>Configure HAProxy to send logs to the Graylog syslog input. Refer to the <a
-                    href="https://www.haproxy.com/documentation/haproxy-configuration-tutorials/enabling-logging/">official
+            </li>
+            <li>
+                <p>Configure HAProxy to send logs to the Graylog syslog input. Refer to the <a href="https://www.haproxy.com/documentation/haproxy-configuration-tutorials/enabling-logging/">official
                     HAProxy logging documentation</a> for configuration details.</p>
-        </li>
-    </ol>
-    <h3>Filebeat with Graylog Sidecar</h3>
-    <p>Please use <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">the official
+            </li>
+        </ol>
+        <h3>Filebeat with Graylog Sidecar</h3>
+        <p>Please use <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">the official
             Graylog Sidecar documentation</a> to configure your Graylog server and your client(s).</p>
-    <ol>
-        <li>
-            <p>Create a <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats
+        <ol>
+            <li>
+                <p>Create a <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats
                     input</a> in Graylog.</p>
-        </li>
-        <li>
-            <p>Install Graylog Sidecar on the HAProxy host.</p>
-        </li>
-        <li>
-            <p>Configure Filebeat to collect HAProxy log files and forward them to the Graylog Beats input.</p>
-        </li>
-    </ol>
-    <h2 id="log-format-example">Log Format Examples</h2>
-    <p>HAProxy supports multiple log formats depending on the proxy mode configuration.</p>
-    <h4>Connection Log (Default)</h4>
-    <p><code class="linecode">haproxy[1234]: Connect from 10.0.1.2:33312 to 10.0.3.31:8012 (www/HTTP)</code>
-    </p>
-    <h4>Error Log</h4>
-    <p><code
-            class="linecode">haproxy[6103]: 127.0.0.1:56059 [03/Dec/2023:17:35:10.380] frt/f1: Connection error during SSL handshake</code>
-    </p>
-    <h4>TCP Log</h4>
-    <p><code
-            class="linecode">haproxy[14387]: 10.0.1.2:33313 [06/Feb/2023:12:12:51.443] fnt bck/srv1 0/0/5007 212 -- 0/0/0/0/3 0/0</code>
-    </p>
-    <h4>HTTP Log</h4>
-    <p><code
-            class="linecode">haproxy[14329]: 10.0.1.2:33317 [06/Feb/2023:12:14:14.655] http-in static/srv1 10/0/30/69/109 200 2750 - - ---- 1/2/3/4/5 6/7 {graylog.eu} {} "GET /index.html HTTP/1.1"</code>
-    </p>
-    <h4>HTTPS Log</h4>
-    <p><code
-            class="linecode">haproxy[1234]: 10.0.1.2:36317 [06/Feb/2023:12:14:14.655] https-in static/srv1 10/0/30/69/109 200 2750 - - ---- 1/2/3/4/5 6/7 {graylog.eu} {} "GET /index.html HTTP/1.1" 0/0/0/0/0 graylog.eu/TLSv1.3/TLS_AES_256_GCM_SHA384</code>
-    </p>
-    <h2 id="what-is-provided">What is Provided</h2>
-    <ul>
-        <li>
-            <p>Parsing rules to extract HAProxy logs into Graylog schema-compatible fields.</p>
-        </li>
-        <li>
-            <p>GIM code 180200 (http communication) for HTTP/HTTPS proxy logs.</p>
-        </li>
-        <li>
-            <p>GIM code 120000 (network connection) for TCP proxy logs and default connection logs.</p>
-        </li>
-        <li>
-            <p>Event action detection from HAProxy termination state codes (allowed/blocked).</p>
-        </li>
-        <li>
-            <p>Event severity mapping from syslog priority levels.</p>
-        </li>
-        <li>
-            <p>Termination reason enrichment from HAProxy termination state codes.</p>
-        </li>
-        <li>
-            <p>HAProxy Spotlight dashboards.</p>
-        </li>
-    </ul>
-    <h3 id="gim-categorization">GIM Categorization</h3>
-    <p>GIM categorization is provided for the following log types:</p>
-    <table cellspacing="21"
-        style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-        class="TableStyle-Alternate-Row-Color">
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <thead>
-            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Log Type</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">HTTP/HTTPS proxy logs</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180200</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.communication</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http communication</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TCP proxy logs</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network connection</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Default connection logs</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">120000</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">network</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">network.network connection</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">network connection</td>
-            </tr>
-        </tbody>
-    </table>
-    <h3>Message Fields Included in This Pack</h3>
-    <h4>General Parsing</h4>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Common Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">haproxy</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Set by the Syslog input from the
+            </li>
+            <li>
+                <p>Install Graylog Sidecar on the HAProxy host.</p>
+            </li>
+            <li>
+                <p>Configure Filebeat to collect HAProxy log files and forward them to the Graylog Beats input.</p>
+            </li>
+        </ol>
+        <h2 id="log-format-example">Log Format Examples</h2>
+        <p>HAProxy supports multiple log formats depending on the proxy mode configuration.</p>
+        <h4>Connection Log (Default)</h4>
+        <p><code class="linecode">haproxy[1234]: Connect from 10.0.1.2:33312 to 10.0.3.31:8012 (www/HTTP)</code>
+        </p>
+        <h4>Error Log</h4>
+        <p><code class="linecode">haproxy[6103]: 127.0.0.1:56059 [03/Dec/2023:17:35:10.380] frt/f1: Connection error during SSL handshake</code>
+        </p>
+        <h4>TCP Log</h4>
+        <p><code class="linecode">haproxy[14387]: 10.0.1.2:33313 [06/Feb/2023:12:12:51.443] fnt bck/srv1 0/0/5007 212 -- 0/0/0/0/3 0/0</code>
+        </p>
+        <h4>HTTP Log</h4>
+        <p><code class="linecode">haproxy[14329]: 10.0.1.2:33317 [06/Feb/2023:12:14:14.655] http-in static/srv1 10/0/30/69/109 200 2750 - - ---- 1/2/3/4/5 6/7 {graylog.eu} {} "GET /index.html HTTP/1.1"</code>
+        </p>
+        <h4>HTTPS Log</h4>
+        <p><code class="linecode">haproxy[1234]: 10.0.1.2:36317 [06/Feb/2023:12:14:14.655] https-in static/srv1 10/0/30/69/109 200 2750 - - ---- 1/2/3/4/5 6/7 {graylog.eu} {} "GET /index.html HTTP/1.1" 0/0/0/0/0 graylog.eu/TLSv1.3/TLS_AES_256_GCM_SHA384</code>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Parsing rules to extract HAProxy logs into Graylog schema-compatible fields.</p>
+            </li>
+            <li>
+                <p>GIM code 180200 (http communication) for HTTP/HTTPS proxy logs.</p>
+            </li>
+            <li>
+                <p>GIM code 120000 (network connection) for TCP proxy logs and default connection logs.</p>
+            </li>
+            <li>
+                <p>Event action detection from HAProxy termination state codes (allowed/blocked).</p>
+            </li>
+            <li>
+                <p>Event severity mapping from syslog priority levels.</p>
+            </li>
+            <li>
+                <p>Termination reason enrichment from HAProxy termination state codes.</p>
+            </li>
+            <li>
+                <p>HAProxy Spotlight dashboards.</p>
+            </li>
+        </ul>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following log types:</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Log Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">HTTP/HTTPS proxy logs</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180200</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.communication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http communication</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TCP proxy logs</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network connection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Default connection logs</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">network.network connection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">network connection</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Message Fields Included in This Pack</h3>
+        <h4>General Parsing</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Common Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">haproxy</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Set by the Syslog input from the
                             syslog header</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">haproxy</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Process name parsed from the
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">haproxy</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Process name parsed from the
                             HAProxy log line</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">14387</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Process ID parsed from the
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">14387</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Process ID parsed from the
                             HAProxy log line</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_severity_level</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">6</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Raw numeric severity level from
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_severity_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">6</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Raw numeric severity level from
                             the syslog priority, when present</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_severity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">informational</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Normalized Graylog severity
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">informational</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Normalized Graylog severity
                             derived from the syslog priority</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">event_severity_level</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">1</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">GIM severity level (1 to 5)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h4>Connection (Default) Logs</h4>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Connection Fields List <span style="font-size: 8pt;">▼</span>
-            </MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Connect</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Action extracted from the default
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">event_severity_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">GIM severity level (1 to 5)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>Connection (Default) Logs</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Connection Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Connect</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Action extracted from the default
                             connection log (for example, Connect)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_description</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Connect from 10.0.1.2:33312 to
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Connect from 10.0.1.2:33312 to
                             10.0.3.31:8012</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Full vendor description of the
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Full vendor description of the
                             connection event</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10.0.3.31</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination server IP</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_port</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">8012</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination server port</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_frontend_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">www</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HAProxy frontend name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_frontend_mode</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">HTTP</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HAProxy frontend mode (for
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10.0.3.31</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination server IP</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">8012</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination server port</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_frontend_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">www</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HAProxy frontend name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_frontend_mode</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">HTTP</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HAProxy frontend mode (for
                             example, HTTP or TCP)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">network_transport</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">tcp</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Transport protocol for the
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">network_transport</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">tcp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Transport protocol for the
                             connection</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h4>Default Fields for TCP/HTTP and HTTPS Logs</h4>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Default Fields for TCP/HTTP and HTTPS Logs <span style="font-size: 8pt;">▼</span>
-            </MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10.0.1.2</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Client IP extracted from the
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>Default Fields for TCP/HTTP and HTTPS Logs</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Default Fields for TCP/HTTP and HTTPS Logs <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10.0.1.2</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Client IP extracted from the
                             HAProxy log line</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_port</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">33313</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client source port extracted from
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">33313</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client source port extracted from
                             the HAProxy log line</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_received_time</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">06/Feb/2023:12:12:51.443</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Timestamp recorded by HAProxy at
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_received_time</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">06/Feb/2023:12:12:51.443</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Timestamp recorded by HAProxy at
                             the start of the request</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_frontend_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">fnt</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HAProxy frontend name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_backend_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">bck</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HAProxy backend name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_server_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">srv1</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HAProxy server name within the
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_frontend_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">fnt</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HAProxy frontend name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_backend_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">bck</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HAProxy backend name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_server_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">srv1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HAProxy server name within the
                             backend</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_tw</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Time spent in HAProxy queues
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_tw</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Time spent in HAProxy queues
                             waiting for a free connection (ms)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_tc</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Time spent waiting for the
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_tc</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Time spent waiting for the
                             connection to the server to establish (ms)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_bytes_sent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">212</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Bytes sent to the client</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_termination_state</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">--</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Two or four character termination
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_bytes_sent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">212</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Bytes sent to the client</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_termination_state</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">--</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Two or four character termination
                             state code from HAProxy</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_termination_state_cause
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_termination_state_cause
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">First character of the
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">First character of the
                             termination state, indicating the cause</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_termination_state_closed
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_termination_state_closed
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Second character of the
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Second character of the
                             termination state, indicating the session state at close</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_termination_reason</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">No reason (session closed
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_termination_reason</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">No reason (session closed
                             normally)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Human readable termination reason
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Human readable termination reason
                             looked up from the state code</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_actconn</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Total active connections on the
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_actconn</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Total active connections on the
                             HAProxy process at the time of the log</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_feconn</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Active connections on the
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_feconn</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Active connections on the
                             frontend</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_beconn</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Active connections on the backend
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_beconn</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Active connections on the backend
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_srv_conn</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Active connections on the
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_srv_conn</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Active connections on the
                             selected server</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_retries</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Number of retries to the server
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_retries</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Number of retries to the server
                             before success or failure</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_srv_queue</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Number of requests queued on the
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_srv_queue</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Number of requests queued on the
                             server</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_backend_queue</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Number of requests queued on the
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_backend_queue</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Number of requests queued on the
                             backend</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_action</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">allowed</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Normalized action (allowed or
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">allowed</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Normalized action (allowed or
                             blocked) derived from the termination state</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_reference</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">10.0.1.2</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GIM source reference enforcement
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_reference</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">10.0.1.2</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GIM source reference enforcement
                             field</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">destination_reference</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">10.0.3.31</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">GIM destination reference
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">destination_reference</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">10.0.3.31</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">GIM destination reference
                             enforcement field</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h4>TCP Logs</h4>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>TCP Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_tt</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">5007</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Total time the request was active
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>TCP Logs</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>TCP Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_tt</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">5007</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Total time the request was active
                             in HAProxy (ms)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">gim_event_type_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">120000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">GIM event type code for network
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">gim_event_type_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">120000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">GIM event type code for network
                             connection</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h4>HTTP/HTTPS Logs</h4>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>HTTP/HTTPS Fields List <span style="font-size: 8pt;">▼</span>
-            </MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_tr</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Time to receive the full HTTP
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>HTTP/HTTPS Logs</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>HTTP/HTTPS Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_tr</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Time to receive the full HTTP
                             request from the client (ms)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_trr</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">69</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Time spent waiting for the server
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_trr</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">69</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Time spent waiting for the server
                             to send the full HTTP response (ms)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_ta</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">109</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Total session active time (ms)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_ta</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">109</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Total session active time (ms)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_response_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">200</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP response status code</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_request_cookie</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Request cookie captured by
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_response_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP response status code</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_request_cookie</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Request cookie captured by
                             HAProxy (dash when absent)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_response_cookie</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Response cookie captured by
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_response_cookie</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Response cookie captured by
                             HAProxy (dash when absent)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_request_method</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">GET</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP method of the request</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_path</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">/index.html</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP request path</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_version</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1.1</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP protocol version</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_captured_request_headers
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_request_method</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">GET</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP method of the request</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">/index.html</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP request path</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1.1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP protocol version</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_captured_request_headers
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">graylog.eu</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Request headers captured by
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">graylog.eu</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Request headers captured by
                             HAProxy, when configured</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_captured_response_headers
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_captured_response_headers
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Response headers captured by
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Response headers captured by
                             HAProxy, when configured</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_ssl_fc_sni</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">graylog.eu</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">SNI hostname presented by the
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_ssl_fc_sni</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">graylog.eu</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">SNI hostname presented by the
                             client (HTTPS only)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_ssl-version</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">TLSv1.3</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Negotiated TLS version (HTTPS
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_ssl-version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">TLSv1.3</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Negotiated TLS version (HTTPS
                             only)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_ssl_ciphers</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TLS_AES_256_GCM_SHA384</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Negotiated TLS cipher suite
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_ssl_ciphers</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TLS_AES_256_GCM_SHA384</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Negotiated TLS cipher suite
                             (HTTPS only)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">gim_event_type_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">180200</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">GIM event type code for HTTP
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">gim_event_type_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">180200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">GIM event type code for HTTP
                             communication</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h4>Error Logs</h4>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Error Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_frontend_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">frt</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HAProxy frontend name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_bind_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">f1</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HAProxy bind name associated with
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>Error Logs</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Error Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_frontend_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">frt</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HAProxy frontend name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_bind_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">f1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HAProxy bind name associated with
                             the error</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_description</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Connection error during SSL
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Connection error during SSL
                             handshake</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Error description from HAProxy
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Error description from HAProxy
                             (renamed from vendor_error_description)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">is_error</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">1</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">keyword</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Flag set to 1 to mark the message
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">is_error</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Flag set to 1 to mark the message
                             for the Error dashboard</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h2 id="spotlight-content-pack">HAProxy LoadBalancer Spotlight</h2>
-    <p>The HAProxy Spotlight offers dashboards with five tabs:</p>
-    <h3>Overview</h3>
-    <p>
-        <img src="../Resources/Images/resources/haproxy/HAProxyOverview.png" />
-    </p>
-    <h3>Default Logs</h3>
-    <p>
-        <img src="../Resources/Images/resources/haproxy/HAProxyDefault.png" />
-    </p>
-    <h3>TCP Logs</h3>
-    <p>
-        <img src="../Resources/Images/resources/haproxy/HAProxyTCP.png" />
-    </p>
-    <h3>HTTP/HTTPS Logs</h3>
-    <p>
-        <img src="../Resources/Images/resources/haproxy/HAProxyHTTP.png" />
-    </p>
-    <h3>Error Dashboard</h3>
-    <p>
-        <img src="../Resources/Images/resources/haproxy/HAProxyError.png" />
-    </p>
-</body>
-
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h2 id="spotlight-content-pack">HAProxy LoadBalancer Spotlight</h2>
+        <p>The HAProxy Spotlight offers dashboards with five tabs:</p>
+        <h3>Overview</h3>
+        <p>
+            <img src="../Resources/Images/haproxy_content_pack/HAProxyOverview.png" />
+        </p>
+        <h3>Default Logs</h3>
+        <p>
+            <img src="../Resources/Images/haproxy_content_pack/HAProxyDefault.png" />
+        </p>
+        <h3>TCP Logs</h3>
+        <p>
+            <img src="../Resources/Images/haproxy_content_pack/HAProxyTCP.png" />
+        </p>
+        <h3>HTTP/HTTPS Logs</h3>
+        <p>
+            <img src="../Resources/Images/haproxy_content_pack/HAProxyHTTP.png" />
+        </p>
+        <h3>Error Dashboard</h3>
+        <p>
+            <img src="../Resources/Images/haproxy_content_pack/HAProxyError.png" />
+        </p>
+    </body>
 </html>
