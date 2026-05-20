@@ -1,381 +1,372 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-
-<head>
-    <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
-    <title>Google Workspace Content Pack</title>
-    <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
-</head>
-
-<body>
-    <h1>Google Workspace Content Pack</h1>
-    <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-    <p>Google Workspace is a collection of cloud computing, productivity and collaboration tools, software, and products
-        developed and marketed by Google.</p>
-    <p>It consists of Gmail, Contacts, Calendar, Meet, Chat, Drive, Google Docs and others.</p>
-    <p>This technology pack processes Google Workspace event log messages, providing normalization and enrichment of
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Google Workspace Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>
+            <MadCap:concept term="Vendor:Google" />Google Workspace Content Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Google Workspace is a collection of cloud computing, productivity and collaboration tools, software, and products
+        developed and marketed by Google. It consists of Gmail, Contacts, Calendar, Meet, Chat, Drive, Google Docs and others.</p>
+        <p>This technology pack processes Google Workspace event log messages, providing normalization and enrichment of
         common events of interest.</p>
-    <h2 id="supported-versions">Supported Versions</h2>
-    <ul>
-        <li>
-            <p>Google Workspace (current)</p>
-        </li>
-    </ul>
-    <h2 id="requirements">Requirements</h2>
-    <ul>
-        <li>
-            <p>Graylog 6.1.0+ with a valid Enterprise or Security license</p>
-        </li>
-        <li>
-            <p>Google Workspace subscription</p>
-        </li>
-        <li>
-            <p>Google Cloud subscription</p>
-        </li>
-    </ul>
-    <h2 id="stream-configuration">Stream Configuration</h2>
-    <p>This technology pack includes 1 stream:</p>
-    <ul>
-        <li>"Illuminate:Google Workspace Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
+        <h2 id="supported-versions">Supported Versions</h2>
+        <ul>
+            <li>
+                <p>Google Workspace (current)</p>
+            </li>
+        </ul>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>Graylog 6.1.0+ with a valid Enterprise or Security license</p>
+            </li>
+            <li>
+                <p>Google Workspace subscription</p>
+            </li>
+            <li>
+                <p>Google Cloud subscription</p>
+            </li>
+        </ul>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>"Illuminate:Google Workspace Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
                 activation of this pack then it will be created and configured to route messages to this stream and the
                 associated index set. There should not be any stream rules configured for this stream.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="index-set-configuration">Index Set Configuration</h2>
-    <p>This technology pack includes 1 index set definition:</p>
-    <ul>
-        <li>"Google Workspace Logs"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
+                </div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"Google Workspace Logs"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
                 nothing will be changed. If this index set does not exist, then it will be created with retention
                 settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
                 installation.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="log-collection">Log Collection and Delivery</h2>
-    <p>Google Workspace utilizes the Google Workspace input that ingests multiple Google product type logs in JSON
+                </div>
+            </section>
+        </p>
+        <h2 id="log-collection">Log Collection and Delivery</h2>
+        <p>Google Workspace utilizes the Google Workspace input that ingests multiple Google product type logs in JSON
         format.</p>
-    <ul>
-        <li>
-            <p>Google Workspace Input</p>
-        </li>
-    </ul>
-    <h3>Google Workspace Input Configuration</h3>
-    <ol>
-        <li>
-            <p>Create a <a
-                    href="https://go2docs.graylog.org/current/getting_in_log_data/google_workspace_input.html">Google
+        <ul>
+            <li>
+                <p>Google Workspace Input</p>
+            </li>
+        </ul>
+        <h3>Google Workspace Input Configuration</h3>
+        <ol>
+            <li>
+                <p>Create a <a href="https://go2docs.graylog.org/current/getting_in_log_data/google_workspace_input.html">Google
                     Workspace Input</a> in Graylog.</p>
-        </li>
-        <li>
-            <p>Configure the input with your Google Workspace credentials and desired log types.</p>
-        </li>
-        <li>
-            <p>The input will automatically collect and deliver logs from your Google Workspace environment.</p>
-        </li>
-    </ol>
-    <h2 id="log-format-example">Log Format Example</h2>
-    <p>Google Workspace logs are delivered in JSON format via the Google Workspace input.</p>
-    <h4>Login and Token Events</h4>
-    <p><code class="linecode">{"time_usec":1724422059754013,"email":"user@example.com","group_id":[],"org_unit_name_path":["Example Org"],"ip_address":"MTQxLjE1Ni4xODcuMTA5","event_type":"login","event_name":"login_success","record_type":"login","has_sensitive_content":false,"unique_identifier":"-229062299291613203","event_id":"97b9dd02","resource_ids":[],"resource_details":[],"login":{"is_suspicious":false,"login_type":"google_password","login_challenge_method":["password"]}}
+            </li>
+            <li>
+                <p>Configure the input with your Google Workspace credentials and desired log types.</p>
+            </li>
+            <li>
+                <p>The input will automatically collect and deliver logs from your Google Workspace environment.</p>
+            </li>
+        </ol>
+        <h2 id="log-format-example">Log Format Example</h2>
+        <p>Google Workspace logs are delivered in JSON format via the Google Workspace input.</p>
+        <h4>Login and Token Events</h4>
+        <p><code class="linecode">{"time_usec":1724422059754013,"email":"user@example.com","group_id":[],"org_unit_name_path":["Example Org"],"ip_address":"MTQxLjE1Ni4xODcuMTA5","event_type":"login","event_name":"login_success","record_type":"login","has_sensitive_content":false,"unique_identifier":"-229062299291613203","event_id":"97b9dd02","resource_ids":[],"resource_details":[],"login":{"is_suspicious":false,"login_type":"google_password","login_challenge_method":["password"]}}
         {"time_usec":1724422059778568,"email":"user@example.com","group_id":[],"org_unit_name_path":["Example Org"],"ip_address":"MTQxLjE1Ni4xODcuMTA5","event_type":"auth","event_name":"authorize","record_type":"token","has_sensitive_content":false,"unique_identifier":"-5056355255352872288","event_id":"222e57e5","resource_ids":[],"resource_details":[],"token":{"client_id":"77185425430.apps.googleusercontent.com","scope":["https://www.google.com/accounts/OAuthLogin"],"app_name":"Google Chrome","client_type":"NATIVE_DESKTOP"}}
         </code>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Rules to normalize and enrich Google Workspace log messages</p>
+            </li>
+            <li>
+                <p>Graylog Information Model message categorization for login, token, and Gmail events</p>
+            </li>
+            <li>
+                <p>Illuminate spotlight dashboard and saved search</p>
+            </li>
+        </ul>
+        <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
+        <p>The content pack supports the following log types. Generic processing will be provided for log types not listed.
     </p>
-    <h2 id="what-is-provided">What is Provided</h2>
-    <ul>
-        <li>
-            <p>Rules to normalize and enrich Google Workspace log messages</p>
-        </li>
-        <li>
-            <p>Graylog Information Model message categorization for login, token, and Gmail events</p>
-        </li>
-        <li>
-            <p>Illuminate spotlight dashboard and saved search</p>
-        </li>
-    </ul>
-    <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
-    <p>The content pack supports the following log types. Generic processing will be provided for log types not listed.
-    </p>
-    <ul>
-        <li>
-            <p>Gmail Logs</p>
-        </li>
-        <li>
-            <p>Chat Logs</p>
-        </li>
-        <li>
-            <p>Calendar Logs</p>
-        </li>
-        <li>
-            <p>Drive Logs</p>
-        </li>
-        <li>
-            <p>Mobile Logs</p>
-        </li>
-        <li>
-            <p>Token Logs</p>
-        </li>
-        <li>
-            <p>Login Logs</p>
-        </li>
-    </ul>
-    <h3 id="gim-categorization">GIM Categorization</h3>
-    <p>GIM categorization is provided for the following event types:</p>
-    <table cellspacing="21"
-        style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-        class="TableStyle-Alternate-Row-Color">
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <thead>
-            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Type</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Login</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Token</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">100500</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.credential validation</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">credential validation</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Gmail - Message sent</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">130000</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">messaging</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">messaging.email</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">email sent</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Gmail - Message received</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">139999</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">messaging</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">messaging.default</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Gmail - Message deleted</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">132000</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">messaging</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">messaging.email</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">email deleted</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Gmail - Message quarantined</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">131500</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">messaging</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">messaging.email</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">email quarantined</td>
-            </tr>
-        </tbody>
-    </table>
-    <h3>Message Fields Included in This Pack</h3>
-    <h4>Parsed Fields</h4>
-    <p>The following fields are extracted and normalized from Google Workspace logs across all event subtypes.</p>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Parsed Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Google Chrome</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Application name (from token) or
+        <ul>
+            <li>
+                <p>Gmail Logs</p>
+            </li>
+            <li>
+                <p>Chat Logs</p>
+            </li>
+            <li>
+                <p>Calendar Logs</p>
+            </li>
+            <li>
+                <p>Drive Logs</p>
+            </li>
+            <li>
+                <p>Mobile Logs</p>
+            </li>
+            <li>
+                <p>Token Logs</p>
+            </li>
+            <li>
+                <p>Login Logs</p>
+            </li>
+        </ul>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following event types:</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Login</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Token</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">100500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">credential validation</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Gmail - Message sent</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">130000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">messaging</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">messaging.email</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">email sent</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Gmail - Message received</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">139999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">messaging</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">messaging.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Gmail - Message deleted</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">132000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">messaging</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">messaging.email</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">email deleted</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Gmail - Message quarantined</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">131500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">messaging</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">messaging.email</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">email quarantined</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Message Fields Included in This Pack</h3>
+        <h4>Parsed Fields</h4>
+        <p>The following fields are extracted and normalized from Google Workspace logs across all event subtypes.</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Parsed Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Google Chrome</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Application name (from token) or
                             default placeholder</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_outcome</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">success</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Normalized event outcome
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_outcome</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">success</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Normalized event outcome
                             (success/failure/unknown)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">google_workspace</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Illuminate product identifier
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">google_workspace</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Illuminate product identifier
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_uid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-229062299291613203</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Unique event identifier</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gw_event_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">97b9dd02</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Google Workspace event ID</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">gw_has_sensitive_content</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">false</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Whether the event contains
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_uid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-229062299291613203</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Unique event identifier</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gw_event_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">97b9dd02</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Google Workspace event ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">gw_has_sensitive_content</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">false</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Whether the event contains
                             sensitive content</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gw_org_unit_name_path</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Graylog 2</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Google Workspace organizational
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gw_org_unit_name_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Graylog 2</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Google Workspace organizational
                             unit path</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">141.156.187.109</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source IP address (decoded from
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">141.156.187.109</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source IP address (decoded from
                             base64)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_email</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dan@example.com</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">User email address</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dan</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">User name extracted from email
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_email</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dan@example.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">User email address</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dan</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">User name extracted from email
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">login_success</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Vendor-specific event name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">login</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Vendor event type</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_subtype</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">login</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Google Workspace log subtype
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">login_success</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Vendor-specific event name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">login</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Vendor event type</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_subtype</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">login</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Google Workspace log subtype
                             (login, token, gmail, drive, etc.)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">login_challenge_method</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">password</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Login challenge method used</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">login_is_suspicious</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">false</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Whether the login was flagged as
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">login_challenge_method</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">password</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Login challenge method used</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">login_is_suspicious</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">false</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Whether the login was flagged as
                             suspicious</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">login_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">google_password</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Login authentication type</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">token_app_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Google Chrome</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">OAuth token application name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">token_client_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">login_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">google_password</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Login authentication type</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">token_app_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Google Chrome</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">OAuth token application name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">token_client_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
                             77185425430.apps.googleusercontent.com</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">OAuth client ID</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">token_client_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">NATIVE_DESKTOP</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">OAuth client type</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">token_scope</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">OAuth client ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">token_client_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">NATIVE_DESKTOP</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">OAuth client type</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">token_scope</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
                             https://www.google.com/accounts/OAuthLogin</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">OAuth scope requested</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">email_from</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user@example.com</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Gmail sender address</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">email_to</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">recipient@example.com</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Gmail recipient address</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">email_subject</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Hello</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Gmail message subject</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">email_direction</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">outbound</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Gmail message direction
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">OAuth scope requested</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">email_from</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user@example.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Gmail sender address</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">email_to</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">recipient@example.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Gmail recipient address</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">email_subject</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Hello</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Gmail message subject</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">email_direction</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">outbound</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Gmail message direction
                             (inbound/outbound)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">email_message_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&lt;abc123@example.com&gt;</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Gmail message ID</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">email_size</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">12345</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Gmail message size in bytes</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h2 id="spotlight-content-pack">Google Workspace Content Pack</h2>
-    <p>This spotlight offers a dashboard with 3 tabs:</p>
-    <h3>Overview</h3>
-    <p>
-        <img src="../Resources/Images/resources/google_workspace/gw_overview_main.png" />
-    </p>
-    <h3>Gmail</h3>
-    <p>
-        <img src="../Resources/Images/resources/google_workspace/gw_gmail1.png" />
-    </p>
-    <p>
-        <img src="../Resources/Images/resources/google_workspace/gw_gmail2.png" />
-    </p>
-    <h3>User Search</h3>
-    <p>
-        <img src="../Resources/Images/resources/google_workspace/gw_saved_search.png" />
-    </p>
-</body>
-
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">email_message_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&lt;abc123@example.com&gt;</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Gmail message ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">email_size</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">12345</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Gmail message size in bytes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h2 id="spotlight-content-pack">Google Workspace Content Pack</h2>
+        <p>This spotlight offers a dashboard with 3 tabs:</p>
+        <h3>Overview</h3>
+        <p>
+            <img src="../Resources/Images/Google Workspace Content Pack/gw_overview_main.png" />
+        </p>
+        <h3>Gmail</h3>
+        <p>
+            <img src="../Resources/Images/Google Workspace Content Pack/gw_gmail1.png" />
+        </p>
+        <p>
+            <img src="../Resources/Images/Google Workspace Content Pack/gw_gmail2.png" />
+        </p>
+        <h3>User Search</h3>
+        <p>
+            <img src="../Resources/Images/Google Workspace Content Pack/gw_saved_search.png" />
+        </p>
+    </body>
 </html>
