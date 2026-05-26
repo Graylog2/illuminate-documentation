@@ -1,476 +1,503 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-
-<head>
-    <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
-    <title>Microsoft Sysmon Content Pack</title>
-    <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
-</head>
-
-<body>
-    <h1>Microsoft Sysmon Content Pack</h1>
-    <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-    <p>Microsoft Sysmon is a free agent that can be installed on Windows systems and configured to provide rich details
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Microsoft Sysmon Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>
+            <MadCap:concept term="Vendor:Microsoft" />Microsoft Sysmon Content Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Microsoft Sysmon is a free agent that can be installed on Windows systems and configured to provide rich details
         about events of particular interest when performing security monitoring of systems. This technology pack will
         process all Sysmon event log messages produced by recent and current versions of Sysmon. This technology pack
         will process Sysmon logs, providing normalization and enrichment of common events of interest.</p>
-    <h2 id="requirements">Requirements</h2>
-    <ul>
-        <li>
-            <p>Sysmon event logs delivered to Graylog via a supported Winlogbeat or NXlog agent</p>
-        </li>
-    </ul>
-    <h2 id="supported-versions">Supported Versions</h2>
-    <ul>
-        <li>
-            <p>Sysmon version 12 or later.</p>
-        </li>
-    </ul>
-    <h2 id="log-collection">Log Collection and Delivery</h2>
-    <p>The log delivery agent, either Winlogbeat or NXLog, must be configured to collect Sysmon events from the Windows
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>Sysmon event logs delivered to Graylog via a supported Winlogbeat or NXlog agent</p>
+            </li>
+        </ul>
+        <h2 id="supported-versions">Supported Versions</h2>
+        <ul>
+            <li>
+                <p>Sysmon version 12 or later.</p>
+            </li>
+        </ul>
+        <h2 id="log-collection">Log Collection and Delivery</h2>
+        <p>The log delivery agent, either Winlogbeat or NXLog, must be configured to collect Sysmon events from the Windows
         event log service. Examples are listed below but please refer to the agent's configuration documentation to
         properly configure the log delivery agent to support your requirements.</p>
-    <h3>Agent Configuration - Winlogbeat</h3>
-    <p>Under the event_logs: section of the Winlogbeat configuration, add the line: </p>
-    <ol>
-        <li>
-            <p><code class="linecode">name: Microsoft-Windows-Sysmon/Operational</code></p>
-        </li>
-    </ol>
-    <h3>Agent Configuration - NXlog</h3>
-    <p>In the QueryXML section of the NXLog configuration, add the following:</p>
-    <ol>
-        <li>
-            <p><code class="linecode">&lt;Select Path='Microsoft-Windows-Sysmon/Operational'&gt;*&lt;/Select&gt;</code>
-            </p>
-        </li>
-    </ol>
-    <h2 id="stream-configuration">Stream Configuration</h2>
-    <p>This technology pack includes 1 stream:</p>
-    <ul>
-        <li>"Illuminate:Sysmon Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
+        <h3>Agent Configuration - Winlogbeat</h3>
+        <p>Under the event_logs: section of the Winlogbeat configuration, add the line: </p>
+        <ol>
+            <li>
+                <p><code class="linecode">name: Microsoft-Windows-Sysmon/Operational</code>
+                </p>
+            </li>
+        </ol>
+        <h3>Agent Configuration - NXlog</h3>
+        <p>In the QueryXML section of the NXLog configuration, add the following:</p>
+        <ol>
+            <li>
+                <p><code class="linecode">&lt;Select Path='Microsoft-Windows-Sysmon/Operational'&gt;*&lt;/Select&gt;</code>
+                </p>
+            </li>
+        </ol>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>"Illuminate:Sysmon Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
                 activation of this pack then it will be created and configured to route messages to this stream and the
                 associated index set. There should not be any stream rules configured for this stream.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="index-set-configuration">Index Set Configuration</h2>
-    <p>This technology pack includes 1 index set definition:</p>
-    <ul>
-        <li>"Sysmon Event Log Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
+                </div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"Sysmon Event Log Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
                 nothing will be changed. If this index set does not exist, then it will be created with retention
                 settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
                 installation.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="what-is-provided">What is Provided</h2>
-    <ul>
-        <li>
-            <p>Parsing rules to extract Sysmon logs into Graylog schema compatible fields</p>
-        </li>
-        <li>
-            <p>Graylog Information Model message categorization</p>
-        </li>
-    </ul>
-    <h3 id="gim-categorization">GIM Categorization</h3>
-    <p>GIM categorization is provided for the following messages:</p>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>GIM Categorization <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Sysmon Event IDs</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Additional Details</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">190000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process.execute</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">process started</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">201001</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file.modify</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">file timestamp modified</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.network connection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service_state: Started</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">210100</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.stop</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service stopped</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service_state: Stopped</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">210000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.start</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service started</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">5</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">190100</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process.end</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">process stopped</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">6</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">270000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">driver</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">driver.loaded</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">system driver loaded</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">7</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">191001</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process.action</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">image loaded</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">8</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">190501</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process.interaction</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">remote thread created</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">9</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">201501</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file.access</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">raw file access</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">190500</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process.interaction</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">process accessed</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">11</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">200000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file.create</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">file created</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">12</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_type: DeleteValue</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">250002</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">registry</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">registry.value_change</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">registry value deleted</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">12</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_type: CreateValue</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">250001</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">registry</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">registry.value_change</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">registry value added</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">12</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_type: DeleteKey</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">250501</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">registry</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">registry.key_change</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">registry key deleted</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">12</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_type: CreateKey</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">250500</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">registry</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">registry.key_change</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">registry key added</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">13</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">250000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">registry</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">registry.value_change</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">registry value set</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">14</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">251000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">registry</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">registry.object_renamed</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">registry object renamed</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">15</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">201002</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file.modify</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">file stream created</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">16</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">211000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.configuration</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service configuration change</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">17</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">230000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">pipe</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">pipe.add</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">pipe created</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">18</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">230500</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">pipe</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">pipe.state</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">pipe connected</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">19</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">240000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">wmi</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">wmi.filter</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">wmi filter created</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">20</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">240500</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">wmi</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">wmi.consumer</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">wmi consumer created</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">21</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">241000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">wmi</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">wmi.binding</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">wmi binding created</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">22</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">140000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution.dns request</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dns query</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">22</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">140200</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution.dns answer</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dns response</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">23</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">200100</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file.delete</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">file deleted</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">25</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">191000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process.action</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">process altered</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">25</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">301002</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.host_detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">hips_detection</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">27</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">301002</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.host_detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">hips_detection</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">28</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">301002</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.host_detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">hips_detection</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">29</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">301002</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.host_detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">hips_detection</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">255</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">211504</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">service</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">service.state</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">service error</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h3>Fields Extracted by This Pack</h3>
-    <h4>General Parsing</h4>
-    <p>These are the fields common to all Sysmon events.</p>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Parsed Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_hostname</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The name of the device that
+                </div>
+            </section>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Parsing rules to extract Sysmon logs into Graylog schema compatible fields</p>
+            </li>
+            <li>
+                <p>Graylog Information Model message categorization</p>
+            </li>
+        </ul>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following messages:</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>GIM Categorization <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Sysmon Event IDs</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Additional Details</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">190000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process.execute</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">process started</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">201001</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file.modify</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">file timestamp modified</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.network connection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service_state: Started</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">210100</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.stop</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service stopped</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service_state: Stopped</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">210000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.start</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service started</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">5</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">190100</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process.end</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">process stopped</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">6</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">270000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">driver</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">driver.loaded</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">system driver loaded</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">7</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">191001</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process.action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">image loaded</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">8</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">190501</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process.interaction</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">remote thread created</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">9</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">201501</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file.access</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">raw file access</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">190500</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process.interaction</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">process accessed</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">11</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">200000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file.create</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">file created</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">12</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_type: DeleteValue</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">250002</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">registry</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">registry.value_change</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">registry value deleted</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">12</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_type: CreateValue</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">250001</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">registry</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">registry.value_change</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">registry value added</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">12</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_type: DeleteKey</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">250501</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">registry</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">registry.key_change</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">registry key deleted</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">12</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_type: CreateKey</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">250500</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">registry</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">registry.key_change</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">registry key added</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">13</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">250000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">registry</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">registry.value_change</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">registry value set</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">14</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">251000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">registry</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">registry.object_renamed</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">registry object renamed</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">15</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">201002</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file.modify</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">file stream created</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">16</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">211000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.configuration</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service configuration change</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">17</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">230000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">pipe</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">pipe.add</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">pipe created</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">18</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">230500</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">pipe</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">pipe.state</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">pipe connected</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">19</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">240000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">wmi</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">wmi.filter</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">wmi filter created</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">20</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">240500</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">wmi</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">wmi.consumer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">wmi consumer created</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">21</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">241000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">wmi</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">wmi.binding</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">wmi binding created</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">22</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">140000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution.dns request</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dns query</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">22</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">140200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution.dns answer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dns response</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">23</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">200100</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file.delete</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">file deleted</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">25</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">191000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process.action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">process altered</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">25</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">301002</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.host_detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">hips_detection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">27</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">301002</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.host_detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">hips_detection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">28</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">301002</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.host_detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">hips_detection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">29</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">301002</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.host_detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">hips_detection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">255</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">211504</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">service.state</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">service error</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h3>Fields Extracted by This Pack</h3>
+        <h4>General Parsing</h4>
+        <p>These are the fields common to all Sysmon events.</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Parsed Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The name of the device that
                             generated the event</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The IP address of the host. If
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The IP address of the host. If
                             the log agent provides a list of IPs, the host_ip field will use the first value from the
                             list.</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_ip_list</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">If the agent reports a list of
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_ip_list</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">If the agent reports a list of
                             IPs assigned to the host it will be assigned to this field.</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_mac</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The MAC address of the host. If
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_mac</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The MAC address of the host. If
                             the log agent provides a list of MACs, the host_mac field will use the first value from the
                             list.</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">host_mac_list</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">If the agent reports a list of
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">host_mac_list</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">If the agent reports a list of
                             MACs assigned to the host it will be assigned to this field.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-</body>
-
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+    </body>
 </html>
