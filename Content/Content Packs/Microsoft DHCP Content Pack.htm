@@ -1,110 +1,105 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-
-<head>
-    <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
-    <title>Microsoft DHCP Content Pack</title>
-    <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
-</head>
-
-<body>
-    <h1>Microsoft DHCP Content Pack</h1>
-    <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-    <p>DHCP is a network protocol used to assign IP addresses and other network configuration parameters dynamically to
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Microsoft DHCP Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>
+            <MadCap:concept term="Vendor:Microsoft" />Microsoft DHCP Content Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>DHCP is a network protocol used to assign IP addresses and other network configuration parameters dynamically to
         devices on a network. Microsoft provides DHCP server software as a component of its Windows Server operating
         system. The Microsoft DHCP server manages the automatic assignment of IP addresses to client devices on a
         network, reducing the need for manual configuration and helping to ensure a consistent and correct IP addressing
         scheme. This technology pack processes Microsoft DHCP server audit log files collected with the Filebeat agent,
         providing normalization and enrichment of DHCP lease and service lifecycle events.</p>
-    <h2 id="supported-versions">Supported Versions</h2>
-    <ul>
-        <li>
-            <p>Windows Server 2016</p>
-        </li>
-        <li>
-            <p>Windows Server 2019</p>
-        </li>
-        <li>
-            <p>Windows Server 2022</p>
-        </li>
-        <li>
-            <p>Windows Server 2025</p>
-        </li>
-    </ul>
-    <h2 id="requirements">Requirements</h2>
-    <ul>
-        <li>
-            <p>Windows DHCP Server.</p>
-        </li>
-        <li>
-            <p>Graylog Server with a valid Enterprise license, running Graylog version 4.3 or later.</p>
-        </li>
-        <li>
-            <p>Filebeat agent configured to collect DHCP audit logs and forward them to a Graylog Beats input.</p>
-        </li>
-    </ul>
-    <h2 id="stream-configuration">Stream Configuration</h2>
-    <p>This technology pack includes 1 stream:</p>
-    <ul>
-        <li>"Illuminate:Windows Event Log Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
+        <h2 id="supported-versions">Supported Versions</h2>
+        <ul>
+            <li>
+                <p>Windows Server 2016</p>
+            </li>
+            <li>
+                <p>Windows Server 2019</p>
+            </li>
+            <li>
+                <p>Windows Server 2022</p>
+            </li>
+            <li>
+                <p>Windows Server 2025</p>
+            </li>
+        </ul>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>Windows DHCP Server.</p>
+            </li>
+            <li>
+                <p>Graylog Server with a valid Enterprise license, running Graylog version 4.3 or later.</p>
+            </li>
+            <li>
+                <p>Filebeat agent configured to collect DHCP audit logs and forward them to a Graylog Beats input.</p>
+            </li>
+        </ul>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>"Illuminate:Windows Event Log Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
                 activation of this pack then it will be created and configured to route messages to this stream and the
                 associated index set. There should not be any stream rules configured for this stream.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="index-set-configuration">Index Set Configuration</h2>
-    <p>This technology pack includes 1 index set definition:</p>
-    <ul>
-        <li>"Windows Event Log Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
+                </div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"Windows Event Log Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
                 nothing will be changed. If this index set does not exist, then it will be created with retention
                 settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
                 installation.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="log-collection">Log Collection</h2>
-    <p>The DHCP audit log is stored in <code class="linecode">C:\Windows\System32\DHCP</code>. A log file is created for
+                </div>
+            </section>
+        </p>
+        <h2 id="log-collection">Log Collection</h2>
+        <p>The DHCP audit log is stored in <code class="linecode">C:\Windows\System32\DHCP</code>. A log file is created for
         each day of the week. Filebeat is used to collect these files and forward them to a Graylog Beats input.</p>
-    <h3>Create a Beats Input in Graylog</h3>
-    <ol>
-        <li>
-            <p>In Graylog, navigate to <em>System &gt; Inputs</em> and launch a <em>Beats</em> input.</p>
-        </li>
-        <li>
-            <p>Configure the desired port number, then save and start the input.</p>
-        </li>
-    </ol>
-    <h3>Configure Filebeat</h3>
-    <p>Edit the Filebeat configuration file (<code class="linecode">filebeat.yml</code>) to collect DHCP logs. The <code
-            class="linecode">fields</code> section is required so Graylog routes logs to the correct processing
+        <h3>Create a Beats Input in Graylog</h3>
+        <ol>
+            <li>
+                <p>In Graylog, navigate to <em>System &gt; Inputs</em> and launch a <em>Beats</em> input.</p>
+            </li>
+            <li>
+                <p>Configure the desired port number, then save and start the input.</p>
+            </li>
+        </ol>
+        <h3>Configure Filebeat</h3>
+        <p>Edit the Filebeat configuration file (<code class="linecode">filebeat.yml</code>) to collect DHCP logs. The <code class="linecode">fields</code> section is required so Graylog routes logs to the correct processing
         pipeline.</p>
-    <ol>
-        <li>
-            <p>Set the <code class="linecode">paths</code> entry to <code
-                    class="linecode">C:\Windows\System32\dhcp\*</code> to collect all daily log files.</p>
-        </li>
-        <li>
-            <p>Add <code class="linecode">event_source_product: microsoft_dhcp</code> under <code
-                    class="linecode">fields</code> with <code class="linecode">fields_under_root: true</code>.</p>
-        </li>
-        <li>
-            <p>Configure the <code class="linecode">output.logstash</code> section to point to your Graylog server IP
+        <ol>
+            <li>
+                <p>Set the <code class="linecode">paths</code> entry to <code class="linecode">C:\Windows\System32\dhcp\*</code> to collect all daily log files.</p>
+            </li>
+            <li>
+                <p>Add <code class="linecode">event_source_product: microsoft_dhcp</code> under <code class="linecode">fields</code> with <code class="linecode">fields_under_root: true</code>.</p>
+            </li>
+            <li>
+                <p>Configure the <code class="linecode">output.logstash</code> section to point to your Graylog server IP
                 and Beats input port.</p>
-        </li>
-        <li>
-            <p>Start Filebeat: <code class="linecode">Start-Service filebeat</code></p>
-        </li>
-    </ol>
-    <h2 id="log-format-example">Log Format Example</h2>
-    <p><code class="linecode">10,01/27/23,12:44:33,Assign,192.168.1.10,DESKTOP-P423Q1J,C025A54DB363,,4092471859,0,,,,0x4D53465420352E30,MSFT 5.0,,,,0
+            </li>
+            <li>
+                <p>Start Filebeat: <code class="linecode">Start-Service filebeat</code></p>
+            </li>
+        </ol>
+        <h2 id="log-format-example">Log Format Example</h2>
+        <p><code class="linecode">10,01/27/23,12:44:33,Assign,192.168.1.10,DESKTOP-P423Q1J,C025A54DB363,,4092471859,0,,,,0x4D53465420352E30,MSFT 5.0,,,,0
         11,01/27/23,14:38:40,Renew,192.168.1.11,DESKTOP-P423Q1J,C025A54DB363,,2272135476,0,,,,0x4D53465420352E30,MSFT 5.0,,,,0
         12,01/30/23,15:27:28,Release,192.168.1.11,DESKTOP-P423Q1J,C025A54DB363,,3451374721,0,,,,,,,,,0
         00,11/18/22,12:20:06,Started,,,,,0,6,,,,,,,,,0
@@ -114,459 +109,453 @@
         15,01/30/23,16:58:03,NACK,172.16.14.67,,F8B156BAB90C,,0,6,,,,,,,,,0
         13,01/27/23,12:44:36,Conflict,192.168.1.10,BAD_ADDRESS,,,0,6,,,,,,,,,0
         </code>
-    </p>
-    <h2 id="what-is-provided">What is Provided</h2>
-    <ul>
-        <li>
-            <p>Parsing rules to normalize and enrich Microsoft DHCP server audit log messages.</p>
-        </li>
-        <li>
-            <p>GIM categorization for DHCP lease events, service lifecycle events, and DHCP error conditions.</p>
-        </li>
-        <li>
-            <p>Field extraction for all standard DHCP audit log columns including client IP, hostname, MAC address,
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Parsing rules to normalize and enrich Microsoft DHCP server audit log messages.</p>
+            </li>
+            <li>
+                <p>GIM categorization for DHCP lease events, service lifecycle events, and DHCP error conditions.</p>
+            </li>
+            <li>
+                <p>Field extraction for all standard DHCP audit log columns including client IP, hostname, MAC address,
                 transaction ID, and vendor class information.</p>
-        </li>
-    </ul>
-    <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
-    <p>The Microsoft DHCP content pack supports parsing and GIM categorization for the following event types:</p>
-    <h3 id="gim-categorization">GIM Categorization</h3>
-    <p>GIM categorization is provided for the following messages:</p>
-    <table cellspacing="21"
-        style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-        class="TableStyle-Alternate-Row-Color">
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <thead>
-            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Message Type</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Service started (event ID 00) /
+            </li>
+        </ul>
+        <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
+        <p>The Microsoft DHCP content pack supports parsing and GIM categorization for the following event types:</p>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following messages:</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Message Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Service started (event ID 00) /
                     Authorized servicing (event ID 55)</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">210000</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.start</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service started</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Service stopped (event ID 01) / Stopped
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">210000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.start</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service started</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Service stopped (event ID 01) / Stopped
                     servicing (event ID 56)</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">210100</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.stop</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service stopped</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">IP address assigned to client (event ID
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">210100</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.stop</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service stopped</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">IP address assigned to client (event ID
                     10)</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">290300</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp.acknowledgement</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp acknowledgement</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">IP address lease renewed by client (event
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">290300</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp.acknowledgement</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp acknowledgement</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">IP address lease renewed by client (event
                     ID 11)</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">290300</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp.acknowledgement</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp acknowledgement</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">IP address released by client (event ID
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">290300</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp.acknowledgement</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp acknowledgement</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">IP address released by client (event ID
                     12)</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">299999</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp.default</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp default event</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">IP address conflict detected (event ID
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">299999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp default event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">IP address conflict detected (event ID
                     13)</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">299999</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp.default</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp default event</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DHCP scope address pool exhausted (event
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">299999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp default event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DHCP scope address pool exhausted (event
                     ID 14)</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">299999</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp.default</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp default event</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DHCP lease request denied / NACK (event
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">299999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp default event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DHCP lease request denied / NACK (event
                     ID 15)</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">299999</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp.default</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp default event</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Lease deleted from database (event ID 16)
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">299999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp default event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Lease deleted from database (event ID 16)
                 </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">299999</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp.default</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp default event</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">All other audit log entries (audit log
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">299999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp default event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">All other audit log entries (audit log
                     paused / DNS updates / cleanup / informational)</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">000000</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">message</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"></td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">message.log_message</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">message</td>
-            </tr>
-        </tbody>
-    </table>
-    <h3>Fields Extracted by This Pack</h3>
-    <h4>Event IDs</h4>
-    <p>Event IDs supported with parsing and GIM categorization.</p>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Event IDs List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event ID</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Description</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Category</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">00</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">The DHCP audit log was started
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">000000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">message.log_message</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">message</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Fields Extracted by This Pack</h3>
+        <h4>Event IDs</h4>
+        <p>Event IDs supported with parsing and GIM categorization.</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Event IDs List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event ID</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Description</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Category</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">00</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">The DHCP audit log was started
                             (service start)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service.start (210000)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">01</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">The DHCP audit log was stopped
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service.start (210000)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">01</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">The DHCP audit log was stopped
                             (service stop)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service.stop (210100)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">02</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">The audit log was temporarily
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service.stop (210100)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">02</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">The audit log was temporarily
                             paused due to low disk space</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message (000000)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">10</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A new IP address was leased to a
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message (000000)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">10</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A new IP address was leased to a
                             client</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp.acknowledgement (290300)
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp.acknowledgement (290300)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">11</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A lease was renewed by a client
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">11</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A lease was renewed by a client
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp.acknowledgement (290300)
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp.acknowledgement (290300)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">12</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A lease was released by a client
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">12</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A lease was released by a client
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp.default (299999)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">13</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">An IP address was found to be in
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp.default (299999)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">13</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">An IP address was found to be in
                             use on the network (conflict)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp.default (299999)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">14</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A lease request could not be
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp.default (299999)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">14</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A lease request could not be
                             satisfied — scope address pool exhausted</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp.default (299999)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">15</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A lease was denied (DHCPNAK sent
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp.default (299999)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">15</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A lease was denied (DHCPNAK sent
                             to client)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp.default (299999)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">16</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A lease was deleted from the
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp.default (299999)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">16</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A lease was deleted from the
                             database</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp.default (299999)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">17</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A lease expired and DNS records
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp.default (299999)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">17</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A lease expired and DNS records
                             have not been deleted</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message (000000)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">18</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A lease expired and DNS records
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message (000000)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">18</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A lease expired and DNS records
                             were deleted</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message (000000)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">20</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A BOOTP address was leased to a
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message (000000)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">20</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A BOOTP address was leased to a
                             client</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message (000000)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">24</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">IP address cleanup operation has
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message (000000)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">24</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">IP address cleanup operation has
                             begun</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message (000000)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">25</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">IP address cleanup statistics
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message (000000)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">25</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">IP address cleanup statistics
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message (000000)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">30</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DNS dynamic update request sent
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message (000000)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">30</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DNS dynamic update request sent
                             to DNS server</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message (000000)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">31</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DNS dynamic update failed</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message (000000)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">32</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DNS dynamic update successful
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message (000000)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">31</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DNS dynamic update failed</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message (000000)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">32</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DNS dynamic update successful
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message (000000)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">55</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DHCP server authorized in AD DS
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">message (000000)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">55</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DHCP server authorized in AD DS
                             and actively servicing clients</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service.start (210000)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">56</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DHCP server stopped servicing
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service.start (210000)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">56</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DHCP server stopped servicing
                             clients (authorization failure or revocation)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service.stop (210100)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">61</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Server found that belongs to DS
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service.stop (210100)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">61</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Server found that belongs to DS
                             domain</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message (000000)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">64</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">No static IP address bound to
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message (000000)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">64</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">No static IP address bound to
                             DHCP server</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">message (000000)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h4>Parsed Fields</h4>
-    <p>Fields extracted from all Microsoft DHCP audit log messages.</p>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Parsed Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Numeric DHCP audit log event ID
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">message (000000)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>Parsed Fields</h4>
+        <p>Fields extracted from all Microsoft DHCP audit log messages.</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Parsed Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Numeric DHCP audit log event ID
                             (e.g. 10 = Assign / 11 = Renew / 12 = Release)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_description</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Human-readable event description
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Human-readable event description
                             from the DHCP audit log (e.g. Assign / Renew / Release / Started)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IP address of the DHCP client
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IP address of the DHCP client
                             involved in the event</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_hostname</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Hostname of the DHCP client as
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Hostname of the DHCP client as
                             recorded by the server</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_mac</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">MAC address of the DHCP client
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_mac</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">MAC address of the DHCP client
                             (format: hex without delimiters e.g. C025A54DB363)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Username associated with the
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Username associated with the
                             client request (if present)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_transaction_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DHCP transaction ID for the lease
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_transaction_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DHCP transaction ID for the lease
                             operation</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_qresult</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Query result code returned by the
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_qresult</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Query result code returned by the
                             DHCP server</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_probation_time</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Probation time value from the log
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_probation_time</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Probation time value from the log
                             entry (if present)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_correlation_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Correlation ID for the DHCP
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_correlation_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Correlation ID for the DHCP
                             transaction (if present)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_dhcid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DHCP unique identifier (DHCID)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_dhcid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DHCP unique identifier (DHCID)
                             for the client (if present)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_class_hex</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Vendor class identifier in
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_class_hex</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Vendor class identifier in
                             hexadecimal (e.g. 0x4D53465420352E30)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_class_ascii</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Vendor class identifier decoded
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_class_ascii</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Vendor class identifier decoded
                             as ASCII (e.g. MSFT 5.0)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_user_class_hex</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">User class identifier in
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_user_class_hex</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">User class identifier in
                             hexadecimal (if present)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_user_class_ascii</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">User class identifier decoded as
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_user_class_ascii</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">User class identifier decoded as
                             ASCII (if present)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_relay_agent_information
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_relay_agent_information
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Relay agent information option
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Relay agent information option
                             (Option 82) value (if present)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_dns_reg_error</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DNS registration error code (0 =
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_dns_reg_error</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DNS registration error code (0 =
                             no error)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_log_path</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Full path of the DHCP audit log
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_log_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Full path of the DHCP audit log
                             file from which the event was read</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_reporter_hostname</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Hostname of the Windows server
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_reporter_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Hostname of the Windows server
                             running the Filebeat agent</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_reporter_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">IP address of the Windows server
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_reporter_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">IP address of the Windows server
                             running the Filebeat agent</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_reporter_mac</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">MAC address of the Windows server
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_reporter_mac</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">MAC address of the Windows server
                             running the Filebeat agent</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_reporter_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Unique identifier of the Filebeat
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_reporter_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Unique identifier of the Filebeat
                             host</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_uid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Unique event identifier assigned
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_uid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Unique event identifier assigned
                             by the Filebeat agent</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_source_product</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source product identifier (value:
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_source_product</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source product identifier (value:
                             microsoft_dhcp)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Log file type as identified by
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Log file type as identified by
                             Filebeat</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Name of the DHCP service (value:
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Name of the DHCP service (value:
                             Microsoft DHCP Server — set for service lifecycle events 210000 / 210100)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gim_event_type_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Assigned GIM event type code(s)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gim_event_type_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Assigned GIM event type code(s)
                             (e.g. 210000 / 210100 / 290300 / 299999)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">gim_event_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Human-readable GIM event type
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">gim_event_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Human-readable GIM event type
                             label corresponding to the assigned code</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-</body>
-
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+    </body>
 </html>
