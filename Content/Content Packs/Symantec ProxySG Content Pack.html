@@ -1,876 +1,919 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-
-<head>
-    <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
-    <title>Symantec ProxySG Content Pack</title>
-    <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
-</head>
-
-<body>
-    <h1>Symantec ProxySG Content Pack</h1>
-    <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-    <p>Symantec ProxySG (Symantec Proxy Secure Gateway) is a next-generation web application firewall that delivers both
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Symantec ProxySG Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1><MadCap:concept term="Vendor:Symantec (Broadcom)" />Symantec ProxySG Content Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Symantec ProxySG (Symantec Proxy Secure Gateway) is a next-generation web application firewall that delivers both
         comprehensive web security and WAN optimization.</p>
-    <p>This technology pack will process ProxySG event log messages, providing normalization and enrichment of common
+        <p>This technology pack will process ProxySG event log messages, providing normalization and enrichment of common
         events of interest.</p>
-    <h2 id="supported-versions">Supported Versions</h2>
-    <ul>
-        <li>
-            <p>Symantec ProxySG up to version 9.x</p>
-        </li>
-    </ul>
-    <h2 id="requirements">Requirements</h2>
-    <ul>
-        <li>
-            <p>Graylog 6.2.0+ with a valid Graylog Enterprise or Graylog Security license</p>
-        </li>
-        <li>
-            <p>Configure the Symantec ProxySG appliance to transmit Syslog to your Graylog server Syslog input</p>
-        </li>
-        <li>
-            <p>Access log format must match the W3C Extended Log File Format order expected by this pack</p>
-        </li>
-    </ul>
-    <h2 id="stream-configuration">Stream Configuration</h2>
-    <p>This technology pack includes 1 stream:</p>
-    <ul>
-        <li>"Illuminate:Symantec Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
+        <h2 id="supported-versions">Supported Versions</h2>
+        <ul>
+            <li>
+                <p>Symantec ProxySG up to version 9.x</p>
+            </li>
+        </ul>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>Graylog 6.2.0+ with a valid Graylog Enterprise or Graylog Security license</p>
+            </li>
+            <li>
+                <p>Configure the Symantec ProxySG appliance to transmit Syslog to your Graylog server Syslog input</p>
+            </li>
+            <li>
+                <p>Access log format must match the W3C Extended Log File Format order expected by this pack</p>
+            </li>
+        </ul>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>"Illuminate:Symantec Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
                 activation of this pack then it will be created and configured to route messages to this stream and the
                 associated index set. There should not be any stream rules configured for this stream.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="index-set-configuration">Index Set Configuration</h2>
-    <p>This technology pack includes 1 index set definition:</p>
-    <ul>
-        <li>"Symantec Event Log Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
+                </div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"Symantec Event Log Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
                 nothing will be changed. If this index set does not exist, then it will be created with retention
                 settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
                 installation.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="log-collection">Log Collection and Delivery</h2>
-    <p>This pack processes ProxySG access logs delivered via Syslog.</p>
-    <ul>
-        <li>
-            <p>Syslog</p>
-        </li>
-    </ul>
-    <h3>Syslog Configuration</h3>
-    <ol>
-        <li>
-            <p>Create a matching <a
-                    href="https://go2docs.graylog.org/current/getting_in_log_data/syslog_inputs.html">Syslog input</a>
+                </div>
+            </section>
+        </p>
+        <h2 id="log-collection">Log Collection and Delivery</h2>
+        <p>This pack processes ProxySG access logs delivered via Syslog.</p>
+        <ul>
+            <li>
+                <p>Syslog</p>
+            </li>
+        </ul>
+        <h3>Syslog Configuration</h3>
+        <ol>
+            <li>
+                <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/syslog_inputs.html">Syslog input</a>
                 in Graylog.</p>
-        </li>
-        <li>
-            <p>Configure the Symantec ProxySG appliance to send access logs to your Graylog server's Syslog input.</p>
-        </li>
-        <li>
-            <p>Configure the access log to use the W3C Extended Log File Format with the field order listed in the
+            </li>
+            <li>
+                <p>Configure the Symantec ProxySG appliance to send access logs to your Graylog server's Syslog input.</p>
+            </li>
+            <li>
+                <p>Configure the access log to use the W3C Extended Log File Format with the field order listed in the
                 <em>W3C Field Order</em> table below. The first field (x-bluecoat-request-tenant-id) and final field
                 (source port) are optional.</p>
-        </li>
-    </ol>
-    <h2 id="log-format-example">Log Format Example</h2>
-    <p>Example ProxySG access log in W3C Extended format.</p>
-    <h4>ProxySG Access Log</h4>
-    <p><code class="linecode">1812 2018-02-10 18:00:12 "DP1-DE1_ProxySG" 888 x.x.x.x bob - - OBSERVED "Business/Economy" http://www.szlb.net/ 200 TCP_NC_MISS GET image/jpeg http www.szlb.net 80 /templets/default/images/wap/bg-gray1.jpg - jpg "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:52.0) Gecko/20100101 Firefox/52.0" x.x.x.x 4385 367 - - 0 "client" client_connector "-" "-" x.x.x.x - - - - - none - - - - none - - ICAP_NOT_SCANNED - ICAP_NOT_SCANNED - - - - 9eef3983b1d826f3-00000000c3a3468b-000000005a7f332b
+            </li>
+        </ol>
+        <h2 id="log-format-example">Log Format Example</h2>
+        <p>Example ProxySG access log in W3C Extended format.</p>
+        <h4>ProxySG Access Log</h4>
+        <p><code class="linecode">1812 2018-02-10 18:00:12 "DP1-DE1_ProxySG" 888 x.x.x.x bob - - OBSERVED "Business/Economy" http://www.szlb.net/ 200 TCP_NC_MISS GET image/jpeg http www.szlb.net 80 /templets/default/images/wap/bg-gray1.jpg - jpg "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:52.0) Gecko/20100101 Firefox/52.0" x.x.x.x 4385 367 - - 0 "client" client_connector "-" "-" x.x.x.x - - - - - none - - - - none - - ICAP_NOT_SCANNED - ICAP_NOT_SCANNED - - - - 9eef3983b1d826f3-00000000c3a3468b-000000005a7f332b
         </code>
-    </p>
-    <h2 id="what-is-provided">What is Provided</h2>
-    <ul>
-        <li>
-            <p>Rules to parse, normalize, and enrich Symantec ProxySG log messages</p>
-        </li>
-        <li>
-            <p>Graylog Information Model (GIM) message categorization for HTTP proxied and network connection events</p>
-        </li>
-        <li>
-            <p>Support for OBSERVED, PROXIED, and DENIED ProxySG access log categories</p>
-        </li>
-    </ul>
-    <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
-    <p>The content pack supports the following log types:</p>
-    <ul>
-        <li>
-            <p>OBSERVED access logs (TCP and UDP)</p>
-        </li>
-        <li>
-            <p>PROXIED access logs (TCP and UDP)</p>
-        </li>
-        <li>
-            <p>DENIED access logs (TCP and UDP)</p>
-        </li>
-    </ul>
-    <h3 id="gim-categorization">GIM Categorization</h3>
-    <p>ProxySG events are assigned dual GIM event type codes based on whether a source port is present in the log
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Rules to parse, normalize, and enrich Symantec ProxySG log messages</p>
+            </li>
+            <li>
+                <p>Graylog Information Model (GIM) message categorization for HTTP proxied and network connection events</p>
+            </li>
+            <li>
+                <p>Support for OBSERVED, PROXIED, and DENIED ProxySG access log categories</p>
+            </li>
+        </ul>
+        <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
+        <p>The content pack supports the following log types:</p>
+        <ul>
+            <li>
+                <p>OBSERVED access logs (TCP and UDP)</p>
+            </li>
+            <li>
+                <p>PROXIED access logs (TCP and UDP)</p>
+            </li>
+            <li>
+                <p>DENIED access logs (TCP and UDP)</p>
+            </li>
+        </ul>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>ProxySG events are assigned dual GIM event type codes based on whether a source port is present in the log
         message.</p>
-    <table cellspacing="21"
-        style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-        class="TableStyle-Alternate-Row-Color">
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <thead>
-            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Action</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Subcategory</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Event Type</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">All ProxySG vendor_event_action values
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Action</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Event Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">All ProxySG vendor_event_action values
                     (with source port)</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.proxied</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http proxied communication</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">All ProxySG vendor_event_action values
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.proxied</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http proxied communication</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">All ProxySG vendor_event_action values
                     (with source port)</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network connection</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">All ProxySG vendor_event_action values
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network connection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">All ProxySG vendor_event_action values
                     (no source port)</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.proxied</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http proxied communication</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">All ProxySG vendor_event_action values
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.proxied</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http proxied communication</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">All ProxySG vendor_event_action values
                     (no source port)</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">network</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">network.default</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">network message</td>
-            </tr>
-        </tbody>
-    </table>
-    <h3>Message Fields Included in This Pack</h3>
-    <h4>Parsed Fields</h4>
-    <p>The following fields are extracted and normalized from ProxySG access logs.</p>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Parsed Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_response_level</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Alert response level mapped from
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">network.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">network message</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Message Fields Included in This Pack</h3>
+        <h4>Parsed Fields</h4>
+        <p>The following fields are extracted and normalized from ProxySG access logs.</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Parsed Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_response_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Alert response level mapped from
                             event_action</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">application_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Baidu Search</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Detected application name
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">application_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Baidu Search</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Detected application name
                             (x-bluecoat-application-name)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">certificate_hostname</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">example.com</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">TLS certificate hostname</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">certificate_hostname_categories
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">certificate_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">example.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">TLS certificate hostname</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">certificate_hostname_categories
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Search Engines/Portals</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">URL categories of the certificate
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Search Engines/Portals</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">URL categories of the certificate
                             hostname</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">certificate_observed_errors</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">unknown_ca</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Observed certificate validation
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">certificate_observed_errors</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">unknown_ca</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Observed certificate validation
                             errors</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">certificate_subject</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">CN=example.com</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Certificate subject distinguished
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">certificate_subject</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">CN=example.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Certificate subject distinguished
                             name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">certificate_validation_status
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">certificate_validation_status
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">valid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Certificate validation status
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">valid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Certificate validation status
                             from the server</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_bytes_sent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">95189</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Bytes sent to the client
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_bytes_sent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">95189</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Bytes sent to the client
                             (sc-bytes)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_icap_error_details
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_icap_error_details
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination ICAP scan error
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination ICAP scan error
                             details</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_icap_status</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ICAP_NOT_SCANNED</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination ICAP scan status</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">182.61.62.50</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination server IP address
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_icap_status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ICAP_NOT_SCANNED</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination ICAP scan status</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">182.61.62.50</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination server IP address
                             (r-ip)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_negotiated_cipher
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_negotiated_cipher
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">none</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination SSL/TLS negotiated
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">none</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination SSL/TLS negotiated
                             cipher</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
                             destination_negotiated_cipher_size</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">256</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination SSL/TLS cipher key
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">256</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination SSL/TLS cipher key
                             size in bits</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
                             destination_negotiated_ssl_version</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TLSv1.2</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination SSL/TLS protocol
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TLSv1.2</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination SSL/TLS protocol
                             version</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_ocsp_errors</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Server-side OCSP validation
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_ocsp_errors</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Server-side OCSP validation
                             errors</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_port</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">80</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination server port
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">80</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination server port
                             (cs-uri-port)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_reference</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">182.61.62.50</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination reference derived
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_reference</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">182.61.62.50</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination reference derived
                             from destination_ip</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_action</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">allowed</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Normalized event action
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">allowed</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Normalized event action
                             (allowed/blocked/failed/unknown)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_created</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2018-02-10 18:00:11</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Event timestamp from date/time
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_created</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2018-02-10 18:00:11</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Event timestamp from date/time
                             fields</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_duration</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">16310</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Request duration in milliseconds
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_duration</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">16310</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Request duration in milliseconds
                             (time-taken)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_observer_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.1.2</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Proxy appliance IP address (s-ip)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_observer_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.1.2</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Proxy appliance IP address (s-ip)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_source</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DP1-DE1_ProxySG</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Proxy appliance name
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_source</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DP1-DE1_ProxySG</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Proxy appliance name
                             (x-bluecoat-appliance-name)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">symantec_proxysg</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Constant identifier for this log
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">symantec_proxysg</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Constant identifier for this log
                             source</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">gim_event_type_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">180300,120000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GIM event type codes assigned to
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">gim_event_type_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">180300,120000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GIM event type codes assigned to
                             the event</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">client_connector</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Bluecoat access type
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">client_connector</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Bluecoat access type
                             (x-bluecoat-access-type)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_category</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Search Engines/Portals</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">URL category classification
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_category</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Search Engines/Portals</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">URL category classification
                             (cs-categories)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_content_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application/x-javascript</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Response content type
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_content_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application/x-javascript</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Response content type
                             (rs(Content-Type))</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_header_x_requested_with</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">XMLHttpRequest</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">cs(X-Requested-With) HTTP header
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_header_x_requested_with</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">XMLHttpRequest</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">cs(X-Requested-With) HTTP header
                             value</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_host</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">libs.baidu.com</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Request host header (cs-host)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_host</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">libs.baidu.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Request host header (cs-host)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_referrer</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http://www.szlb.net/</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP referrer URL (cs(Referer))
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_referrer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http://www.szlb.net/</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP referrer URL (cs(Referer))
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_request_method</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">GET</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP request method (cs-method)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_request_method</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">GET</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP request method (cs-method)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_path</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">/jquery/1.7.2/jquery.min.js</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Request URI path (cs-uri-path)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">/jquery/1.7.2/jquery.min.js</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Request URI path (cs-uri-path)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_response</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">OK</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP response status text</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_response_class</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">successful response</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP response class category</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_response_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">200</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP response status code
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_response</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">OK</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP response status text</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_response_class</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">successful response</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP response class category</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_response_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP response status code
                             (sc-status)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_uri_extension</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">js</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">URI file extension
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_uri_extension</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">js</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">URI file extension
                             (cs-uri-extension)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_uri_query</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">?foo=bar</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">URI query string (cs-uri-query)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_uri_query</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">?foo=bar</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">URI query string (cs-uri-query)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_user_agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Mozilla/5.0 ...</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP User-Agent header
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_user_agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Mozilla/5.0 ...</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP User-Agent header
                             (cs(User-Agent))</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_transport</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">tcp</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Network transport protocol
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_transport</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">tcp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Network transport protocol
                             derived from vendor_event_action</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_bytes_sent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">410</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Bytes sent from the client
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_bytes_sent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">410</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Bytes sent from the client
                             (cs-bytes)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_icap_error_details</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source ICAP scan error details
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_icap_error_details</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source ICAP scan error details
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_icap_status</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ICAP_NOT_SCANNED</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source ICAP scan status</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">fe80::fc54:ff:fe2c:5f1a</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Client source IP address (c-ip)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_icap_status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ICAP_NOT_SCANNED</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source ICAP scan status</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">fe80::fc54:ff:fe2c:5f1a</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Client source IP address (c-ip)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_negotiated_ssl_version
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_negotiated_ssl_version
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TLSv1.2</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client SSL/TLS protocol version
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TLSv1.2</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client SSL/TLS protocol version
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ocsp_errors</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Client-side OCSP validation
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ocsp_errors</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Client-side OCSP validation
                             errors</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_port</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">55443</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client source port</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_reference</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">fe80::fc54:ff:fe2c:5f1a</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source reference derived from
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">55443</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client source port</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_reference</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">fe80::fc54:ff:fe2c:5f1a</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source reference derived from
                             source_ip</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">adam</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Authenticated user name
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">adam</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Authenticated user name
                             (cs-userdn)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">domain</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">User type classification</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_application_operation</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Application operation
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">domain</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">User type classification</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_application_operation</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Application operation
                             (x-bluecoat-application-operation)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_cloud_rating</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Bluecoat cloud rating for the
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_cloud_rating</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Bluecoat cloud rating for the
                             request</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_leak_detected</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Whether data leak was detected
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_leak_detected</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Whether data leak was detected
                             (x-data-leak-detected)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">TCP_NC_MISS</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Vendor-specific proxy action
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">TCP_NC_MISS</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Vendor-specific proxy action
                             (s-action)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_category</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">OBSERVED</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Vendor event category
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_category</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">OBSERVED</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Vendor event category
                             (sc-filter-result)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_exception_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Exception ID (x-exception-id)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_exception_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Exception ID (x-exception-id)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_location_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Bluecoat location ID
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_location_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Bluecoat location ID
                             (x-bluecoat-location-id)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_location_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">client</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Bluecoat location name
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_location_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">client</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Bluecoat location name
                             (x-bluecoat-location-name)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_tenant_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1812</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Bluecoat tenant ID
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_tenant_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1812</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Bluecoat tenant ID
                             (x-bluecoat-request-tenant-id)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_transaction_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">9eef3983b1d826f3-...</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Unique transaction identifier
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_transaction_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">9eef3983b1d826f3-...</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Unique transaction identifier
                             (x-bluecoat-transaction-uuid)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_uri_scheme</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">URI scheme (cs-uri-scheme)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">vendor_virus_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">-</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Virus identifier if detected
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_uri_scheme</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">URI scheme (cs-uri-scheme)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">vendor_virus_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">-</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Virus identifier if detected
                             (x-virus-id)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h4>W3C Field Order</h4>
-    <p>ProxySG must be configured to emit access logs in the W3C Extended Log File Format using the field order below.
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>W3C Field Order</h4>
+        <p>ProxySG must be configured to emit access logs in the W3C Extended Log File Format using the field order below.
     </p>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>W3C Field Order <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Position</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Notes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-bluecoat-request-tenant-id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Optional. When present, must be
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>W3C Field Order <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Position</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-bluecoat-request-tenant-id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Optional. When present, must be
                             the first field.</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">date</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">time</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">x-bluecoat-appliance-name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">5</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">time-taken</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">6</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">c-ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">7</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cs-userdn</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">8</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cs-auth-groups</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">9</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-exception-id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">10</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">sc-filter-result</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">11</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cs-categories</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">12</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cs(Referer)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">13</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">sc-status</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">14</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">s-action</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">15</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cs-method</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">16</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">rs(Content-Type)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">17</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cs-uri-scheme</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">18</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cs-host</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">19</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cs-uri-port</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">20</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cs-uri-path</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">21</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cs-uri-query</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">22</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cs-uri-extension</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">23</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cs(User-Agent)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">24</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">s-ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">25</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">sc-bytes</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">26</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cs-bytes</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">27</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-data-leak-detected</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">28</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">x-virus-id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">29</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-bluecoat-location-id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">30</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">x-bluecoat-location-name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">31</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-bluecoat-access-type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">32</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">x-bluecoat-application-name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">33</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-bluecoat-application-operation
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">date</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">time</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">x-bluecoat-appliance-name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">5</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">time-taken</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">6</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">c-ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">7</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cs-userdn</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">8</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cs-auth-groups</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">9</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-exception-id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">10</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">sc-filter-result</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">11</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cs-categories</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">12</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cs(Referer)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">13</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">sc-status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">14</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">s-action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">15</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cs-method</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">16</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">rs(Content-Type)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">17</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cs-uri-scheme</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">18</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cs-host</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">19</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cs-uri-port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">20</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cs-uri-path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">21</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cs-uri-query</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">22</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cs-uri-extension</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">23</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cs(User-Agent)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">24</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">s-ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">25</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">sc-bytes</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">26</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cs-bytes</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">27</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-data-leak-detected</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">28</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">x-virus-id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">29</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-bluecoat-location-id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">30</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">x-bluecoat-location-name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">31</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-bluecoat-access-type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">32</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">x-bluecoat-application-name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">33</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-bluecoat-application-operation
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">34</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">r-ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">35</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-rs-certificate-validate-status
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">34</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">r-ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">35</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-rs-certificate-validate-status
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">36</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">x-rs-certificate-observed-errors
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">36</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">x-rs-certificate-observed-errors
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">37</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-cs-ocsp-error</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">38</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">x-rs-ocsp-error</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">39</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">37</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-cs-ocsp-error</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">38</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">x-rs-ocsp-error</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">39</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
                             x-rs-connection-negotiated-ssl-version</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">40</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">x-rs-connection-negotiated-cipher
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">40</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">x-rs-connection-negotiated-cipher
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">41</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">41</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
                             x-rs-connection-negotiated-cipher-size</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">42</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">x-rs-certificate-hostname</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">43</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">42</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">x-rs-certificate-hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">43</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
                             x-rs-certificate-hostname-categories</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">44</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">44</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
                             x-cs-connection-negotiated-ssl-version</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">45</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-cs-connection-negotiated-cipher
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">45</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-cs-connection-negotiated-cipher
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">46</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">46</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
                             x-cs-connection-negotiated-cipher-size</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">47</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-cs-certificate-subject</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">48</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cs-icap-status</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">49</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cs-icap-error-details</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">50</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">rs-icap-status</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">51</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">rs-icap-error-details</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">52</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">x-cloud-rs</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">53</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-bluecoat-placeholder</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">54</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cs(X-Requested-With)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">55</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-bluecoat-transaction-uuid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">56</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">source port</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Optional. When present, must be
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">47</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-cs-certificate-subject</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">48</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cs-icap-status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">49</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">cs-icap-error-details</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">50</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">rs-icap-status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">51</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">rs-icap-error-details</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">52</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">x-cloud-rs</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">53</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-bluecoat-placeholder</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">54</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cs(X-Requested-With)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">55</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">x-bluecoat-transaction-uuid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">56</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">source port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Optional. When present, must be
                             the final field.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-</body>
-
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+    </body>
 </html>
