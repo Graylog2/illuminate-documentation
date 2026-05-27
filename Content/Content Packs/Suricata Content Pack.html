@@ -1,0 +1,1513 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Suricata IDS/IPS Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>Suricata IDS/IPS Content Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Suricata is a free and open-source network threat detection engine capable of real-time intrusion detection (IDS), intrusion prevention (IPS), network security monitoring (NSM), and offline pcap processing. This technology pack processes Suricata EVE JSON log output, providing normalization and enrichment of alert, anomaly, ARP, BitTorrent DHT, DCERPC, DHCP, DNS, FTP, HTTP, HTTP/2, IKE, IPS drop, Kerberos (KRB5), Modbus, MQTT, NetFlow, network flow, NFS, PgSQL, POP3, QUIC, RDP, RFB/VNC, SMB, SMTP, SNMP, SSH, TFTP, TLS, and file info events.</p>
+        <h2 id="supported-versions">Supported Versions</h2>
+        <ul>
+            <li>
+                <p>Suricata 6.x and later (EVE JSON output)</p>
+            </li>
+            <li>
+                <p>Suricata 7.x and later (EVE JSON output)</p>
+            </li>
+            <li>
+                <p>Suricata 8.x (tested; EVE JSON output)</p>
+            </li>
+            <li>
+                <p>Suricata &lt;= 7 legacy plain-text http.log and tls.log formats (deprecated)</p>
+            </li>
+        </ul>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>Suricata configured with EVE JSON output enabled</p>
+            </li>
+            <li>
+                <p>Graylog version 7.1.0+</p>
+            </li>
+        </ul>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>"Illuminate:Suricata Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</span>
+                </div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"Suricata IDS/IPS Logs"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
+                </div>
+            </section>
+        </p>
+        <h2 id="log-format-example">Log Format Example</h2>
+        <h4>Suricata EVE JSON</h4>
+        <p><code class="linecode">{"timestamp":"2023-03-24T12:00:00.000000+0000","flow_id":123456789,"in_iface":"eth0","event_type":"alert","src_ip":"192.168.1.10","src_port":54321,"dest_ip":"203.0.113.1","dest_port":443,"proto":"TCP","alert.action":"blocked","alert.gid":1,"alert.signature_id":2100498,"alert.rev":7,"alert.signature":"GPL ATTACK_RESPONSE id check returned root","alert.category":"Potentially Bad Traffic","alert.severity":2}
+        {"timestamp":"2023-03-24T12:01:00.000000+0000","flow_id":987654321,"in_iface":"eth0","event_type":"dns","src_ip":"192.168.1.20","src_port":52100,"dest_ip":"8.8.8.8","dest_port":53,"proto":"UDP","dns.type":"query","dns.id":12345,"dns.rrname":"example.com","dns.rrtype":"A","dns.tx_id":0}
+        {"timestamp":"2023-03-24T12:02:00.000000+0000","flow_id":111222333,"in_iface":"eth0","event_type":"http","src_ip":"192.168.1.30","src_port":55000,"dest_ip":"93.184.216.34","dest_port":80,"proto":"TCP","app_proto":"http","http.hostname":"example.com","http.url":"/index.html","http.http_user_agent":"Mozilla/5.0","http.http_method":"GET","http.protocol":"HTTP/1.1","http.status":200,"http.length":1256}
+        {"timestamp":"2023-03-24T12:03:00.000000+0000","flow_id":444555666,"in_iface":"eth0","event_type":"tls","src_ip":"192.168.1.40","src_port":56789,"dest_ip":"93.184.216.34","dest_port":443,"proto":"TCP","app_proto":"tls","tls.subject":"CN=example.com","tls.issuerdn":"CN=DigiCert TLS RSA SHA256 2020 CA1","tls.sni":"example.com","tls.version":"TLS 1.3","tls.notbefore":"2022-01-01T00:00:00","tls.notafter":"2023-01-01T00:00:00"}
+        {"timestamp":"2023-03-24T12:04:00.000000+0000","flow_id":777888999,"in_iface":"eth0","event_type":"flow","src_ip":"10.0.0.5","src_port":60001,"dest_ip":"10.0.0.1","dest_port":22,"proto":"TCP","app_proto":"ssh","flow.pkts_toserver":12,"flow.pkts_toclient":10,"flow.bytes_toserver":1024,"flow.bytes_toclient":2048,"flow.start":"2023-03-24T12:04:00.000000+0000","flow.end":"2023-03-24T12:04:45.000000+0000","flow.state":"closed","flow.reason":"timeout","flow.alerted":false}
+        {"timestamp":"2023-03-24T12:05:00.000000+0000","flow_id":112233445,"in_iface":"eth0","event_type":"ssh","src_ip":"10.0.0.5","src_port":60001,"dest_ip":"10.0.0.1","dest_port":22,"proto":"TCP","ssh.client.proto_version":"2.0","ssh.client.software_version":"OpenSSH_8.9","ssh.server.proto_version":"2.0","ssh.server.software_version":"OpenSSH_9.0"}
+        {"timestamp":"2023-03-24T12:06:00.000000+0000","flow_id":556677889,"in_iface":"eth0","event_type":"fileinfo","src_ip":"192.168.1.50","src_port":57000,"dest_ip":"93.184.216.34","dest_port":80,"proto":"TCP","app_proto":"http","fileinfo.filename":"/downloads/update.exe","fileinfo.magic":"PE32 executable (GUI) Intel 80386","fileinfo.md5":"d41d8cd98f00b204e9800998ecf8427e","fileinfo.size":102400,"fileinfo.stored":false}
+        {"timestamp":"2023-03-24T12:07:00.000000+0000","flow_id":998877665,"in_iface":"eth0","event_type":"krb5","src_ip":"10.0.0.50","src_port":49200,"dest_ip":"10.0.0.1","dest_port":88,"proto":"UDP","krb5.msg_type":"KRB_TGS_REP","krb5.cname":"robin","krb5.realm":"EXAMPLE.LAB","krb5.sname":"ldap/dc01","krb5.encryption":"aes256-cts-hmac-sha1-96","krb5.weak_encryption":false,"krb5.ticket_encryption":"aes256-cts-hmac-sha1-96","krb5.ticket_weak_encryption":false}
+        {"timestamp":"2023-03-24T12:08:00.000000+0000","flow_id":334455667,"in_iface":"eth0","event_type":"rfb","src_ip":"192.168.1.10","src_port":54321,"dest_ip":"10.0.0.100","dest_port":5900,"proto":"TCP","rfb.server_protocol_version.major":"003","rfb.server_protocol_version.minor":"007","rfb.client_protocol_version.major":"003","rfb.client_protocol_version.minor":"007","rfb.authentication.security_type":2,"rfb.authentication.security_result":"OK","rfb.screen_shared":false,"rfb.framebuffer.width":1920,"rfb.framebuffer.height":1080,"rfb.framebuffer.name":"desktop@workstation.example.com"}
+        {"timestamp":"2023-03-24T12:09:00.000000+0000","flow_id":778899001,"in_iface":"eth0","event_type":"bittorrent_dht","src_ip":"10.0.0.20","src_port":6881,"dest_ip":"185.21.216.44","dest_port":6881,"proto":"UDP","bittorrent_dht.transaction_id":"0c17","bittorrent_dht.client_version":"4c540126","bittorrent_dht.request_type":"ping"}
+        {"timestamp":"2023-03-24T12:10:00.000000+0000","flow_id":223344556,"in_iface":"eth0","event_type":"anomaly","src_ip":"192.168.1.99","src_port":0,"dest_ip":"192.168.1.1","dest_port":0,"proto":"TCP","anomaly.type":"stream","anomaly.event":"SURICATA STREAM 3way handshake right seq wrong ack evasion","anomaly.layer":"stream"}
+        </code>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Parsing rules to extract Suricata EVE JSON fields into the Graylog Information Model (GIM)</p>
+            </li>
+            <li>
+                <p>GIM categorization of Suricata events and severity normalization (alert + log severity)</p>
+            </li>
+            <li>
+                <p>Input support for Filebeat/GELF, syslog TCP/UDP, and raw TCP/UDP, plus legacy Suricata http.log and tls.log plain-text formats</p>
+            </li>
+        </ul>
+        <h2 id="log-collection">Log Collection and Delivery</h2>
+        <p>This pack supports multiple log delivery methods:</p>
+        <p><strong>Filebeat (recommended):</strong> Use the Elastic Filebeat agent with the ndjson input type via a Graylog Sidecar. Nested JSON fields are delivered using dot notation (e.g. alert.severity, dns.rrname).</p>
+        <p><strong>Syslog:</strong> Suricata can be configured to send EVE JSON via syslog to a Graylog Syslog TCP or UDP input. The application_name field must be set to suricata. The EVE JSON payload is embedded in the syslog message field and parsed by the pack's syslog processing rule.</p>
+        <p><strong>Legacy plain-text formats (Suricata &lt;= 7):</strong> The pack also parses the legacy http.log and tls.log plain-text output formats that were deprecated in Suricata 8.0 and removed in Suricata 9.0. These are detected automatically alongside EVE JSON on syslog or raw inputs.</p>
+        <h3>Configuring Suricata</h3>
+        <p>Suricata must be configured to output logs in EVE JSON format. In suricata.yaml, ensure the eve-log output is enabled and includes the desired event types:</p>
+        <h3>Configuring Sidecar</h3>
+        <ol>
+            <li>
+                <p>Please refer to the official documentation to <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">set up Graylog Sidecar for Filebeat</a>.</p>
+            </li>
+            <li>
+                <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> in Graylog.</p>
+            </li>
+            <li>
+                <p>Ensure that the option <em>Do not add Beats type as prefix</em> is <strong>disabled</strong>.</p>
+            </li>
+            <li>
+                <p>Add the following example configuration snippet to your Filebeat configuration:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">- type: filestream
+id: suricata-eve-filestream
+enabled: true
+paths:
+- /var/log/suricata/eve.json
+parsers:
+- ndjson:
+target: ""
+add_error_key: true
+expand_keys: false
+fields_under_root: true
+fields:
+filebeat_event_source_product: suricata</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+        </ol>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">The configuration snippet provided is not a fully functional Filebeat configuration; it is only the section that adds Suricata EVE JSON log ingestion to an existing Filebeat configuration. Adjust the path to match your Suricata installation if it differs from the default.</span>
+                </div>
+            </section>
+        </p>
+        <h3 id="gim-categorization">Suricata Log Message Processing</h3>
+        <p>Suricata EVE JSON events are identified by the event_type field. For DNS events, the pack further distinguishes between queries (dns.type = "query") and answers (dns.type = "answer"), and detects RFC 2136 DDNS UPDATE messages (dns.opcode = 5) to assign the appropriate GIM code (140000 query, 140200 answer, 140500 ddns update). For flow events, closed flows (flow.state = "closed") receive a distinct GIM code from established flows. For DHCP events, vendor_dhcp_type further refines the GIM code (e.g. discover -&gt; 290200, request -&gt; 290000, offer -&gt; 290100, ack -&gt; 290300); unrecognized types default to 299999.</p>
+        <h4>Events Processed by This Technology Pack</h4>
+        <p>The content pack supports the following Suricata EVE JSON event types:</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Events List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IDS/IPS signature match</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">anomaly</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Protocol anomaly detection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">arp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">ARP packets</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">bittorrent_dht</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">BitTorrent DHT messages</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dcerpc</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DCERPC sessions; relevant for lateral-movement detection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DHCP lifecycle: discover, request, offer, ack</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dns</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DNS query and answer</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">drop</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">IPS-mode dropped packet</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">fileinfo</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">File metadata from network transfers</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">flow / flow_closed</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Network flow lifecycle</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ftp / ftp_data</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">FTP commands and data transfers</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http / http2 / quic</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP communication</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ike</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IKE/IPsec key exchange</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">krb5</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Kerberos authentication</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">modbus</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Modbus industrial protocol</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">mqtt</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">MQTT IoT messaging</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">netflow</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">NetFlow records</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">nfs</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">NFS file access</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">pgsql</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">PostgreSQL database</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">pop3</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">POP3 email</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">rdp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Remote Desktop Protocol</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">rfb</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">RFB/VNC remote framebuffer</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">smb</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">SMB/CIFS file sharing</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">smtp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">SMTP email</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">snmp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">SNMP queries / traps</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ssh</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">SSH connections</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">stats</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Suricata engine statistics</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">tftp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">TFTP file transfer</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">tls</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">TLS/SSL connections</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Legacy http.log / tls.log</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Suricata &lt;= 7 plain-text formats</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>GIM Categorization</h4>
+        <p>Field extraction, normalization, and message enrichment for Suricata EVE JSON log messages, plus GIM categorization of the following messages:</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>GIM Categorization List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Vendor Event Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Description</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A Suricata signature match triggered an alert or IPS action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">300000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.network_detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">ids_detection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">anomaly</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">An unexpected or malformed protocol behavior was detected</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">300001</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.network_detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network_detection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">arp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">An ARP packet was observed on the network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">129999</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.default</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network message</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">bittorrent_dht</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A BitTorrent DHT protocol message was observed on the network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.open</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection initiated</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dcerpc</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A DCERPC session was observed on the network (lateral-movement / AD-recon indicator)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.open</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection initiated</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A DHCP message was observed on the network (sub-categorized by vendor_dhcp_type)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">299999</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp.default</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp default event</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dns</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A DNS query was observed on the network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">140000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution.dns request</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dns query</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dns_answer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A DNS answer was observed on the network (dns.type = "answer")</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">140200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution.dns answer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dns response</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dns_ddns_update</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A DNS UPDATE message (RFC 2136 dynamic DNS) was observed on the network (dns.opcode = 5)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">140500</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution.ddns update</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">ddns update</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">drop</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A packet was dropped by the IPS engine (EVE event_type=drop)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">129999</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.default</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network message</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">fileinfo</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">File metadata was captured from a network transfer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">129999</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.default</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network message</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">flow</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A network flow record was observed (non-closed state)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120500</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.flow</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">flow record</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">flow_closed</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A completed network flow was recorded (flow.state = "closed")</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120300</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.close</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection ended</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ftp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">An FTP command or response was observed on the network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.open</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection initiated</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ftp_data</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">An FTP data channel file transfer was observed</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.open</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection initiated</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">An HTTP transaction was observed on the network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">180200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http.communication</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">http communication</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http2</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">An HTTP/2 transaction was observed on the network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.communication</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http communication</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ike</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">An IKE/IPsec key exchange was observed on the network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.open</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection initiated</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">krb5</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A Kerberos 5 authentication exchange was observed on the network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.open</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection initiated</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">modbus</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A Modbus industrial protocol transaction was observed</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.open</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection initiated</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">netflow</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A NetFlow/IPFIX network traffic record was observed</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120500</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.flow</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">flow record</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">nfs</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">An NFS file-access call was observed on the network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.open</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection initiated</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">mqtt</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">An MQTT publish/subscribe session was observed on the network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.open</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection initiated</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">pgsql</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A PostgreSQL database transaction was observed on the network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">159999</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database.default</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">database message</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">quic</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A QUIC handshake was observed on the network (SNI/version exchange; HTTP/3 transactions over QUIC are not extracted)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.open</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection initiated</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">pop3</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A POP3 email retrieval session was observed on the network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.open</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection initiated</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">rdp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">An RDP connection was observed on the network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.open</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection initiated</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">rfb</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">An RFB/VNC remote desktop connection was observed on the network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.open</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection initiated</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">smb</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">An SMB file sharing transaction was observed on the network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.open</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection initiated</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">smtp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">An SMTP email transaction was observed on the network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">130000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">messaging</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">messaging.email</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">email sent</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">snmp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">An SNMP query/response or trap was observed on the network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.open</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection initiated</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ssh</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">An SSH connection was observed on the network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.open</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection initiated</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">stats</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Suricata performance and statistics counters</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">000000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">message.log_message</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">message</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">tftp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A TFTP file transfer was observed on the network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network connection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">tls</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">A TLS/SSL handshake was observed on the network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">120200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"></td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">network.open</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">network connection initiated</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h3>Message Fields Included in This Pack</h3>
+        <h4>General Parsing</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Common Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Suricata EVE JSON event type (e.g., alert, dns, flow, tls, ssh, http)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_flow_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1728633021554164</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Suricata internal flow identifier</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_created_raw</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2023-03-24T15:09:38.745706+0000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Raw EVE JSON timestamp from the log (syslog ingestion path only)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_interface_in</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">eth0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Network interface on which the traffic was captured</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_community_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1:d/FP5EW3wiY1vCndhwleRRKHowQ=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Community-ID hash for cross-sensor flow correlation (Suricata emits when community-id: enabled is set in suricata.yaml)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_icmp_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">8</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">integer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Raw ICMP type number prior to IANA name resolution (staging field for the lookup)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_icmp_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Echo</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">ICMP message type name resolved via the IANA ICMP/ICMPv6 parameter registry</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_icmp_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">integer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">ICMP message code for ICMP flow events (no canonical Network schema field exists)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_category</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Attempted Information Leak</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Suricata alert rule category</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_signature</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ET SCAN Potential SSH Scan</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Suricata alert rule signature name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_signature_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2001219</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Suricata alert rule signature identifier (SID)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_alert_gid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Suricata alert generator group ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_alert_revision</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">20</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Suricata alert rule revision number</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_alert_severity_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Raw Suricata alert severity level (1=high, 2=medium, 3=low)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">allowed</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Action taken on the triggering flow (e.g., allowed, blocked)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_verdict_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Suricata enforcement verdict (e.g., alert, drop, pass)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_anomaly_event</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">APPLAYER_DETECT_PROTOCOL_ONLY_ONE_DIRECTION</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Anomaly event identifier</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_anomaly_layer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">proto_detect</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Protocol layer at which the anomaly was detected</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_anomaly_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">applayer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Anomaly category (e.g., applayer, stream)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_bittorrent_dht_client_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4c540126</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">BitTorrent client version string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_bittorrent_dht_request_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ping</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DHT request type (e.g., ping, find_node, get_peers)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_bittorrent_dht_transaction_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0c17</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">BitTorrent DHT transaction identifier</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">workstation01</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Hostname of the DHCP client (from dhcp.hostname)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_dhcp_assigned_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">192.168.1.200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">IP address assigned by the DHCP server</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_dhcp_client_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0.0.0.0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Client IP address in the DHCP request (0.0.0.0 for new requests)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_dhcp_client_mac</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">08:00:27:ab:cd:ef</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client MAC address in the DHCP request</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_dhcp_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3713480</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DHCP transaction identifier</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_dhcp_relay_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">10.0.0.1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">IP address of the DHCP relay agent, if present</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_dhcp_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">request</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DHCP message type (e.g., request, ack, discover)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">query_record_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS record type queried or answered (e.g., A, AAAA, MX, CNAME)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">query_request</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">example.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DNS query name (domain being looked up)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">query_response</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">93.184.216.34</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS response data (rdata) for answer events</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">query_result</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">NOERROR</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DNS response code (e.g., NOERROR, NXDOMAIN, SERVFAIL)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_dns_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">12345</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS transaction ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_dns_ttl</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3600</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DNS record time-to-live in seconds</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_dns_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">query</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS message direction (query or answer)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">example.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination hostname from TLS SNI or HTTP Host header</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_hash_md5</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">d41d8cd98f00b204e9800998ecf8427e</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">MD5 hash of the captured file (fileinfo events)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_hash_sha256</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">SHA-256 hash of the captured file (fileinfo events)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">sensitive_document.pdf</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Name of the file being transferred (fileinfo and ftp_data events)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_size</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">102400</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Size of the transferred file in bytes</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">PE32 executable (GUI) Intel 80386</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">File magic string describing the file type</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_uri</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">/downloads/update.exe</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP request URI (fileinfo events)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_fileinfo_gaps</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">false</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">boolean</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Whether there were capture gaps in the file data</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_fileinfo_state</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">CLOSED</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">File transfer completion state (e.g., CLOSED, TRUNCATED)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_bytes_sent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2048</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Bytes sent from server to client during the flow</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_packets_sent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Packets sent from server to client during the flow</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_duration</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">45</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Flow duration in seconds</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_end</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2023-03-24T15:10:23.000000+0000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Flow end timestamp</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_start</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2023-03-24T15:09:38.000000+0000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Flow start timestamp</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_bytes_sent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1024</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Bytes sent from client to server during the flow</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_packets_sent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">12</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Packets sent from client to server during the flow</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_flow_reason</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">timeout</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Reason the flow ended (e.g., timeout, forced)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_flow_state</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">closed</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Flow tracking state at end of event (e.g., closed, established)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_ftp_command</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">RETR</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">FTP command issued (e.g., RETR, STOR, LIST)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_ftp_command_data</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">sensitive_document.pdf</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Argument to the FTP command (e.g., filename or path)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_ftp_completion_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">["150"]</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">FTP server reply code(s)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_ftp_dynamic_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">54322</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Data connection port used in passive mode</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_ftp_mode</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">passive</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">FTP data transfer mode (active or passive)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_ftp_reply_received</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">true</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">boolean</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Whether a server reply was received for the FTP command</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_command</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">RETR</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">FTP command associated with the ftp_data transfer (ftp_data events)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_content_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">text/html; charset=UTF-8</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP response Content-Type header</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_referrer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">https://example.com/</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP Referer header</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_method</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">GET</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP request method (GET, POST, PUT, etc.)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_request_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">/index.html</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP request URL path</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_response_bytes</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1256</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP response body length in bytes</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_response_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP response status code</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_user_agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Mozilla/5.0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP User-Agent header</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">HTTP/1.1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP protocol version</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_ike_alg_auth</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">hmac-sha2-256</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">IKE authentication algorithm</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_ike_alg_dh</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">modp2048</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IKE Diffie-Hellman group</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_ike_alg_enc</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">aes-cbc</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">IKE encryption algorithm</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_ike_alg_hash</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">sha256</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IKE hash algorithm</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_ike_exchange_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">IKE_SA_INIT</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">IKE exchange type</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_ike_init_spi</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">abc123def456</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IKE initiator Security Parameter Index (SPI)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_ike_resp_spi</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">123abc456def</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">IKE responder Security Parameter Index (SPI)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_ike_version_major</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IKE major version number</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_ike_version_minor</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">IKE minor version number</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_krb5_cname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">robin</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Kerberos client principal name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_krb5_encryption</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">aes256-cts-hmac-sha1-96</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Kerberos session key encryption type</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_krb5_msg_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">KRB_TGS_REP</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Kerberos message type (e.g., KRB_TGS_REQ, KRB_TGS_REP)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_krb5_realm</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">EXAMPLE.LAB</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Kerberos realm (domain)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_krb5_sname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ldap/dc01</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Kerberos service principal name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_krb5_ticket_encryption</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">aes256-cts-hmac-sha1-96</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Kerberos ticket encryption type</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_modbus_access_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">write</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Modbus access type (e.g., read, write)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_modbus_category</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">public assigned</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Modbus function category</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_modbus_error_flags</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">INVALID_LENGTH</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Modbus error flags</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_modbus_function_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Write Multiple Registers</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Modbus function code name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_modbus_function_raw</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">16</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Raw Modbus function code number</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_modbus_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Modbus message identifier</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_modbus_transaction_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1234</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Modbus transaction identifier</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_modbus_unit_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Modbus unit identifier</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_mqtt_dup</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">false</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">boolean</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">MQTT duplicate delivery flag</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_mqtt_qos</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">MQTT Quality of Service level (0, 1, or 2)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_mqtt_retain</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">false</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">boolean</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">MQTT retain message flag</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_pgsql_tx_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">PostgreSQL transaction identifier</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_pop3_request_command</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">RETR</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">POP3 client command (e.g., RETR, LIST, DELE)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_pop3_response_status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">+OK</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">POP3 server response status (+OK or -ERR)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_rdp_client_build</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2600</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">RDP client build number</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_rdp_client_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DESKTOP-ABC123</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">RDP client machine name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_rdp_client_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">00080004</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">RDP client version string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_rdp_cookie</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">mstshash=user01</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">RDP connection routing cookie</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_rdp_event_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">initial</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">RDP event subtype (e.g., initial, credssp, tls)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_rdp_keyboard_layout</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">en-us</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">RDP client keyboard layout identifier</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_rdp_protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">tls</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Negotiated RDP security protocol (e.g., rdp, tls, hybrid)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_rdp_tx_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">RDP transaction identifier</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_rfb_client_protocol_major</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">003</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">RFB/VNC client protocol major version</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_rfb_client_protocol_minor</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">007</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">RFB/VNC client protocol minor version</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_rfb_framebuffer_height</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">800</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Remote framebuffer height in pixels</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_rfb_framebuffer_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">desktop@workstation.example.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Remote framebuffer display name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_rfb_framebuffer_width</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1280</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Remote framebuffer width in pixels</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_rfb_security_result</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">OK</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">RFB/VNC authentication result (OK or failed)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_rfb_security_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">RFB/VNC security type number (e.g., 2 = VNC authentication)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_rfb_server_protocol_major</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">003</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">RFB/VNC server protocol major version</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_rfb_server_protocol_minor</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">007</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">RFB/VNC server protocol minor version</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_mac</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">08:00:27:ab:cd:ef</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source MAC address (set from DHCP client MAC in dhcp events)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_smb_access</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0x00120089</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">SMB file access flags</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_smb_command</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SMB2_COMMAND_READ</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">SMB command name (e.g., SMB2_COMMAND_READ, SMB2_COMMAND_CREATE)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_smb_disposition</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">FILE_OPEN</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">SMB file create disposition flags</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_smb_filename</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">\share\document.docx</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">SMB file or path name accessed</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_smb_filesize</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">24576</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">SMB file size in bytes</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_smb_session_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">35184975798785</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">SMB session identifier</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_smb_share_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DISK</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">SMB share type (e.g., DISK, IPC, PRINTER)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_smb_status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">STATUS_SUCCESS</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">SMB status string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_smb_status_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0x0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">SMB status code in hexadecimal</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_smb_tree_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">SMB tree connect identifier</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_ssh_client_hassh</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">b12d2871a1189eff20364cf5333619ee</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HASSH fingerprint hash of the SSH client</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_ssh_client_proto</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2.0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">SSH protocol version used by the client</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_ssh_client_software</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">OpenSSH_8.9p1 Ubuntu-3ubuntu0.1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">SSH client software version string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_ssh_server_hassh</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ec7378c1a92f5a8dde7e8b7a1ddf33d1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HASSH fingerprint hash of the SSH server</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_ssh_server_proto</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2.0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">SSH protocol version used by the server</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_ssh_server_software</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">OpenSSH_8.9p1 Debian</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">SSH server software version string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_tftp_file</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">firmware.bin</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">TFTP filename being transferred</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_tftp_mode</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">octet</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">TFTP transfer mode (octet or netascii)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_tftp_packet</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">RRQ</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">TFTP packet type (RRQ for read, WRQ for write)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_tls_fingerprint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">aa:bb:cc:dd:ee:ff:00:11:22:33:44:55:66:77:88:99:aa:bb:cc:dd</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">TLS certificate SHA-1 fingerprint</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_tls_issuerdn</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">CN=DigiCert TLS RSA SHA256 2020 CA1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">TLS certificate issuer Distinguished Name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_tls_ja3_hash</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">772e8c7d1f1c5d2c2c1d6a0b2a3e4f5a</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">JA3 TLS client fingerprint hash</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_tls_ja3s_hash</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">a5e2d8c3b4f1e9a7c6b0d2e4f8a3c7e1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">JA3S TLS server fingerprint hash</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_tls_not_after</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2024-02-13T23:59:59</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">TLS certificate expiry date</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_tls_not_before</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2023-01-13T00:00:00</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">TLS certificate validity start date</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_tls_serial</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0F:BE:08:B0:85:4D:05:73:8A:B0:CC:E1:C9:AF:EE:C9</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">TLS certificate serial number</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_tls_subject</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">CN=example.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">TLS certificate subject Distinguished Name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">vendor_tls_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">TLS 1.3</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">TLS protocol version (e.g., TLS 1.2, TLS 1.3)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h2 id="spotlight-content-pack">Suricata IDS/IPS Content Pack</h2>
+        <p>This spotlight offers a dashboard with 1 tab:</p>
+        <h3>Overview</h3>
+        <p>
+            <img src="../Resources/Images/Suricata/Suricata_Overview.png" />
+        </p>
+    </body>
+</html>
