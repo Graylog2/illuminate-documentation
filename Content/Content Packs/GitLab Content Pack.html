@@ -1,750 +1,740 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-
-<head>
-    <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
-    <title>GitLab Content Pack</title>
-    <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
-</head>
-
-<body>
-    <h1>GitLab Content Pack</h1>
-    <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-    <p>GitLab is a complete DevOps platform offering Git-based source code management, CI/CD automation, security
-        scanning, and project collaboration. This technology pack will process GitLab logs, providing normalization and
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>GitLab Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>GitLab Content Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>GitLab is a complete DevOps platform offering Git-based source code management, CI/CD automation, security
+        scanning, and project collaboration. This technology pack processes GitLab logs, providing normalization and
         enrichment of common events of interest.</p>
-    <h2 id="supported-versions">Supported Versions</h2>
-    <ul>
-        <li>
-            <p>GitLab version 17.9 and later</p>
-        </li>
-    </ul>
-    <h2 id="requirements">Requirements</h2>
-    <ul>
-        <li>
-            <p>Graylog server with valid Enterprise license running version 6.1.3 or later</p>
-        </li>
-        <li>
-            <p>GitLab version 17.9 or later</p>
-        </li>
-        <li>
-            <p>Raw HTTP input configured in Graylog for audit event streaming</p>
-        </li>
-    </ul>
-    <h2 id="stream-configuration">Stream Configuration</h2>
-    <p>This technology pack includes 1 stream:</p>
-    <ul>
-        <li>"Illuminate:GitLab Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
-                activation of this pack then it will be created and configured to route messages to this stream and the
-                associated index set. There should not be any stream rules configured for this stream.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="index-set-configuration">Index Set Configuration</h2>
-    <p>This technology pack includes 1 index set definition:</p>
-    <ul>
-        <li>"GitLab Event Log Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
-                nothing will be changed. If this index set does not exist, then it will be created with retention
+        <h2 id="supported-versions">Supported Versions</h2>
+        <ul>
+            <li>
+                <p>GitLab version 17.9 and later</p>
+            </li>
+        </ul>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>Graylog server with valid Enterprise license running version 6.1.3 or later</p>
+            </li>
+            <li>
+                <p>GitLab version 17.9 or later</p>
+            </li>
+            <li>
+                <p>Raw HTTP input configured in Graylog for audit event streaming</p>
+            </li>
+        </ul>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>"Illuminate:GitLab Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this stream does not exist prior to the
+                activation of this pack then it is created and configured to route messages to this stream and the
+                associated index set. There should not be any stream rules configured for this stream.</div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"GitLab Event Log Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this index set is already defined, then
+                nothing is changed. If this index set does not exist, then it is created with retention
                 settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
-                installation.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="log-collection">Log Collection and Delivery</h2>
-    <p>GitLab audit events are delivered to Graylog via HTTP audit event streaming. A Raw HTTP input must be configured
+                installation.</div>
+            </section>
+        </p>
+        <h2 id="log-collection">Log Collection and Delivery</h2>
+        <p>GitLab audit events are delivered to Graylog via HTTP audit event streaming. A Raw HTTP input must be configured
         in Graylog, and GitLab must be configured to stream audit events to that input. For on-premise installations,
         Filebeat can be used to ship log files.</p>
-    <h3>Raw HTTP Input Setup</h3>
-    <p>Configure GitLab audit event streaming to Graylog:</p>
-    <ol>
-        <li>
-            <p>Create a global Raw HTTP input in Graylog</p>
-        </li>
-        <li>
-            <p>Set field 'event_source_product' to 'GitLab-web'</p>
-        </li>
-        <li>
-            <p>In GitLab, configure HTTP destination for audit event streaming</p>
-        </li>
-        <li>
-            <p>Configure input routing in Illuminate Customization tab</p>
-        </li>
-    </ol>
-    <h2 id="what-is-provided">What is Provided</h2>
-    <ul>
-        <li>
-            <p>Parsing rules to extract GitLab logs into Graylog schema compatible fields</p>
-        </li>
-        <li>
-            <p>Graylog Information Model message categorization</p>
-        </li>
-        <li>
-            <p>GIM enforcement fields populated for IAM, HTTP, and detection events (service_name, application_name,
+        <h3>Raw HTTP Input Setup</h3>
+        <p>Configure GitLab audit event streaming to Graylog:</p>
+        <ol>
+            <li>
+                <p>Create a global Raw HTTP input in Graylog</p>
+            </li>
+            <li>
+                <p>Set field 'event_source_product' to 'GitLab-web'</p>
+            </li>
+            <li>
+                <p>In GitLab, configure HTTP destination for audit event streaming</p>
+            </li>
+            <li>
+                <p>Configure input routing in Illuminate Customization tab</p>
+            </li>
+        </ol>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Parsing rules to extract GitLab logs into Graylog schema compatible fields</p>
+            </li>
+            <li>
+                <p>Graylog Information Model message categorization</p>
+            </li>
+            <li>
+                <p>GIM enforcement fields populated for IAM, HTTP, and detection events (service_name, application_name,
                 event_outcome, event_action, source_reference, destination_reference)</p>
-        </li>
-        <li>
-            <p>Dashboards for GitLab event visualization</p>
-        </li>
-    </ul>
-    <h3 id="gim-categorization">GIM Categorization</h3>
-    <p>GIM categorization is provided for the following event types:</p>
-    <table cellspacing="21"
-        style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-        class="TableStyle-Alternate-Row-Color">
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <thead>
-            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Type</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authenticated_with_*</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authenticated_with_two_factor,
+            </li>
+            <li>
+                <p>Dashboards for GitLab event visualization</p>
+            </li>
+        </ul>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following event types:</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authenticated_with_*</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authenticated_with_two_factor,
                     authenticated_with_webauthn</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">100502</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.credential validation</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">mfa</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">login_failed_with_*</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">member_created, user_created,
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">100502</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">mfa</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">login_failed_with_*</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">member_created, user_created,
                     *_token_created (success only), deploy_key_added</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">110000</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object create</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account created</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">group_created</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">110002</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object create</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">group created</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">member_destroyed, user_destroyed,
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">110000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object create</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account created</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">group_created</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">110002</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object create</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">group created</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">member_destroyed, user_destroyed,
                     *_token_revoked, deploy_key_removed</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">110500</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object delete</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account deleted</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">group_destroyed</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">110501</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object delete</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">group deleted</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">member_updated, user_*_updated</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111000</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account modified</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">custom_admin_role_assigned_to_user,
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">110500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object delete</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account deleted</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">group_destroyed</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">110501</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object delete</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">group deleted</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">member_updated, user_*_updated</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account modified</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">custom_admin_role_assigned_to_user,
                     *_link_created</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111001</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">privileges assigned</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">custom_admin_role_unassigned_from_user,
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111001</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">privileges assigned</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">custom_admin_role_unassigned_from_user,
                     *_link_removed</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111002</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">privileges removed</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">password_reset_*, user_password_updated
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111002</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">privileges removed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">password_reset_*, user_password_updated
                 </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111004</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">password change</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">group_saml_member_added</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111007</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">group member added</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ban_user, user_blocked, user_deactivate
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111004</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">password change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">group_saml_member_added</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111007</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">group member added</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ban_user, user_blocked, user_deactivate
                 </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111501</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object disable</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">account disabled</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">unban_user, unblock_user, user_activate,
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111501</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object disable</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">account disabled</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">unban_user, unblock_user, user_activate,
                     user_approved</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">112001</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object enable</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account enabled</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">API/Production logs</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180200</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.communication</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http communication</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">security_policy_create/delete/update</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">220500</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">audit</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">audit.policy</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">audit policy changed</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Vulnerability webhooks,
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">112001</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object enable</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account enabled</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">API/Production logs</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180200</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.communication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http communication</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">security_policy_create/delete/update</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">220500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">audit</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">audit.policy</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">audit policy changed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Vulnerability webhooks,
                     security_policy_violations_detected</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">300000</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">detection</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">detection.network_detection</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">ids_detection</td>
-            </tr>
-        </tbody>
-    </table>
-    <h3>Fields Extracted by This Pack</h3>
-    <h4>Parsed Fields</h4>
-    <p>These are the fields extracted and mapped by the GitLab content pack.</p>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>GitLab Parsed Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Original Field Name</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.action</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">show</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Native GitLab action</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.method</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_method</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">GET</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP request method</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.path</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_path</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">/api/v4/projects</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Request path</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.url</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_path</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">300000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">detection.network_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">ids_detection</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Fields Extracted by This Pack</h3>
+        <h4>Parsed Fields</h4>
+        <p>These are the fields extracted and mapped by the GitLab content pack.</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>GitLab Parsed Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Original Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">show</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Native GitLab action</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.method</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_method</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">GET</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP request method</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">/api/v4/projects</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Request path</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.url</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
                             http://127.0.0.1:8080/api/v4/internal/allowed</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Full request URL</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.status</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_response_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">200</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP response status code</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.remote_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">10.2.3.2</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client source IP address</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.time</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_created</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2024-10-29T12:49:42.123Z</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Event timestamp</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.severity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_severity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">INFO</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GitLab native severity level</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.message</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_description</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User was created</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Native event description</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.username</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">admin</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GitLab username</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.user_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">GitLab user ID</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.author_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Audit event author ID (fallback
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Full request URL</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_response_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP response status code</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.remote_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">10.2.3.2</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client source IP address</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.time</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_created</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2024-10-29T12:49:42.123Z</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Event timestamp</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">INFO</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GitLab native severity level</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.message</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User was created</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Native event description</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.username</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">admin</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GitLab username</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.user_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">GitLab user ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.author_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Audit event author ID (fallback
                             for user_id)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.author_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Administrator</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Audit event author name (fallback
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.author_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Administrator</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Audit event author name (fallback
                             for user_name)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.correlation_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_correlation_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">01GYDSAKAN2SPZPAMJNRWW5H8S</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Request correlation identifier
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.correlation_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_correlation_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">01GYDSAKAN2SPZPAMJNRWW5H8S</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Request correlation identifier
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.controller</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_controller</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Projects::IssuesController</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Rails controller name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.format</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_format</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">html</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Response format</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.ua</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_user_agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mozilla/5.0...</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP user agent string</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.pid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1234</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Process ID</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.uid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_uid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gitlab-www</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Process user ID</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.command</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_command_line</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">git-upload-pack</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Git command executed</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.host</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_hostname</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gitlab.example.com</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Server hostname</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.event_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">member_created</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Audit event type identifier</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.entity_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_entity_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Audit entity type</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.entity_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_entity_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">123</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Audit entity ID</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.target_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_target_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Audit target type</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.target_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_target_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">456</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Audit target ID</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.target_details</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_target_details</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user@example.com</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Audit target details</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.change</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_change</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">access_level</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Changed attribute name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.from</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_from</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Developer</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Previous value of changed
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.controller</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_controller</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Projects::IssuesController</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Rails controller name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.format</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_format</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">html</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Response format</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.ua</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_user_agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mozilla/5.0...</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP user agent string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.pid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1234</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Process ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.uid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_uid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gitlab-www</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Process user ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.command</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_command_line</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">git-upload-pack</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Git command executed</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.host</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gitlab.example.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Server hostname</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.event_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">member_created</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Audit event type identifier</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.entity_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_entity_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Audit entity type</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.entity_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_entity_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">123</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Audit entity ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.target_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_target_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Audit target type</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.target_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_target_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">456</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Audit target ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.target_details</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_target_details</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user@example.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Audit target details</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.change</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_change</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">access_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Changed attribute name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.from</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_from</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Developer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Previous value of changed
                             attribute</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.to</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_to</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Maintainer</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">New value of changed attribute
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.to</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_to</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Maintainer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">New value of changed attribute
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.success</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_outcome</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">true</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Native event outcome</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.error</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_error_description</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">connection refused</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Error description</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.duration_s</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_duration_s</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0.12</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Request duration in seconds</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.db_duration_s</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_db_duration_s</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0.01</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Database query duration in
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.success</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_outcome</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">true</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Native event outcome</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.error</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_error_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">connection refused</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Error description</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.duration_s</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_duration_s</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0.12</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Request duration in seconds</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.db_duration_s</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_db_duration_s</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0.01</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Database query duration in
                             seconds</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.view_duration_s</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_view_duration_s</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0.05</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">View rendering duration in
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.view_duration_s</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_view_duration_s</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0.05</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">View rendering duration in
                             seconds</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.cpu_s</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_cpu_s</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0.02</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">CPU time in seconds</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.queue_duration_s</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_queue_duration_s</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0.001</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Queue wait duration in seconds
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.cpu_s</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_cpu_s</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0.02</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">CPU time in seconds</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.queue_duration_s</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_queue_duration_s</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0.001</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Queue wait duration in seconds
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.gitaly_calls</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_gitaly_calls</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">5</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Number of Gitaly RPC calls</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.gitaly_duration_s</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_gitaly_duration_s</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0.03</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Gitaly call duration in seconds
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.gitaly_calls</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_gitaly_calls</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">5</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Number of Gitaly RPC calls</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.gitaly_duration_s</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_gitaly_duration_s</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0.03</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Gitaly call duration in seconds
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.redis_calls</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_redis_calls</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Number of Redis calls</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.redis_duration_s</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_redis_duration_s</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0.002</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Redis call duration in seconds
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.redis_calls</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_redis_calls</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Number of Redis calls</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.redis_duration_s</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_redis_duration_s</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0.002</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Redis call duration in seconds
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.class</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_class</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ProjectImportWorker</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Sidekiq job class</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.queue</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_queue</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">default</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Sidekiq queue name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.jid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_jid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">abc123</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Sidekiq job ID</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.job_status</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_job_status</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">done</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Sidekiq job status</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.object_kind</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_object_kind</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vulnerability</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Webhook object kind</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.object_attributes.title</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_object_title</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">REXML DoS vulnerability</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Object title (vulnerability name)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.class</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_class</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ProjectImportWorker</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Sidekiq job class</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.queue</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_queue</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">default</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Sidekiq queue name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.jid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_jid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">abc123</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Sidekiq job ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.job_status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_job_status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">done</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Sidekiq job status</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.object_kind</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_object_kind</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vulnerability</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Webhook object kind</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.object_attributes.title</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_object_title</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">REXML DoS vulnerability</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Object title (vulnerability name)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.object_attributes.severity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_severity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">critical</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Vulnerability severity</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.object_attributes.state</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_object_state</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">confirmed</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Vulnerability state</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.object_attributes.url</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_path</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.object_attributes.severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">critical</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Vulnerability severity</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.object_attributes.state</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_object_state</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">confirmed</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Vulnerability state</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.object_attributes.url</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
                             https://example.com/.../vulnerabilities/1</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Vulnerability URL</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.mail_subject</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">email_subject</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">New issue created</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Email notification subject</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.token_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_token_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">API token identifier</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.token_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_token_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">PersonalAccessToken</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Token type</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.details.author_class</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_author_class</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">User</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Audit detail author class</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.details.change</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_details_change</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">access_level</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Audit detail change type</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Mapped</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_action</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">allowed</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Normalized event action</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mapped</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_outcome</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">success</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Normalized event outcome</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Mapped</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_severity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">informational</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Normalized event severity</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mapped</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_severity_level</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Numeric severity level</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Mapped</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_user_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">admin</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source user performing the action
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Vulnerability URL</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.mail_subject</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">email_subject</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">New issue created</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Email notification subject</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.token_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_token_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">API token identifier</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.token_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_token_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">PersonalAccessToken</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Token type</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">$.details.author_class</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_author_class</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">User</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Audit detail author class</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">$.details.change</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_details_change</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">access_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Audit detail change type</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Mapped</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">allowed</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Normalized event action</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mapped</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_outcome</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">success</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Normalized event outcome</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Mapped</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">informational</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Normalized event severity</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mapped</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_severity_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Numeric severity level</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Mapped</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">admin</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source user performing the action
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mapped</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gim_event_type_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">110000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">GIM event type code</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Mapped</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_signature</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">REXML DoS vulnerability</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Alert signature for vulnerability
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mapped</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gim_event_type_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">110000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">GIM event type code</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Mapped</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_signature</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">REXML DoS vulnerability</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Alert signature for vulnerability
                             events</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Mapped</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">alert_category</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">vulnerability</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Alert category for vulnerability
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Mapped</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">alert_category</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">vulnerability</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Alert category for vulnerability
                             events</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h2 id="spotlight-content-pack">GitLab Spotlight Content Pack</h2>
-    <p>The following dashboards are included with this content pack:</p>
-    <h3>GitLab Events Overview</h3>
-    <p>
-        <img src="../Resources/Images/resources/GitLab_Events_Overview.png" />
-    </p>
-    <h3>User Overview</h3>
-    <p>
-        <img src="../Resources/Images/resources/GitLab_User_Overview.png" />
-    </p>
-    <h3>Web Overview</h3>
-    <p>
-        <img src="../Resources/Images/resources/GitLab_Web_Overview.png" />
-    </p>
-</body>
-
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h2 id="spotlight-content-pack">GitLab Spotlight Content Pack</h2>
+        <p>The following dashboards are included with this content pack:</p>
+        <h3>GitLab Events Overview</h3>
+        <p>
+            <img src="../Resources/Images/Gitlab/GitLab_Events_Overview.png" alt="GitLab Events Overview dashboard image" />
+        </p>
+        <h3>User Overview</h3>
+        <p>
+            <img src="../Resources/Images/Gitlab/GitLab_User_Overview.png" alt="GitLab User Overview dashboard image" />
+        </p>
+        <h3>Web Overview</h3>
+        <p>
+            <img src="../Resources/Images/Gitlab/GitLab_Web_Overview.png" alt="GitLab Web Overview dashboard image" />
+        </p>
+    </body>
 </html>
