@@ -1,591 +1,579 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-
-<head>
-    <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
-    <title>Microsoft Defender for Endpoint Content Pack</title>
-    <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
-</head>
-
-<body>
-    <h1>Microsoft Defender for Endpoint Content Pack</h1>
-    <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-    <p>Microsoft Defender for Endpoint is an industry-leading, cloud-powered endpoint security solution that helps to
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Microsoft Defender for Endpoint Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>
+            <MadCap:concept term="Vendor:Microsoft" />Microsoft Defender for Endpoint Content Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Microsoft Defender for Endpoint is an industry-leading, cloud-powered endpoint security solution that helps to
         secure against ransomware, file-less malware, and other sophisticated attacks on Windows, macOS, Linux, Android,
         and iOS.</p>
-    <h2 id="supported-versions">Supported Versions</h2>
-    <ul>
-        <li>
-            <p>Graylog Server 5.2 or later</p>
-        </li>
-    </ul>
-    <h2 id="requirements">Requirement(s)</h2>
-    <ul>
-        <li>
-            <p>Microsoft Defender for Endpoint Plan 1 or Plan 2.</p>
-        </li>
-        <li>
-            <p>Graylog Server with a valid Enterprise license.</p>
-        </li>
-    </ul>
-    <h2 id="stream-configuration">Stream Configuration</h2>
-    <p>This technology pack includes 1 stream:</p>
-    <ul>
-        <li>"Illuminate:Microsoft Defender for Endpoint Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
-                activation of this pack then it will be created and configured to route messages to this stream and the
-                associated index set. There should not be any stream rules configured for this stream.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="index-set-configuration">Index Set Configuration</h2>
-    <p>This technology pack includes 1 index set definition:</p>
-    <ul>
-        <li>"Microsoft Defender for Endpoint Logs"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
-                nothing will be changed. If this index set does not exist, then it will be created with retention
+        <h2 id="supported-versions">Supported Versions</h2>
+        <ul>
+            <li>
+                <p>Graylog Server 5.2 or later</p>
+            </li>
+        </ul>
+        <h2 id="requirements">Requirement(s)</h2>
+        <ul>
+            <li>
+                <p>Microsoft Defender for Endpoint Plan 1 or Plan 2.</p>
+            </li>
+            <li>
+                <p>Graylog Server with a valid Enterprise license.</p>
+            </li>
+        </ul>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>"Illuminate:Microsoft Defender for Endpoint Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this stream does not exist prior to the
+                activation of this pack then it is created and configured to route messages to this stream and the
+                associated index set. There should not be any stream rules configured for this stream.</div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"Microsoft Defender for Endpoint Logs"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this index set is already defined, then
+                nothing is changed. If this index set does not exist, then it is created with retention
                 settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
-                installation.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="log-collection">Log Collection and Delivery</h2>
-    <p>Microsoft Defender for Endpoint utilizes the Graylog <strong>Microsoft Defender for Endpoint</strong> input that
+                installation.</div>
+            </section>
+        </p>
+        <h2 id="log-collection">Log Collection and Delivery</h2>
+        <p>Microsoft Defender for Endpoint utilizes the Graylog <strong>Microsoft Defender for Endpoint</strong> input that
         ingests alert logs in JSON format. Documentation detailing the configuration of this input can be found in the
         Graylog documentation.</p>
-    <p>Due to how Illuminate processes nested arrays, for each evidence <code class="linecode">entityType</code>
-        (Process, User, IP, File, URL), only one result per entityType will be processed by Illuminate. Additional
+        <p>Due to how Illuminate processes nested arrays, for each evidence <code class="linecode">entityType</code>
+        (Process, User, IP, File, URL), only one result per entityType is processed by Illuminate. Additional
         results can still be seen in the <code class="linecode">evidence_array</code> field and GIM-specific fields such
-        as <code class="linecode">user_name</code>, <code class="linecode">file_name</code>, and <code
-            class="linecode">file_path</code>.</p>
-    <h2 id="log-format-example">Log Format Example</h2>
-    <p><code class="linecode">{"id":"da20708b1e-8554-4ec8-b59c-925c4663aa3a_1","incidentId":2,"investigationId":null,"assignedTo":null,"severity":"Medium","status":"New","classification":null,"determination":null,"investigationState":"UnsupportedAlertType","detectionSource":"WindowsDefenderAtp","detectorId":"7f1c3609-a3ff-40e2-995b-c01770161d68","category":"Execution","threatFamilyName":null,"title":"Suspicious PowerShell command line","description":"A suspicious PowerShell activity was observed on the machine.","alertCreationTime":"2023-04-06T10:41:43.691043Z","firstEventTime":"2023-04-06T10:39:00.7407597Z","lastEventTime":"2023-04-06T10:42:49.3567967Z","lastUpdateTime":"2023-04-06T10:45:41.5166667Z","resolvedTime":null,"machineId":"31328158e55872c03a1b5ec4c96744cbb82c8f4b","computerDnsName":"win-tfb8l7bi77h","rbacGroupName":"UnassignedGroup","aadTenantId":"df620235-50d7-4400-bb7e-3b112e9b1ff4","threatName":null,"mitreTechniques":["T1059.001","T1105","T1140"],"relatedUser":{"userName":"Administrator","domainName":"WIN-TFB8L7BI77H"},"loggedOnUsers":[{"accountName":"testuser","domainName":"DESKTOP-IIQVPJ7"}],"comments":[{"comment":"test comment","createdBy":"secop123@contoso.com","createdTime":"2020-07-21T01:00:37.8404534Z"}],"evidence":[{"entityType":"Process","evidenceCreationTime":"2023-04-06T10:45:41.51Z","sha1":"6cbce4a295c163791b60fc23d285e6d84f28ee4c","sha256":"de96a6e69944335375dc1ac238336066889d9ffc7d73628ef4fe1b1b160ab32c","fileName":"powershell.exe","filePath":"C:\\Windows\\System32\\WindowsPowerShell\\v1.0","processId":10520,"processCommandLine":"powershell.exe -NoExit -ExecutionPolicy Bypass","processCreationTime":"2023-04-06T10:42:49.2635644Z","parentProcessId":5212,"parentProcessCreationTime":"2023-04-06T10:40:44.9749107Z","parentProcessFileName":"cmd.exe","parentProcessFilePath":"C:\\Windows\\System32","ipAddress":null,"url":null,"accountName":"Administrator","domainName":"WIN-TFB8L7BI77H","userSid":"S-1-5-21-3669279935-616031708-4259075843-500","aadUserId":null,"userPrincipalName":null,"detectionStatus":"Detected"},{"entityType":"Ip","evidenceCreationTime":"2023-04-06T10:41:43.81Z","ipAddress":"10.10.10.173","url":null,"detectionStatus":null}],"domains":[]}
+        as <code class="linecode">user_name</code>, <code class="linecode">file_name</code>, and <code class="linecode">file_path</code>.</p>
+        <h2 id="log-format-example">Log Format Example</h2>
+        <p><code class="linecode">{"id":"da20708b1e-8554-4ec8-b59c-925c4663aa3a_1","incidentId":2,"investigationId":null,"assignedTo":null,"severity":"Medium","status":"New","classification":null,"determination":null,"investigationState":"UnsupportedAlertType","detectionSource":"WindowsDefenderAtp","detectorId":"7f1c3609-a3ff-40e2-995b-c01770161d68","category":"Execution","threatFamilyName":null,"title":"Suspicious PowerShell command line","description":"A suspicious PowerShell activity was observed on the machine.","alertCreationTime":"2023-04-06T10:41:43.691043Z","firstEventTime":"2023-04-06T10:39:00.7407597Z","lastEventTime":"2023-04-06T10:42:49.3567967Z","lastUpdateTime":"2023-04-06T10:45:41.5166667Z","resolvedTime":null,"machineId":"31328158e55872c03a1b5ec4c96744cbb82c8f4b","computerDnsName":"win-tfb8l7bi77h","rbacGroupName":"UnassignedGroup","aadTenantId":"df620235-50d7-4400-bb7e-3b112e9b1ff4","threatName":null,"mitreTechniques":["T1059.001","T1105","T1140"],"relatedUser":{"userName":"Administrator","domainName":"WIN-TFB8L7BI77H"},"loggedOnUsers":[{"accountName":"testuser","domainName":"DESKTOP-IIQVPJ7"}],"comments":[{"comment":"test comment","createdBy":"secop123@contoso.com","createdTime":"2020-07-21T01:00:37.8404534Z"}],"evidence":[{"entityType":"Process","evidenceCreationTime":"2023-04-06T10:45:41.51Z","sha1":"6cbce4a295c163791b60fc23d285e6d84f28ee4c","sha256":"de96a6e69944335375dc1ac238336066889d9ffc7d73628ef4fe1b1b160ab32c","fileName":"powershell.exe","filePath":"C:\\Windows\\System32\\WindowsPowerShell\\v1.0","processId":10520,"processCommandLine":"powershell.exe -NoExit -ExecutionPolicy Bypass","processCreationTime":"2023-04-06T10:42:49.2635644Z","parentProcessId":5212,"parentProcessCreationTime":"2023-04-06T10:40:44.9749107Z","parentProcessFileName":"cmd.exe","parentProcessFilePath":"C:\\Windows\\System32","ipAddress":null,"url":null,"accountName":"Administrator","domainName":"WIN-TFB8L7BI77H","userSid":"S-1-5-21-3669279935-616031708-4259075843-500","aadUserId":null,"userPrincipalName":null,"detectionStatus":"Detected"},{"entityType":"Ip","evidenceCreationTime":"2023-04-06T10:41:43.81Z","ipAddress":"10.10.10.173","url":null,"detectionStatus":null}],"domains":[]}
         </code>
-    </p>
-    <h2 id="what-is-provided">What is Provided</h2>
-    <ul>
-        <li>
-            <p>Field extraction, normalization, and message enrichment for Microsoft Defender for Endpoint alert log
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Field extraction, normalization, and message enrichment for Microsoft Defender for Endpoint alert log
                 messages.</p>
-        </li>
-        <li>
-            <p>Graylog Information Model categorization and enforcement fields for alert events.</p>
-        </li>
-        <li>
-            <p>Illuminate Spotlight: Microsoft Defender for Endpoint Overview dashboard and saved search.</p>
-        </li>
-    </ul>
-    <h3 id="gim-categorization">GIM Categorization</h3>
-    <p>GIM event type categorization is provided for the following message types:</p>
-    <table cellspacing="21"
-        style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-        class="TableStyle-Alternate-Row-Color">
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <thead>
-            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Log Type</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Defender for Endpoint Alerts (all)</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">300000</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">detection</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">detection.network_detection</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">ids_detection</td>
-            </tr>
-        </tbody>
-    </table>
-    <h3>Fields Extracted by This Pack</h3>
-    <h4>Alert Fields</h4>
-    <p>Fields extracted from the root-level alert JSON object.</p>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Alert Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Illuminate Field</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Vendor / Source Field</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_category</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">category</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Alert threat category (e.g.
+            </li>
+            <li>
+                <p>Graylog Information Model categorization and enforcement fields for alert events.</p>
+            </li>
+            <li>
+                <p>Illuminate Spotlight: Microsoft Defender for Endpoint Overview dashboard and saved search.</p>
+            </li>
+        </ul>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM event type categorization is provided for the following message types:</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Log Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Defender for Endpoint Alerts (all)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">300000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">detection.network_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">ids_detection</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Fields Extracted by This Pack</h3>
+        <h4>Alert Fields</h4>
+        <p>Fields extracted from the root-level alert JSON object.</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Alert Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Illuminate Field</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Vendor / Source Field</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_category</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">category</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Alert threat category (e.g.
                             Execution, LateralMovement, Ransomware)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_severity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">severity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Alert severity text, lowercased
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Alert severity text, lowercased
                             (low, medium, high, informational)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_severity_level</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">severity (derived)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Numeric severity level derived by
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_severity_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">severity (derived)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Numeric severity level derived by
                             core pipeline from alert_severity text</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_signature</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">title</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Alert title / detection rule name
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_signature</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">title</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Alert title / detection rule name
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">attacks_technique_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">mitreTechniques (lookup)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">MITRE ATT&amp;CK technique names
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">attacks_technique_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">mitreTechniques (lookup)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">MITRE ATT&amp;CK technique names
                             resolved from UIDs (array)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">attacks_technique_uid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">mitreTechniques</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">MITRE ATT&amp;CK technique UIDs
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">attacks_technique_uid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">mitreTechniques</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">MITRE ATT&amp;CK technique UIDs
                             (array)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">comments_comment</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">comments[].comment</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Text of the first alert comment
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">comments_comment</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">comments[].comment</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Text of the first alert comment
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">comments_count</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">comments (derived)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Number of comments on the alert
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">comments_count</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">comments (derived)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Number of comments on the alert
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">comments_createdBy</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">comments[].createdBy</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Author of the first alert comment
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">comments_createdBy</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">comments[].createdBy</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Author of the first alert comment
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">comments_createdTime</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">comments[].createdTime</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Timestamp of the first alert
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">comments_createdTime</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">comments[].createdTime</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Timestamp of the first alert
                             comment</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_reference</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(GIM derived)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Set to <em>undefined</em>; no
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_reference</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(GIM derived)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Set to <em>undefined</em>; no
                             destination host is present in alert data</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_created</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alertCreationTime</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Timestamp when the alert was
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_created</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alertCreationTime</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Timestamp when the alert was
                             created</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_end</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">lastEventTime</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Timestamp of the last event
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_end</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">lastEventTime</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Timestamp of the last event
                             associated with the alert</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_log_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">(hardcoded)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Always set to 'alerts'</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Set at input time to
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_log_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">(hardcoded)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Always set to 'alerts'</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Set at input time to
                             'microsoft_defender_endpoint'</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_start</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">firstEventTime</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Timestamp of the first event
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_start</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">firstEventTime</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Timestamp of the first event
                             associated with the alert</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_uid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Unique alert identifier</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_hostname</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">computerDnsName</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS hostname of the affected
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_uid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Unique alert identifier</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">computerDnsName</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS hostname of the affected
                             endpoint, lowercased</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_reference</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(GIM derived)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Affected endpoint IP (from IP
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_reference</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(GIM derived)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Affected endpoint IP (from IP
                             evidence) falling back to host_hostname</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_alert_description</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">description</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Full text description of the
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_alert_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Full text description of the
                             alert</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_aad_tenant_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">aadTenantId</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Azure AD tenant ID</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_detector_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detectorId</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">ID of the detection rule that
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_aad_tenant_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">aadTenantId</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Azure AD tenant ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_detector_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detectorId</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">ID of the detection rule that
                             triggered the alert</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_event_status</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">status</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Alert status (e.g. New,
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_event_status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Alert status (e.g. New,
                             InProgress, Resolved)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_incident_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">incidentId</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">ID of the incident this alert
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_incident_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">incidentId</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">ID of the incident this alert
                             belongs to</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_investigation_state
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_investigation_state
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">investigationState</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">State of the automated
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">investigationState</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">State of the automated
                             investigation</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_last_update</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">lastUpdateTime</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Timestamp when the alert was last
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_last_update</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">lastUpdateTime</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Timestamp when the alert was last
                             updated</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_machine_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">machineId</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Internal machine identifier of
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_machine_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">machineId</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Internal machine identifier of
                             the affected endpoint</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_rbac_group_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">rbacGroupName</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">RBAC device group the affected
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_rbac_group_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">rbacGroupName</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">RBAC device group the affected
                             endpoint belongs to</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">vendor_subtype</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">detectionSource</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Detection source identifier (e.g.
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">vendor_subtype</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">detectionSource</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Detection source identifier (e.g.
                             WindowsDefenderAtp)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h4>Evidence Entity Fields</h4>
-    <p>Fields extracted from alert evidence entities. Only one entry per entity type (Process, File, IP, User, URL) is
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>Evidence Entity Fields</h4>
+        <p>Fields extracted from alert evidence entities. Only one entry per entity type (Process, File, IP, User, URL) is
         processed.</p>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Evidence Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Illuminate Field</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Evidence Entity Type</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Vendor / Source Field</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_count</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">All</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Total number of evidence entities
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Evidence Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Illuminate Field</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Evidence Entity Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Vendor / Source Field</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_count</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">All</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Total number of evidence entities
                             in the alert</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_count_file</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">File</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Number of File evidence entities
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_count_file</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">File</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Number of File evidence entities
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_count_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">IP</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Number of IP evidence entities
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_count_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">IP</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Number of IP evidence entities
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_count_process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Number of Process evidence
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_count_process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Number of Process evidence
                             entities</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_count_url</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">URL</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Number of URL evidence entities
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_count_url</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">URL</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Number of URL evidence entities
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_count_user</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">User</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Number of User evidence entities
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_count_user</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">User</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Number of User evidence entities
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_file_event_action</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">File</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">detectionStatus</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_file_event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">File</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">detectionStatus</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
                             evidence_file_evidenceCreationTime</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">File</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">evidenceCreationTime</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_file_fileName</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">File</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">fileName</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_file_filePath</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">File</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">filePath</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_file_sha1</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">File</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">sha1</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_file_sha256</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">File</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">sha256</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_ip_evidenceCreationTime
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">File</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">evidenceCreationTime</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_file_fileName</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">File</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">fileName</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_file_filePath</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">File</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">filePath</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_file_sha1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">File</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">sha1</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_file_sha256</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">File</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">sha256</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_ip_evidenceCreationTime
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">IP</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">evidenceCreationTime</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_process_accountName</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">accountName</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_process_domainName</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">domainName</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_process_event_action
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">IP</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">evidenceCreationTime</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_process_accountName</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">accountName</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_process_domainName</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">domainName</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_process_event_action
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">detectionStatus</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">detectionStatus</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
                             evidence_process_evidenceCreationTime</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">evidenceCreationTime</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_process_fileName</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">fileName</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_process_filePath</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">filePath</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">evidenceCreationTime</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_process_fileName</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">fileName</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_process_filePath</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">filePath</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
                             evidence_process_parentProcessCreationTime</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">parentProcessCreationTime</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">parentProcessCreationTime</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
                             evidence_process_parentProcessFileName</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">parentProcessFileName</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">parentProcessFileName</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
                             evidence_process_parentProcessFilePath</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">parentProcessFilePath</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_process_parentProcessId
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">parentProcessFilePath</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_process_parentProcessId
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">parentProcessId</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">parentProcessId</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
                             evidence_process_processCreationTime</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">processCreationTime</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_process_processId</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">processId</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_process_sha1</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">sha1</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_process_sha256</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">sha256</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_process_user_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">userSid</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_user_accountName</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">accountName</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_user_domainName</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">User</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">domainName</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">processCreationTime</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_process_processId</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">processId</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_process_sha1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">sha1</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_process_sha256</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">sha256</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_process_user_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">userSid</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">evidence_user_accountName</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">accountName</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_user_domainName</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">User</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">domainName</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
                             evidence_user_evidenceCreationTime</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">evidenceCreationTime</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_user_user_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">User</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">userSid</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">domain_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process / User (combined)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">domainName (array across all
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">evidenceCreationTime</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">evidence_user_user_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">User</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">userSid</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">domain_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process / User (combined)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">domainName (array across all
                             entities)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process / File (combined)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">fileName (array across all
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process / File (combined)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">fileName (array across all
                             entities)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_path</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process / File (combined)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">filePath (array across all
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process / File (combined)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">filePath (array across all
                             entities)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">IP</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">ipAddress (renamed from
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">IP</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">ipAddress (renamed from
                             evidence_ip_ipAddress)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_command_line</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">processCommandLine (first process
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_command_line</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">processCommandLine (first process
                             only)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">processId (array across all
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">processId (array across all
                             Process entities)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">fileName (array across all
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">fileName (array across all
                             Process entities)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_parent_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">parentProcessId (array across all
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_parent_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">parentProcessId (array across all
                             Process entities)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_parent_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">parentProcessFileName (array
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_parent_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">parentProcessFileName (array
                             across all Process entities)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_parent_path</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">parentProcessFilePath (array
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_parent_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">parentProcessFilePath (array
                             across all Process entities)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">user_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">User / Process (combined)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">accountName (array across all
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">User / Process (combined)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">accountName (array across all
                             entities)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h2 id="spotlight-content-pack">Microsoft Defender for Endpoint Content Pack</h2>
-    <p>This spotlight offers a dashboard with 2 tabs:</p>
-    <h3>Overview</h3>
-    <p>
-        <img src="../Resources/Images/resources/mdep_overview.png" />
-    </p>
-    <h3>Saved Search</h3>
-    <p>
-        <img src="../Resources/Images/resources/mdep_saved_search.png" />
-    </p>
-</body>
-
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h2 id="spotlight-content-pack">Microsoft Defender for Endpoint Content Pack</h2>
+        <p>This spotlight offers a dashboard with 2 tabs:</p>
+        <h3>Overview</h3>
+        <p>
+            <img src="../Resources/Images/Microsoft Defender for Endpoint/Endpoint Overview.png" />
+        </p>
+        <h3>Saved Search</h3>
+        <p>
+            <img src="../Resources/Images/Microsoft Defender for Endpoint/User Alert Viewer.png" />
+        </p>
+    </body>
 </html>
