@@ -1,190 +1,294 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-    <head><title>Ubiquiti UniFi Content Pack</title>
-        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Ubiquiti UniFi Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
         <h1>
             <MadCap:concept term="Networking" />Ubiquiti UniFi Content Pack</h1>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>
-            <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;This content pack was first released in Illuminate v3.2.0. </div>
-            </section>
-        </p>
-        <p>Ubiquiti UniFi is a family of monitoring products that range from wireless access points, routers, switches, security cameras, and controllers (cloud or on-prem), all working together to provide a cohesive overview of your environment. This technology pack will process UniFi log messages for UniFi OS, UniFi Network, and UniFi Protect by providing normalization and enrichment for common events of interest.
-
-
-
-</p>
-        <h2>Requirement(s)</h2>
+        <p>Ubiquiti UniFi is a family of monitoring products that range from wireless access points, routers, switches,
+        security cameras, and controllers (cloud or on-prem), all working together to provide a cohesive overview of
+        your environment. This technology pack processes UniFi syslog messages and CEF-formatted SIEM integration logs
+        for UniFi OS, UniFi Network, and UniFi Protect by providing normalization and enrichment for common events of
+        interest.</p>
+        <h2 id="supported-versions">Supported Versions</h2>
         <ul>
             <li>
-                <p>UniFi devices running UniFi OS 3.0+, Network 7.3+, and Protect 2.7+
-
-</p>
+                <p>UniFi OS 3.0+</p>
             </li>
             <li>
-                <p>Graylog Server with a valid enterprise license, running Graylog version 4.3.0 or later</p>
+                <p>UniFi Network 7.3+</p>
+            </li>
+            <li>
+                <p>UniFi Protect 2.7+</p>
             </li>
         </ul>
-        <p>
-            <section class="warningBox">
-                <div class="title"><b>Warning</b>:&#160;<span style="font-weight:normal;"> This spotlight requires a more recent version of Graylog due to a change in functionality. Fields will be improperly processed if using a version earlier than Graylog  4.3.0.</span></div>
-            </section>
-        </p>
-        <h2>Not Supported</h2>
+        <h2 id="requirements">Requirements</h2>
         <ul>
             <li>
-                <p>N/A</p>
+                <p>Graylog 4.3.0+ with a valid Enterprise license</p>
+            </li>
+            <li>
+                <p>A dedicated syslog input configured for UniFi log delivery</p>
+            </li>
+            <li>
+                <p>Illuminate lookup override configured to map the input ID to ubiquiti_unifi</p>
             </li>
         </ul>
-        <h2>Stream Configuration</h2>
-        <p>This technology pack includes one stream: </p>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
         <ul>
-            <li>
-                <p>“Illuminate:Ubiquiti UniFi Messages”</p>
-            </li>
+            <li>"Illuminate:Ubiquiti Unifi Messages"</li>
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Hint</b>:  If this stream does not exist prior to the activation of this pack, then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
+                <div class="content"><b>Hint:</b> If this stream does not exist prior to the
+                activation of this pack then it is created and configured to route messages to this stream and the
+                associated index set. There should not be any stream rules configured for this stream.</div>
             </section>
         </p>
-        <h2>Index Set Configuration</h2>
-        <p>This technology pack includes one index set definition:</p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
         <ul>
-            <li>
-                <p>“Ubiquiti Unifi Logs”</p>
-            </li>
+            <li>"Ubiquiti Unifi Logs"</li>
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Hint</b>:  If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
+                <div class="content"><b>Hint:</b> If this index set is already defined, then
+                nothing is changed. If this index set does not exist, then it is created with retention
+                settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
+                installation.</div>
             </section>
         </p>
-        <h2>Log Format Example</h2>
-        <p><code class="linecode">APSomewhere f091234518f6,UAP-AC-Pro-Gen2-6.2.49+14111: dnsmasq[4797]: forwarded www.graylog.org to 10.10.10.10</code>
-        </p>
-        <p><code class="linecode">APAnywhere f09fc2dc18f6,UAP-AC-Pro-Gen2-6.2.49+14111: /usr/sbin/hostapd[16441]: WPA: Encrypt Key Data using AES-WRAP (KEK length 16)</code>
-        </p>
-        <h2>Configuration Requirements</h2>
-        <p>Due to the way UniFi controllers (e.g. Dream Machine Pro) generate some logs (syslog notation of path, process name, and process ID), identifying and parsing these logs can be difficult. To solve this problem, a UniFi specific input on the Graylog server and an Illuminate lookup override must be configured. This will allow Illuminate to treat every log sent to this input as a UniFi message by mapping the input ID to the Unifi Illuminate identification rule. This should be unique to UniFi to ensure this pack only processes UniFi logs.</p>
-        <h2><a name="Graylog"></a>Graylog Server Configuration</h2>
+        <h2 id="log-collection">Log Collection and Delivery</h2>
+        <p>Due to the way UniFi controllers generate some logs (syslog notation of path, process name, and process ID), a
+        UniFi-specific input and Illuminate lookup override must be configured. This maps the input ID to the UniFi
+        identification rule so Illuminate treats every log on this input as a UniFi message.</p>
+        <h3>Graylog Server Configuration: Create the Syslog Input</h3>
         <ol>
             <li>
-                <p>Create a new syslog input and choose an unused port. If an input already exists that only handles UniFi logs, use that input. If using a new or existing forwarder, create a new input as part of the forwarder setup process or use the input already associated with an existing forwarder.</p>
+                <p>Create a new syslog input and choose an unused port. If an input already exists that only handles UniFi
+                logs, use that input.</p>
             </li>
             <li>
-                <p>Once created (or if it has already been created), click <i>Show received messages</i> to obtain the input ID (this will pull up a search window with the <i>All Time</i> timeframe. If there are a large number of logs, then you might want to adjust the timeframe to speed up the process.</p>
+                <p>Select <em>Received messages</em> for the input on the inputs list.</p>
             </li>
             <li>
                 <p>Copy the <code class="linecode">gl2_source_input</code> value.</p>
-            </li>
-            <li>
-                <p>Navigate to <i>Enterprise</i> &gt;<i>Illuminate</i> and select the <i>Customization</i> tab.</p>
-            </li>
-            <li>
-                <p>Locate the <code class="linecode">lookup_adapter_input_routing</code> title and click <i>Edit</i> on the right. For the <code class="linecode">content_name</code> key, enter <code class="linecode">ubiquiti_unifi</code> . For the<code class="linecode"> input_id </code>value, enter the <code class="linecode">gl2_source_input</code> ID copied earlier.</p>
-            </li>
-            <li>
-                <p>Select <i>Configure value</i> to confirm.</p>
+                <p>
+                    <img src="../Resources/Images/Ubiquiti UniFi/Input ID.png" alt="View the gl2_source_input ID for an input" />
+                </p>
             </li>
         </ol>
-        <p>
-            <img src="../Resources/Images/Ubiquiti Content Pack/Ubiquiti Configure Value.png" />
-        </p>
-        <p>Now, all logs sent to the configured input will be identified as a UniFi logs and will allow for proper Illuminate processing.</p>
-        <h2>UniFi Configuration</h2>
+        <h3>Graylog Server Configuration: Configure the Illuminate Override</h3>
         <ol>
             <li>
-                <p>Enable remote logging in the UniFi Network Sytem settings page under <i>Support</i>.</p>
+                <p>Navigate to <em>Enterprise &gt; Illuminate</em> and select the <em>Customization</em> tab.</p>
             </li>
             <li>
-                <p>Set <i>Logging Levels</i> to <i>Auto</i>.</p>
+                <p>Locate <code class="linecode">lookup_adapter_input_routing</code>, then select <em>Edit</em>. </p>
             </li>
             <li>
-                <p>The <i>Remote Logging Location settings</i> should be have <i>Remote Server</i> enabled, <i>Syslog</i> checked, and <i>Host</i> details filled out (remote IP and port). The port is especially important when configuring UniFi logging as it must match the port configured for the input above in the <a href="#Graylog">Graylog Server Configuration</a> section.</p>
+                <p>Enter your custom values:</p>
+                <ul>
+                    <li>
+                        <p><b>content_name</b>: Enter <code class="linecode">ubiquiti_unifi</code>.</p>
+                    </li>
+                    <li>
+                        <p><b>input_id</b>: Enter the <code class="linecode">gl2_source_input</code> ID copied
+                earlier.</p>
+                    </li>
+                </ul>
+                <p>
+                    <img src="../Resources/Images/Ubiquiti UniFi/Set Custom Values.png" alt="Dialog box to set custom values for input routing lookup adapter" />
+                </p>
+            </li>
+            <li>
+                <p>Select <em>Configure value</em>.</p>
+            </li>
+        </ol>
+        <h3>UniFi Syslog Configuration</h3>
+        <ol>
+            <li>
+                <p>Enable remote logging in the UniFi Network System settings page under <em>Support</em>.</p>
+            </li>
+            <li>
+                <p>Set <em>Logging Levels</em> to Auto.</p>
+            </li>
+            <li>
+                <p>Under <em>Remote Logging Location</em>, enable <em>Remote Server</em>, check <em>Syslog</em>, and enter
+                the Graylog server IP address and port matching the input configured above.</p>
+                <p>
+                    <img src="../Resources/Images/Ubiquiti UniFi/Settings Syslog.png" alt="Configuring connection details on the Unify Network System platform." />
+                </p>
+            </li>
+        </ol>
+        <h3>UniFi CEF / SIEM Integration (UniFi Network 8.5+)</h3>
+        <p>UniFi Network 8.5+ supports CEF-formatted log export for IDS/IPS alerts, admin access, WiFi client events, and
+        system events.</p>
+        <ol>
+            <li>
+                <p>In the UniFi Network Application, navigate to <em>Settings &gt; Control Plane &gt; Integrations &gt;
+                    Activity Logging</em>.</p>
+            </li>
+            <li>
+                <p>Select <em>SIEM Server</em> as the destination.</p>
+            </li>
+            <li>
+                <p>Enter the Graylog server IP and the syslog input port.</p>
+            </li>
+            <li>
+                <p>CEF-formatted logs are sent over syslog (UDP) to the configured input.</p>
             </li>
         </ol>
         <p>
-            <img src="../Resources/Images/Ubiquiti Content Pack/Settings Syslog.png" />
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> CEF logs are sent to the same syslog input as
+                standard UniFi logs. No separate input is required.</div>
+            </section>
         </p>
-        <h2>What is Provided</h2>
+        <h2 id="log-format-example">Log Format Examples</h2>
+        <p>UniFi devices send logs in syslog format with the AP/device name, MAC, model version, and daemon name.</p>
+        <h4>DNS Query</h4>
+        <p><code class="linecode">APSomewhere f091234518f6,UAP-AC-Pro-Gen2-6.2.49+14111: dnsmasq[4797]: forwarded www.graylog.org to 10.10.10.10
+        </code>
+        </p>
+        <h4>Firewall</h4>
+        <p><code class="linecode">Houston-Office-DM-Pro [LAN_LOCAL-RET-2147483647] DESCR="no rule description" IN=br148 OUT= MAC=60:22:32:28:41:e5:d0:21:f9:96:fa:d8:08:00 SRC=10.148.153.76 DST=10.148.0.1 LEN=1500 TOS=00 PREC=0x00 TTL=64 ID=10151 DF PROTO=TCP SPT=33725 DPT=7550 SEQ=270903990 ACK=2412021963 WINDOW=913 ACK URGP=0
+        </code>
+        </p>
+        <h4>CEF IDS/IPS Alert</h4>
+        <p><code class="linecode">pandora CEF:0|Ubiquiti|UniFi Network|9.4.19|201|Threat Detected and Blocked|7|proto=TCP src=81.181.129.172 spt=54321 dst=192.168.0.233 dpt=443 UNIFIcategory=Security UNIFIsubCategory=Intrusion Prevention UNIFIhost=Office-UDM-Pro UNIFIdeviceMac=84:78:48:80:0d:86 UNIFIdeviceName=Office-UDM-Pro UNIFIdeviceModel=UDM-Pro UNIFIdeviceIp=192.168.0.1 UNIFIrisk=medium UNIFIipsSignature=ET DROP Dshield Block Listed Source group 1 UNIFIipsSignatureId=2402000 msg=A network intrusion attempt has been detected and blocked.
+        </code>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
         <ul>
             <li>
-                <p>Rules to normalize and enrich Ubiquiti UniFi log messages</p>
-            </li>
-        </ul>
-        <h2>Ubiquiti UniFi Log Message Processing</h2>
-        <p>The Illuminate processing of UniFi log messages provides the following:</p>
-        <ul>
-            <li>
-                <p>Field extraction, normalization, and message enrichment for UniFi log messages</p>
+                <p>Field extraction, normalization, and message enrichment for UniFi syslog and CEF-formatted log messages.
+            </p>
             </li>
             <li>
-                <p>GIM Categorization of the following messages:</p>
+                <p>CEF (Common Event Format) parsing for UniFi Network SIEM integration logs: IDS/IPS alerts, admin access,
+                WiFi client events, system events.</p>
+            </li>
+            <li>
+                <p>GIM event type categorization and enforcement fields for supported Ubiquiti UniFi events (firewall, DNS,
+                DHCP, IDS/IPS).</p>
+            </li>
+            <li>
+                <p>Spotlight: Ubiquiti UniFi Overview dashboard.</p>
             </li>
         </ul>
-        <table style="width: 100%;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM event type categorization is provided for the following message types:</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <thead>
                 <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
                     <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">UniFi Log Type</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM&#160;Category</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM&#160;Subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Condition</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Event Type</th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">firewall</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">All firewall events (allowed)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">	network.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.network_connection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dnsmasq</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">name resolution.dns request</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">firewall</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Drop rules (-D- chain pattern)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network_connection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection (blocked)</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dnsmasq</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">	name resolution.dns request, name resolution.dns answer</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Query only (no response)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">140000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name_resolution</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name_resolution.dns_request</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dns query</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dnsmasq-dhcp	</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp.request</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dnsmasq</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Query with response</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">140000|140200</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name_resolution</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name_resolution.dns_request + dns_answer
+                </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dns query + dns response</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dnsmasq-dhcp	</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dnsmasq-dhcp</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DHCPDISCOVER</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">290200</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp.discovery</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp.discovery</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp discovery</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dnsmasq-dhcp	</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dnsmasq-dhcp</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DHCPOFFER</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">290100</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">	dhcp.offer</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp.offer</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp offer</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dnsmasq-dhcp	</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dnsmasq-dhcp</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DHCPREQUEST</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">290000</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">	dhcp.acknowledgement</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp.request</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp request</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">dnsmasq-dhcp	</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">dhcp</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">	dhcp.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dnsmasq-dhcp</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DHCPACK</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">290300</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp.acknowledgement</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp acknowledgement</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dnsmasq-dhcp</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DHCPNAK</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">299999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">CEF (event ID 201)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">IPS Threat Detected and Blocked</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">300000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">detection.network_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">ids_detection</td>
                 </tr>
             </tbody>
         </table>
-        <h2>Ubiquiti UniFi Spotlight Content Pack</h2>
-        <ul>
-            <li>
-                <p>Spotlight content for this pack does not exist at this time.</p>
-            </li>
-        </ul>
+        <h2 id="spotlight-content-pack">Ubiquiti UniFi Spotlight</h2>
+        <p>This spotlight offers a dashboard with 1 tab:</p>
+        <h3>Overview</h3>
+        <p>
+            <img src="../Resources/Images/Ubiquiti UniFi/Ubiquiti UniFi Overview.png" />
+        </p>
     </body>
 </html>
