@@ -1,135 +1,124 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-
-<head>
-    <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
-    <title>Postfix Mail Server Content Pack</title>
-    <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
-</head>
-
-<body>
-    <h1>Postfix Mail Server Content Pack</h1>
-    <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-    <p>Postfix is a free and open-source mail transfer agent (MTA) that routes and delivers electronic mail. This
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Postfix Mail Server Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>
+            <MadCap:concept term="Email Routing &amp; Security" />Postfix Mail Server Content Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Postfix is a free and open-source mail transfer agent (MTA) that routes and delivers electronic mail. This
         content pack processes Postfix syslog and Filebeat log messages, providing field extraction, normalization, and
         enrichment for common mail server events including message delivery, rejection, quarantine, SASL authentication,
         TLS connections, and service lifecycle events.</p>
-    <h2 id="supported-versions">Supported Versions</h2>
-    <ul>
-        <li>
-            <p>Postfix 3.7 or later</p>
-        </li>
-    </ul>
-    <h2 id="requirements">Requirements</h2>
-    <ul>
-        <li>
-            <p>Graylog Server with a valid Enterprise license, running Graylog version 6.0 or later</p>
-        </li>
-        <li>
-            <p>Postfix configured to send logs via syslog, or a Filebeat agent collecting Postfix log files</p>
-        </li>
-    </ul>
-    <h2 id="stream-configuration">Stream Configuration</h2>
-    <p>This technology pack includes 1 stream:</p>
-    <ul>
-        <li>"Illuminate:Postfix Mail Server Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
-                activation of this pack then it will be created and configured to route messages to this stream and the
-                associated index set. There should not be any stream rules configured for this stream.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="index-set-configuration">Index Set Configuration</h2>
-    <p>This technology pack includes 1 index set definition:</p>
-    <ul>
-        <li>"PostFix Mail Server Logs"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
-                nothing will be changed. If this index set does not exist, then it will be created with retention
+        <h2 id="supported-versions">Supported Versions</h2>
+        <ul>
+            <li>
+                <p>Postfix 3.7 or later</p>
+            </li>
+        </ul>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>Graylog Server with a valid Enterprise license, running Graylog version 6.0 or later</p>
+            </li>
+            <li>
+                <p>Postfix configured to send logs via syslog, or a Filebeat agent collecting Postfix log files</p>
+            </li>
+        </ul>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>"Illuminate:Postfix Mail Server Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this stream does not exist prior to the
+                activation of this pack then it is created and configured to route messages to this stream and the
+                associated index set. There should not be any stream rules configured for this stream.</div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"PostFix Mail Server Logs"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this index set is already defined, then
+                nothing is changed. If this index set does not exist, then it is created with retention
                 settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
-                installation.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="log-collection">Log Collection and Delivery</h2>
-    <p>Postfix supports two log delivery methods: syslog and Filebeat. Choose the method that best fits your
+                installation.</div>
+            </section>
+        </p>
+        <h2 id="log-collection">Log Collection and Delivery</h2>
+        <p>Postfix supports two log delivery methods: syslog and Filebeat. Choose the method that best fits your
         environment.</p>
-    <h3>Option 1: Syslog</h3>
-    <p>Postfix writes logs to syslog by default. Configure your syslog daemon (rsyslog or syslog-ng) to forward mail
+        <h3>Option 1: Syslog</h3>
+        <p>Postfix writes logs to syslog by default. Configure your syslog daemon (rsyslog or syslog-ng) to forward mail
         logs to a Graylog Syslog input.</p>
-    <ol>
-        <li>
-            <p>Create a Syslog UDP or TCP input in Graylog.</p>
-        </li>
-        <li>
-            <p>Configure your syslog daemon to forward mail facility messages to the Graylog syslog input. Example
+        <ol>
+            <li>
+                <p>Create a Syslog UDP or TCP input in Graylog.</p>
+            </li>
+            <li>
+                <p>Configure your syslog daemon to forward mail facility messages to the Graylog syslog input. Example
                 rsyslog rule: <code class="linecode">mail.* @@&lt;graylog-host&gt;:&lt;port&gt;</code></p>
-        </li>
-        <li>
-            <p>Restart the syslog daemon to apply the configuration.</p>
-        </li>
-    </ol>
-    <h3>Filebeat</h3>
-    <p>Postfix can be configured to write logs to a file. A Filebeat agent can then collect and forward those logs to a
+            </li>
+            <li>
+                <p>Restart the syslog daemon to apply the configuration.</p>
+            </li>
+        </ol>
+        <h3>Filebeat</h3>
+        <p>Postfix can be configured to write logs to a file. A Filebeat agent can then collect and forward those logs to a
         Graylog Beats input.</p>
-    <ol>
-        <li>
-            <p>Edit <code class="linecode">/etc/postfix/main.cf</code> and add <code
-                    class="linecode">maillog_file = /var/log/postfix.log</code> to enable file-based logging, or
+        <ol>
+            <li>
+                <p>Edit <code class="linecode">/etc/postfix/main.cf</code> and add <code class="linecode">maillog_file = /var/log/postfix.log</code> to enable file-based logging, or
                 configure rsyslog to write mail logs to a file such as <code class="linecode">/var/log/mail.log</code>.
             </p>
-        </li>
-        <li>
-            <p>Install and configure the Graylog Sidecar with a Filebeat collector. Refer to the <a
-                    href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">Graylog Sidecar
+            </li>
+            <li>
+                <p>Install and configure the Graylog Sidecar with a Filebeat collector. Refer to the <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">Graylog Sidecar
                     documentation</a>.</p>
-        </li>
-        <li>
-            <p>Create a matching <a
-                    href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> in
+            </li>
+            <li>
+                <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> in
                 Graylog.</p>
-        </li>
-        <li>
-            <p>Add the following fields to your Filebeat configuration so messages are routed to this pack: <code
-                    class="linecode">fields_under_root: true</code> and <code
-                    class="linecode">fields.event_source_product: postfix</code></p>
-        </li>
-    </ol>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">The <code
-                    class="linecode">event_source_product: postfix</code> field is required when using Filebeat. Without
-                it, messages will not be recognized by this pack.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="what-is-provided">What is Provided</h2>
-    <ul>
-        <li>
-            <p>Rules to parse, normalize, and enrich Postfix log messages delivered via syslog or Filebeat.</p>
-        </li>
-        <li>
-            <p>Support for mail delivery (sent, bounced, deferred), rejection (NOQUEUE, postscreen), quarantine (milter
+            </li>
+            <li>
+                <p>Add the following fields to your Filebeat configuration so messages are routed to this pack: <code class="linecode">fields_under_root: true</code> and <code class="linecode">fields.event_source_product: postfix</code></p>
+            </li>
+        </ol>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> The <code class="linecode">event_source_product: postfix</code> field is required when using Filebeat. Without
+                it, messages are not recognized by this pack.</div>
+            </section>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Rules to parse, normalize, and enrich Postfix log messages delivered via syslog or Filebeat.</p>
+            </li>
+            <li>
+                <p>Support for mail delivery (sent, bounced, deferred), rejection (NOQUEUE, postscreen), quarantine (milter
                 redirect), SASL authentication, TLS connections, DNS blocklist checks, and service lifecycle events.</p>
-        </li>
-        <li>
-            <p>GIM event type code assignment and enforcement field normalization for all supported message types.</p>
-        </li>
-        <li>
-            <p>A dashboard providing an overview of mail server activity, email flow, SMTP responses, and TLS
+            </li>
+            <li>
+                <p>GIM event type code assignment and enforcement field normalization for all supported message types.</p>
+            </li>
+            <li>
+                <p>A dashboard providing an overview of mail server activity, email flow, SMTP responses, and TLS
                 connections.</p>
-        </li>
-    </ul>
-    <h2 id="log-format-example">Log Format Examples</h2>
-    <p>Postfix log messages follow standard syslog format. The following examples illustrate the main supported log
+            </li>
+        </ul>
+        <h2 id="log-format-example">Log Format Examples</h2>
+        <p>Postfix log messages follow standard syslog format. The following examples illustrate the main supported log
         types:</p>
-    <h4>Postfix examples</h4>
-    <p><code class="linecode"># Mail delivery (smtp, relay-forwarded via amavis/spam filter)
+        <h4>Postfix examples</h4>
+        <p><code class="linecode"># Mail delivery (smtp, relay-forwarded via amavis/spam filter)
         mail postfix/smtp[26388]: C1EEF447422E5: to=&lt;ktester@lsuas.gov.my&gt;, relay=127.0.0.1[127.0.0.1]:10024, delay=0.83, delays=0.09/0/0/0.74, dsn=2.0.0, status=sent (250 2.0.0 from MTA(smtp:[127.0.0.1]:10025): 250 2.0.0 Ok: queued as 92AA522740522)
 
         # Mail delivery (lmtp, relay-forwarded)
@@ -201,193 +190,188 @@
         # Statistics
         Jan 10 12:09:10 mailserver postfix/smtp[5222]: statistics: domain lookup hits=0 miss=1 success=0%
         </code>
-    </p>
-    <h3 id="gim-categorization">GIM Categorization</h3>
-    <p>GIM event type codes are assigned based on the <code class="linecode">vendor_event_action</code> field extracted
+        </p>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM event type codes are assigned based on the <code class="linecode">vendor_event_action</code> field extracted
         from the log message, with the following exceptions:</p>
-    <p>
-    <ul>
-        <li>Email delivery events (<code class="linecode">status=sent</code> or <code
-                class="linecode">status=bounced</code>) are categorized using the <code
-                class="linecode">vendor_status</code> field.</li>
-    </ul>
-    </p>
-    <p>
-    <ul>
-        <li>Postscreen protocol violations are categorized using the <code class="linecode">vendor_ps_violation</code>
+        <p>
+            <ul>
+                <li>Email delivery events (<code class="linecode">status=sent</code> or <code class="linecode">status=bounced</code>) are categorized using the <code class="linecode">vendor_status</code> field.</li>
+            </ul>
+        </p>
+        <p>
+            <ul>
+                <li>Postscreen protocol violations are categorized using the <code class="linecode">vendor_ps_violation</code>
             field.</li>
-    </ul>
-    </p>
-    <p>
-    <ul>
-        <li>Certificate verification failed events (<code class="linecode">certificate verification</code>) are not
+            </ul>
+        </p>
+        <p>
+            <ul>
+                <li>Certificate verification failed events (<code class="linecode">certificate verification</code>) are not
             assigned a GIM category as no suitable code exists.</li>
-    </ul>
-    </p>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Vendor Event Action</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Subcategory</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Event Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">sent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">messaging</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">messaging.email</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">email sent</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">bounced</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">messaging</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">messaging.email</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">email sent</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">reject</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">messaging</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">messaging.email</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">email rejected</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">postscreen violation</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">messaging</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">messaging.email</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">email rejected</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">header-redirect</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">messaging</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">messaging.email</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">email quarantined</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">body-redirect</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">messaging</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">messaging.email</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">email quarantined</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">connect</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.open</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection initiated</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TLS connection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.open</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection initiated</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">accept</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.open</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection initiated</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">disconnect</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.close</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection ended</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DISCONNECT</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.close</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection ended</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">timeout</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.close</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection ended</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.credential
+            </ul>
+        </p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Vendor Event Action</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Subcategory</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Event Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">sent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">messaging</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">messaging.email</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">email sent</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">bounced</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">messaging</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">messaging.email</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">email sent</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">reject</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">messaging</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">messaging.email</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">email rejected</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">postscreen violation</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">messaging</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">messaging.email</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">email rejected</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">header-redirect</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">messaging</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">messaging.email</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">email quarantined</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">body-redirect</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">messaging</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">messaging.email</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">email quarantined</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">connect</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.open</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection initiated</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TLS connection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.open</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection initiated</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">accept</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.open</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection initiated</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">disconnect</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.close</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection ended</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DISCONNECT</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.close</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection ended</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">timeout</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.close</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection ended</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.credential
                             validation</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">credential validation</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">daemon started</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.start</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service started</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">starting</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.start</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service started</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">stopping</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.stop</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service stopped</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">terminating on signal</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.stop</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service stopped</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">reload</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.configuration</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service configuration change</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">refreshing</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.configuration</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service configuration change</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">(all others)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">messaging</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">messaging.default</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">message</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h2 id="spotlight-content-pack">Postfix Mail Server Spotlight Content Pack</h2>
-    <p>The Postfix Mail Server Spotlight pack provides an overview dashboard with the following tabs:</p>
-    <h3>Postfix Mail Server Overview</h3>
-    <p>
-        <img src="../Resources/Images/resources/postfix/mail_server_overview.png" />
-    </p>
-    <h3>Postfix Email Overview</h3>
-    <p>
-        <img src="../Resources/Images/resources/postfix/email_overview.png" />
-    </p>
-    <h3>Postfix SMTP Overview</h3>
-    <p>
-        <img src="../Resources/Images/resources/postfix/smtp_overview.png" />
-    </p>
-    <h3>TLS Overview</h3>
-    <p>
-        <img src="../Resources/Images/resources/postfix/tls_overview.png" />
-    </p>
-</body>
-
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">credential validation</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">daemon started</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.start</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service started</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">starting</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.start</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service started</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">stopping</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.stop</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service stopped</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">terminating on signal</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.stop</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service stopped</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">reload</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.configuration</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service configuration change</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">refreshing</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.configuration</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service configuration change</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">(all others)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">messaging</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">messaging.default</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">message</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h2 id="spotlight-content-pack">Postfix Mail Server Spotlight Content Pack</h2>
+        <p>The Postfix Mail Server Spotlight pack provides an overview dashboard with the following tabs:</p>
+        <h3>Postfix Mail Server Overview</h3>
+        <p>
+            <img src="../Resources/Images/Postfix Content Pack/mail_server_overview.png" />
+        </p>
+        <h3>Postfix Email Overview</h3>
+        <p>
+            <img src="../Resources/Images/Postfix Content Pack/email_overview.png" />
+        </p>
+        <h3>Postfix SMTP Overview</h3>
+        <p>
+            <img src="../Resources/Images/Postfix Content Pack/smtp_overview.png" />
+        </p>
+        <h3>TLS Overview</h3>
+        <p>
+            <img src="../Resources/Images/Postfix Content Pack/tls_overview.png" />
+        </p>
+    </body>
 </html>
