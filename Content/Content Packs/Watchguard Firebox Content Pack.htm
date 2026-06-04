@@ -1,317 +1,310 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-
-<head>
-    <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
-    <title>WatchGuard Firebox Content Pack</title>
-    <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
-</head>
-
-<body>
-    <h1>WatchGuard Firebox Content Pack</h1>
-    <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-    <p>WatchGuard's Firebox is a unified security platform that covers traditional traffic protection, protecting an
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>WatchGuard Firebox Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>
+            <MadCap:concept term="Firewall" />WatchGuard Firebox Content Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>WatchGuard's Firebox is a unified security platform that covers traditional traffic protection, protecting an
         environment from intrusions, phishing attempts, malware, ransomware, and more. Both hardware and virtual
-        appliances are available. This technology pack will process Firebox event log messages, providing normalization
+        appliances are available. This technology pack processes Firebox event log messages, providing normalization
         and enrichment of common events of interest.</p>
-    <h2 id="supported-versions">Supported Versions</h2>
-    <ul>
-        <li>
-            <p>Fireware 12.x and later</p>
-        </li>
-    </ul>
-    <h2 id="requirements">Requirements</h2>
-    <ul>
-        <li>
-            <p>WatchGuard Firebox running Fireware 12.x</p>
-        </li>
-        <li>
-            <p>Graylog Server with valid Enterprise license, version 4.2.5, 4.3.0, or later</p>
-        </li>
-        <li>
-            <p>WatchGuard Firebox configured to send logs via syslog to Graylog</p>
-        </li>
-    </ul>
-    <h2 id="stream-configuration">Stream Configuration</h2>
-    <p>This technology pack includes 1 stream:</p>
-    <ul>
-        <li>"Illuminate:WatchGuard Device Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
-                activation of this pack then it will be created and configured to route messages to this stream and the
-                associated index set. There should not be any stream rules configured for this stream.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="index-set-configuration">Index Set Configuration</h2>
-    <p>This technology pack includes 1 index set definition:</p>
-    <ul>
-        <li>"WatchGuard Device Logs"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
-                nothing will be changed. If this index set does not exist, then it will be created with retention
+        <h2 id="supported-versions">Supported Versions</h2>
+        <ul>
+            <li>
+                <p>Fireware 12.x and later</p>
+            </li>
+        </ul>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>WatchGuard Firebox running Fireware 12.x</p>
+            </li>
+            <li>
+                <p>Graylog Server with valid Enterprise license, version 4.2.5, 4.3.0, or later</p>
+            </li>
+            <li>
+                <p>WatchGuard Firebox configured to send logs via syslog to Graylog</p>
+            </li>
+        </ul>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>"Illuminate:WatchGuard Device Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this stream does not exist prior to the
+                activation of this pack then it is created and configured to route messages to this stream and the
+                associated index set. There should not be any stream rules configured for this stream.</div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"WatchGuard Device Logs"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this index set is already defined, then
+                nothing is changed. If this index set does not exist, then it is created with retention
                 settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
-                installation.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="log-collection">Log Collection and Delivery</h2>
-    <p>WatchGuard Firebox logs are delivered to Graylog via syslog. The Firebox must be configured to send logs to a
+                installation.</div>
+            </section>
+        </p>
+        <h2 id="log-collection">Log Collection and Delivery</h2>
+        <p>WatchGuard Firebox logs are delivered to Graylog via syslog. The Firebox must be configured to send logs to a
         Graylog syslog input. A local Syslog input must be created on the Graylog server with a port that matches the
         Firebox configuration.</p>
-    <h3>Fireware Web UI Configuration</h3>
-    <p>Configure the Firebox to send logs to Graylog:</p>
-    <ol>
-        <li>
-            <p>Select System &gt; Logging</p>
-        </li>
-        <li>
-            <p>Click the Syslog Server tab</p>
-        </li>
-        <li>
-            <p>Select 'Send log messages to these syslog servers'</p>
-        </li>
-        <li>
-            <p>Click Add and enter the Graylog server IP address</p>
-        </li>
-        <li>
-            <p>Configure the port to match the Graylog Syslog input</p>
-        </li>
-        <li>
-            <p>Select Syslog format</p>
-        </li>
-        <li>
-            <p>Check the timestamp and serial number boxes</p>
-        </li>
-        <li>
-            <p>Select a syslog facility (Local0-7), set Alarm to Local0 for high priority</p>
-        </li>
-        <li>
-            <p>Click Save</p>
-        </li>
-    </ol>
-    <h2 id="log-format-example">Log Format Example</h2>
-    <p><code class="linecode">DEV01 0011223344556 (2022-09-01T13:58:33) firewall: msg_id="3000-0148" Allow External Inside 44 tcp 20 238 10.11.12.13 192.168.1.10 58325 60951 offset 6 S 3172487743 win 4  geo_src="USA"  geo_dst="USA"  (Inbound Policy-00)
+        <h3>Fireware Web UI Configuration</h3>
+        <p>Configure the Firebox to send logs to Graylog:</p>
+        <ol>
+            <li>
+                <p>Select <i>System &gt; Logging</i>.</p>
+            </li>
+            <li>
+                <p>Click the <i>Syslog Server</i> tab.</p>
+            </li>
+            <li>
+                <p>Select <i>Send log messages to these syslog servers</i>.</p>
+            </li>
+            <li>
+                <p>Click <i>Add</i>, then enter the Graylog server IP address.</p>
+            </li>
+            <li>
+                <p>Configure the port to match the Graylog Syslog input.</p>
+            </li>
+            <li>
+                <p>Select <i>Syslog</i> format.</p>
+            </li>
+            <li>
+                <p>Select the timestamp and serial number boxes.</p>
+            </li>
+            <li>
+                <p>Select a syslog facility (Local0-7), and set <i>Alarm</i> to Local0 for high priority.</p>
+            </li>
+            <li>
+                <p>Click <i>Save</i>.</p>
+            </li>
+        </ol>
+        <h2 id="log-format-example">Log Format Example</h2>
+        <p><code class="linecode">DEV01 0011223344556 (2022-09-01T13:58:33) firewall: msg_id="3000-0148" Allow External Inside 44 tcp 20 238 10.11.12.13 192.168.1.10 58325 60951 offset 6 S 3172487743 win 4  geo_src="USA"  geo_dst="USA"  (Inbound Policy-00)
         </code>
-    </p>
-    <h2 id="what-is-provided">What is Provided</h2>
-    <ul>
-        <li>
-            <p>Parsing rules to extract WatchGuard Firebox logs into Graylog schema compatible fields</p>
-        </li>
-        <li>
-            <p>GIM event type categorization and enforcement fields for supported WatchGuard Firebox events</p>
-        </li>
-        <li>
-            <p>Spotlight dashboard and saved searches</p>
-        </li>
-    </ul>
-    <h3 id="gim-categorization">GIM Categorization</h3>
-    <p>GIM categorization is provided for the following event types:</p>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Category</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event IDs</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User authentication
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Parsing rules to extract WatchGuard Firebox logs into Graylog schema compatible fields</p>
+            </li>
+            <li>
+                <p>GIM event type categorization and enforcement fields for supported WatchGuard Firebox events</p>
+            </li>
+            <li>
+                <p>Spotlight dashboard and saved searches</p>
+            </li>
+        </ul>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following event types:</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Category</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event IDs</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User authentication
                             succeeded/failed</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1100-0004, 1100-0005</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">User login succeeded</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3E00-0002</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">100000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.logon</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">logon</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User logout</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3E00-0004</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">102500</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logoff</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logoff</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Firewall traffic (allow/deny)
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1100-0004, 1100-0005</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">User login succeeded</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3E00-0002</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">100000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.logon</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">logon</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User logout</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3E00-0004</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">102500</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logoff</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logoff</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Firewall traffic (allow/deny)
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3000-0148, 3000-0149, 3000-0150,
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3000-0148, 3000-0149, 3000-0150,
                             3000-0173</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network connection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Policy alarm, blocked site/port,
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network connection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Policy alarm, blocked site/port,
                             spoofing</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3000-0167, 3000-0168, 3000-0169,
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">3000-0167, 3000-0168, 3000-0169,
                             3000-0172</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.network connection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">VPN tunnel established</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0207-0001</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network connection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">HTTP/HTTPS/TCP-UDP proxy events
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.network connection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">VPN tunnel established</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0207-0001</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network connection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">HTTP/HTTPS/TCP-UDP proxy events
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1AFF-<em>, 2CFF-</em>, 2DFF-*
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1AFF-<em>, 2CFF-</em>, 2DFF-*
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.network connection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Operational events (address,
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.network connection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Operational events (address,
                             server status, connections, interface, host blocking)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
                             3000-0029/002A/003C/0040/00CB/012D/0170/0171, 3001-1001/1002, 3100-0030</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">219999</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.default</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service event</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Device configuration change</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0101-0001</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">220500</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">audit</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">audit.policy</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">audit policy changed</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Signature update</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2E02-0065, 2E02-0066, 2E02-0067
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">219999</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.default</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service event</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Device configuration change</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0101-0001</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">220500</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">audit</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">audit.policy</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">audit policy changed</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Signature update</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2E02-0065, 2E02-0066, 2E02-0067
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">280100</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.update</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">agent update</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Signature version check</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2E02-0069</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">280200</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.status</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">agent status</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DHCP Request</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1600-0003, DHCPREQUEST</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">290000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp.request</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp request</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DHCP Offer</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1600-0002, DHCPOFFER</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">290100</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp.offer</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp offer</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DHCP Discovery</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1600-0001, DHCPDISCOVER</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">290200</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp.discovery</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp discovery</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DHCP Acknowledgement</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DHCPACK</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">290300</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp.acknowledgement</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp acknowledgement</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">IPS/GAV/APT detection in proxy
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">280100</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.update</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">agent update</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Signature version check</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2E02-0069</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">280200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">agent status</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DHCP Request</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1600-0003, DHCPREQUEST</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">290000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp.request</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp request</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DHCP Offer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1600-0002, DHCPOFFER</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">290100</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp.offer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp offer</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DHCP Discovery</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1600-0001, DHCPDISCOVER</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">290200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dhcp.discovery</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dhcp discovery</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DHCP Acknowledgement</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DHCPACK</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">290300</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dhcp.acknowledgement</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dhcp acknowledgement</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">IPS/GAV/APT detection in proxy
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1AFF-0025/0026/0028/0029/0034,
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1AFF-0025/0026/0028/0029/0034,
                             2CFF-0005, 2DFF-0001</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">300000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.network_detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">ids_detection</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Attack events (flood, scan, DDoS,
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">300000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.network_detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">ids_detection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Attack events (flood, scan, DDoS,
                             spoofing)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">3000-0152 through 3000-0166</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">300000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">detection.network_detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">ids_detection</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h2 id="spotlight-content-pack">WatchGuard Firebox Spotlight</h2>
-    <p>This spotlight offers a dashboard with 5 tabs:</p>
-    <h3>Overview (1)</h3>
-    <p>
-        <img src="../Resources/Images/resources/overview1.png" />
-    </p>
-    <h3>Overview (2)</h3>
-    <p>
-        <img src="../Resources/Images/resources/overview2.png" />
-    </p>
-    <h3>Status</h3>
-    <p>
-        <img src="../Resources/Images/resources/status.png" />
-    </p>
-    <h3>Saved Search: Log Viewer</h3>
-    <p>
-        <img src="../Resources/Images/resources/log_viewer.png" />
-    </p>
-    <h3>Saved Search: Traffic Log</h3>
-    <p>
-        <img src="../Resources/Images/resources/traffic_log.png" />
-    </p>
-</body>
-
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">3000-0152 through 3000-0166</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">300000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">detection.network_detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">ids_detection</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h2 id="spotlight-content-pack">WatchGuard Firebox Spotlight</h2>
+        <p>This spotlight offers a dashboard with 5 tabs:</p>
+        <h3>Overview (1)</h3>
+        <p>
+            <img src="../Resources/Images/Watchguard/overview1.png" />
+        </p>
+        <h3>Overview (2)</h3>
+        <p>
+            <img src="../Resources/Images/Watchguard/overview2.png" />
+        </p>
+        <h3>Status</h3>
+        <p>
+            <img src="../Resources/Images/Watchguard/status.png" />
+        </p>
+        <h3>Saved Search: Log Viewer</h3>
+        <p>
+            <img src="../Resources/Images/Watchguard/log_viewer.png" />
+        </p>
+        <h3>Saved Search: Traffic Log</h3>
+        <p>
+            <img src="../Resources/Images/Watchguard/traffic_log.png" />
+        </p>
+    </body>
 </html>
