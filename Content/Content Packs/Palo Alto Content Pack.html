@@ -1,901 +1,898 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-
-<head>
-    <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
-    <title>Palo Alto 9.x Content Pack</title>
-    <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
-</head>
-
-<body>
-    <h1>Palo Alto 9.x Content Pack</h1>
-    <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-    <p>Palo Alto Networks next-generation firewalls provide real-time threat prevention, application visibility, and
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Palo Alto 9.x Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+        <!-- original-url : ../What_More_Can_Graylog_Do_For_Me/Palo_Alto_Content_Pack.html
+		## article-id : 24f19c2c-9abd-401a-b849-f8c799c184ab
+		## seo-title : Palo Alto
+		## description : 
+		## Metadata_End -->
+    </head>
+    <body>
+        <h1>
+            <MadCap:concept term="Firewall" />Palo Alto 9.x Content Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>
+            <section class="warningBox">
+                <div class="content"><b>Warning</b>: This content pack has been deprecated and is scheduled for removal in Illuminate 8.0.0. All supported content has been migrated to the Palo Alto 11 content pack.</div>
+            </section>
+        </p>
+        <p>Palo Alto Networks next-generation firewalls provide real-time threat prevention, application visibility, and
         user-based policy enforcement. This technology pack processes Palo Alto PAN-OS 9.1+ logs, providing
         normalization and enrichment of common events of interest.</p>
-    <h2 id="supported-versions">Supported Versions</h2>
-    <ul>
-        <li>
-            <p>PAN-OS 9.1+</p>
-        </li>
-        <li>
-            <p>PAN-OS 10.x</p>
-        </li>
-    </ul>
-    <h2 id="requirements">Requirements</h2>
-    <ul>
-        <li>
-            <p>A Palo Alto device sending logs to the Graylog input <em>Palo Alto Networks TCP (PAN-OS v9+)</em>.</p>
-        </li>
-    </ul>
-    <h2 id="stream-configuration">Stream Configuration</h2>
-    <p>This technology pack includes 1 stream:</p>
-    <ul>
-        <li>"Illuminate:Palo Alto Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
-                activation of this pack then it will be created and configured to route messages to this stream and the
-                associated index set. There should not be any stream rules configured for this stream.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="index-set-configuration">Index Set Configuration</h2>
-    <p>This technology pack includes 1 index set definition:</p>
-    <ul>
-        <li>"Palo Alto Log Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
-                nothing will be changed. If this index set does not exist, then it will be created with retention
+        <h2 id="supported-versions">Supported Versions</h2>
+        <ul>
+            <li>
+                <p>PAN-OS 9.1+</p>
+            </li>
+            <li>
+                <p>PAN-OS 10.x</p>
+            </li>
+        </ul>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>A Palo Alto device sending logs to the Graylog input <em>Palo Alto Networks TCP (PAN-OS v9+)</em>.</p>
+            </li>
+        </ul>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>"Illuminate:Palo Alto Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this stream does not exist prior to the
+                activation of this pack then it is created and configured to route messages to this stream and the
+                associated index set. There should not be any stream rules configured for this stream.</div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"Palo Alto Log Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this index set is already defined, then
+                nothing is changed. If this index set does not exist, then it is created with retention
                 settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
-                installation.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="log-collection">Log Collection</h2>
-    <p>Palo Alto devices forward logs to Graylog via syslog using the dedicated PAN-OS v9+ input.</p>
-    <h3>Configure the Graylog Input</h3>
-    <ol>
-        <li>
-            <p>In Graylog, navigate to <em>System &gt; Inputs</em> and launch a <em>Palo Alto Networks TCP (PAN-OS
+                installation.</div>
+            </section>
+        </p>
+        <h2 id="log-collection">Log Collection</h2>
+        <p>Palo Alto devices forward logs to Graylog via syslog using the dedicated PAN-OS v9+ input.</p>
+        <h3>Configure the Graylog Input</h3>
+        <ol>
+            <li>
+                <p>In Graylog, navigate to <em>System &gt; Inputs</em> and launch a <em>Palo Alto Networks TCP (PAN-OS
                     v9+)</em> input.</p>
-        </li>
-        <li>
-            <p>Note the port number and save the input.</p>
-        </li>
-    </ol>
-    <h3>Configure the Palo Alto Device</h3>
-    <ol>
-        <li>
-            <p>On your Palo Alto firewall, navigate to <em>Device &gt; Server Profiles &gt; Syslog</em> and create a new
+            </li>
+            <li>
+                <p>Note the port number and save the input.</p>
+            </li>
+        </ol>
+        <h3>Configure the Palo Alto Device</h3>
+        <ol>
+            <li>
+                <p>On your Palo Alto firewall, navigate to <em>Device &gt; Server Profiles &gt; Syslog</em> and create a new
                 syslog server profile.</p>
-        </li>
-        <li>
-            <p>Set the server IP address to your Graylog server IP and the port to match the Graylog input port.</p>
-        </li>
-        <li>
-            <p>Set the transport to <em>TCP</em> and the format to <em>BSD</em>.</p>
-        </li>
-        <li>
-            <p>Navigate to <em>Device &gt; Log Settings</em> and assign the syslog server profile to the log types you
+            </li>
+            <li>
+                <p>Set the server IP address to your Graylog server IP and the port to match the Graylog input port.</p>
+            </li>
+            <li>
+                <p>Set the transport to <em>TCP</em> and the format to <em>BSD</em>.</p>
+            </li>
+            <li>
+                <p>Navigate to <em>Device &gt; Log Settings</em> and assign the syslog server profile to the log types you
                 wish to forward (Threat, Traffic, GlobalProtect).</p>
-        </li>
-        <li>
-            <p>Commit the configuration.</p>
-        </li>
-    </ol>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">Refer to the <a
-                    href="https://docs.paloaltonetworks.com/pan-os/9-1/pan-os-admin/monitoring/use-syslog-for-monitoring/configure-syslog-monitoring">Palo
-                    Alto syslog monitoring guide</a> for detailed device configuration steps.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="log-format-example">Log Format Examples</h2>
-    <p>PAN-OS syslog messages are delivered in BSD syslog format with a CSV-encoded payload, parsed by the Graylog
+            </li>
+            <li>
+                <p>Commit the configuration.</p>
+            </li>
+        </ol>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> Refer to the <a href="https://docs.paloaltonetworks.com/pan-os/9-1/pan-os-admin/monitoring/use-syslog-for-monitoring/configure-syslog-monitoring">Palo
+                    Alto syslog monitoring guide</a> for detailed device configuration steps.</div>
+            </section>
+        </p>
+        <h2 id="log-format-example">Log Format Examples</h2>
+        <p>PAN-OS syslog messages are delivered in BSD syslog format with a CSV-encoded payload, parsed by the Graylog
         PAN-OS v9+ input.</p>
-    <h4>GlobalProtect Log</h4>
-    <p><code class="linecode">&lt;14&gt;1 2021-03-08T14:10:27.137432Z PYTHON_TEST_SENDER - - - - 1,2020/04/01 10:49:58,015351000040055,13,0x0,GLOBALPROTECT,0,2305,2020/04/01 10:49:58,vsys1,portal-auth,login,Local Database,,phillip.price,192.168.0.0-192.168.255.255,WIN-VAL4395SQ3L,192.168.45.33,0.0.0.0,0.0.0.0,0.0.0.0,2c2ec970-de09-444c-b84f-2c0be75e13cd,,Browser,Windows,"Microsoft Windows 7  Service Pack 1, 64-bit",1,,Invalid username or password,"",failure,,0,user-logon,1,gp-portal
+        <h4>GlobalProtect Log</h4>
+        <p><code class="linecode">&lt;14&gt;1 2021-03-08T14:10:27.137432Z PYTHON_TEST_SENDER - - - - 1,2020/04/01 10:49:58,015351000040055,13,0x0,GLOBALPROTECT,0,2305,2020/04/01 10:49:58,vsys1,portal-auth,login,Local Database,,phillip.price,192.168.0.0-192.168.255.255,WIN-VAL4395SQ3L,192.168.45.33,0.0.0.0,0.0.0.0,0.0.0.0,2c2ec970-de09-444c-b84f-2c0be75e13cd,,Browser,Windows,"Microsoft Windows 7  Service Pack 1, 64-bit",1,,Invalid username or password,"",failure,,0,user-logon,1,gp-portal
         </code>
-    </p>
-    <h4>Threat Log (Spyware / Vulnerability)</h4>
-    <p><code class="linecode">&lt;14&gt;1 2021-03-08T14:08:28.296051Z PYTHON_TEST_SENDER - - - - 1,2020/05/19 07:37:34,007200002536,THREAT,spyware,2305,2020/05/19 07:37:34,10.154.229.167,77.254.254.254,,,General Business Apps,pancademo\andy.miller,,unknown-udp,vsys1,L3-TAP,L3-TAP,ethernet1/2,ethernet1/2,,2020/05/19 07:37:34,140539,1,1024,1024,0,0,0x2000,udp,drop-all-packets,"ZeroAccess.Gen Command and Control Traffic(13235)",13235,critical,server-to-client,6684613427694591054,0x0,10.0.0.0-10.255.255.255,10.0.0.0-10.255.255.255,0,1589874840,0,0,0,,us1,,,, 0,,0,,N/A,spyware,
+        </p>
+        <h4>Threat Log (Spyware / Vulnerability)</h4>
+        <p><code class="linecode">&lt;14&gt;1 2021-03-08T14:08:28.296051Z PYTHON_TEST_SENDER - - - - 1,2020/05/19 07:37:34,007200002536,THREAT,spyware,2305,2020/05/19 07:37:34,10.154.229.167,77.254.254.254,,,General Business Apps,pancademo\andy.miller,,unknown-udp,vsys1,L3-TAP,L3-TAP,ethernet1/2,ethernet1/2,,2020/05/19 07:37:34,140539,1,1024,1024,0,0,0x2000,udp,drop-all-packets,"ZeroAccess.Gen Command and Control Traffic(13235)",13235,critical,server-to-client,6684613427694591054,0x0,10.0.0.0-10.255.255.255,10.0.0.0-10.255.255.255,0,1589874840,0,0,0,,us1,,,, 0,,0,,N/A,spyware,
         </code>
-    </p>
-    <h4>Threat Log (URL Filtering)</h4>
-    <p><code class="linecode">&lt;14&gt;1 2021-03-08T13:35:29.030447Z PYTHON_TEST_SENDER - - - - 1,2020/05/19 07:37:25,007200002536,THREAT,url,2305,2020/05/19 07:37:25,10.154.172.203,74.125.224.99,,,General Web Infrastructure,pancademo\shane.long,,google-analytics,vsys1,L3-TAP,L3-TAP,ethernet1/2,ethernet1/2,ToUS1RAMA,2020/05/19 07:37:25,50003,1,56776,80,0,0,0x0,tcp,block-url,"analytics.google.com/analytics/r/collect (9999)",9999,informational,client-to-server,6684613427694591000,0x0,10.0.0.0-10.255.255.255,United States,0,1589874840,0,0,0,,us1,,,,0,,0,,N/A,computer-and-internet-info low-risk,
+        </p>
+        <h4>Threat Log (URL Filtering)</h4>
+        <p><code class="linecode">&lt;14&gt;1 2021-03-08T13:35:29.030447Z PYTHON_TEST_SENDER - - - - 1,2020/05/19 07:37:25,007200002536,THREAT,url,2305,2020/05/19 07:37:25,10.154.172.203,74.125.224.99,,,General Web Infrastructure,pancademo\shane.long,,google-analytics,vsys1,L3-TAP,L3-TAP,ethernet1/2,ethernet1/2,ToUS1RAMA,2020/05/19 07:37:25,50003,1,56776,80,0,0,0x0,tcp,block-url,"analytics.google.com/analytics/r/collect (9999)",9999,informational,client-to-server,6684613427694591000,0x0,10.0.0.0-10.255.255.255,United States,0,1589874840,0,0,0,,us1,,,,0,,0,,N/A,computer-and-internet-info low-risk,
         </code>
-    </p>
-    <h4>Traffic Log</h4>
-    <p><code class="linecode">&lt;14&gt;1 2021-03-08T14:09:00.000000Z PYTHON_TEST_SENDER - - - - 1,2020/05/19 07:38:00,007200002536,TRAFFIC,end,2305,2020/05/19 07:38:00,10.154.229.167,77.254.254.254,10.154.229.167,77.254.254.254,General Business Apps,pancademo\andy.miller,,web-browsing,vsys1,L3-TAP,L3-TAP,ethernet1/2,ethernet1/2,ToUS1RAMA,2020/05/19 07:38:00,140540,1,1024,443,0,0,0x400000,tcp,allow,4096,2048,2048,10,2020/05/19 07:37:50,10,any,,6684613427694591055,0x0,10.0.0.0-10.255.255.255,United States,,5,0,n/a,0,0,0,0,,us1,from-policy,
+        </p>
+        <h4>Traffic Log</h4>
+        <p><code class="linecode">&lt;14&gt;1 2021-03-08T14:09:00.000000Z PYTHON_TEST_SENDER - - - - 1,2020/05/19 07:38:00,007200002536,TRAFFIC,end,2305,2020/05/19 07:38:00,10.154.229.167,77.254.254.254,10.154.229.167,77.254.254.254,General Business Apps,pancademo\andy.miller,,web-browsing,vsys1,L3-TAP,L3-TAP,ethernet1/2,ethernet1/2,ToUS1RAMA,2020/05/19 07:38:00,140540,1,1024,443,0,0,0x400000,tcp,allow,4096,2048,2048,10,2020/05/19 07:37:50,10,any,,6684613427694591055,0x0,10.0.0.0-10.255.255.255,United States,,5,0,n/a,0,0,0,0,,us1,from-policy,
         </code>
-    </p>
-    <h2 id="what-is-provided">What is Provided</h2>
-    <ul>
-        <li>
-            <p>Parsing and normalization rules for Palo Alto PAN-OS 9.1+ logs.</p>
-        </li>
-        <li>
-            <p>Graylog Information Model (GIM) event type categorization for Traffic, Threat, URL Filtering, and
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Parsing and normalization rules for Palo Alto PAN-OS 9.1+ logs.</p>
+            </li>
+            <li>
+                <p>Graylog Information Model (GIM) event type categorization for Traffic, Threat, URL Filtering, and
                 GlobalProtect events.</p>
-        </li>
-    </ul>
-    <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
-    <p>This content pack supports the following PAN-OS log types:</p>
-    <ul>
-        <li>
-            <p>GlobalProtect - portal authentication events (portal-auth).</p>
-        </li>
-        <li>
-            <p>Threat - intrusion detection alerts including spyware and vulnerability subtypes.</p>
-        </li>
-        <li>
-            <p>Threat (URL Filtering) - URL filtering block and alert events.</p>
-        </li>
-        <li>
-            <p>Traffic - network session events.</p>
-        </li>
-    </ul>
-    <h3 id="gim-categorization">GIM Categorization</h3>
-    <p>GIM event type categorization is provided for the following message types:</p>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Message Type</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">GlobalProtect portal-auth (login
+            </li>
+        </ul>
+        <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
+        <p>This content pack supports the following PAN-OS log types:</p>
+        <ul>
+            <li>
+                <p>GlobalProtect - portal authentication events (portal-auth).</p>
+            </li>
+            <li>
+                <p>Threat - intrusion detection alerts including spyware and vulnerability subtypes.</p>
+            </li>
+            <li>
+                <p>Threat (URL Filtering) - URL filtering block and alert events.</p>
+            </li>
+            <li>
+                <p>Traffic - network session events.</p>
+            </li>
+        </ul>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM event type categorization is provided for the following message types:</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Message Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">GlobalProtect portal-auth (login
                             stage)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">GlobalProtect portal-auth (login
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">GlobalProtect portal-auth (login
                             stage)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">100500</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.credential
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">100500</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.credential
                             validation</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">credential validation</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Traffic logs</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.network connection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Threat logs (spyware /
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">credential validation</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Traffic logs</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.network connection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Threat logs (spyware /
                             vulnerability / url-filtering)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">300000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">detection.network_detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">ids_detection</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h3>Field Normalization</h3>
-    <p>Fields extracted and normalized for each PAN-OS 9.x log type. The Graylog PAN-OS v9+ input pre-parses the CSV
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">300000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">detection.network_detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">ids_detection</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h3>Field Normalization</h3>
+        <p>Fields extracted and normalized for each PAN-OS 9.x log type. The Graylog PAN-OS v9+ input pre-parses the CSV
         payload; pipeline rules rename and enrich fields to Illuminate standard names.</p>
-    <h4>GlobalProtect Log Fields</h4>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>GlobalProtect Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Illuminate Field</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Vendor Field</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_observer_uid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Serial Number</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_observer_hostname</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Device Name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_subtype</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Type (GLOBALPROTECT)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_received_time</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Generated Time</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_virtfw_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Virtual System</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Event ID (pan_event_name)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_tunnel_stage</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Stage (pan_tunnel_stage)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_auth_method</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Authentication Method
+        <h4>GlobalProtect Log Fields</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>GlobalProtect Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Illuminate Field</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Vendor Field</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_observer_uid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Serial Number</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_observer_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Device Name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_subtype</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Type (GLOBALPROTECT)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_received_time</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Generated Time</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_virtfw_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Virtual System</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Event ID (pan_event_name)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_tunnel_stage</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Stage (pan_tunnel_stage)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_auth_method</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Authentication Method
                             (pan_auth_method)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source User (source_user)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_source_region</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source Region (pan_source_region)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source User (source_user)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_source_region</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source Region (pan_source_region)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_hostname</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Machine Name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Public IP / Private IP
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Machine Name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Public IP / Private IP
                             (vendor_public_ip / vendor_private_ip)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_gp_hostid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Host ID (pan_gp_hostid)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_gp_client_version</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client Version
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_gp_hostid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Host ID (pan_gp_hostid)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_gp_client_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client Version
                             (pan_gp_client_version)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Client OS</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_type_version</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client OS Version</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_repeat_count</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Repeat Count</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_outcome_reason</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Error (pan_gp_error)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_outcome</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Status (vendor_event_action)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_outcome</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Status (derived from
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Client OS</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_type_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client OS Version</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_repeat_count</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Repeat Count</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_outcome_reason</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Error (pan_gp_error)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_outcome</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Status (vendor_event_action)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_outcome</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Status (derived from
                             vendor_event_outcome)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_gp_connect_method</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Connect Method
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_gp_connect_method</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Connect Method
                             (pan_gp_connect_method)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_hostname</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Portal (pan_gp_hostname)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Application (set to "Global
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Portal (pan_gp_hostname)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Application (set to "Global
                             Protect")</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">gim_event_type_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">GIM Code (set to ["100000"
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">gim_event_type_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">GIM Code (set to ["100000"
                             "100500"])</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h4>Threat Log Fields (Spyware / Vulnerability)</h4>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Threat Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Illuminate Field</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Vendor Field</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_observer_uid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Serial Number</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_observer_hostname</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Device Name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_subtype</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Type (THREAT)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_log_subtype</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Threat/Content Type (spyware /
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>Threat Log Fields (Spyware / Vulnerability)</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Threat Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Illuminate Field</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Vendor Field</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_observer_uid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Serial Number</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_observer_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Device Name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_subtype</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Type (THREAT)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_log_subtype</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Threat/Content Type (spyware /
                             vulnerability)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_received_time</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Generated Time</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source Address</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination Address</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">rule_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Rule Name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_user_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source User (source_user — domain
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_received_time</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Generated Time</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source Address</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination Address</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">rule_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Rule Name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source User (source_user — domain
                             stripped)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_user_domain</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source User Domain (extracted
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_user_domain</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source User Domain (extracted
                             from domain\user)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_user_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination User
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination User
                             (destination_user — domain stripped)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_user_domain</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination User Domain
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_user_domain</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination User Domain
                             (extracted from domain\user)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Application</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_virtfw_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Virtual System</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_zone</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source Zone</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_zone</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination Zone</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_interface_in</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Inbound Interface</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_interface_out</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Outbound Interface</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">session_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Session ID</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_repeat_count</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Repeat Count</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_port</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source Port</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_port</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination Port</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_transport</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IP Protocol (network_protocol)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Application</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_virtfw_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Virtual System</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_zone</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source Zone</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_zone</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination Zone</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_interface_in</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Inbound Interface</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_interface_out</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Outbound Interface</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">session_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Session ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_repeat_count</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Repeat Count</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source Port</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination Port</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_transport</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IP Protocol (network_protocol)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_action</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Action</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_action</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Action (normalized via lookup)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Action</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Action (normalized via lookup)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_signature</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Threat Name (alert_signature_id —
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_signature</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Threat Name (alert_signature_id —
                             name portion)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_signature_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Threat ID (alert_signature_id —
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_signature_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Threat ID (alert_signature_id —
                             numeric portion)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_alert_severity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Severity</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_severity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Severity (normalized via lookup)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_alert_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Severity</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Severity (normalized via lookup)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_severity_level</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Severity Level (numeric)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_alert_direction</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Direction</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_uid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Sequence Number</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_location_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source Location</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_location_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination Location</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_threat_category</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Threat Category</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">gim_event_type_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">GIM Code (set to ["300000"])</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h4>Threat Log Fields (URL Filtering)</h4>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>URL Filtering Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Illuminate Field</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Vendor Field</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_observer_uid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Serial Number</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_observer_hostname</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Device Name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_subtype</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Type (THREAT)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_log_subtype</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Threat/Content Type (url)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_received_time</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Generated Time</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source Address</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination Address</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">rule_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Rule Name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_user_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source User (source_user — domain
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_severity_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Severity Level (numeric)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_alert_direction</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Direction</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_uid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Sequence Number</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_location_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source Location</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_location_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination Location</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_threat_category</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Threat Category</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">gim_event_type_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">GIM Code (set to ["300000"])</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>Threat Log Fields (URL Filtering)</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>URL Filtering Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Illuminate Field</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Vendor Field</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_observer_uid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Serial Number</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_observer_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Device Name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_subtype</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Type (THREAT)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_log_subtype</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Threat/Content Type (url)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_received_time</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Generated Time</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source Address</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination Address</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">rule_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Rule Name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source User (source_user — domain
                             stripped)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_user_domain</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source User Domain (extracted
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_user_domain</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source User Domain (extracted
                             from domain\user)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_user_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination User
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination User
                             (destination_user — domain stripped)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_user_domain</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination User Domain
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_user_domain</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination User Domain
                             (extracted from domain\user)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Application</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_virtfw_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Virtual System</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_zone</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source Zone</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_zone</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination Zone</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_interface_in</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Inbound Interface</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_interface_out</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Outbound Interface</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">session_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Session ID</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_repeat_count</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Repeat Count</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_port</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source Port</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_port</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination Port</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_transport</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IP Protocol (network_protocol)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Application</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_virtfw_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Virtual System</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_zone</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source Zone</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_zone</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination Zone</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_interface_in</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Inbound Interface</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_interface_out</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Outbound Interface</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">session_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Session ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_repeat_count</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Repeat Count</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source Port</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination Port</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_transport</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IP Protocol (network_protocol)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_action</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Action</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_action</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Action (normalized via lookup)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Action</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Action (normalized via lookup)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_indicator</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">URL/Filename</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_signature</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Threat Name (alert_signature_id —
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_indicator</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">URL/Filename</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_signature</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Threat Name (alert_signature_id —
                             name portion)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_signature_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Threat ID (alert_signature_id —
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_signature_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Threat ID (alert_signature_id —
                             numeric portion)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_alert_severity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Severity</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_severity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Severity (normalized via lookup)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_alert_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Severity</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Severity (normalized via lookup)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_severity_level</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Severity Level (numeric)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_alert_direction</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Direction</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_uid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Sequence Number</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_location_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source Location</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_location_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination Location</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_uri_category</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Category (expanded to array)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">gim_event_type_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">GIM Code (set to ["300000"])</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h4>Traffic Log Fields</h4>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Traffic Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Illuminate Field</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Vendor Field</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_observer_uid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Serial Number</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_observer_hostname</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Device Name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_subtype</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Type (TRAFFIC)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_log_subtype</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Traffic Type (start / end / drop)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_severity_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Severity Level (numeric)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_alert_direction</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Direction</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_uid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Sequence Number</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_location_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source Location</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_location_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination Location</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_uri_category</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Category (expanded to array)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">gim_event_type_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">GIM Code (set to ["300000"])</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>Traffic Log Fields</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Traffic Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Illuminate Field</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Vendor Field</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_observer_uid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Serial Number</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_observer_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Device Name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_subtype</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Type (TRAFFIC)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_log_subtype</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Traffic Type (start / end / drop)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_received_time</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Generated Time</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source Address</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination Address</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_nat_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">NAT Source IP</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_nat_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">NAT Destination IP</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">rule_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Rule Name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_user_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source User (source_user — domain
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_received_time</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Generated Time</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source Address</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination Address</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_nat_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">NAT Source IP</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_nat_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">NAT Destination IP</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">rule_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Rule Name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source User (source_user — domain
                             stripped)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_user_domain</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source User Domain (extracted
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_user_domain</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source User Domain (extracted
                             from domain\user)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_user_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination User
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination User
                             (destination_user — domain stripped)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_user_domain</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination User Domain
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_user_domain</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination User Domain
                             (extracted from domain\user)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Application (network_application)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Application (network_application)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_virtfw_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Virtual System</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_zone</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source Zone</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_zone</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination Zone</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_interface_in</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Inbound Interface</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_interface_out</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Outbound Interface</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">session_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Session ID</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_repeat_count</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Repeat Count</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_port</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source Port</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_port</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination Port</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_nat_port</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">NAT Source Port</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_nat_port</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">NAT Destination Port</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_transport</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IP Protocol (network_protocol)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_virtfw_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Virtual System</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_zone</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source Zone</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_zone</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination Zone</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_interface_in</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Inbound Interface</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_interface_out</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Outbound Interface</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">session_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Session ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_repeat_count</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Repeat Count</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source Port</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination Port</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_nat_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">NAT Source Port</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_nat_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">NAT Destination Port</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_transport</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IP Protocol (network_protocol)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_action</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Action</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_action</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Action (normalized via lookup)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Action</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Action (normalized via lookup)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_bytes</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Total Bytes</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_bytes_sent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Bytes Sent (network_bytes_tx)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_bytes</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Total Bytes</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_bytes_sent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Bytes Sent (network_bytes_tx)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_bytes_sent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Bytes Received (network_bytes_rx)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_bytes_sent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Bytes Received (network_bytes_rx)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_packets</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Total Packets (source +
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_packets</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Total Packets (source +
                             destination packets)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_packets_sent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Packets Sent</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_packets_sent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Packets Received</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_start</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Start Time</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_duration</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Elapsed Time</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_uri_category</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Category</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_uid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Sequence Number</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_location_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source Country</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_location_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination Country</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_session_end_reason</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Session End Reason</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">gim_event_type_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">GIM Code (set to ["120000"])</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-</body>
-
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_packets_sent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Packets Sent</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_packets_sent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Packets Received</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_start</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Start Time</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_duration</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Elapsed Time</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_uri_category</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Category</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_uid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Sequence Number</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_location_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source Country</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_location_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination Country</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_session_end_reason</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Session End Reason</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">gim_event_type_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">GIM Code (set to ["120000"])</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+    </body>
 </html>
