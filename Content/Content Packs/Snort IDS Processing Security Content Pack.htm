@@ -1,85 +1,78 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-
-<head>
-    <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
-    <title>Snort 3 IDS Content Pack</title>
-    <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
-</head>
-
-<body>
-    <h1>Snort 3 IDS Content Pack</h1>
-    <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-    <p>Snort is an open source network intrusion detection (IDS) and intrusion prevention system (IPS). This IDS/IPS
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Snort 3 IDS Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>
+            <MadCap:concept term="Networking" />Snort 3 IDS Content Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Snort is an open source network intrusion detection (IDS) and intrusion prevention system (IPS). This IDS/IPS
         system performs real-time traffic analysis and packet logging on Internet Protocol (IP) networks. It also can be
         used to detect semantic URL attacks, server message block probes, OS fingerprinting attempts, stealth port
         scans, and buffer overflows. Snort can be configured in three different modes: packet-capture mode, logging
-        mode, or IDS mode. This pack runs Snort in IDS mode and comes with predefined rules. Snort will apply the packet
+        mode, or IDS mode. This pack runs Snort in IDS mode and comes with predefined rules. Snort applies the packet
         content coming over any network it is monitoring to each rule.</p>
-    <h2 id="supported-versions">Supported Versions</h2>
-    <ul>
-        <li>
-            <p>Snort 3</p>
-        </li>
-    </ul>
-    <h2 id="requirements">Requirements</h2>
-    <ul>
-        <li>
-            <p>Graylog Server with a valid Enterprise license, running Graylog version 5.0+.</p>
-        </li>
-        <li>
-            <p>Snort 3 configured to log in JSON format.</p>
-        </li>
-        <li>
-            <p>Filebeat 7.13+ (ndjson parser).</p>
-        </li>
-        <li>
-            <p>A configured Beats input in Graylog.</p>
-        </li>
-    </ul>
-    <h2 id="stream-configuration">Stream Configuration</h2>
-    <p>This technology pack includes 1 stream:</p>
-    <ul>
-        <li>"Illuminate:Snort IDS Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
-                activation of this pack then it will be created and configured to route messages to this stream and the
-                associated index set. There should not be any stream rules configured for this stream.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="index-set-configuration">Index Set Configuration</h2>
-    <p>This technology pack includes 1 index set definition:</p>
-    <ul>
-        <li>"Snort IDS Logs"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
-                nothing will be changed. If this index set does not exist, then it will be created with retention
+        <h2 id="supported-versions">Supported Versions</h2>
+        <ul>
+            <li>
+                <p>Snort 3</p>
+            </li>
+        </ul>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>Graylog Server with a valid Enterprise license, running Graylog version 5.0+.</p>
+            </li>
+            <li>
+                <p>Snort 3 configured to log in JSON format.</p>
+            </li>
+            <li>
+                <p>Filebeat 7.13+ (ndjson parser).</p>
+            </li>
+            <li>
+                <p>A configured Beats input in Graylog.</p>
+            </li>
+        </ul>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>"Illuminate:Snort IDS Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this stream does not exist prior to the
+                activation of this pack then it is created and configured to route messages to this stream and the
+                associated index set. There should not be any stream rules configured for this stream.</div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"Snort IDS Logs"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this index set is already defined, then
+                nothing is changed. If this index set does not exist, then it is created with retention
                 settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
-                installation.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="log-collection">Log Collection</h2>
-    <p>Snort 3 must be configured to log in JSON format to use this technology pack. Existing logging configurations
+                installation.</div>
+            </section>
+        </p>
+        <h2 id="log-collection">Log Collection</h2>
+        <p>Snort 3 must be configured to log in JSON format to use this technology pack. Existing logging configurations
         such as alert_fast can still be used, but the JSON configuration is required to capture detailed event
         information. Filebeat is used to deliver the JSON logs to Graylog via a Beats input.</p>
-    <h3>Snort 3 Configuration</h3>
-    <p>Configure Snort 3 to log in JSON format. The recommended log paths are <code
-            class="linecode">/var/log/snort/alert_json.txt</code> (Snort alerts) and <code
-            class="linecode">/var/log/snort/appid-output.json</code> (AppID alerts). The following snort.lua settings
+        <h3>Snort 3 Configuration</h3>
+        <p>Configure Snort 3 to log in JSON format. The recommended log paths are <code class="linecode">/var/log/snort/alert_json.txt</code> (Snort alerts) and <code class="linecode">/var/log/snort/appid-output.json</code> (AppID alerts). The following snort.lua settings
         configure both alert and AppID JSON output. If AppID is not used, the appid_listener block can be omitted.</p>
-    <ol>
-        <li>
-            <p>Edit the <em>snort.lua</em> configuration file:</p>
-            <MadCap:codeSnippet>
-                <MadCap:codeSnippetCopyButton />
-                <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False"
-                    xml:space="preserve">alert_json =
+        <ol>
+            <li>
+                <p>Edit the <em>snort.lua</em> configuration file:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">alert_json =
                     {
                     fields = 'timestamp seconds action class b64_data dir dst_addr dst_port eth_dst eth_len eth_src
                     eth_type gid icmp_code icmp_id icmp_seq icmp_type iface ip_id ip_len msg pkt_gen pkt_len pkt_num
@@ -95,21 +88,18 @@
                     json_logging = true,
                     file = "/var/log/snort/appid-output.json",
                     }</MadCap:codeSnippetBody>
-            </MadCap:codeSnippet>
-        </li>
-    </ol>
-    <h3>Filebeat Configuration</h3>
-    <p>Filebeat parses the JSON log files and ships them to Graylog. The <code class="linecode">paths</code> and <code
-            class="linecode">fields</code> sections are required. The <code
-            class="linecode">event_source_product: snort3</code> field is critical for proper identification and parsing
+                </MadCap:codeSnippet>
+            </li>
+        </ol>
+        <h3>Filebeat Configuration</h3>
+        <p>Filebeat parses the JSON log files and ships them to Graylog. The <code class="linecode">paths</code> and <code class="linecode">fields</code> sections are required. The <code class="linecode">event_source_product: snort3</code> field is critical for proper identification and parsing
         of logs by Illuminate.</p>
-    <ol>
-        <li>
-            <p>Edit the <em>filebeat.yml</em> configuration file:</p>
-            <MadCap:codeSnippet>
-                <MadCap:codeSnippetCopyButton />
-                <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False"
-                    xml:space="preserve">- type: filestream
+        <ol>
+            <li>
+                <p>Edit the <em>filebeat.yml</em> configuration file:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">- type: filestream
 
                     id: snort-filestream
 
@@ -128,88 +118,84 @@
                     fields:
                     event_source_product: snort3
                     fields_under_root: true</MadCap:codeSnippetBody>
-            </MadCap:codeSnippet>
-        </li>
-    </ol>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If Snort logs are stored in paths other than
+                </MadCap:codeSnippet>
+            </li>
+        </ol>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If Snort logs are stored in paths other than
                 the defaults shown above, the paths must be updated in both <em>snort.lua</em> and
-                <em>filebeat.yml</em>.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="log-format-example">Log Format Examples</h2>
-    <p>Snort 3 logs are delivered in JSON format.</p>
-    <h4>Snort IDS Alert</h4>
-    <p><code class="linecode">{ "timestamp" : "04/04-10:36:13.537364", "seconds" : 1680618973, "action" : "allow", "class" : "Attempted User Privilege Gain", "dir" : "S2C", "dst_addr" : "192.168.1.1", "dst_port" : 44661, "eth_dst" : "B1:F1:51:71:31:31", "eth_len" : 227, "eth_src" : "81:B1:91:F1:01:01", "eth_type" : "0x800", "gid" : 1, "iface" : "ens34", "ip_id" : 24269, "ip_len" : 193, "msg" : "PROTOCOL-DNS Microsoft Threat Management Gateway heap buffer overflow attempt", "pkt_gen" : "raw", "pkt_len" : 213, "pkt_num" : 22551641, "priority" : 1, "proto" : "UDP", "rev" : 1, "rule" : "1:57878:1", "service" : "unknown", "sid" : 57878, "src_addr" : "192.168.1.2", "src_ap" : "192.168.1.2:53", "src_port" : 53, "tos" : 0, "ttl" : 61, "udp_len" : 193, "vlan" : 0, "client_bytes" : 91, "client_pkts" : 1, "flowstart_time" : 1680618973, "server_bytes" : 227, "server_pkts" : 1 }
+                <em>filebeat.yml</em>.</div>
+            </section>
+        </p>
+        <h2 id="log-format-example">Log Format Examples</h2>
+        <p>Snort 3 logs are delivered in JSON format.</p>
+        <h4>Snort IDS Alert</h4>
+        <p><code class="linecode">{ "timestamp" : "04/04-10:36:13.537364", "seconds" : 1680618973, "action" : "allow", "class" : "Attempted User Privilege Gain", "dir" : "S2C", "dst_addr" : "192.168.1.1", "dst_port" : 44661, "eth_dst" : "B1:F1:51:71:31:31", "eth_len" : 227, "eth_src" : "81:B1:91:F1:01:01", "eth_type" : "0x800", "gid" : 1, "iface" : "ens34", "ip_id" : 24269, "ip_len" : 193, "msg" : "PROTOCOL-DNS Microsoft Threat Management Gateway heap buffer overflow attempt", "pkt_gen" : "raw", "pkt_len" : 213, "pkt_num" : 22551641, "priority" : 1, "proto" : "UDP", "rev" : 1, "rule" : "1:57878:1", "service" : "unknown", "sid" : 57878, "src_addr" : "192.168.1.2", "src_ap" : "192.168.1.2:53", "src_port" : 53, "tos" : 0, "ttl" : 61, "udp_len" : 193, "vlan" : 0, "client_bytes" : 91, "client_pkts" : 1, "flowstart_time" : 1680618973, "server_bytes" : 227, "server_pkts" : 1 }
         </code>
-    </p>
-    <h4>Snort AppID Event</h4>
-    <p><code class="linecode">{ "session_num": "0.273", "pkt_time": "2023-04-03 11:54:56.600861", "pkt_num": 77402, "apps": { "service": null, "client": "DNS", "payload": null, "misc": null, "referred": null }, "proto": "UDP", "client_info": { "ip": "192.168.1.1", "port": 59853, "version": null }, "service_info": { "ip": "192.168.1.2", "port": 53, "version": null, "vendor": null }, "user_info": { "id": 0, "username": null, "login_status": "n/a" }, "tls_host": null, "dns_host": "www.google.com", "netbios_info": { "netbios_name": null, "netbios_domain": null }, "http": { "httpx_stream": null, "host": null, "url": null, "user_agent": null, "response_code": null, "referrer": null } }
+        </p>
+        <h4>Snort AppID Event</h4>
+        <p><code class="linecode">{ "session_num": "0.273", "pkt_time": "2023-04-03 11:54:56.600861", "pkt_num": 77402, "apps": { "service": null, "client": "DNS", "payload": null, "misc": null, "referred": null }, "proto": "UDP", "client_info": { "ip": "192.168.1.1", "port": 59853, "version": null }, "service_info": { "ip": "192.168.1.2", "port": 53, "version": null, "vendor": null }, "user_info": { "id": 0, "username": null, "login_status": "n/a" }, "tls_host": null, "dns_host": "www.google.com", "netbios_info": { "netbios_name": null, "netbios_domain": null }, "http": { "httpx_stream": null, "host": null, "url": null, "user_agent": null, "response_code": null, "referrer": null } }
         </code>
-    </p>
-    <h2 id="what-is-provided">What is Provided</h2>
-    <ul>
-        <li>
-            <p>Rules to normalize and enrich Snort 3 log messages (IDS event signatures and AppID).</p>
-        </li>
-        <li>
-            <p>Field extraction, normalization, and message enrichment for Snort 3 log messages.</p>
-        </li>
-        <li>
-            <p>GIM Categorization for IDS and AppID message types.</p>
-        </li>
-        <li>
-            <p>A Snort Spotlight content pack (dashboards and saved search).</p>
-        </li>
-    </ul>
-    <h3 id="gim-categorization">GIM Categorization</h3>
-    <p>GIM event type categorization is provided for the following messages:</p>
-    <table cellspacing="21"
-        style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-        class="TableStyle-Alternate-Row-Color">
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-        <thead>
-            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Snort 3 Log Type</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
-                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Subcategory</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ids</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">detection.network_detection</td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">appid</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">network</td>
-                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">network.default</td>
-            </tr>
-        </tbody>
-    </table>
-    <h2 id="spotlight-content-pack">Snort Spotlight Content Pack</h2>
-    <p>The Snort Spotlight content pack contains two dashboards (Snort 3 IDS Overview, Snort 3 AppID Overview) and a
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Rules to normalize and enrich Snort 3 log messages (IDS event signatures and AppID).</p>
+            </li>
+            <li>
+                <p>Field extraction, normalization, and message enrichment for Snort 3 log messages.</p>
+            </li>
+            <li>
+                <p>GIM Categorization for IDS and AppID message types.</p>
+            </li>
+            <li>
+                <p>A Snort Spotlight content pack (dashboards and saved search).</p>
+            </li>
+        </ul>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM event type categorization is provided for the following messages:</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Snort 3 Log Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Subcategory</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ids</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">detection.network_detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">appid</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">network.default</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2 id="spotlight-content-pack">Snort Spotlight Content Pack</h2>
+        <p>The Snort Spotlight content pack contains two dashboards (Snort 3 IDS Overview, Snort 3 AppID Overview) and a
         saved search (Snort 3 Log Viewer).</p>
-    <h3>Snort IDS Overview</h3>
-    <p>
-        <img src="../Resources/Images/resources/snort_ids/snort_ids_overview1.png" />
-    </p>
-    <p>
-        <img src="../Resources/Images/resources/snort_ids/snort_ids_overview2.png" />
-    </p>
-    <h3>Snort App ID Overview</h3>
-    <p>
-        <img src="../Resources/Images/resources/snort_ids/snort_appid_overview.png" />
-    </p>
-    <h3>Saved Search: Snort 3 Log Viewer</h3>
-    <p>
-        <img src="../Resources/Images/resources/snort_ids/snort_ids_saved_search.png" />
-    </p>
-</body>
-
+        <h3>Snort IDS Overview</h3>
+        <p>
+            <img src="../Resources/Images/Snort Content Pack/snort_ids_overview1.png" />
+        </p>
+        <p>
+            <img src="../Resources/Images/Snort Content Pack/snort_ids_overview2.png" />
+        </p>
+        <h3>Snort App ID Overview</h3>
+        <p>
+            <img src="../Resources/Images/Snort Content Pack/snort_appid_overview.png" />
+        </p>
+        <h3>Saved Search: Snort 3 Log Viewer</h3>
+        <p>
+            <img src="../Resources/Images/Snort Content Pack/snort_ids_saved_search.png" />
+        </p>
+    </body>
 </html>
