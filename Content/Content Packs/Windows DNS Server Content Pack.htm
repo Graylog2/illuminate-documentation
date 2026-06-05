@@ -1,1012 +1,996 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-
-<head>
-    <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
-    <title>Microsoft Windows DNS Server Content Pack</title>
-    <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
-</head>
-
-<body>
-    <h1>Microsoft Windows DNS Server Content Pack</h1>
-    <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-    <p>Microsoft Windows DNS Server is the DNS server role built into Windows Server. This technology pack processes
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Microsoft Windows DNS Server Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>
+            <MadCap:concept term="Vendor:Microsoft" />Microsoft Windows DNS Server Content Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Microsoft Windows DNS Server is the DNS server role built into Windows Server. This technology pack processes
         Windows DNS Server Analytic (ETW) and Audit event logs, providing normalization and enrichment of DNS query,
         response, and administrative events.</p>
-    <h2 id="supported-versions">Supported Versions</h2>
-    <ul>
-        <li>
-            <p>Windows Server 2016 or later</p>
-        </li>
-        <li>
-            <p>Filebeat 8.13.0-8.19.x (standalone, not bundled with Graylog Sidecar)</p>
-        </li>
-    </ul>
-    <p>
-    <section class="warningBox">
-        <div class="content"><b>Warning: </b><span style="font-weight: normal;">Filebeat must run standalone. The
+        <h2 id="supported-versions">Supported Versions</h2>
+        <ul>
+            <li>
+                <p>Windows Server 2016 or later</p>
+            </li>
+            <li>
+                <p>Filebeat 8.13.0-8.19.x (standalone, not bundled with Graylog Sidecar)</p>
+            </li>
+        </ul>
+        <p>
+            <section class="warningBox">
+                <div class="content"><b>Warning:</b> Filebeat must run standalone. The
                 version of Filebeat bundled with Graylog Sidecar does not support ETW inputs, which are required to
-                collect DNS Analytic logs.</span>
-        </div>
-    </section>
+                collect DNS Analytic logs.</div>
+            </section>
+        </p>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>Graylog 6.1.0+ with a valid Enterprise license</p>
+            </li>
+            <li>
+                <p>Windows Server 2016 or later with the DNS Server role installed</p>
+            </li>
+            <li>
+                <p>DNS Analytic and/or Audit logging enabled on the DNS server</p>
+            </li>
+            <li>
+                <p>Standalone Filebeat 8.13.0-8.19.x installed on the DNS server host</p>
+            </li>
+        </ul>
+        <h2 id="log-collection">Log Collection and Delivery</h2>
+        <p>DNS Server logs are collected via Filebeat running on the DNS server host and delivered to a Graylog Beats input.
     </p>
-    <h2 id="requirements">Requirements</h2>
-    <ul>
-        <li>
-            <p>Graylog 6.1.0+ with a valid Enterprise license</p>
-        </li>
-        <li>
-            <p>Windows Server 2016 or later with the DNS Server role installed</p>
-        </li>
-        <li>
-            <p>DNS Analytic and/or Audit logging enabled on the DNS server</p>
-        </li>
-        <li>
-            <p>Standalone Filebeat 8.13.0-8.19.x installed on the DNS server host</p>
-        </li>
-    </ul>
-    <h2 id="log-collection">Log Collection and Delivery</h2>
-    <p>DNS Server logs are collected via Filebeat running on the DNS server host and delivered to a Graylog Beats input.
-    </p>
-    <h3>Analytic Log Collection (ETW)</h3>
-    <p>DNS Analytic logs capture every DNS query and response in real time via the Event Tracing for Windows (ETW)
+        <h3>Analytic Log Collection (ETW)</h3>
+        <p>DNS Analytic logs capture every DNS query and response in real time via the Event Tracing for Windows (ETW)
         provider.</p>
-    <ol>
-        <li>
-            <p>Enable DNS Analytic logging on the DNS server: <code
-                    class="linecode">dnscmd /config /logLevel 0x8100F331</code> or via DNS Manager -&gt; Debug Logging.
+        <ol>
+            <li>
+                <p>Enable DNS Analytic logging on the DNS server: <code class="linecode">dnscmd /config /logLevel 0x8100F331</code> or via DNS Manager -&gt; Debug Logging.
             </p>
-        </li>
-        <li>
-            <p>Configure Filebeat with an ETW input targeting the <code
-                    class="linecode">Microsoft-Windows-DNSServer</code> provider. The <code
-                    class="linecode">session_name</code> must be set to <code
-                    class="linecode">DNSServer-Analytical</code>.</p>
-        </li>
-        <li>
-            <p>Deliver events to your Graylog Beats input.</p>
-        </li>
-    </ol>
-    <h3>Audit Log Collection (Winlog)</h3>
-    <p>DNS Audit logs capture administrative changes such as zone creation, record modifications, and server
+            </li>
+            <li>
+                <p>Configure Filebeat with an ETW input targeting the <code class="linecode">Microsoft-Windows-DNSServer</code> provider. The <code class="linecode">session_name</code> must be set to <code class="linecode">DNSServer-Analytical</code>.</p>
+            </li>
+            <li>
+                <p>Deliver events to your Graylog Beats input.</p>
+            </li>
+        </ol>
+        <h3>Audit Log Collection (Winlog)</h3>
+        <p>DNS Audit logs capture administrative changes such as zone creation, record modifications, and server
         configuration changes.</p>
-    <ol>
-        <li>
-            <p>DNS Audit logging is enabled by default on Windows Server 2012 R2 and later.</p>
-        </li>
-        <li>
-            <p>Configure Filebeat with a Winlog input for the channel <code
-                    class="linecode">Microsoft-Windows-DNSServer/Audit</code>.</p>
-        </li>
-        <li>
-            <p>Deliver events to your Graylog Beats input.</p>
-        </li>
-    </ol>
-    <h2 id="stream-configuration">Stream Configuration</h2>
-    <p>This technology pack includes 1 stream:</p>
-    <ul>
-        <li>"Illuminate:Windows DNS Server Event Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
-                activation of this pack then it will be created and configured to route messages to this stream and the
-                associated index set. There should not be any stream rules configured for this stream.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="index-set-configuration">Index Set Configuration</h2>
-    <p>This technology pack includes 1 index set definition:</p>
-    <ul>
-        <li>"Windows DNS Server Event Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
-                nothing will be changed. If this index set does not exist, then it will be created with retention
+        <ol>
+            <li>
+                <p>DNS Audit logging is enabled by default on Windows Server 2012 R2 and later.</p>
+            </li>
+            <li>
+                <p>Configure Filebeat with a Winlog input for the channel <code class="linecode">Microsoft-Windows-DNSServer/Audit</code>.</p>
+            </li>
+            <li>
+                <p>Deliver events to your Graylog Beats input.</p>
+            </li>
+        </ol>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>"Illuminate:Windows DNS Server Event Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this stream does not exist prior to the
+                activation of this pack then it is created and configured to route messages to this stream and the
+                associated index set. There should not be any stream rules configured for this stream.</div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"Windows DNS Server Event Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this index set is already defined, then
+                nothing is changed. If this index set does not exist, then it is created with retention
                 settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
-                installation.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="what-is-provided">What is Provided</h2>
-    <ul>
-        <li>
-            <p>Parsing rules to extract Windows DNS Server Analytic and Audit logs into Graylog schema compatible fields
+                installation.</div>
+            </section>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Parsing rules to extract Windows DNS Server Analytic and Audit logs into Graylog schema compatible fields
             </p>
-        </li>
-        <li>
-            <p>GIM event type code assignment for all supported message types</p>
-        </li>
-        <li>
-            <p>Domain element extraction (SLD, TLD) from queried FQDNs</p>
-        </li>
-        <li>
-            <p>Windows DNS Server Spotlight content pack</p>
-        </li>
-    </ul>
-    <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
-    <p>The content pack processes events from two Windows DNS Server log sources.</p>
-    <ul>
-        <li>
-            <p>Analytic events (Event IDs 256-280): DNS queries, responses, recursive lookups, zone transfers, and
+            </li>
+            <li>
+                <p>GIM event type code assignment for all supported message types</p>
+            </li>
+            <li>
+                <p>Domain element extraction (SLD, TLD) from queried FQDNs</p>
+            </li>
+            <li>
+                <p>Windows DNS Server Spotlight content pack</p>
+            </li>
+        </ul>
+        <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
+        <p>The content pack processes events from two Windows DNS Server log sources.</p>
+        <ul>
+            <li>
+                <p>Analytic events (Event IDs 256-280): DNS queries, responses, recursive lookups, zone transfers, and
                 dynamic updates captured via ETW</p>
-        </li>
-        <li>
-            <p>Audit events (Event IDs 512-582): Administrative changes including zone create/delete/update, record
+            </li>
+            <li>
+                <p>Audit events (Event IDs 512-582): Administrative changes including zone create/delete/update, record
                 modifications, DNSSEC operations, server configuration changes, and policy operations</p>
-        </li>
-    </ul>
-    <h3 id="gim-categorization">GIM Categorization</h3>
-    <p>GIM categorization is provided for the following messages:</p>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event IDs</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Log Type</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">256, 259, 260, 261, 279, 280</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Analytic</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">140000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution.dns request</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dns query</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">257</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Analytic</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">140200</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution.dns answer</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dns response</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">258, 271</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Analytic</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">140200 + 140300</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution.dns answer + name
+            </li>
+        </ul>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following messages:</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event IDs</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Log Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">256, 259, 260, 261, 279, 280</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Analytic</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">140000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution.dns request</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dns query</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">257</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Analytic</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">140200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution.dns answer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dns response</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">258, 271</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Analytic</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">140200 + 140300</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution.dns answer + name
                             resolution.error</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dns response + dns error</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">263</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Analytic</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">140000 + 140500</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution.dns request +
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dns response + dns error</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">263</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Analytic</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">140000 + 140500</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution.dns request +
                             name resolution.ddns update</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dns query + ddns update</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">264</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Analytic</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">140200 + 140500</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution.dns answer + name
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">dns query + ddns update</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">264</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Analytic</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">140200 + 140500</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution.dns answer + name
                             resolution.ddns update</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dns response + ddns update</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">519, 520</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Audit</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">140500</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution.ddns update</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">ddns update</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">265-276</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Analytic</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">149999</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution.default</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dns message (zone transfer)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">512-518, 522-523, 559-566
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dns response + ddns update</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">519, 520</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Audit</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">140500</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution.ddns update</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">ddns update</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">265-276</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Analytic</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">149999</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution.default</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dns message (zone transfer)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">512-518, 522-523, 559-566
                             (ZONE_OP)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Audit</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">211000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.configuration</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service configuration change</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">521, 552, 567 (AGEING)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Audit</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">211000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.configuration</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service configuration change</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">525-535 (OnlineSigning,
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Audit</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">211000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.configuration</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service configuration change</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">521, 552, 567 (AGEING)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Audit</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">211000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.configuration</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service configuration change</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">525-535 (OnlineSigning,
                             DNSSEC_OP)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Audit</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">211000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.configuration</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service configuration change</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">536 (CACHE_OP)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Audit</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">211000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.configuration</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service configuration change</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">537, 540-548 (Configuration,
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Audit</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">211000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.configuration</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service configuration change</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">536 (CACHE_OP)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Audit</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">211000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.configuration</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service configuration change</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">537, 540-548 (Configuration,
                             SERVER_OP)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Audit</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">211000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.configuration</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service configuration change</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">549-558, 568-576 (SERVER_OP,
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Audit</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">211000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.configuration</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service configuration change</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">549-558, 568-576 (SERVER_OP,
                             VIRTUALIZATION_OP)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Audit</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">211000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.configuration</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service configuration change</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">577-582 (POLICY_OP)</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Audit</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">211000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">endpoint</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">service</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">service.configuration</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">service configuration change</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h3>Fields Extracted by This Pack</h3>
-    <p>Fields extracted vary by log type. Analytic events provide DNS query and response details; Audit events provide
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Audit</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">211000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.configuration</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service configuration change</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">577-582 (POLICY_OP)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Audit</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">211000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">endpoint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">service.configuration</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">service configuration change</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h3>Fields Extracted by This Pack</h3>
+        <p>Fields extracted vary by log type. Analytic events provide DNS query and response details; Audit events provide
         administrative action details.</p>
-    <h4>Analytic Event Fields</h4>
-    <p>Fields extracted from DNS Analytic (ETW) events (Event IDs 256-280).</p>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Analytic Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.1.1</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination IP address extracted
+        <h4>Analytic Event Fields</h4>
+        <p>Fields extracted from DNS Analytic (ETW) events (Event IDs 256-280).</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Analytic Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.1.1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination IP address extracted
                             from the DNS event</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_port</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">53</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination port number</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_reference</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.1.1</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination reference (IP or
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">53</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination port number</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_reference</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.1.1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination reference (IP or
                             hostname)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">257</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Windows event ID</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_created</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2025-03-13T09:48:40.620Z</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Timestamp the event was created
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">257</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Windows event ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_created</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2025-03-13T09:48:40.620Z</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Timestamp the event was created
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_outcome</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">success</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Outcome of the DNS
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_outcome</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">success</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Outcome of the DNS
                             query/response: success or failure</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_reporter</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">WIN-DNSSERVER01</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Hostname of the Filebeat agent
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_reporter</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">WIN-DNSSERVER01</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Hostname of the Filebeat agent
                             reporting the event</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_reporter_hostname</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">WIN-DNSSERVER01</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">FQDN or hostname of the reporting
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_reporter_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">WIN-DNSSERVER01</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">FQDN or hostname of the reporting
                             agent</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_reporter_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.1.10</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IP address of the reporting agent
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_reporter_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.1.10</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IP address of the reporting agent
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_source</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">WIN-DNSSERVER01</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source host for the event</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">windows_dns_server</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Illuminate source product
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_source</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">WIN-DNSSERVER01</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source host for the event</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">windows_dns_server</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Illuminate source product
                             identifier</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">gim_event_category</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">array</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GIM event category</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gim_event_class</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">array</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">GIM event class</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">gim_event_subcategory</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution.dns request</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">array</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GIM event subcategory</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gim_event_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dns query</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">array</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">GIM event type</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">gim_event_type_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">140000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">array</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GIM event type code(s)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_bytes</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">143</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Size of the DNS packet in bytes
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">gim_event_category</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">array</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GIM event category</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gim_event_class</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">array</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">GIM event class</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">gim_event_subcategory</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">name resolution.dns request</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">array</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GIM event subcategory</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gim_event_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dns query</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">array</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">GIM event type</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">gim_event_type_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">140000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">array</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GIM event type code(s)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_bytes</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">143</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Size of the DNS packet in bytes
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_protocol</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dns</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Network protocol (always dns)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">dns</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Network protocol (always dns)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_transport</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">udp</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Transport protocol: tcp or udp
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_transport</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">udp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Transport protocol: tcp or udp
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">policy_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">NULL</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS policy name applied to the
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">policy_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">NULL</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS policy name applied to the
                             query (if any)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">query_record_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DNS record type name (e.g. A,
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">query_record_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">A</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DNS record type name (e.g. A,
                             AAAA, MX, TXT)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">query_record_type_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS record type code (QTYPE)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">query_request</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">www.example.com</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Queried FQDN (trailing dot
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">query_record_type_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS record type code (QTYPE)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">query_request</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">www.example.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Queried FQDN (trailing dot
                             removed)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">query_response</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><em>undefined</em></td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS response content</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">query_result</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">NOERROR</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DNS RCODE name (e.g. NOERROR,
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">query_response</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><em>undefined</em>
+                            </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS response content</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">query_result</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">NOERROR</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DNS RCODE name (e.g. NOERROR,
                             NXDOMAIN, SERVFAIL)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">query_result_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS RCODE numeric value</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.1.50</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source IP address of the DNS
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">query_result_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS RCODE numeric value</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.1.50</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source IP address of the DNS
                             client</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_port</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">52341</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source port of the DNS client
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">52341</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source port of the DNS client
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_reference</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.1.50</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source reference (IP or hostname)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_reference</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.1.50</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source reference (IP or hostname)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_elapsed_time</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Elapsed time for the query in
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_elapsed_time</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Elapsed time for the query in
                             milliseconds</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_flags</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10240</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Raw DNS flags field value</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_forward_interface_ip
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_flags</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10240</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Raw DNS flags field value</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_forward_interface_ip
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">10.0.0.1</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">IP of the forwarding interface
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">10.0.0.1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">IP of the forwarding interface
                             (if applicable)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_header_flags</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">[]</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">array</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Decoded DNS header flags (AA, AD,
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_header_flags</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">[]</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">array</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Decoded DNS header flags (AA, AD,
                             RD, TC)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_interface_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">192.168.1.10</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS server interface IP that
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_interface_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">192.168.1.10</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS server interface IP that
                             received the query</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_packet_data</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0x...</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Hex-encoded raw DNS packet data
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_packet_data</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0x...</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Hex-encoded raw DNS packet data
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_xid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">62807</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS transaction ID</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_zone</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">example.com</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DNS zone associated with the
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_xid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">62807</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS transaction ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_zone</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">example.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DNS zone associated with the
                             event</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_zone_scope</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Default</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Zone scope associated with the
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_zone_scope</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Default</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Zone scope associated with the
                             event</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_domain_sld</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">example</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Second-level domain extracted
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_domain_sld</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">example</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Second-level domain extracted
                             from the queried FQDN</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_domain_sld_tld</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">example.com</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Second-level domain + TLD</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_domain_tld</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">com</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Top-level domain extracted from
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_domain_sld_tld</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">example.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Second-level domain + TLD</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_domain_tld</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Top-level domain extracted from
                             the queried FQDN</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_category</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">LOOK_UP</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS event category (LOOK_UP,
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_category</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">LOOK_UP</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS event category (LOOK_UP,
                             RECURSE_QUERY, DYNAMIC_UPDATE, ZONE_XFR)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_category_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Numeric code for the DNS event
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_category_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Numeric code for the DNS event
                             category</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_description</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Query received</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Human-readable description of the
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Query received</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Human-readable description of the
                             event</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_provider</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Microsoft-Windows-DNSServer</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Windows event provider name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_provider_guid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_provider</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Microsoft-Windows-DNSServer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Windows event provider name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_provider_guid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
                             {eb79061a-a566-4698-9119-3ed2807060e7}</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GUID of the Windows event
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GUID of the Windows event
                             provider</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_session</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DNSServer-Analytical</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">ETW session name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_severity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">information</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Windows event severity level</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_input_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">etw</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Filebeat input type (etw)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">vendor_opcode_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">0</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Windows event opcode code</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h4>Audit Event Fields</h4>
-    <p>Fields extracted from DNS Audit (Winlog) events (Event IDs 512-582).</p>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Audit Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">519</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Windows event ID</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_created</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2025-03-14T04:10:40.874Z</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Timestamp the event was created
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_session</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DNSServer-Analytical</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">ETW session name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">information</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Windows event severity level</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_input_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">etw</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Filebeat input type (etw)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">vendor_opcode_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Windows event opcode code</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>Audit Event Fields</h4>
+        <p>Fields extracted from DNS Audit (Winlog) events (Event IDs 512-582).</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Audit Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">519</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Windows event ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_created</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2025-03-14T04:10:40.874Z</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Timestamp the event was created
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_log_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Microsoft-Windows-DNSServer/Audit
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_log_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Microsoft-Windows-DNSServer/Audit
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Windows event log channel name
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Windows event log channel name
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_reporter</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">WIN-DNSSERVER01</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Hostname of the Filebeat agent
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_reporter</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">WIN-DNSSERVER01</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Hostname of the Filebeat agent
                             reporting the event</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_reporter_hostname</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">WIN-DNSSERVER01.example.com</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">FQDN of the reporting host</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_source</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">WIN-DNSSERVER01.example.com</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source host for the event</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">windows_dns_server</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Illuminate source product
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_reporter_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">WIN-DNSSERVER01.example.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">FQDN of the reporting host</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_source</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">WIN-DNSSERVER01.example.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source host for the event</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">windows_dns_server</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Illuminate source product
                             identifier</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_uid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">97</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Windows event record ID</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gim_event_category</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">array</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">GIM event category</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">gim_event_class</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">array</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GIM event class</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gim_event_subcategory</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution.ddns update</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">array</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">GIM event subcategory</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">gim_event_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ddns update</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">array</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GIM event type</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gim_event_type_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">140500</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">array</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">GIM event type code(s)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_bytes</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Buffer size in bytes (if
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_uid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">97</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Windows event record ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gim_event_category</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">array</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">GIM event category</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">gim_event_class</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">array</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GIM event class</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gim_event_subcategory</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution.ddns update</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">array</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">GIM event subcategory</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">gim_event_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ddns update</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">array</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GIM event type</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gim_event_type_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">140500</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">array</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">GIM event type code(s)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_bytes</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Buffer size in bytes (if
                             available)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_protocol</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dns</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Network protocol (always dns)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dns</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Network protocol (always dns)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">192.168.1.50</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source IP address (for dynamic
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">192.168.1.50</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source IP address (for dynamic
                             update events)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_reference</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.1.50</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source reference (IP or hostname)
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_reference</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.1.50</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source reference (IP or hostname)
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_category</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">built_in, privileged</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">array</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Illuminate user category tags
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_category</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">built_in, privileged</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">array</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Illuminate user category tags
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_domain</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">EXAMPLE</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Windows domain of the user who
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_domain</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">EXAMPLE</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Windows domain of the user who
                             performed the action</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">S-1-5-21-...</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Windows SID of the user</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_priority_level</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Illuminate user priority level
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">S-1-5-21-...</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Windows SID of the user</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_priority_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Illuminate user priority level
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">User</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Windows account type</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Administrator</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Username of the account that
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">User</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Windows account type</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Administrator</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Username of the account that
                             performed the action</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_NAME</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">win-dnsserver01</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS record name affected by the
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_NAME</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">win-dnsserver01</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS record name affected by the
                             event</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_new_value</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">6143</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">New value after a configuration
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_new_value</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">6143</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">New value after a configuration
                             change</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_old_value</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Previous value before a
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_old_value</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Previous value before a
                             configuration change</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_property_key</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">LogLevel</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Name of the server property that
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_property_key</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">LogLevel</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Name of the server property that
                             was changed</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_qname</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">*</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Query name (for cache purge
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_qname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">*</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Query name (for cache purge
                             events)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_rdata</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">C0A81379</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Hex-encoded record data</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_scope</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Default</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Zone or server scope (for cache
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_rdata</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">C0A81379</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Hex-encoded record data</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_scope</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Default</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Zone or server scope (for cache
                             purge events)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_ttl</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1200</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DNS record TTL value</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS record type code</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_virtualization_id
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_ttl</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DNS record TTL value</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS record type code</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_virtualization_id
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">.</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Virtualization instance
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">.</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Virtualization instance
                             identifier</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_zone</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">example.com</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS zone affected by the event
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_zone</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">example.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">DNS zone affected by the event
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_zone_scope</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Default</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Zone scope affected by the event
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_zone_scope</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Default</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Zone scope affected by the event
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_action</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">create</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Action performed: create, add,
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">create</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Action performed: create, add,
                             delete, update, or clear</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_category</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DYNAMIC_UPDATE</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DNS event category (ZONE_OP,
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_category</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DYNAMIC_UPDATE</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">DNS event category (ZONE_OP,
                             DYNAMIC_UPDATE, SERVER_OP, CACHE_OP, etc.)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_category_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Numeric code for the DNS event
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_category_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Numeric code for the DNS event
                             category</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_description</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Record create - dynamic update
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Record create - dynamic update
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Human-readable description of the
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Human-readable description of the
                             event</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_provider</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Microsoft-Windows-DNSServer</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Windows event provider name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_provider_guid</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_provider</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Microsoft-Windows-DNSServer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Windows event provider name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_provider_guid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
                             {eb79061a-a566-4698-9119-3ed2807060e7}</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">GUID of the Windows event
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">GUID of the Windows event
                             provider</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_severity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">information</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Windows event severity level</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_input_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">winlog</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Filebeat input type (winlog)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">vendor_opcode</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Info</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">string</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Windows event opcode</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h2 id="spotlight-content-pack">Windows DNS Server Spotlight Content Pack</h2>
-    <p>The Windows DNS Server Spotlight offers a dashboard with the following tabs:</p>
-    <h3>DNS Analytic Events</h3>
-    <p>
-        <img src="../Resources/Images/resources/windows_dns_server/analytic_1.png" />
-    </p>
-    <p>
-        <img src="../Resources/Images/resources/windows_dns_server/analytic_2.png" />
-    </p>
-    <h3>DNS Audit Events</h3>
-    <p>
-        <img src="../Resources/Images/resources/windows_dns_server/audit_1.png" />
-    </p>
-    <p>
-        <img src="../Resources/Images/resources/windows_dns_server/audit_2.png" />
-    </p>
-    <h3>Domain Analysis</h3>
-    <p>
-        <img src="../Resources/Images/resources/windows_dns_server/domain.png" />
-    </p>
-</body>
-
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">information</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Windows event severity level</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_input_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">winlog</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Filebeat input type (winlog)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">vendor_opcode</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Info</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Windows event opcode</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h2 id="spotlight-content-pack">Windows DNS Server Spotlight Content Pack</h2>
+        <p>The Windows DNS Server Spotlight offers a dashboard with the following tabs:</p>
+        <h3>DNS Analytic Events</h3>
+        <p>
+            <img src="../Resources/Images/Windows DNS Server Content Pack/analytic_1.png" />
+        </p>
+        <p>
+            <img src="../Resources/Images/Windows DNS Server Content Pack/analytic_2.png" />
+        </p>
+        <h3>DNS Audit Events</h3>
+        <p>
+            <img src="../Resources/Images/Windows DNS Server Content Pack/audit_1.png" />
+        </p>
+        <p>
+            <img src="../Resources/Images/Windows DNS Server Content Pack/audit_2.png" />
+        </p>
+        <h3>Domain Analysis</h3>
+        <p>
+            <img src="../Resources/Images/Windows DNS Server Content Pack/domain.png" />
+        </p>
+    </body>
 </html>
