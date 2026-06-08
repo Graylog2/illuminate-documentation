@@ -1,618 +1,606 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-
-<head>
-    <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
-    <title>Microsoft Defender Antivirus Content Pack</title>
-    <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
-</head>
-
-<body>
-    <h1>Microsoft Defender Antivirus Content Pack</h1>
-    <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-    <p>Microsoft Defender Antivirus is an anti-malware client service built into supported Windows desktop and server
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Microsoft Defender Antivirus Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>
+            <MadCap:concept term="Vendor:Microsoft" />Microsoft Defender Antivirus Content Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Microsoft Defender Antivirus is an anti-malware client service built into supported Windows desktop and server
         platforms. This technology pack parses, normalizes, and enriches Defender Antivirus events from the Windows
         Defender Operational log to support detection, response, and operational visibility.</p>
-    <h2 id="supported-versions">Supported Version(s)</h2>
-    <ul>
-        <li>
-            <p>Windows 10 and 11 (client)</p>
-        </li>
-        <li>
-            <p>Windows Server 2016 and later</p>
-        </li>
-    </ul>
-    <h2 id="requirements">Requirements</h2>
-    <ul>
-        <li>
-            <p>Windows host with Microsoft Defender Antivirus enabled</p>
-        </li>
-        <li>
-            <p>Graylog 6.0+ with a valid Enterprise license</p>
-        </li>
-    </ul>
-    <h2 id="stream-configuration">Stream Configuration</h2>
-    <p>This technology pack includes 1 stream:</p>
-    <ul>
-        <li>"Illuminate:Windows Event Log Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
-                activation of this pack then it will be created and configured to route messages to this stream and the
-                associated index set. There should not be any stream rules configured for this stream.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="index-set-configuration">Index Set Configuration</h2>
-    <p>This technology pack includes 1 index set definition:</p>
-    <ul>
-        <li>"Windows Event Log Messages"</li>
-    </ul>
-    <p>
-    <section class="infoBox">
-        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
-                nothing will be changed. If this index set does not exist, then it will be created with retention
+        <h2 id="supported-versions">Supported Version(s)</h2>
+        <ul>
+            <li>
+                <p>Windows 10 and 11 (client)</p>
+            </li>
+            <li>
+                <p>Windows Server 2016 and later</p>
+            </li>
+        </ul>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>Windows host with Microsoft Defender Antivirus enabled</p>
+            </li>
+            <li>
+                <p>Graylog 6.0+ with a valid Enterprise license</p>
+            </li>
+        </ul>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>"Illuminate:Windows Event Log Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this stream does not exist prior to the
+                activation of this pack then it is created and configured to route messages to this stream and the
+                associated index set. There should not be any stream rules configured for this stream.</div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"Windows Event Log Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this index set is already defined, then
+                nothing is changed. If this index set does not exist, then it is created with retention
                 settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
-                installation.</span>
-        </div>
-    </section>
-    </p>
-    <h2 id="log-collection">Log Collection</h2>
-    <p>Microsoft Defender Antivirus events are collected from the <code
-            class="linecode">Microsoft-Windows-Windows Defender/Operational</code> channel of the Windows Event Log. The
+                installation.</div>
+            </section>
+        </p>
+        <h2 id="log-collection">Log Collection</h2>
+        <p>Microsoft Defender Antivirus events are collected from the <code class="linecode">Microsoft-Windows-Windows Defender/Operational</code> channel of the Windows Event Log. The
         pack identifies messages delivered through Winlogbeat or NXLog and routes them into the Windows Event Log
         processing pipeline.</p>
-    <ul>
-        <li>
-            <p>Winlogbeat (Graylog Sidecar)</p>
-        </li>
-        <li>
-            <p>NXLog</p>
-        </li>
-    </ul>
-    <h2 id="log-format-example">Log Format Examples</h2>
-    <h4>Malware Detection (Event 1116)</h4>
-    <p><code class="linecode">{"_winlogbeat_event_created":"2021-09-11T02:06:04.307Z","_winlogbeat_winlog_opcode":"Info","_winlogbeat_agent_id":"897a9958-4efc-4d8d-b5d6-e6649cdd709d","_winlogbeat_ecs_version":"1.5.0","_winlogbeat_event_code":1116,"_winlogbeat_tags":["windows"],"_winlogbeat_winlog_user_identifier":"S-1-5-18","_winlogbeat_winlog_user_type":"User","_winlogbeat_winlog_event_data_State":"1","_winlogbeat_winlog_activity_id":"{F47D9D6A-EB84-4FB5-B4AD-E86083737A24}","_winlogbeat_@timestamp":"2021-09-11T02:06:02.560Z","_winlogbeat_agent_version":"7.9.0","_winlogbeat_agent_ephemeral_id":"bb12ae77-ca9b-446f-a6ea-a8ac5a67e4b7","_winlogbeat_@metadata_version":"7.9.0","_winlogbeat_winlog_record_id":16681,"_winlogbeat_agent_hostname":"JUMPBOX","_winlogbeat_log_level":"warning","_winlogbeat_@metadata_type":"_doc","_winlogbeat_@metadata_beat":"winlogbeat","_winlogbeat_event_provider":"Microsoft-Windows-Windows Defender","_beats_type":"winlogbeat","_winlogbeat_winlog_user_domain":"NT AUTHORITY","_winlogbeat_agent_name":"JUMPBOX","_winlogbeat_winlog_event_id":1116,"_winlogbeat_winlog_event_data_Path":"file:_C:\\Users\\Administrator\\Downloads\\26de80e3bbbe1f053da4131ca7a405644b7443356ec97d48517f1ab86d5f1ca5","_winlogbeat_host_name":"JUMPBOX","_winlogbeat_winlog_channel":"Microsoft-Windows-Windows Defender/Operational","_winlogbeat_winlog_user_name":"SYSTEM","_winlogbeat_winlog_computer_name":"JUMPBOX","_winlogbeat_event_kind":"event","_winlogbeat_collector_node_id":"JUMPBOX","_winlogbeat_winlog_event_data_FWLink":"https://go.microsoft.com/fwlink/?linkid=37020&name=TrojanDownloader:O97M/Donoff!rfn&threatid=2147709062&enterprise=0","_winlogbeat_winlog_process_thread_id":4108,"_winlogbeat_winlog_api":"wineventlog","message":"Windows Defender has detected malware or other potentially unwanted software.\n For more information please see the following:\nhttps://go.microsoft.com/fwlink/?linkid=37020&name=TrojanDownloader:O97M/Donoff!rfn&threatid=2147709062&enterprise=0\n \tName: TrojanDownloader:O97M/Donoff!rfn\n \tID: 2147709062\n \tSeverity: Severe\n \tCategory: Trojan Downloader\n \tPath: file:_C:\\Users\\Administrator\\Downloads\\26de80e3bbbe1f053da4131ca7a405644b7443356ec97d48517f1ab86d5f1ca5\n \tDetection Origin: Local machine\n \tDetection Type: Concrete\n \tDetection Source: User\n \tUser: JUMPBOX\\Klondike57Capsule\n \tProcess Name: Unknown\n \tSecurity intelligence Version: AV: 1.349.510.0, AS: 1.349.510.0, NIS: 0.0.0.0\n \tEngine Version: AM: 1.1.18500.10, NIS: 0.0.0.0","_winlogbeat_winlog_provider_guid":"{11CD958A-C507-4EF3-B3F2-5FD9DFBD2C78}","_winlogbeat_agent_type":"winlogbeat","_winlogbeat_winlog_provider_name":"Microsoft-Windows-Windows Defender","_winlogbeat_winlog_process_pid":1776,"host":"ip-172-31-26-190","level":6,"version":"1.1","_replayed_log":"true"}
+        <ul>
+            <li>
+                <p>Winlogbeat (Graylog Sidecar)</p>
+            </li>
+            <li>
+                <p>NXLog</p>
+            </li>
+        </ul>
+        <h2 id="log-format-example">Log Format Examples</h2>
+        <h4>Malware Detection (Event 1116)</h4>
+        <p><code class="linecode">{"_winlogbeat_event_created":"2021-09-11T02:06:04.307Z","_winlogbeat_winlog_opcode":"Info","_winlogbeat_agent_id":"897a9958-4efc-4d8d-b5d6-e6649cdd709d","_winlogbeat_ecs_version":"1.5.0","_winlogbeat_event_code":1116,"_winlogbeat_tags":["windows"],"_winlogbeat_winlog_user_identifier":"S-1-5-18","_winlogbeat_winlog_user_type":"User","_winlogbeat_winlog_event_data_State":"1","_winlogbeat_winlog_activity_id":"{F47D9D6A-EB84-4FB5-B4AD-E86083737A24}","_winlogbeat_@timestamp":"2021-09-11T02:06:02.560Z","_winlogbeat_agent_version":"7.9.0","_winlogbeat_agent_ephemeral_id":"bb12ae77-ca9b-446f-a6ea-a8ac5a67e4b7","_winlogbeat_@metadata_version":"7.9.0","_winlogbeat_winlog_record_id":16681,"_winlogbeat_agent_hostname":"JUMPBOX","_winlogbeat_log_level":"warning","_winlogbeat_@metadata_type":"_doc","_winlogbeat_@metadata_beat":"winlogbeat","_winlogbeat_event_provider":"Microsoft-Windows-Windows Defender","_beats_type":"winlogbeat","_winlogbeat_winlog_user_domain":"NT AUTHORITY","_winlogbeat_agent_name":"JUMPBOX","_winlogbeat_winlog_event_id":1116,"_winlogbeat_winlog_event_data_Path":"file:_C:\\Users\\Administrator\\Downloads\\26de80e3bbbe1f053da4131ca7a405644b7443356ec97d48517f1ab86d5f1ca5","_winlogbeat_host_name":"JUMPBOX","_winlogbeat_winlog_channel":"Microsoft-Windows-Windows Defender/Operational","_winlogbeat_winlog_user_name":"SYSTEM","_winlogbeat_winlog_computer_name":"JUMPBOX","_winlogbeat_event_kind":"event","_winlogbeat_collector_node_id":"JUMPBOX","_winlogbeat_winlog_event_data_FWLink":"https://go.microsoft.com/fwlink/?linkid=37020&amp;name=TrojanDownloader:O97M/Donoff!rfn&amp;threatid=2147709062&amp;enterprise=0","_winlogbeat_winlog_process_thread_id":4108,"_winlogbeat_winlog_api":"wineventlog","message":"Windows Defender has detected malware or other potentially unwanted software.\n For more information please see the following:\nhttps://go.microsoft.com/fwlink/?linkid=37020&amp;name=TrojanDownloader:O97M/Donoff!rfn&amp;threatid=2147709062&amp;enterprise=0\n \tName: TrojanDownloader:O97M/Donoff!rfn\n \tID: 2147709062\n \tSeverity: Severe\n \tCategory: Trojan Downloader\n \tPath: file:_C:\\Users\\Administrator\\Downloads\\26de80e3bbbe1f053da4131ca7a405644b7443356ec97d48517f1ab86d5f1ca5\n \tDetection Origin: Local machine\n \tDetection Type: Concrete\n \tDetection Source: User\n \tUser: JUMPBOX\\Klondike57Capsule\n \tProcess Name: Unknown\n \tSecurity intelligence Version: AV: 1.349.510.0, AS: 1.349.510.0, NIS: 0.0.0.0\n \tEngine Version: AM: 1.1.18500.10, NIS: 0.0.0.0","_winlogbeat_winlog_provider_guid":"{11CD958A-C507-4EF3-B3F2-5FD9DFBD2C78}","_winlogbeat_agent_type":"winlogbeat","_winlogbeat_winlog_provider_name":"Microsoft-Windows-Windows Defender","_winlogbeat_winlog_process_pid":1776,"host":"ip-172-31-26-190","level":6,"version":"1.1","_replayed_log":"true"}</code>
+        </p>
+        <h4>Agent Status (Event 1150)</h4>
+        <p><code class="linecode">{"_winlogbeat_log_level":"information","_winlogbeat_@metadata_type":"_doc","_winlogbeat_event_created":"2021-09-11T14:25:27.313Z","_winlogbeat_agent_id":"56231ac0-2bd0-40e3-860f-04595b12f20e","_winlogbeat_winlog_opcode":"Info","_winlogbeat_@metadata_beat":"winlogbeat","_winlogbeat_ecs_version":"1.5.0","_winlogbeat_event_code":1150,"_winlogbeat_tags":["windows"],"_winlogbeat_event_provider":"Microsoft-Windows-Windows Defender","_beats_type":"winlogbeat","_winlogbeat_winlog_user_domain":"NT AUTHORITY","_winlogbeat_winlog_user_identifier":"S-1-5-18","_winlogbeat_agent_name":"GRAYLOGMEMBER1","_winlogbeat_winlog_event_id":1150,"_winlogbeat_winlog_user_type":"User","_winlogbeat_host_name":"GRAYLOGMEMBER1.grayloglab.local","_winlogbeat_winlog_user_name":"SYSTEM","_winlogbeat_winlog_channel":"Microsoft-Windows-Windows Defender/Operational","_winlogbeat_winlog_computer_name":"GRAYLOGMEMBER1.grayloglab.local","_winlogbeat_event_kind":"event","_winlogbeat_collector_node_id":"GRAYLOGMEMBER1","_winlogbeat_winlog_process_thread_id":1500,"_winlogbeat_winlog_api":"wineventlog","message":"Endpoint Protection client is up and running in a healthy state.\n \tPlatform version: 4.18.2108.7\n \tEngine version: 1.1.18500.10\n \tSecurity intelligence version: 1.349.518.0","_winlogbeat_@timestamp":"2021-09-11T14:25:25.906Z","_winlogbeat_agent_version":"7.9.0","_winlogbeat_winlog_provider_guid":"{11CD958A-C507-4EF3-B3F2-5FD9DFBD2C78}","_winlogbeat_agent_type":"winlogbeat","_winlogbeat_winlog_provider_name":"Microsoft-Windows-Windows Defender","_winlogbeat_agent_ephemeral_id":"471edb61-c9f5-4710-8af1-db6f63b0a47d","_winlogbeat_@metadata_version":"7.9.0","_winlogbeat_winlog_record_id":17349,"_winlogbeat_agent_hostname":"GRAYLOGMEMBER1","_winlogbeat_winlog_process_pid":2212,"host":"ip-172-31-26-190","level":6,"version":"1.1","_replayed_log":"true"}
         </code>
-    </p>
-    <h4>Agent Status (Event 1150)</h4>
-    <p><code class="linecode">{"_winlogbeat_log_level":"information","_winlogbeat_@metadata_type":"_doc","_winlogbeat_event_created":"2021-09-11T14:25:27.313Z","_winlogbeat_agent_id":"56231ac0-2bd0-40e3-860f-04595b12f20e","_winlogbeat_winlog_opcode":"Info","_winlogbeat_@metadata_beat":"winlogbeat","_winlogbeat_ecs_version":"1.5.0","_winlogbeat_event_code":1150,"_winlogbeat_tags":["windows"],"_winlogbeat_event_provider":"Microsoft-Windows-Windows Defender","_beats_type":"winlogbeat","_winlogbeat_winlog_user_domain":"NT AUTHORITY","_winlogbeat_winlog_user_identifier":"S-1-5-18","_winlogbeat_agent_name":"GRAYLOGMEMBER1","_winlogbeat_winlog_event_id":1150,"_winlogbeat_winlog_user_type":"User","_winlogbeat_host_name":"GRAYLOGMEMBER1.grayloglab.local","_winlogbeat_winlog_user_name":"SYSTEM","_winlogbeat_winlog_channel":"Microsoft-Windows-Windows Defender/Operational","_winlogbeat_winlog_computer_name":"GRAYLOGMEMBER1.grayloglab.local","_winlogbeat_event_kind":"event","_winlogbeat_collector_node_id":"GRAYLOGMEMBER1","_winlogbeat_winlog_process_thread_id":1500,"_winlogbeat_winlog_api":"wineventlog","message":"Endpoint Protection client is up and running in a healthy state.\n \tPlatform version: 4.18.2108.7\n \tEngine version: 1.1.18500.10\n \tSecurity intelligence version: 1.349.518.0","_winlogbeat_@timestamp":"2021-09-11T14:25:25.906Z","_winlogbeat_agent_version":"7.9.0","_winlogbeat_winlog_provider_guid":"{11CD958A-C507-4EF3-B3F2-5FD9DFBD2C78}","_winlogbeat_agent_type":"winlogbeat","_winlogbeat_winlog_provider_name":"Microsoft-Windows-Windows Defender","_winlogbeat_agent_ephemeral_id":"471edb61-c9f5-4710-8af1-db6f63b0a47d","_winlogbeat_@metadata_version":"7.9.0","_winlogbeat_winlog_record_id":17349,"_winlogbeat_agent_hostname":"GRAYLOGMEMBER1","_winlogbeat_winlog_process_pid":2212,"host":"ip-172-31-26-190","level":6,"version":"1.1","_replayed_log":"true"}
-        </code>
-    </p>
-    <h2 id="what-is-provided">What is Provided</h2>
-    <ul>
-        <li>
-            <p>Parsing, normalization, and enrichment of Defender Antivirus events.</p>
-        </li>
-        <li>
-            <p>Severity and file path normalization.</p>
-        </li>
-        <li>
-            <p>GIM categorization and enforcement fields.</p>
-        </li>
-        <li>
-            <p>A Spotlight dashboard.</p>
-        </li>
-    </ul>
-    <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
-    <p>The pack processes the following Microsoft Defender Antivirus event groups. Events outside these groups receive
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Parsing, normalization, and enrichment of Defender Antivirus events.</p>
+            </li>
+            <li>
+                <p>Severity and file path normalization.</p>
+            </li>
+            <li>
+                <p>GIM categorization and enforcement fields.</p>
+            </li>
+            <li>
+                <p>A Spotlight dashboard.</p>
+            </li>
+        </ul>
+        <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
+        <p>The pack processes the following Microsoft Defender Antivirus event groups. Events outside these groups receive
         generic processing.</p>
-    <ul>
-        <li>
-            <p>Malware Detection and Response (1006-1008, 1015, 1116-1119)</p>
-        </li>
-        <li>
-            <p>Scan and Quarantine Activity (1000-1014)</p>
-        </li>
-        <li>
-            <p>Engine, Signature, and Platform Updates (2000-2014)</p>
-        </li>
-        <li>
-            <p>Agent Status and Configuration (1150, 5000-5012)</p>
-        </li>
-    </ul>
-    <h3 id="gim-categorization">GIM Categorization</h3>
-    <p>GIM categorization is provided for the following Microsoft Defender Antivirus events.</p>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>GIM Categorization Table <span style="font-size: 8pt;">▼</span>
-            </MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Code</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Name</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Subcategory</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Event Type Code</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware scan started</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.activity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1001</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware scan finished</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.activity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1002</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware scan stopped before
+        <ul>
+            <li>
+                <p>Malware Detection and Response (1006-1008, 1015, 1116-1119)</p>
+            </li>
+            <li>
+                <p>Scan and Quarantine Activity (1000-1014)</p>
+            </li>
+            <li>
+                <p>Engine, Signature, and Platform Updates (2000-2014)</p>
+            </li>
+            <li>
+                <p>Agent Status and Configuration (1150, 5000-5012)</p>
+            </li>
+        </ul>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following Microsoft Defender Antivirus events.</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>GIM Categorization Table <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Code</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Subcategory</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Event Type Code</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware scan started</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.activity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1001</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware scan finished</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.activity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1002</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware scan stopped before
                             completion</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.activity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1003</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware scan paused</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.activity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1004</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware scan resumed</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.activity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1005</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware scan failed</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.activity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1006</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware engine found malware
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.activity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1003</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware scan paused</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.activity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1004</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware scan resumed</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.activity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1005</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware scan failed</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.activity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1006</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware engine found malware
                             or other potentially unwanted software</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.host_detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">301000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1007</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware platform performed an
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.host_detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">301000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1007</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware platform performed an
                             action against malware</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.host_detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">301000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1008</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware platform action
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.host_detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">301000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1008</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware platform action
                             against malware failed</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.host_detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">301000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1009</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware platform restored an
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.host_detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">301000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1009</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware platform restored an
                             item from quarantine</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.activity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1010</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware platform failed to
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.activity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1010</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware platform failed to
                             restore an item from quarantine</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.activity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1011</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware platform deleted an
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.activity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1011</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware platform deleted an
                             item from quarantine</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.activity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1012</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware platform failed to
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.activity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1012</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware platform failed to
                             delete an item from quarantine</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.activity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1013</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware platform deleted
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.activity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1013</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware platform deleted
                             history of malware and other potentially unwanted software</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.activity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1014</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware platform failed to
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.activity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1014</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware platform failed to
                             delete history of malware and other potentially unwanted software</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.activity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1015</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware platform detected
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.activity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1015</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware platform detected
                             suspicious behavior</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.host_detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">301000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1116</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware platform detected
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.host_detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">301000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1116</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware platform detected
                             malware or other potentially unwanted software</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.host_detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">301000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1117</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware platform performed an
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.host_detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">301000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1117</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware platform performed an
                             action to protect the system</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.host_detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">301000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1118</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware platform action to
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.host_detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">301000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1118</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware platform action to
                             protect the system failed</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.host_detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">301000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1119</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware platform encountered
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.host_detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">301000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1119</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware platform encountered
                             a critical error</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.host_detection</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">301000</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1150</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Endpoint Protection client is
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.host_detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">301000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1150</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Endpoint Protection client is
                             healthy</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.status</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280200</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware definitions updated
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280200</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware definitions updated
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.update</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280100</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2001</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware definitions update
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.update</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280100</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2001</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware definitions update
                             failed</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.update</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280100</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2002</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware engine updated</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.update</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280100</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2003</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware engine update failed
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.update</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280100</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2002</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware engine updated</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.update</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280100</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2003</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware engine update failed
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.update</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280100</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2004</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware reverted to last
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.update</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280100</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2004</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware reverted to last
                             known good signatures</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.update</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280100</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2005</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware definitions update
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.update</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280100</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2005</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware definitions update
                             failed to load</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.update</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280100</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2010</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware loaded dynamic
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.update</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280100</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2010</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware loaded dynamic
                             signatures</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.update</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280100</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2011</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware discarded a dynamic
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.update</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280100</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2011</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Antimalware discarded a dynamic
                             signature</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.update</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280100</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2014</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware platform updated</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.update</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280100</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">5000</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Real-time protection scanning
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.update</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280100</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2014</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware platform updated</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.update</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280100</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">5000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Real-time protection scanning
                             enabled</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.status</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280200</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">5001</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Real-time protection scanning
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280200</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">5001</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Real-time protection scanning
                             disabled</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.status</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280200</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">5004</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Real-time protection
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280200</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">5004</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Real-time protection
                             configuration changed</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.status</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280200</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">5007</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware platform
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280200</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">5007</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Antimalware platform
                             configuration changed</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.status</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280200</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">5010</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Scanning for spyware and other
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agent.status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">280200</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">5010</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Scanning for spyware and other
                             potentially unwanted software disabled</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.status</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280200</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">5012</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Scanning for viruses disabled
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">280200</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">5012</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Scanning for viruses disabled
                         </td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">agent</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">agent.status</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">280200</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h3>Parsed Fields</h3>
-    <p>The following fields are parsed and normalized from Microsoft Defender Antivirus events.</p>
-    <MadCap:dropDown>
-        <MadCap:dropDownHead>
-            <MadCap:dropDownHotspot>Parsed Fields Table <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
-        </MadCap:dropDownHead>
-        <MadCap:dropDownBody>
-            <table cellspacing="21"
-                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
-                class="TableStyle-Alternate-Row-Color">
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-                <thead>
-                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
-                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_code</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Windows event ID</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_source_product</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Set to microsoft_defender</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_outcome</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">success or failure based on error
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">agent.status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">280200</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h3>Parsed Fields</h3>
+        <p>The following fields are parsed and normalized from Microsoft Defender Antivirus events.</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Parsed Fields Table <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Windows event ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_source_product</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Set to microsoft_defender</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_outcome</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Success or failure based on error
                             code</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_action</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Normalized action (scan_start,
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Normalized action (scan_start,
                             scan_end, blocked, allowed, quarantine, remove, etc.)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_hostname</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Hostname of the reporting system
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Hostname of the reporting system
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_description</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Event description text</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_signature</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Malware/threat name or ASR rule
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Event description text</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_signature</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Malware/threat name or ASR rule
                             ID</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_signature_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Threat definition ID</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_severity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Normalized severity (low, medium,
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_signature_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Threat definition ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Normalized severity (low, medium,
                             high, critical)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_severity_level</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Numeric severity level (2-5)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_category</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Threat category (virus, trojan,
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_severity_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Numeric severity level (2-5)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_category</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Threat category (virus, trojan,
                             etc.) or attack surface reduction</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_response_level</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Response severity level (0=allow,
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_response_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Response severity level (0=allow,
                             1=quarantine/block, 2=remove/clean)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_path</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Path of detected file</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">File name (derived from
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Path of detected file</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">File name (derived from
                             file_path)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_path</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Process associated with the event
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Process associated with the event
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Process executable name</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">User account associated with the
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Process executable name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">User account associated with the
                             event</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_domain</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Domain of the user account</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_alert_severity</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Original Microsoft severity text
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_domain</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Domain of the user account</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_alert_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Original Microsoft severity text
                             (Low, Moderate, High, Severe)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_alert_category</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Original Microsoft threat
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_alert_category</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Original Microsoft threat
                             category</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_alert_object_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Object type (file, containerfile,
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_alert_object_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Object type (file, containerfile,
                             driver, etc.)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_file_path</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Original complex file path with
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_file_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Original complex file path with
                             container information</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_detection_origin</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Detection origin (Local machine,
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_detection_origin</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Detection origin (Local machine,
                             Network, etc.)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_detection_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Detection type (Concrete,
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_detection_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Detection type (Concrete,
                             Heuristic, etc.)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_detection_source</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Detection source (Real-Time
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_detection_source</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Detection source (Real-Time
                             Protection, IOAV, etc.)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_scan_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Scan identifier</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_scan_type</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Scan type (Antimalware, Quick,
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_scan_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Scan identifier</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_scan_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Scan type (Antimalware, Quick,
                             Full, Custom)</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_scan_parameters</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Scan parameters</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_scan_resources</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Scanned resource paths</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_asr_rule_id</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Attack Surface Reduction rule
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_scan_parameters</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Scan parameters</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_scan_resources</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Scanned resource paths</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_asr_rule_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Attack Surface Reduction rule
                             GUID</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_platform_version</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Defender platform version</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_engine_version</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Defender engine version</td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_intelligence_version</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Security intelligence version
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_platform_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Defender platform version</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_engine_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Defender engine version</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_intelligence_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Security intelligence version
                         </td>
-                    </tr>
-                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">service_name</td>
-                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Set to Microsoft Defender
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">service_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Set to Microsoft Defender
                             Antivirus for service start/stop events</td>
-                    </tr>
-                </tbody>
-            </table>
-        </MadCap:dropDownBody>
-    </MadCap:dropDown>
-    <h2 id="spotlight-content-pack">Microsoft Defender Antivirus Spotlight</h2>
-    <p>This spotlight offers a dashboard with 2 tabs:</p>
-    <h3>Overview</h3>
-    <p>
-        <img src="../Resources/Images/microsoft_defender_antivirus/overview.png" />
-    </p>
-    <h3>Agent Activity</h3>
-    <p>
-        <img src="../Resources/Images/microsoft_defender_antivirus/agent_activity.png" />
-    </p>
-</body>
-
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h2 id="spotlight-content-pack">Microsoft Defender Antivirus Spotlight</h2>
+        <p>This spotlight offers a dashboard with 2 tabs:</p>
+        <h3>Overview</h3>
+        <p>
+            <img src="../Resources/Images/Microsoft Defender Antivirus/overview.png" />
+        </p>
+        <h3>Agent Activity</h3>
+        <p>
+            <img src="../Resources/Images/Microsoft Defender Antivirus/agent_activity.png" />
+        </p>
+    </body>
 </html>
