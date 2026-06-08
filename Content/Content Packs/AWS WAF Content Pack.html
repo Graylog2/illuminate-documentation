@@ -1,0 +1,481 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>AWS WAF</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>
+            <MadCap:concept term="Vendor:Amazon" />AWS WAF</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>AWS WAF is Amazon's web application firewall. It inspects HTTP and HTTPS requests reaching application load
+balancers, Amazon CloudFront, Amazon API Gateway, and AWS AppSync, applying allow, block, count, CAPTCHA, or challenge actions
+        based on managed or custom rule sets.</p>
+        <p>This technology pack identifies AWS WAF event log messages delivered through Kinesis, parses the WAF JSON
+        payload, normalizes HTTP request and enforcement fields, and applies GIM categorization, severity, and alert
+        fields so that blcok, CAPTCHA, and challenge outcomes surface as network detections.</p>
+        <h2 id="supported-versions">Supported Versions</h2>
+        <ul>
+            <li>
+                <p>AWS WAF v2 (current generation web access control lists—web ACLs)</p>
+            </li>
+        </ul>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>Graylog 7.1.0+ with a valid Enterprise license</p>
+            </li>
+            <li>
+                <p>AWS WAF v2 with logging enabled for the web ACL with delivery through Amazon Kinesis Data Firehose</p>
+            </li>
+        </ul>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>"Illuminate:AWS WAF Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this stream does not exist prior to the
+                activation of this pack then it is created and configured to route messages to this stream and the
+                associated index set. There should not be any stream rules configured for this stream.</div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"AWS WAF Event Log Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this index set is already defined, then
+                nothing is changed. If this index set does not exist, then it is created with retention
+                settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
+                installation.</div>
+            </section>
+        </p>
+        <h2 id="log-collection">Log Collection</h2>
+        <p>This pack parses AWS WAF event log messages collected from an Amazon Kinesis Data Firehose stream that AWS WAF is
+        configured to write to.</p>
+        <ul>
+            <li>
+                <p>Enable logging on the target Web ACL and select an Amazon Kinesis Data Firehose stream as the
+                destination.</p>
+            </li>
+            <li>
+                <p>Configure the Firehose stream to deliver records to Graylog using the <a href="https://go2docs.graylog.org/current/getting_in_log_data/aws_kinesis_cloudwatch_input.html">AWS
+                    Kinesis/CloudWatch input</a>.</p>
+            </li>
+            <li>
+                <p>Identification keys on the <code class="linecode">aws_kinesis_stream</code> and <code class="linecode">aws_kinesis_message_type</code> fields set by the Graylog AWS Kinesis input, so no
+                specific stream name is required.</p>
+            </li>
+        </ul>
+        <h2 id="log-format-example">Log Format Example</h2>
+        <h4>BLOCK - AWSManagedRulesCommonRuleSet</h4>
+        <p><code class="linecode">{
+          "timestamp": 1778140491525,
+          "formatVersion": 1,
+          "webaclId": "arn:aws:wafv2:us-east-1:517803882956:regional/webacl/prod-waf/3b8a9ef3-9057-4538-acdd-bda6c27c2131",
+          "terminatingRuleId": "AWS-AWSManagedRulesCommonRuleSet",
+          "terminatingRuleType": "MANAGED_RULE_GROUP",
+          "action": "BLOCK",
+          "terminatingRuleMatchDetails": [],
+          "httpSourceName": "ALB",
+          "httpSourceId": "517803882956-app/waf-test-alb/8d72c561de3f870e",
+          "ruleGroupList": [
+            {
+              "ruleGroupId": "AWS#AWSManagedRulesCommonRuleSet",
+              "terminatingRule": {
+                "ruleId": "NoUserAgent_HEADER",
+                "action": "BLOCK",
+                "ruleMatchDetails": null
+              },
+              "nonTerminatingMatchingRules": [],
+              "excludedRules": null,
+              "customerConfig": null
+            }
+          ],
+          "rateBasedRuleList": [],
+          "nonTerminatingMatchingRules": [],
+          "requestHeadersInserted": null,
+          "responseCodeSent": null,
+          "httpRequest": {
+            "clientIp": "185.142.236.41",
+            "country": "SC",
+            "headers": [
+              { "name": "Host", "value": "34.238.104.93" }
+            ],
+            "uri": "/.well-known/security.txt",
+            "args": "",
+            "httpVersion": "HTTP/1.1",
+            "httpMethod": "GET",
+            "requestId": "1-69fc454b-529730c46a57df1c1f2d453d",
+            "fragment": "",
+            "scheme": "http",
+            "host": "34.238.104.93"
+          },
+          "labels": [
+            { "name": "awswaf:managed:aws:core-rule-set:NoUserAgent_Header" }
+          ]
+        }
+        </code>
+        </p>
+        <h4>ALLOW - Default_Action</h4>
+        <p><code class="linecode">{
+          "timestamp": 1778154180000,
+          "formatVersion": 1,
+          "webaclId": "arn:aws:wafv2:us-east-1:517803882956:regional/webacl/prod-waf/3b8a9ef3-9057-4538-acdd-bda6c27c2131",
+          "terminatingRuleId": "Default_Action",
+          "terminatingRuleType": "REGULAR",
+          "action": "ALLOW",
+          "terminatingRuleMatchDetails": [],
+          "httpSourceName": "ALB",
+          "httpSourceId": "517803882956-app/waf-test-alb/8d72c561de3f870e",
+          "ruleGroupList": [],
+          "rateBasedRuleList": [],
+          "nonTerminatingMatchingRules": [],
+          "requestHeadersInserted": null,
+          "responseCodeSent": null,
+          "httpRequest": {
+            "clientIp": "192.0.2.10",
+            "country": "US",
+            "headers": [
+              { "name": "Host", "value": "app.example.com" },
+              { "name": "User-Agent", "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15" }
+            ],
+            "uri": "/",
+            "args": "",
+            "httpVersion": "HTTP/2.0",
+            "httpMethod": "GET",
+            "requestId": "1-69fc0004-dddddddddddddddddddddddd",
+            "fragment": "",
+            "scheme": "https",
+            "host": "app.example.com"
+          },
+          "labels": []
+        }
+        </code>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Parsing of the WAF JSON payload into normalized HTTP request, source, and vendor fields.</p>
+            </li>
+            <li>
+                <p>GIM event type code assignment for all supported message types.</p>
+            </li>
+            <li>
+                <p>A spotlight dashboard summarizing AWS WAF activity.</p>
+            </li>
+        </ul>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following messages:</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Log Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Vendor Event Description</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Event Type Code</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">aws_waf</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">WAF BLOCK - terminating rule matched and
+                    request was blocked</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.network detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">300001</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">aws_waf</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">WAF CAPTCHA - CAPTCHA challenge served to
+                    verify a human client</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.network detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">300001</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">aws_waf</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">WAF CHALLENGE - silent JavaScript browser
+                    challenge served</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.network detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">300001</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">aws_waf</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">WAF ALLOW - request inspected and allowed
+                    through</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">129999</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">aws_waf</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">WAF COUNT - telemetry-only match, request
+                    not blocked</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">network.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">129999</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Message Fields Included in This Pack</h3>
+        <h4>Normalized GIM Fields</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Access Normalized Field List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">aws_waf</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Identifies messages parsed by
+                            this pack</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">blocked</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Normalized WAF action: blocked,
+                            allowed, counted, or challenged</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_outcome</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">success</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Set to success for any deliberate
+                            enforcement decision (BLOCK, ALLOW, CAPTCHA, CHALLENGE); unset for COUNT</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_log_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">aws-waf-block-common</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">WAF rule family and action,
+                            derived from the primary label and action</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">high</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Normalized severity text:
+                            critical, high, medium, or informational</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_severity_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Numeric severity, 1
+                            (informational) through 4 (critical)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">high</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Alert severity text, mirrors
+                            event_severity</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_severity_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Alert severity numeric, mirrors
+                            event_severity_level</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_category</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">core-rule-set</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">WAF rule-group identifier from
+                            the primary label, with fallback to vendor_data_terminating_rule_type</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_signature</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">AWS-AWSManagedRulesCommonRuleSet
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Terminating rule identifier
+                            reported by AWS WAF</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gim_event_type_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">300001</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">GIM event type code assigned by
+                            this pack</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">185.142.236.41</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client IP address that originated
+                            the HTTP request</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_http_source_country
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">SC</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Two-letter country code reported
+                            by AWS WAF for the client IP</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">app.example.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Host header value from the
+                            inspected HTTP request</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_request_method</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">GET</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP method of the inspected
+                            request</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">/.well-known/security.txt</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">URI path of the inspected request
+                        </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_uri_query</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">id=1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Query string of the inspected
+                            request</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">http_user_agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Mozilla/5.0 (Macintosh; Intel Mac
+                            OS X 10_15_7) AppleWebKit/605.1.15</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">User-Agent header value from the
+                            inspected request</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>Vendor-Specific Fields</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Access Vendor Field List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">BLOCK</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Raw WAF action: BLOCK, ALLOW,
+                            COUNT, CAPTCHA, or CHALLENGE</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_webacl_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            arn:aws:wafv2:us-east-1:517803882956:regional/webacl/prod-waf/3b8a9ef3-9057-4538-acdd-bda6c27c2131
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Full ARN of the Web ACL that
+                            processed the request</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_http_source</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ALB</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">AWS service that fronted the
+                            request (ALB, CLOUDFRONT, APIGW, APPSYNC)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_terminating_rule_id
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">AWS-AWSManagedRulesCommonRuleSet
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Identifier of the rule whose
+                            action terminated WAF evaluation</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_terminating_rule_type
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">MANAGED_RULE_GROUP</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Type of terminating rule
+                            (MANAGED_RULE_GROUP, REGULAR, RATE_BASED)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            vendor_data_waf_primary_label_full</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            awswaf:managed:aws:core-rule-set:NoUserAgent_Header</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Full WAF label string from the
+                            first entry of the labels array</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_waf_primary_label
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">core-rule-set</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Rule-group portion extracted from
+                            the primary label</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">vendor_data_*</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">See description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Raw WAF JSON payload mirrored
+                            under vendor_data_ keys for unmapped fields</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h2 id="spotlight-content-pack">AWS WAF Spotlight Content Pack</h2>
+        <p>This spotlight offers a dashboard with 1 tab:</p>
+        <h3>Overview</h3>
+        <p>
+            <img src="../Resources/Images/AWS WAF/overview.png" />
+        </p>
+    </body>
+</html>
