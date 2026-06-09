@@ -1,0 +1,532 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Microsoft WinRM Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>Microsoft WinRM Content Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Microsoft Windows Remote Management (WinRM) is the Microsoft implementation of the WS-Management protocol that enables remote administration of Windows systems. This technology pack processes Microsoft-Windows-WinRM/Operational event logs, providing normalization and enrichment of WinRM session, operation, authentication, and error events.</p>
+        <h2 id="supported-versions">Supported Versions</h2>
+        <ul>
+            <li>
+                <p>Windows Server 2012 R2 or later</p>
+            </li>
+            <li>
+                <p>Windows 10 or later</p>
+            </li>
+            <li>
+                <p>NXLog 2.10 (im_msvistalog)</p>
+            </li>
+            <li>
+                <p>Winlogbeat 8.x</p>
+            </li>
+        </ul>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>Graylog 7.1+ with a valid Enterprise license</p>
+            </li>
+            <li>
+                <p>WinRM Operational event log collection enabled on the source host</p>
+            </li>
+            <li>
+                <p>NXLog or Winlogbeat agent forwarding the Microsoft-Windows-WinRM/Operational channel</p>
+            </li>
+        </ul>
+        <h2 id="log-collection">Log Collection and Delivery</h2>
+        <p>WinRM logs are collected via NXLog or Winlogbeat running on the WinRM host (client or server) and delivered to a Graylog input.</p>
+        <h3>NXLog Collection</h3>
+        <p>Configure NXLog to read the Microsoft-Windows-WinRM/Operational channel and forward via GELF.</p>
+        <ol>
+            <li>
+                <p>Configure an im_msvistalog input with QueryXML targeting Channel='Microsoft-Windows-WinRM/Operational'.</p>
+            </li>
+            <li>
+                <p>Configure an om_tcp / om_udp output with the GELF format pointed at your Graylog GELF input.</p>
+            </li>
+        </ol>
+        <h3>Winlogbeat Collection</h3>
+        <p>Configure Winlogbeat to read the Microsoft-Windows-WinRM/Operational channel.</p>
+        <ol>
+            <li>
+                <p>Add an event_logs entry: name: 'Microsoft-Windows-WinRM/Operational'.</p>
+            </li>
+            <li>
+                <p>Configure the Logstash or Beats output to deliver to your Graylog Beats input.</p>
+            </li>
+        </ol>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>"Illuminate:WinRM Event Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</span>
+                </div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"WinRM Event Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
+                </div>
+            </section>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Parsing rules to extract WinRM Operational event log fields into Graylog schema compatible fields for both NXLog and Winlogbeat agents</p>
+            </li>
+            <li>
+                <p>Lookup-based enrichment of WSMan/WinRM error codes to human-readable descriptions</p>
+            </li>
+            <li>
+                <p>Normalization of WinRM operation names (Enumeration, Get, Invoke, Subscribe, ...) to a canonical event_action verb</p>
+            </li>
+            <li>
+                <p>Graylog Information Model (GIM) categorization for WinRM authentication, authorization, network connection, and service lifecycle events under the authentication, network, and service categories</p>
+            </li>
+            <li>
+                <p>Network direction tagging (inbound/outbound) for session lifecycle events (6, 80, 91)</p>
+            </li>
+            <li>
+                <p>WinRM Spotlight content pack with operations, errors, and authentication dashboards</p>
+            </li>
+        </ul>
+        <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
+        <p>The content pack processes events from the Microsoft-Windows-WinRM/Operational channel.</p>
+        <ul>
+            <li>
+                <p>Session lifecycle events (6, 80, 91): outbound session creation, request dispatch, inbound session reception</p>
+            </li>
+            <li>
+                <p>Operation events (132, 142, 143, 172, 774, 775, 1025, 1048, 1840, 1843, 2049): WSMan operation success, failure, response handling, and protocol diagnostics</p>
+            </li>
+            <li>
+                <p>Authentication events (161, 164, 169, 1291, 1295): user and machine authentication failures and successful credential validation</p>
+            </li>
+            <li>
+                <p>Authorization events (192, 1536): post-authentication access decisions</p>
+            </li>
+            <li>
+                <p>Service lifecycle events (208, 210, 213, 215, 224): WinRM service start, stop, security/plugin errors, and configuration change</p>
+            </li>
+        </ul>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following messages:</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event ID</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Description</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">6, 80</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">WinRM outbound session created or request dispatched</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120200</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.open</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection initiated</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">91</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">WinRM inbound session received on the server</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network_connection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">161</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User authentication failure on the remote system</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100501</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">credential validation error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">164</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Destination machine authentication failure on the client</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">100501</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">credential validation error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">169</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">User authenticated to remote system</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000, 100500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon, authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon and credential validation</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">192</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">WinRM authorization granted to authenticated user</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">101000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">access notice</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">208</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">WinRM service startup initiated</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">210000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.start</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service started</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">210</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">WinRM service stop failure</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">210100</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.stop</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service stopped</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">213</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">WinRM service security error</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">211504</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.state</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">215</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">WinRM service plugin loading error</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">211504</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.state</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">224</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">WinRM service configuration change</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">211000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.configuration</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service configuration change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1291</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Client authentication success</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">100000, 100500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.logon, authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">logon and credential validation</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1295</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Server authentication success</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000, 100500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon, authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon and credential validation</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">1536</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">WinRM authorization completed successfully</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">101000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">authentication.access notice</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">access notice</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Fields Extracted by This Pack</h3>
+        <p>Fields extracted from WinRM Operational events. Some fields are only present on specific event IDs.</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">142</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Windows event ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_log_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">microsoft-windows-winrm/operational</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Windows event log channel name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_received_time</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2024-06-11 15:10:36</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Timestamp the event was received by the agent</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_reporter</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">WIN-CLIENT01</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Hostname of the agent reporting the event</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">WIN-CLIENT01</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source host for the event</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_source_product</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">windows_winrm</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Illuminate source product identifier</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_uid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1303</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Windows event record ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">allowed</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Canonical access-control decision: blocked for auth failures (161, 164), allowed for auth successes (169, 1291, 1295) and inbound sessions (91); not set for protocol/operation events</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_outcome</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">success</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Outcome of the event (success or failure); set on session, operation, authentication, service, quota, and error events. Not set on diagnostic/trace events (145, 254, 2048) or events without a definitive outcome (80, 166, 208, 224)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">high</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Canonical severity (critical, high, medium, low, informational) derived from vendor_event_severity</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_severity_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">integer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Canonical severity level (1-5) derived from event_severity by core</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">application_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">winrm</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Application name set on session and authentication events</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_direction</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">outbound</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Direction of the WinRM session (inbound for event 91, outbound for events 6 and 80)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_reference</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">10.0.0.5</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source host or IP for inbound session events</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_reference</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">WIN-SERVER01</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination host for outbound session events</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DOMAIN\Administrator</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">User account associated with the WinRM authentication event</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">windows_authentication_package_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Kerberos</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Authentication mechanism negotiated for the WinRM session</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Enumeration</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">WSMan operation name (Enumeration, Get, Put, Create, Delete, Invoke, Subscribe, ...)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_error_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2150858770</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">WSMan/WinRM error code</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_error_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">WSManFault: The WS-Management service cannot process the request because the request contained invalid selectors for the resource</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Human-readable description of the WinRM error code, resolved via lookup</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_resource_uri</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http://schemas.microsoft.com/powershell/Microsoft.PowerShell</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">WSMan resource URI for the request</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_plugin_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Microsoft.PowerShell</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">WinRM plugin name (event 215)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_action_uri</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http://schemas.xmlsoap.org/ws/2004/09/transfer/Get</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">WSMan action URI (event 1025)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_configuration_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">MaxConcurrentOperationsPerUser</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">WinRM configuration setting name (event 224)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_configuration_value</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1500</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">WinRM configuration setting value (event 224)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_operation_count</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1500</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">integer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Concurrent operation count (event 774 quota exceeded)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_max_operations</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1500</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">integer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Maximum concurrent operations limit (event 774)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_request_count</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">100</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">integer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Request count within the throttling window (event 775)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_window_time</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">60</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">integer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Throttling window in seconds (event 775)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_delay_hint</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">5000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">integer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Suggested client delay in milliseconds (event 775)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_security_warning</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Untrusted client connection rejected</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Security warning text (event 1843)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_response_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">500</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">integer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP response code from the WSMan service (event 1048)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_category</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">response handling</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Vendor-supplied event category</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ERROR</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Vendor-supplied event severity</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_severity_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">4</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">integer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Vendor-supplied numeric severity level</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_opcode</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Stop</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Vendor-supplied opcode</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_opcode_value</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">integer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Vendor-supplied numeric opcode value</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">gim_event_type_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">100501</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">integer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">GIM event type code (set on authentication events 161, 169, 1295)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h2 id="spotlight-content-pack">WinRM Spotlight Content Pack</h2>
+        <p>The WinRM Spotlight offers a dashboard with the following tabs:</p>
+        <h3>WinRM Overview</h3>
+        <p>
+            <img src="../Resources/Images/resources/winrm/winrm_overview_dashboard.png" />
+        </p>
+    </body>
+</html>
