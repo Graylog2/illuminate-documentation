@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>AWS S3 Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>AWS S3 Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Amazon S3 is an object storage service. This pack processes two S3 log families: AWS</p>
+        <p>CloudTrail S3 data events (event_source=s3.amazonaws.com) and S3 server access logs.</p>
+        <p>Messages are normalized into the Graylog Information Model (file.create,</p>
+        <p>file.delete, file.access, audit.policy, audit.default) with Security</p>
+        <p>Core coverage, and a lightweight single-event detection flags CloudTrail cross-bucket</p>
+        <p>CopyObject operations as potential data exfiltration (301001 host_dlp_detection).</p>
+        <h2 id="supported-versions">Supported Version(s)</h2>
+        <ul>
+            <li>
+                <p>AWS CloudTrail S3 data events (CloudTrail record version 1.08 and 1.09)</p>
+            </li>
+            <li>
+                <p>AWS S3 server access log format (current version as of April 2026)</p>
+            </li>
+        </ul>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>Graylog 7.1+ with a valid Enterprise license</p>
+            </li>
+        </ul>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>Illuminate:AWS S3 Messages</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</span>
+                </div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>AWS S3 Logs</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
+                </div>
+            </section>
+        </p>
+        <h2 id="log-collection">Log Collection and Delivery</h2>
+        <p>This pack parses logs from the following sources:</p>
+        <ul>
+            <li>
+                <p>AWS CloudTrail S3 data events forwarded via the AWS CloudTrail input, the AWS Kinesis/CloudWatch input, or an S3-to-Graylog forwarder</p>
+            </li>
+            <li>
+                <p>AWS S3 server access logs parsed by a forwarder (Lambda or similar) that reads the log bucket and forwards GELF/JSON messages</p>
+            </li>
+        </ul>
+        <h3>CloudTrail Delivery</h3>
+        <ol>
+            <li>
+                <p>Enable data events for the S3 buckets of interest in a CloudTrail trail. See the AWS documentation on <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-data-events-with-cloudtrail.html">logging data events</a>.</p>
+            </li>
+            <li>
+                <p>Forward the trail to Graylog using the <a href="https://go2docs.graylog.org/current/getting_in_log_data/aws_kinesis_cloudwatch_input.html">AWS Kinesis/CloudWatch input</a>, or decode the trail objects and forward them as JSON/GELF.</p>
+            </li>
+            <li>
+                <p>Preferred contract: deliver each decoded CloudTrail S3 data-event record as the raw JSON object in the <code class="linecode">message</code> field (one record per message), exactly as it appears in the trail (nested <code class="linecode">userIdentity</code>, <code class="linecode">requestParameters</code>, <code class="linecode">eventSource</code>, <code class="linecode">eventName</code>, ...). The pack's <code class="linecode">06-aws_s3_cloudtrail_parse</code> rule parses that JSON and flattens the nested objects into the canonical fields the normalization stage consumes (<code class="linecode">event_source</code>, <code class="linecode">event_name</code>, <code class="linecode">user_identity_userName</code>, <code class="linecode">request_parameters_bucketName</code>, <code class="linecode">source_ip_address</code>, ...). See <code class="linecode">resources/cloudtrail_s3_log.txt</code> for the exact record shape.</p>
+            </li>
+            <li>
+                <p>Alternatively, a forwarder may pre-flatten the record to those same canonical top-level field names; in that case the stage-6 parse is a no-op and the pack normalizes the pre-split fields directly.</p>
+            </li>
+            <li>
+                <p>AWS CloudTrail input shape: the Graylog AWS CloudTrail input (and SNS/SQS pipelines that mirror it) pre-flattens the record with its own field names rather than the canonical ones -- identity arrives as <code class="linecode">user_name</code>, <code class="linecode">user_principal_id</code>, <code class="linecode">user_account_id</code>, <code class="linecode">user_principal_arn</code>, <code class="linecode">user_type</code>; the request source IP arrives as <code class="linecode">source_address</code> (not <code class="linecode">source_ip_address</code>); and <code class="linecode">bucketName</code>, <code class="linecode">key</code>, and <code class="linecode">x-amz-copy-source</code> are delivered inside <code class="linecode">full_message</code> instead of <code class="linecode">requestParameters</code>. The pack's <code class="linecode">07-aws_s3_cloudtrail_input_parse</code> rule maps these into the canonical <code class="linecode">user_identity_*</code> / <code class="linecode">request_parameters_*</code> / <code class="linecode">source_ip_address</code> fields and also extracts <code class="linecode">additionalEventData</code> (a brace-wrapped key=value map) into <code class="linecode">vendor_data_*</code> fields. No forwarder-side renaming is required for this shape.</p>
+            </li>
+            <li>
+                <p>Identification: the pack recognizes a CloudTrail S3 event either by the raw JSON record (a JSON object that references <code class="linecode">s3.amazonaws.com</code>) or by the pre-flattened <code class="linecode">event_source=s3.amazonaws.com</code> + <code class="linecode">event_name</code> fields; <code class="linecode">source=aws-cloudtrail</code> is NOT used as an identifier because that label also carries non-S3 services.</p>
+            </li>
+        </ol>
+        <h3>S3 Server Access Log Delivery</h3>
+        <ol>
+            <li>
+                <p>Enable server access logging on each bucket you want to monitor. See the AWS documentation on <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/ServerLogs.html">server access logging</a>. Route the access logs to a dedicated logging bucket.</p>
+            </li>
+            <li>
+                <p>Deploy a forwarder that reads each new log object, parses the space-delimited <a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/LogFormat.html">access log format</a>, and forwards one GELF/JSON message per access record. The typical pattern is an AWS Lambda function triggered by S3 ObjectCreated events on the logging bucket that parses the record and POSTs to a Graylog GELF HTTP input.</p>
+            </li>
+            <li>
+                <p>The forwarder MUST produce the canonical field triple that the pack's identification rule looks for: <code class="linecode">bucket_owner</code>, <code class="linecode">bucket</code>, and <code class="linecode">operation</code>. With those three fields present, no <code class="linecode">source</code> label is required. As a fallback the pack also recognises <code class="linecode">source=s3-access-log-forwarder</code>.</p>
+            </li>
+            <li>
+                <p>Map every field in the AWS access log record to a top-level message field. Required fields (pack will not categorize without them): <code class="linecode">bucket_owner</code>, <code class="linecode">bucket</code>, <code class="linecode">operation</code>, <code class="linecode">remote_ip</code>, <code class="linecode">requester</code> (ARN or canonical-user-id; <code class="linecode">-</code> when anonymous), <code class="linecode">key</code> (<code class="linecode">-</code> when N/A), <code class="linecode">http_status</code>. Recommended fields: <code class="linecode">request_id</code>, <code class="linecode">request_uri</code>, <code class="linecode">error_code</code>, <code class="linecode">bytes_sent</code>, <code class="linecode">object_size</code>, <code class="linecode">total_time</code>, <code class="linecode">turnaround_time</code>, <code class="linecode">user_agent</code>, <code class="linecode">referer</code>, <code class="linecode">version_id</code>, <code class="linecode">host_id</code>, <code class="linecode">signature_version</code>, <code class="linecode">cipher_suite</code>, <code class="linecode">auth_type</code>, <code class="linecode">host_header</code>, <code class="linecode">tls_version</code>.</p>
+            </li>
+            <li>
+                <p>Do not rename vendor field names on the way in -- the pack's rename stage expects the AWS canonical names. In particular: keep <code class="linecode">remote_ip</code> (not <code class="linecode">source_ip</code>), <code class="linecode">requester</code> (not <code class="linecode">user</code>), <code class="linecode">key</code> (not <code class="linecode">file_name</code>), <code class="linecode">http_status</code> (not <code class="linecode">http_response_code</code>). The pack's <code class="linecode">10-aws_s3_access_log_processing</code> rule performs the rename into Graylog schema fields.</p>
+            </li>
+            <li>
+                <p>Set <code class="linecode">short_message</code> (or <code class="linecode">message</code>) on the forwarded record so Graylog accepts it; a concise summary like <code class="linecode">remote_ip operation bucket/key</code> works well.</p>
+            </li>
+            <li>
+                <p>Use a GELF input (HTTP/TCP/UDP) for lowest parsing overhead; a Raw/Plaintext HTTP input works as long as the forwarder emits JSON with the above field names.</p>
+            </li>
+            <li>
+                <p>For a minimal reference, see the <code class="linecode">s3_access_log_forwarded.txt</code> example under <code class="linecode">resources/</code> -- it shows the exact shape the pack expects after forwarding.</p>
+            </li>
+        </ol>
+        <h2 id="log-format-example">Log Format Examples</h2>
+        <p>These are example logs for the two supported AWS S3 log families.</p>
+        <h4>CloudTrail S3 Data Event</h4>
+        <p><code class="linecode"># AWS CloudTrail S3 Data Event (decoded record, one per message)
+        {
+          "eventVersion": "1.09",
+          "userIdentity": {
+            "type": "IAMUser",
+            "principalId": "AIDAEXAMPLEID1234",
+            "arn": "arn:aws:iam::111122223333:user/alice",
+            "accountId": "111122223333",
+            "userName": "alice"
+          },
+          "eventTime": "2026-04-15T10:15:22Z",
+          "eventSource": "s3.amazonaws.com",
+          "eventName": "PutObject",
+          "awsRegion": "us-east-1",
+          "sourceIPAddress": "203.0.113.45",
+          "userAgent": "aws-cli/2.13.0 Python/3.11",
+          "requestParameters": {
+            "bucketName": "example-app-uploads",
+            "key": "inbox/2026/04/15/report.csv"
+          },
+          "responseElements": null,
+          "eventID": "3fcd7213-a8dd-c88a-d151-58665299f60b",
+          "readOnly": false,
+          "resources": [
+            {
+              "type": "AWS::S3::Object",
+              "ARN": "arn:aws:s3:::example-app-uploads/inbox/2026/04/15/report.csv"
+            },
+            {
+              "accountId": "111122223333",
+              "type": "AWS::S3::Bucket",
+              "ARN": "arn:aws:s3:::example-app-uploads"
+            }
+          ],
+          "eventType": "AwsApiCall",
+          "managementEvent": false,
+          "recipientAccountId": "111122223333",
+          "eventCategory": "Data"
+        }
+        </code>
+        </p>
+        <h4>S3 Server Access Log (raw AWS format)</h4>
+        <p><code class="linecode"># AWS S3 Server Access Log (space-delimited, one line per request)
+        # Field order: bucket_owner bucket [time] remote_ip requester request_id operation key "request_uri" http_status error_code bytes_sent object_size total_time turn_around_time "referer" "user_agent" version_id host_id signature_version cipher_suite authentication_type host_header tls_version access_point_arn acl_required
+        a1b2c3d4e5f67890canonicaluserid1a2b3c4d5e6f7890a1b2c3d4e5f67890 example-app-uploads [15/Apr/2026:10:15:22 +0000] 203.0.113.10 arn:aws:iam::111122223333:user/alice A1B2C3D4E5F60718 REST.PUT.OBJECT inbox/2026/04/15/upload.png "PUT /inbox/2026/04/15/upload.png HTTP/1.1" 200 - 0 524288 145 12 "-" "aws-cli/2.13.0" - abcdef0123456789 SigV4 ECDHE-RSA-AES128-GCM-SHA256 AuthHeader example-app-uploads.s3.us-east-1.amazonaws.com TLSv1.3 - -
+        a1b2c3d4e5f67890canonicaluserid1a2b3c4d5e6f7890a1b2c3d4e5f67890 example-static-assets [15/Apr/2026:10:16:02 +0000] 198.51.100.12 - B2C3D4E5F6071819 REST.GET.OBJECT images/logo.png "GET /images/logo.png HTTP/1.1" 200 - 18211 18211 8 2 "-" "Mozilla/5.0" - hostid0123456789 - - - example-static-assets.s3.us-east-1.amazonaws.com TLSv1.3 - -
+        a1b2c3d4e5f67890canonicaluserid1a2b3c4d5e6f7890a1b2c3d4e5f67890 example-data-lake [15/Apr/2026:10:20:45 +0000] 203.0.113.66 arn:aws:iam::444455556666:user/external-user C3D4E5F607181920 REST.GET.OBJECT sensitive/finance.xlsx "GET /sensitive/finance.xlsx HTTP/1.1" 403 AccessDenied 243 2048000 9 - "-" "curl/8.0.1" - hostid9876543210 SigV4 - - example-data-lake.s3.us-east-1.amazonaws.com TLSv1.3 - -
+        </code>
+        </p>
+        <h4>S3 Server Access Log (forwarded shape the pack expects)</h4>
+        <p><code class="linecode"># S3 Server Access Log -- forwarded shape (what the pack expects as input)
+        #
+        # The forwarder reads the raw space-delimited record and emits one
+        # JSON/GELF message per line with the fields below. Keep the AWS
+        # field names on the way in; the pack's 10-aws_s3_access_log_processing
+        # rule performs the rename to Graylog schema fields.
+        #
+        # Minimal identification triple: bucket_owner + bucket + operation.
+        # No `source` label required; source=s3-access-log-forwarder is also accepted.
+        {
+          "short_message": "203.0.113.10 REST.PUT.OBJECT example-app-uploads/inbox/2026/04/15/upload.png",
+          "bucket_owner": "a1b2c3d4e5f67890canonicaluserid1a2b3c4d5e6f7890a1b2c3d4e5f67890",
+          "bucket": "example-app-uploads",
+          "timestamp": "2026-04-15T10:15:22Z",
+          "remote_ip": "203.0.113.10",
+          "requester": "arn:aws:iam::111122223333:user/alice",
+          "request_id": "A1B2C3D4E5F60718",
+          "operation": "REST.PUT.OBJECT",
+          "key": "inbox/2026/04/15/upload.png",
+          "request_uri": "PUT /inbox/2026/04/15/upload.png HTTP/1.1",
+          "http_status": 200,
+          "error_code": "-",
+          "bytes_sent": 0,
+          "object_size": 524288,
+          "total_time": 145,
+          "turn_around_time": 12,
+          "referer": "-",
+          "user_agent": "aws-cli/2.13.0",
+          "version_id": "-",
+          "host_id": "abcdef0123456789",
+          "signature_version": "SigV4",
+          "cipher_suite": "ECDHE-RSA-AES128-GCM-SHA256",
+          "authentication_type": "AuthHeader",
+          "host_header": "example-app-uploads.s3.us-east-1.amazonaws.com",
+          "tls_version": "TLSv1.3",
+          "access_point_arn": "-",
+          "acl_required": "-"
+        }
+        </code>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Rules to parse, normalize, and enrich AWS S3 CloudTrail data events and S3 server access logs.</p>
+            </li>
+            <li>
+                <p>GIM categorization for S3 object create, access, delete, audit policy change, audit default, and cross-bucket data exfiltration detection.</p>
+            </li>
+            <li>
+                <p>Security Core coverage for file and audit categories.</p>
+            </li>
+        </ul>
+        <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
+        <p>The content pack supports the following log types.</p>
+        <ul>
+            <li>
+                <p>AWS CloudTrail S3 data events (PutObject, GetObject, HeadObject, CopyObject, DeleteObject, DeleteObjects, ListObjects, REST.PUT.BUCKETPOLICY, and similar)</p>
+            </li>
+            <li>
+                <p>S3 server access log operations (REST.PUT.OBJECT, REST.GET.OBJECT, REST.DELETE.OBJECT, REST.POST.MULTI_OBJECT_DELETE, REST.GET.BUCKET, REST.PUT.BUCKETPOLICY, and similar)</p>
+            </li>
+        </ul>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following messages:</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Event Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">PutObject / REST.PUT.OBJECT</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">200000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file.create</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">file created</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">CopyObject</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">200000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file.create</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">file created</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">GetObject / REST.GET.OBJECT</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">201500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file.access</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">file accessed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">HeadObject / REST.HEAD.OBJECT</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">201500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file.access</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">file accessed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DeleteObject / REST.DELETE.OBJECT</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">200100</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file.delete</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">file deleted</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">DeleteObjects / REST.POST.MULTI_OBJECT_DELETE / BATCH.DELETE.OBJECT</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">200100</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file.delete</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">file deleted</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ListObjects / ListBuckets / HeadBucket / GetBucketPolicy / GetBucketAcl / GetBucketLocation / REST.GET.BUCKET / REST.HEAD.BUCKET / REST.GET.*</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">229999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">audit</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">audit.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">audit event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">REST.PUT.BUCKETPOLICY</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">220500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">audit</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">audit.policy</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">audit policy changed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">CopyObject (detection: cross-bucket exfil)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">301001</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">detection.host_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">host_dlp_detection</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Message Fields Included in This Pack</h3>
+        <h4>General Parsing for AWS S3</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Common Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">aws_s3</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Identifies the log source product as AWS S3</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_created</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2026-04-15T10:15:22.000Z</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">date</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Event time parsed from the CloudTrail eventTime or the S3 access log request time, so search and dashboards use event time rather than ingest time</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_log_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">AWS S3 CloudTrail Data Event</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Static log-source name per transport: AWS S3 CloudTrail Data Event or AWS S3 Server Access Log</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_aws_event_source_api</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">s3.amazonaws.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">AWS service endpoint that emitted the event (vendor passthrough; no canonical SDM field exists)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_aws_region</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">us-east-1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">AWS region the call was made in (CloudTrail awsRegion; vendor passthrough, no canonical SDM field exists)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_module</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">PutObject</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Raw operation name from CloudTrail event_name or S3 access log operation; keyed by the GIM lookup</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">PutObject</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Same as vendor_event_module; keyed by the event_action lookup</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">PutObject</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Human-readable summary; mirrors vendor_event_action. Satisfies audit.* GIM enforcement.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">created</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Normalized action (created, read, deleted, modified) derived via the aws_s3_event_action_lookup</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_outcome</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">success</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">success by default; failure when CloudTrail reports error_code or the access log http_response_code &gt;= 400</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alice</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">CloudTrail user identity userName (for CloudTrail events)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_user_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">AIDAEXAMPLEID1234</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">CloudTrail user identity principalId, or S3 access log requester (ARN/canonical ID)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_user_domain</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111122223333</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">AWS account ID of the caller (from CloudTrail user_identity_accountId)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_user_arn</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">arn:aws:iam::111122223333:user/alice</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Caller ARN (from CloudTrail user_identity_arn). AWS-specific; no canonical User schema field exists for ARNs.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_user_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">IAMUser</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">CloudTrail user_identity_type (IAMUser, AssumedRole, Root, AWSService, etc.)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alice</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Mirror of source_user_name so file.* GIM enforcement (which requires user_name) is satisfied</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">AIDAEXAMPLEID1234</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Mirror of source_user_id so downstream user-based queries resolve either field</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">203.0.113.45</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Caller IP address (from CloudTrail source_ip_address or S3 access log remote_ip)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_bucket_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">example-app-uploads</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">S3 bucket name involved in the operation</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">inbox/2026/04/15/report.csv</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">S3 object key</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">s3://example-app-uploads/inbox/2026/04/15/report.csv</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">s3:// URI built from bucket + object key</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">example-app-uploads.s3.amazonaws.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Synthesized from the bucket name so the core reference rule derives host_reference for file.* enforcement</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_response_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">integer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP status from the S3 access log (not present on CloudTrail messages)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_response_bytes</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Access log: number of HTTP response bytes sent (S3 bytes_sent)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_size</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">524288</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Access log: total size of the S3 object (S3 object_size)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_total_time_ms</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">145</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Access log: total request duration in milliseconds</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_turn_around_time_ms</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">12</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Access log: time S3 spent processing the request in milliseconds</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_request_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A1B2C3D4E5F60718</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Access log: S3 request ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_request_method</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">PUT</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Access log: HTTP method parsed from the request line</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">/inbox/2026/04/15/upload.png</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Access log: HTTP request path parsed from the request line</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1.1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Access log: HTTP version parsed from the request line (bare version, e.g. 1.1)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_request_line</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">PUT /inbox/2026/04/15/upload.png HTTP/1.1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Access log: raw HTTP request line (method + path + protocol), retained for forensic completeness</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_authentication_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">AuthHeader</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Access log: S3 auth method (AuthHeader, QueryString, -)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_signature_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SigV4</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Access log: AWS signature version</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_cipher_suite</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ECDHE-RSA-AES128-GCM-SHA256</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Access log: TLS cipher suite</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_tls_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TLSv1.3</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Access log: TLS protocol version</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_host_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">abcdef0123456789</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Access log: S3 host_id</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">example-app-uploads.s3.us-east-1.amazonaws.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Access log: HTTP Host header (regional S3 endpoint FQDN). Includes region, unlike the regionless host_hostname synthesized for host_reference.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_user_agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">aws-cli/2.13.0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">User-Agent header from the requester (CloudTrail user_agent / access log user_agent)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">informational</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Informational baseline event severity set by the processing rules (routine S3 events are not alerts)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_severity_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">integer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Numeric baseline event severity (1=informational); mutual pair of event_severity</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_severity_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">integer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Set only by the detection rule on a cross-bucket CopyObject (4=high)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">high</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Derived by core from alert_severity_level on detection events</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_category</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Data Exfiltration</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Set by the detection rule on cross-bucket CopyObject events</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_signature</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">AWS S3 Cross-Bucket Object Copy</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Set by the detection rule</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_signature_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">aws_s3_cross_bucket_copy</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Set by the detection rule</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">gim_event_type_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">200000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">GIM type code array; file.<em> or audit.</em> depending on the operation; detection adds 301001</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+    </body>
+</html>
