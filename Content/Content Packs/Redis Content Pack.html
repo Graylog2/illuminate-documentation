@@ -1,13 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
     <head>
         <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Redis Content Pack</title>
         <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
-        <h1>Redis Content Pack</h1>
+        <h1>
+            <MadCap:concept term="New Releases" />Redis Content Pack</h1>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>Redis is an in-memory data structure store used as a database, cache, message broker, and streaming engine. This technology pack processes Redis server log messages from Redis open-source (server lifecycle events, replication, persistence operations, Sentinel monitoring, slow query logging, ACL authentication) and Valkey (the open-source fork of Redis) in all three of its log output modes -- legacy (byte-for-byte identical to Redis OSS), logfmt, and JSON. All variants share a single event_source_product value so downstream streams, searches, and spotlights cover the entire Redis family seamlessly. The initial release supports log delivery via Filebeat with the Graylog sidecar integration.</p>
+        <p>Redis is an in-memory data structure store used as a database, cache, message broker, and streaming engine. This technology pack processes Redis server log messages from Redis open source, including server lifecycle events, replication, persistence operations, Sentinel monitoring, slow query logging, and ACL authentication. This pack also processes logs from Valkey, the open-source fork of Redis, in all three of its log output modes: legacy (byte-for-byte identical to Redis OSS), logfmt, and JSON.</p>
+        <p>All the ingest variants share a single <code class="linecode">event_source_product</code> value. Therefore, downstream streams, searches, and spotlights cover the entire Redis family seamlessly. This content pack supports log delivery via Filebeat with Graylog Sidecar integration.</p>
         <h2 id="requirements">Requirements</h2>
         <ul>
             <li>
@@ -33,18 +35,18 @@
             </li>
         </ul>
         <h2 id="log-collection">Log Collection and Delivery</h2>
-        <p>Redis server logs are delivered to Graylog using Filebeat managed by the Graylog sidecar. Redis must be configured to write to a log file that Filebeat can ship.</p>
+        <p>Redis server logs are delivered to Graylog using Filebeat managed by the Graylog Sidecar. Redis must be configured to write to a log file that Filebeat can ship.</p>
         <h3>Filebeat Configuration</h3>
         <p>Configure Filebeat to ship Redis log files:</p>
         <ol>
             <li>
-                <p>Install Filebeat on the Redis server (typically through the Graylog sidecar).</p>
+                <p>Install Filebeat on the Redis server (typically through Graylog Sidecar).</p>
             </li>
             <li>
-                <p>Create a (Linux) filebeat configuration under Sidecar &gt; <em>Configuration</em> with a <strong>filebeat on linux</strong> collector.</p>
+                <p>Create a configuration under <i>Sidecar &gt; Configuration</i> with a <strong>filebeat on linux</strong> collector.</p>
             </li>
             <li>
-                <p>Set the Graylog server IP under <code class="linecode">hosts</code> and add the event_source_product field with the value <code class="linecode">redis</code>.</p>
+                <p>Set the Graylog server IP address under <code class="linecode">hosts</code> and add the <code class="linecode">event_source_product</code> field with the value <code class="linecode">redis</code>.</p>
                 <MadCap:codeSnippet>
                     <MadCap:codeSnippetCopyButton />
                     <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">filebeat.inputs:
@@ -67,26 +69,25 @@ event_source_product: redis</MadCap:codeSnippetBody>
         </ol>
         <p>
             <section class="warningBox">
-                <div class="content"><b>Warning: </b><span style="font-weight: normal;"><code class="linecode">fields_under_root: true</code> is required so that <code class="linecode">event_source_product</code> lands at the message root where the pack's identification rule looks for it.</span>
-                </div>
+                <div class="content"><b>Warning:</b> <code class="linecode">fields_under_root: true</code> is required so that <code class="linecode">event_source_product</code> lands at the message root where the pack's identification rule looks for it.</div>
             </section>
         </p>
         <h3>Valkey Log Collection</h3>
-        <p>Valkey is the open-source fork of Redis 7.2.4. It ships three log output modes selected via the 'log-format' directive in valkey.conf. The pack identifies and parses all three; downstream processing is unified with Redis OSS so no separate pipeline is required.</p>
-        <ol>
+        <p>Valkey is the open-source fork of Redis 7.2.4. It ships three log output modes selected via the 'log-format' directive in valkey.conf. The pack identifies and parses all three. Downstream processing is unified with Redis OSS so no separate pipeline is required.</p>
+        <ul>
             <li>
-                <p>Legacy mode (default, byte-for-byte identical to Redis OSS): forward via Filebeat. Identification matches on application_name starting with 'valkey', the 'valkey[PID]:' message prefix, or the PID:ROLE body pattern.</p>
+                <p>Legacy mode (default, byte-for-byte identical to Redis OSS): Forward via Filebeat. Identification matches on <code class="linecode">application_name</code> starting with 'valkey', the 'valkey[PID]:' message prefix, or the PID:ROLE body pattern.</p>
             </li>
             <li>
-                <p>logfmt mode (log-format logfmt in valkey.conf): messages arrive as 'pid=<n> role=<word> timestamp="<ts>" level=<word> message="<text>"'. Roles: primary, replica, sentinel, RDB/AOF. Levels: debug, verbose, notice, warning.</p>
+                <p>logfmt mode (log-format logfmt in valkey.conf): messages arrive as 'pid=&lt;n&gt; role=&lt;word&gt; timestamp="&lt;ts&gt;" level=&lt;word&gt; message="&lt;text&gt;"'. Roles: primary, replica, sentinel, RDB/AOF. Levels: debug, verbose, notice, warning.</p>
             </li>
             <li>
-                <p>JSON mode (log-format json in valkey.conf): messages arrive as '{"pid":<n>,"role":"<word>","timestamp":"<ts>","level":"<word>","message":"<text>"}'. Same role/level vocabulary as logfmt.</p>
+                <p>JSON mode (log-format json in valkey.conf): messages arrive as '{"pid":&lt;n&gt;,"role":"&lt;word&gt;","timestamp":"&lt;ts&gt;","level":"&lt;word&gt;","message":"&lt;text&gt;"}'. Same role/level vocabulary as logfmt.</p>
             </li>
             <li>
-                <p>All three Valkey modes produce event_source_product=redis (unified with Redis OSS).</p>
+                <p>All three Valkey modes produce <code class="linecode">event_source_product=redis</code> (unified with Redis OSS).</p>
             </li>
-        </ol>
+        </ul>
         <h2 id="stream-configuration">Stream Configuration</h2>
         <p>This technology pack includes 1 stream:</p>
         <ul>
@@ -94,8 +95,7 @@ event_source_product: redis</MadCap:codeSnippetBody>
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</span>
-                </div>
+                <div class="content"><b>Hint:</b> If this stream does not exist prior to the activation of this pack then it is created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
             </section>
         </p>
         <h2 id="index-set-configuration">Index Set Configuration</h2>
@@ -105,29 +105,28 @@ event_source_product: redis</MadCap:codeSnippetBody>
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
-                </div>
+                <div class="content"><b>Hint:</b> If this index set is already defined, then nothing is changed. If this index set does not exist, then it is created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
             </section>
         </p>
         <h2 id="what-is-provided">What is Provided</h2>
         <ul>
             <li>
-                <p>Parsing rules to extract Redis server logs into Graylog schema compatible fields</p>
+                <p>Parsing rules to extract Redis server logs into Graylog schema compatible fields.</p>
             </li>
             <li>
-                <p>Graylog Information Model message categorization for service lifecycle and authentication events</p>
+                <p>Graylog Information Model (GIM) message categorization for service lifecycle and authentication events.</p>
             </li>
             <li>
-                <p>Support for Redis Sentinel monitoring events</p>
+                <p>Support for Redis Sentinel monitoring events.</p>
             </li>
             <li>
-                <p>Support for Redis slow query log parsing</p>
+                <p>Support for Redis slow query log parsing.</p>
             </li>
             <li>
-                <p>Support for Redis signal handler events (SIGTERM, SIGINT)</p>
+                <p>Support for Redis signal handler events (SIGTERM, SIGINT).</p>
             </li>
             <li>
-                <p>Redis role description mapping (M=master, S=replica, C=child, X=sentinel)</p>
+                <p>Redis role description mapping (M=master, S=replica, C=child, X=sentinel).</p>
             </li>
             <li>
                 <p>Valkey support across all three log output modes: legacy (same format as Redis OSS, handled by existing rules), logfmt (pid=N role=primary|replica|sentinel|RDB/AOF timestamp=... level=... message=...), and JSON ({"pid":N,"role":"...","timestamp":"...","level":"...","message":"..."}). Role words map to the existing role description, and level words (debug, verbose, notice, warning) map through the severity lookup.</p>
@@ -135,7 +134,7 @@ event_source_product: redis</MadCap:codeSnippetBody>
         </ul>
         <h2 id="log-format-example">Log Format Examples</h2>
         <p>Representative log lines for Redis open-source and Valkey.</p>
-        <h4>Redis OSS (text log)</h4>
+        <h3>Redis OSS (text log)</h3>
         <p><code class="linecode">87041:M 10 Apr 2026 14:22:01.234 * Server started, Redis version 7.2.4
         87041:M 10 Apr 2026 14:22:01.235 * Ready to accept connections tcp
         87041:M 10 Apr 2026 14:35:12.456 # WARNING: The TCP backlog setting of 511 cannot be enforced
@@ -148,7 +147,7 @@ event_source_product: redis</MadCap:codeSnippetBody>
         87041:signal-handler (1744358400) Received SIGTERM scheduling shutdown...
         </code>
         </p>
-        <h4>Valkey (legacy, logfmt, and JSON modes)</h4>
+        <h3>Valkey (legacy, logfmt, and JSON modes)</h3>
         <p><code class="linecode"># Valkey (open-source Redis fork) -- three log output modes
         #
         # Select with 'log-format &lt;legacy|logfmt|json&gt;' in valkey.conf.
