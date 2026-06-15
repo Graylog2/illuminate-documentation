@@ -139,8 +139,16 @@
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client identity value from the Apache ident field (rarely used).</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">vendor_rawrequest</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">The full request text as logged, used when it doesn't match the usual 'METHOD path HTTP/version' format.</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_rawrequest</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The full request text as logged, used when it doesn't match the usual 'METHOD path HTTP/version' format.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_server_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The virtual host (ServerName) that served the request, from the leading %v field of a vhost_combined access log, when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">vendor_server_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">The server port the request was served on, from the %v:%p field of a vhost_combined access log, when present.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -176,7 +184,7 @@
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_action</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The standardized action (allowed or blocked) mapped from the vendor action when it corresponds to a known GIM value.</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The normalized GIM action (for example: authenticated, authorized, connected, denied, verified, validated, started, stopped) mapped from the vendor action.</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_error_code</td>
@@ -193,6 +201,14 @@
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_referrer</td>
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The referring page URL mentioned in the message, if included.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_request_method</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The HTTP method (for example: GET, POST) parsed from a request line embedded in the message, when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The request path or URI referenced in the message (for example, the resource that was requested or denied), when present.</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_user_agent</td>
@@ -239,6 +255,14 @@
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Where Apache is checking authentication/authorization (for example, an LDAP server address or directory location), when present.</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_certificate_error</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The client-certificate verification error reason reported by mod_ssl (for example, unable to get local issuer certificate), when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_certificate_error_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The numeric client-certificate verification error code reported by mod_ssl, when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_child_number</td>
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The Apache child/worker number mentioned in the message, if included.</td>
                         </tr>
@@ -251,28 +275,36 @@
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The TLS cipher/cipher-suite recorded for the connection, when present.</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_error_description</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">A short error label from within the message (often a brief tag before a colon), when present.</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_default_vhost</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The default virtual host (host:port) the connection matched when the requested hostname did not match, when present.</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_action</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The main action described by the message (for example: connected, denied, selected, compressed), pulled from the text when possible.</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_error_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">A short error label from within the message (often a brief tag before a colon), when present.</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_created</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">When the error log entry was written (taken from the date/time at the start of the log line, if present).</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The main action described by the message (for example: connected, denied, selected, compressed), pulled from the text when possible.</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_description</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The main human-readable message text. Some parsing rules may trim it to remove extra prefixes/suffixes so it contains the most useful portion.</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_created</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">When the error log entry was written (taken from the date/time at the start of the log line, if present).</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_outcome</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">A success/failure style word found in the message (for example: failed, accepting, successful), when present.</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The main human-readable message text. Some parsing rules may trim it to remove extra prefixes/suffixes so it contains the most useful portion.</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_severity</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">How serious the message is (for example: error, warn, notice, info, debug, trace).</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_outcome</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">A success/failure style word found in the message (for example: failed, accepting, successful), when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">How serious the message is (for example: error, warn, notice, info, debug, trace).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_http_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The hostname requested via the HTTP Host header, as reported in SSL/host policy mismatch messages, when present.</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_ocsp_header</td>
@@ -283,8 +315,40 @@
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The thread ID (TID) that wrote the entry, if Apache is running in a threaded mode.</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_result</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Extra context about an auth/authorization decision (for example, which rule/requirement was evaluated), when present.</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_protocol_choices</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The candidate protocols offered during HTTP protocol negotiation (for example, h2,http/1.1), when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_rawrequest</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The raw request line as logged (for example, in an invalid-request message), when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_reason</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The reason text explaining an SSL access denial (for example, SSL connection required), when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_result</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Extra context about an auth/authorization decision (for example, which rule/requirement was evaluated), when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_server_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The Apache server version/description string from a startup or configuration message (for example, Apache/2.4.41 (Ubuntu) OpenSSL/1.1.1f), when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_source_code_file</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The Apache source file that emitted a debug-level message (for example, ssl_engine_kernel.c), when the log line includes it.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_source_code_line</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The source line number in the Apache source file that emitted the message, when the log line includes it.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_ssl_policy</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The SSL/virtual-host policy name referenced in a mismatch message (for example, Strict), when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_tls_sni_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The hostname the client requested via TLS SNI, as reported in SSL/host policy mismatch messages, when present.</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
                             <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">vendor_tls_version</td>
