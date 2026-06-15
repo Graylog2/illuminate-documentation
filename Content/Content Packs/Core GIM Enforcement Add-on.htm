@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+    </head>
+    <body>
+        <h1>Core GIM Enforcement Add-on</h1>
+        <h4>What is GIM?</h4>
+        <p>GIM, short for Graylog Information Model, is how we ensure known types of messages that have been properly categorized will have the necessary fields required for processing.</p>
+        <h4>Why Enable GIM Enforcement?</h4>
+        <p>GIM Enforcement, when enabled, will ensure that all events that have been categorized and intended to be available for search and aggregation, even if the message has been parsed incorrectly. The GIM Enforcement rules will identify categorized messages that are missing required fields; mark those fields and assign default values for the missing fields. Missing fields can be due to log format changes between versions of a product or unexpected data in the message that the parsing logic did not account for.</p>
+        <p>When the GIM Enforcement rules identify a categorized message that is missing a required field, they will add a field named <code class="linecode">gim_error</code> with a value that identifies the categorization assignment that failed, and then they will assign a placeholder value to the fields missing values. The placeholder values assigned depend upon the field type:</p>
+        <ul>
+            <li>
+                <p>Text fields will be assigned the value <code class="linecode">_undefined_</code>.</p>
+            </li>
+            <li>
+                <p>Numeric fields will be assigned the value <code class="linecode">0</code>.</p>
+            </li>
+            <li>
+                <p>IP fields will be assigned the value <code class="linecode">0.0.0.0</code>.</p>
+            </li>
+        </ul>
+        <p>For example, all logon events should have the field <code class="linecode">user_name</code>. With GIM Enforcement enabled, any message that has been categorized but is missing one of these required fields will have a default value assigned, and the field <code class="linecode">gim_error</code> will be added indicating that the message is incomplete. This will ensure that searches, which look for logon messages by <code class="linecode">user_name</code>, will include these messages in related search results and aggregations.</p>
+        <p>Without GIM enforcement messages may not be included in search results or aggregations if they have been improperly parsed or if they are malformed in some way.</p>
+        <p>We recommend enabling GIM enforcement at least occasionally when troubleshooting field extraction issues or performing a test or review of data quality.</p>
+        <p>
+            <section class="warningBox">
+                <div class="title"><b>Warning</b>:&#160;<span style="font-weight: normal;">Be aware that enabling GIM Enforcement will incur additional slight computational costs per categorized message.</span></div>
+            </section>
+        </p>
+    </body>
+</html>
