@@ -1,13 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
     <head>
         <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Microsoft WinRM Content Pack</title>
         <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
-        <h1>Microsoft WinRM Content Pack</h1>
+        <h1>
+            <MadCap:concept term="New Releases" />Microsoft WinRM Content Pack</h1>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>Microsoft Windows Remote Management (WinRM) is the Microsoft implementation of the WS-Management protocol that enables remote administration of Windows systems. This technology pack processes Microsoft-Windows-WinRM/Operational event logs, providing normalization and enrichment of WinRM session, operation, authentication, and error events.</p>
+        <p>Microsoft Windows Remote Management (WinRM) is the Microsoft implementation of the WS-Management protocol that enables remote administration of Windows systems. This technology pack processes <code class="linecode">Microsoft-Windows-WinRM/Operational</code> event logs, providing normalization and enrichment of WinRM session, operation, authentication, and error events.</p>
         <h2 id="supported-versions">Supported Versions</h2>
         <ul>
             <li>
@@ -17,7 +18,7 @@
                 <p>Windows 10 or later</p>
             </li>
             <li>
-                <p>NXLog 2.10 (im_msvistalog)</p>
+                <p>NXLog 2.10 (<code class="linecode">im_msvistalog</code>)</p>
             </li>
             <li>
                 <p>Winlogbeat 8.x</p>
@@ -32,26 +33,26 @@
                 <p>WinRM Operational event log collection enabled on the source host</p>
             </li>
             <li>
-                <p>NXLog or Winlogbeat agent forwarding the Microsoft-Windows-WinRM/Operational channel</p>
+                <p>NXLog or Winlogbeat agent forwarding the <code class="linecode">Microsoft-Windows-WinRM/Operational</code> channel</p>
             </li>
         </ul>
         <h2 id="log-collection">Log Collection and Delivery</h2>
         <p>WinRM logs are collected via NXLog or Winlogbeat running on the WinRM host (client or server) and delivered to a Graylog input.</p>
         <h3>NXLog Collection</h3>
-        <p>Configure NXLog to read the Microsoft-Windows-WinRM/Operational channel and forward via GELF.</p>
+        <p>Configure NXLog to read the <code class="linecode">Microsoft-Windows-WinRM/Operational</code> channel and forward via GELF.</p>
         <ol>
             <li>
-                <p>Configure an im_msvistalog input with QueryXML targeting Channel='Microsoft-Windows-WinRM/Operational'.</p>
+                <p>Configure an <code class="linecode">im_msvistalog</code> input with QueryXML targeting <code class="linecode">Channel='Microsoft-Windows-WinRM/Operational'</code>.</p>
             </li>
             <li>
-                <p>Configure an om_tcp / om_udp output with the GELF format pointed at your Graylog GELF input.</p>
+                <p>Configure an <code class="linecode">om_tcp</code> or <code class="linecode">om_udp</code> output with the GELF format pointed at your Graylog GELF input.</p>
             </li>
         </ol>
         <h3>Winlogbeat Collection</h3>
-        <p>Configure Winlogbeat to read the Microsoft-Windows-WinRM/Operational channel.</p>
+        <p>Configure Winlogbeat to read the <code class="linecode">Microsoft-Windows-WinRM/Operational</code> channel.</p>
         <ol>
             <li>
-                <p>Add an event_logs entry: name: 'Microsoft-Windows-WinRM/Operational'.</p>
+                <p>Add an <code class="linecode">event_logs</code> entry named <i>Microsoft-Windows-WinRM/Operational</i>.</p>
             </li>
             <li>
                 <p>Configure the Logstash or Beats output to deliver to your Graylog Beats input.</p>
@@ -64,8 +65,7 @@
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</span>
-                </div>
+                <div class="content"><b>Hint:</b> If this stream does not exist prior to the activation of this pack then it is created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
             </section>
         </p>
         <h2 id="index-set-configuration">Index Set Configuration</h2>
@@ -75,33 +75,32 @@
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
-                </div>
+                <div class="content"><b>Hint:</b> If this index set is already defined, then nothing is changed. If this index set does not exist, then it is created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
             </section>
         </p>
         <h2 id="what-is-provided">What is Provided</h2>
         <ul>
             <li>
-                <p>Parsing rules to extract WinRM Operational event log fields into Graylog schema compatible fields for both NXLog and Winlogbeat agents</p>
+                <p>Parsing rules to extract WinRM Operational event log fields into Graylog schema-compatible fields for both NXLog and Winlogbeat agents.</p>
             </li>
             <li>
-                <p>Lookup-based enrichment of WSMan/WinRM error codes to human-readable descriptions</p>
+                <p>Lookup-based enrichment of WSMan/WinRM error codes to human-readable descriptions.</p>
             </li>
             <li>
-                <p>Normalization of WinRM operation names (Enumeration, Get, Invoke, Subscribe, ...) to a canonical event_action verb</p>
+                <p>Normalization of WinRM operation names (e.g. Enumeration, Get, Invoke, Subscribe) to a canonical <code class="linecode">event_action</code> verb.</p>
             </li>
             <li>
-                <p>Graylog Information Model (GIM) categorization for WinRM authentication, authorization, network connection, and service lifecycle events under the authentication, network, and service categories</p>
+                <p>Graylog Information Model (GIM) categorization for WinRM authentication, authorization, network connection, and service lifecycle events under the authentication, network, and service categories.</p>
             </li>
             <li>
-                <p>Network direction tagging (inbound/outbound) for session lifecycle events (6, 80, 91)</p>
+                <p>Network direction tagging (inbound/outbound) for session lifecycle events (6, 80, 91).</p>
             </li>
             <li>
-                <p>WinRM Spotlight content pack with operations, errors, and authentication dashboards</p>
+                <p>WinRM Spotlight content pack with operations, errors, and authentication dashboards.</p>
             </li>
         </ul>
         <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
-        <p>The content pack processes events from the Microsoft-Windows-WinRM/Operational channel.</p>
+        <p>The content pack processes events from the <code class="linecode">Microsoft-Windows-WinRM/Operational</code> channel.</p>
         <ul>
             <li>
                 <p>Session lifecycle events (6, 80, 91): outbound session creation, request dispatch, inbound session reception</p>
