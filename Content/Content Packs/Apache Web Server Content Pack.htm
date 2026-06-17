@@ -1,13 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
     <head>
         <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Apache HTTPD Content Pack</title>
         <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
-        <h1>Apache HTTPD Content Pack</h1>
+        <h1>
+            <MadCap:concept term="Web Servers" />Apache HTTPD Content Pack</h1>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>Apache HTTP Server on a Linux system. This pack will parse out and configure Apache2 access logs. It supports two access log formats: Common and Combined logs. And it supports 'normal' logs and virtual hosts logs.</p>
+        <p>Apache HTTP Server is an open source cross-platform web server. This pack parses and configures Apache2 access logs. It supports two access log formats: Common and Combined logs. And it supports 'normal' logs and virtual hosts logs.</p>
         <h2 id="supported-versions">Supported Version(s)</h2>
         <ul>
             <li>
@@ -39,8 +40,7 @@
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</span>
-                </div>
+                <div class="content"><b>Hint:</b> If this stream does not exist prior to the activation of this pack then it is created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
             </section>
         </p>
         <h2 id="index-set-configuration">Index Set Configuration</h2>
@@ -50,8 +50,7 @@
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
-                </div>
+                <div class="content"><b>Hint:</b> If this index set is already defined, then nothing is changed. If this index set does not exist, then it is created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
             </section>
         </p>
         <h2 id="log-format-example">Log Format Example</h2>
@@ -420,7 +419,7 @@
         </MadCap:dropDown>
         <h2 id="log-collection">Log Collection</h2>
         <h3>Input via Filebeat together with Graylog Sidecar</h3>
-        <p>Please use <a href="https://go2docs.graylog.org/5-0/getting_in_log_data/graylog_sidecar.html">the official Graylog Sidecar documentation</a>to configure your Graylog server and your client(s).</p>
+        <p>Please use <a href="https://go2docs.graylog.org/5-0/getting_in_log_data/graylog_sidecar.html">the official Graylog Sidecar documentation</a> to configure your Graylog server and your client(s).</p>
         <ol>
             <li>
                 <p>Create an input and an API key and set up Graylog Sidecar.</p>
@@ -431,54 +430,54 @@
         </ol>
         <p>
             <section class="infoBox">
-                <div class="title"><b>Hint: </b><span style="font-weight: normal;">It is possible to run the Apache Web Server and Graylog on the same machine.</span>
-                </div>
+                <div class="content"><b>Hint:</b> It is possible to run the Apache Web Server and Graylog on the same machine.</div>
             </section>
         </p>
         <h3>Graylog Server Settings</h3>
         <ol>
             <li>
-                <p>Create a <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">beats input</a></p>
+                <p>Create a <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">beats input</a>.</p>
             </li>
             <li>
-                <p>Create a <a href="https://go2docs.graylog.org/current/setting_up_graylog/rest_api.html">REST API</a> access token</p>
+                <p>Create a <a href="https://go2docs.graylog.org/current/setting_up_graylog/rest_api.html">REST API</a> access token.</p>
             </li>
             <li>
-                <p>Create a (Linux) filebeat configuration under Sidercar &gt; <em>Configuration</em> with a <strong>filebeat on linux</strong> collector.</p>
+                <p>Create a (Linux) filebeat configuration under <i>Sidercar &gt; Configuration</i> with a <strong>filebeat on linux</strong> collector.</p>
             </li>
             <li>
                 <p>Configure the file and add:</p>
-            </li>
-            <li>
-                <p>The correct IP (Graylog server IP) under <code class="linecode">hosts</code>.</p>
-            </li>
-            <li>
-                <p>The log source configured to the desired value and a field <code class="linecode">event_source_product</code> with the value <code class="linecode">apache_httpd</code>.</p>
-                <MadCap:codeSnippet>
-                    <MadCap:codeSnippetCopyButton />
-                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">filebeat.inputs:
+                <ul>
+                    <li>
+                        <p>The correct Graylog server IP address under <code class="linecode">hosts</code>.</p>
+                    </li>
+                    <li>
+                        <p>The log source configured to the desired value and a field <code class="linecode">event_source_product</code> with the value <code class="linecode">apache_httpd</code>.</p>
+                    </li>
+                </ul>
+                <p>
+                    <MadCap:codeSnippet>
+                        <MadCap:codeSnippetCopyButton />
+                        <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">filebeat.inputs:
 - input_type: log
 paths:
-- /var/log/apache2/access.log
-- /var/log/apache2/error.log
-- /var/log/apache2/httpd-ssl.log
+  - /var/log/apache2/access.log
+  - /var/log/apache2/error.log
+  - /var/log/apache2/httpd-ssl.log
 type: filestream
 fields_under_root: true
 fields:
-event_source_product: apache_httpd</MadCap:codeSnippetBody>
-                </MadCap:codeSnippet>
+  event_source_product: apache_httpd</MadCap:codeSnippetBody>
+                    </MadCap:codeSnippet>
+                </p>
+                <p>This configuration only logs Apache access logs, but you can add error logs, etc.</p>
             </li>
             <li>
-                <p>This will only log Apache access logs, but you can add error logs, etc.</p>
-            </li>
-            <li>
-                <p>Finally, save the configuration.</p>
+                <p>Save the configuration.</p>
             </li>
         </ol>
         <p>
             <section class="warningBox">
-                <div class="content"><b>Warning: </b><span style="font-weight: normal;">There must be two spaces in front of <code class="linecode">event_source_product</code> and <code class="linecode">- /var...</code> .</span>
-                </div>
+                <div class="content"><b>Warning:</b> There must be two spaces in front of <code class="linecode">event_source_product</code> and <code class="linecode">- /var...</code> .</div>
             </section>
         </p>
         <h2 id="collection">Collection</h2>
@@ -491,19 +490,19 @@ event_source_product: apache_httpd</MadCap:codeSnippetBody>
                     <MadCap:codeSnippetCopyButton />
                     <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">wget https://packages.graylog2.org/repo/packages/graylog-sidecar-repository_1-5_all.deb
 sudo dpkg -i graylog-sidecar-repository_1-5_all.deb
-sudo apt-get update && sudo apt-get install graylog-sidecar</MadCap:codeSnippetBody>
+sudo apt-get update &amp;&amp; sudo apt-get install graylog-sidecar</MadCap:codeSnippetBody>
                 </MadCap:codeSnippet>
             </li>
             <li>
                 <p>Edit the <code class="linecode">/etc/graylog/sidecar/sidecar.yml</code> file and configure:</p>
-                <ol>
+                <ul>
                     <li>
                         <p><code class="linecode">server_url</code>: GraylogServerIP</p>
                     </li>
                     <li>
                         <p><code class="linecode">server_api_token</code>: Your API token</p>
                     </li>
-                </ol>
+                </ul>
                 <MadCap:codeSnippet>
                     <MadCap:codeSnippetCopyButton />
                     <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo gedit /etc/graylog/sidecar/sidecar.yml
@@ -522,15 +521,15 @@ sudo systemctl status graylog-sidecar</MadCap:codeSnippetBody>
                 </MadCap:codeSnippet>
             </li>
             <li>
-                <p>Install filebeats <a href="https://www.elastic.co/downloads/beats/filebeat">according to the documentation</a>. Or, here is <a href="https://www.elastic.co/downloads/beats/filebeat-oss">the download link</a> for the OSS version.</p>
-                <ol>
+                <p>Install filebeats <a href="https://www.elastic.co/downloads/beats/filebeat" target="_blank">according to the documentation</a>. Or, here is <a href="https://www.elastic.co/downloads/beats/filebeat-oss" target="_blank">the download link</a> for the OSS version.</p>
+                <ul>
                     <li>
                         <p>If you install it manually, install it again under <code class="linecode">/etc/filebeat</code>.</p>
                     </li>
                     <li>
                         <p>If you install it via apt-get, then it is in the correct folder.</p>
                     </li>
-                </ol>
+                </ul>
             </li>
             <li>
                 <p>Example commands for Ubuntu:</p>
@@ -542,10 +541,10 @@ server_api_token: "65ol7edseo24mub8o7pu86h2rsr8j9fjjpimtrm9nrpbjso7cnv"</MadCap:
                 </MadCap:codeSnippet>
             </li>
             <li>
-                <p><em>Optional</em>. Edit the <code class="linecode">filebeat.yml</code> file as needed. You do this via the Sidecar configuration in Graylog.</p>
+                <p>(<em>Optional</em>) Edit the <code class="linecode">filebeat.yml</code> file as needed. You do this via the Sidecar configuration in Graylog.</p>
             </li>
             <li>
-                <p>Start the deamon.</p>
+                <p>Start the daemon.</p>
             </li>
             <li>
                 <p>If there is a permission issue, you can resolve with:</p>
@@ -563,38 +562,32 @@ server_api_token: "65ol7edseo24mub8o7pu86h2rsr8j9fjjpimtrm9nrpbjso7cnv"</MadCap:
         <h3>Requirements for Input via Rsyslog</h3>
         <ol>
             <li>
-                <p>A configured UDP (or <code class="linecode">TCP_syslog</code> input on Graylog server).</p>
+                <p>Configured a UDP or TCP Syslog input in Graylog.</p>
             </li>
             <li>
-                <p>Installation of Rsyslog via <a href="https://www.rsyslog.com/ubuntu-repository/">the official documentation</a></p>
+                <p>Install rsyslog via <a href="https://www.rsyslog.com/ubuntu-repository/" target="_blank">the official documentation</a>.</p>
             </li>
             <li>
-                <p>A configured <code class="linecode">rsyslog.conf</code>.</p>
-            </li>
-            <li>
-                <p>For example <code class="linecode">/etc/rsyslog.conf</code> with a UDP input at 1514 on IP 192.168.122.52:</p>
-                <MadCap:codeSnippet>
-                    <MadCap:codeSnippetCopyButton />
-                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve"># provides UDP syslog reception
+                <p>Configure <code class="linecode">rsyslog.conf</code>. </p>
+                <p>For example <code class="linecode">/etc/rsyslog.conf</code> with a UDP input at 1514 on IP address 192.168.122.52:</p>
+                <p>
+                    <MadCap:codeSnippet>
+                        <MadCap:codeSnippetCopyButton />
+                        <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve"># provides UDP syslog reception
 $ModLoad imudp
 $UDPServerRun 1514
 *.* @192.168.122.52:1514;RSYSLOG_SyslogProtocol23Format</MadCap:codeSnippetBody>
-                </MadCap:codeSnippet>
+                    </MadCap:codeSnippet>
+                </p>
             </li>
             <li>
-                <p>A configured <code class="linecode">02-apache2.conf</code>.</p>
-            </li>
-            <li>
+                <p>Configure <code class="linecode">02-apache2.conf</code>.</p>
                 <p>You might need to create the configuration file with:</p>
                 <MadCap:codeSnippet>
                     <MadCap:codeSnippetCopyButton />
                     <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo gedit /etc/rsyslog.d/02-apache2.conf</MadCap:codeSnippetBody>
                 </MadCap:codeSnippet>
-            </li>
-            <li>
-                <p>If it is in the correct folder, Rsyslog will load the file automatically after restarting the Rsyslog service.</p>
-            </li>
-            <li>
+                <p>If  the configuration file is in the correct folder, rsyslog loads the file automatically after restarting the rsyslog service.</p>
                 <p>Example for <code class="linecode">02-apache2.conf</code> to log access, ssl, and error logs:</p>
                 <MadCap:codeSnippet>
                     <MadCap:codeSnippetCopyButton />
@@ -630,15 +623,12 @@ local6.access        @192.168.122.40:1514</MadCap:codeSnippetBody>
                     <MadCap:codeSnippetCopyButton />
                     <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo systemctl status rsyslog</MadCap:codeSnippetBody>
                 </MadCap:codeSnippet>
-            </li>
-            <li>
                 <p>Note that red lines may indicate problems.</p>
             </li>
         </ol>
         <p>
             <section class="warningBox">
-                <div class="content"><b>Warning: </b><span style="font-weight: normal;">This configuration is for UDP. UDP is not a reliable protocol, so consider if TCP is a better option for your organization. After installing rsyslog there might be active default rules (e.g. 50-default.conf) that log system, kernel, and other logs. Deactivate them if not needed.</span>
-                </div>
+                <div class="content"><b>Warning:</b> This configuration is for UDP. UDP is not a reliable protocol, so consider if TCP is a better option for your organization. After installing rsyslog, there might be active default rules (e.g. 50-default.conf) that log system, kernel, and other logs. Deactivate them if not needed.</div>
             </section>
         </p>
         <h2 id="limitations">Limitations</h2>
@@ -647,11 +637,11 @@ local6.access        @192.168.122.40:1514</MadCap:codeSnippetBody>
         <p>Apache HTTPD offers a dashboard with 2 tabs: Overview and Error Messages:</p>
         <h3>Overview</h3>
         <p>
-            <img src="../Resources/Images/resources/apache_httpd/apache_httpd_overview.png" />
+            <img src="../Resources/Images/Apache HTTPD/apache_httpd_overview.png" />
         </p>
         <h3>Error</h3>
         <p>
-            <img src="../Resources/Images/resources/apache_httpd/apache_httpd_error.png" />
+            <img src="../Resources/Images/Apache HTTPD/apache_httpd_error.png" />
         </p>
     </body>
 </html>
