@@ -27,7 +27,7 @@
                 <p>Windows DNS Server installed and DNS Analytic/Audit logs enabled on the system.</p>
             </li>
             <li>
-                <p>Filebeat agent version 8.13.0 through 8.19.x running standalone; see <a href="#Log">Log Collection</a> for more information.</p>
+                <p>Filebeat agent version 8.13.0 through 8.19.x; see <a href="#Log">Log Collection</a> for more information.</p>
             </li>
             <li>
                 <p>Illuminate Core: DNS Processing Add-on Pack (optional for some Spotlight widgets).</p>
@@ -61,14 +61,13 @@
         </div>
         <h2>Log Collection</h2>
         <p>This content pack requires a minimum Filebeat version of 8.17.0 and maximum version of 8.19.x for log collection due to the constraint that DNS Server Analytical logging exclusively relies on Event Tracing for Windows (ETW). Filebeat is one of the few log delivery agents that natively supports ETW through its ETW input module.</p>
-        <p>It is important to note that <b>Filebeat must be run standalone</b>, not bundled with Graylog Sidecar. The bundled Filebeat version does not include the required compatibility with ETW.</p>
         <p>DNS Server Audit logs are enabled by default, but Analytic logs are not. Refer to the <a href="https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-r2-and-2012/dn800669(v=ws.11)#audit-and-analytic-event-logging" target="_blank">Microsoft documentation</a> on how to enable the DNS Server Analytic event log.</p>
         <p>
             <section class="infoBox">
                 <div class="title" style="font-weight: normal;"><b>Hint</b>:  While NXLog Enterprise Edition is able to consume DNS Server Analytical events via ETW using its im_etw module, it is not compatible with this content pack due to differences in field conventions and log structure. Only Filebeat is officially supported.</div>
             </section>
         </p>
-        <h2>Filebeat Standalone Configuration Example</h2>
+        <h2>Filebeat Configuration Example</h2>
         <p>Please refer to the <a href="https://www.elastic.co/guide/en/beats/filebeat/8.19/filebeat-installation-configuration.html" target="_blank">official guide</a> to installing and configuring Filebeat for Windows.</p>
         <ol>
             <li>
@@ -89,10 +88,10 @@ path:
     logs: C:\Program Files\Filebeat\logs
 
 tags:
-- windows
+  - windows
 
 filebeat.inputs:
-- type: etw
+  - type: etw
     id: etw-dnsserver
     enabled: true
     provider.name: Microsoft-Windows-DNSServer
@@ -101,7 +100,7 @@ filebeat.inputs:
     match_any_keyword: 0x8000000000000000
     match_all_keyword: 0
 
-- type: winlog
+  - type: winlog
     id: winlog-dnsserver-audit
     enabled: true
     name: "Microsoft-Windows-DNSServer/Audit"
