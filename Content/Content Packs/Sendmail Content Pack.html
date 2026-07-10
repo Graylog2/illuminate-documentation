@@ -2,1240 +2,825 @@
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
     <head>
         <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Sendmail Mail Server Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
         <h1>
             <MadCap:concept term="Email Routing &amp; Security" />Sendmail Mail Server Content Pack</h1>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>Sendmail is a free and open-source mail transfer agent (MTA) used to route and deliver email on Unix-based systems. This technology pack will process Sendmail logs and includes parsers and dashboards to visualize key data such as sender/recipient activity, delivery status, ruleset rejections, authentication, and processing statistics.</p>
-        <h2>What is Provided</h2>
+        <p>Sendmail is a free and open-source mail transfer agent (MTA) used to route and deliver email on Unix-based
+        systems. This technology pack will process Sendmail logs and includes parsers and dashboards to visualize key
+        data such as sender/recipient activity, delivery status, ruleset rejections, authentication, and processing
+        statistics.</p>
+        <h2 id="requirements">Requirements</h2>
         <ul>
             <li>
-                <p>Rules to parse, normalize and enrich Sendmail log messages and a dashboard with six tabs covering key insights.
-                </p>
+                <p>Graylog Server version 5.2.4 or later with valid Enterprise license</p>
+            </li>
+            <li>
+                <p>Sendmail logs delivered via syslog (RFC 5424) or Filebeat</p>
             </li>
         </ul>
-        <h2>Supported Version(s)</h2>
+        <h2 id="supported-versions">Supported Versions</h2>
         <ul>
-            <li>Tested with Sendmail version 8.15.2 but earlier versions are compatible.<![CDATA[
-            ]]></li>
-        </ul>
-        <h2>Requirements</h2>
-        <ul>
-            <li>Minimum of Graylog version 5.2.4 with a valid Enterprise license.
+            <li>
+                <p>Sendmail version 8.15.2 and earlier compatible versions</p>
             </li>
         </ul>
-        <h2>Stream Configuration</h2>
+        <h2 id="log-collection">Log Collection and Delivery</h2>
+        <p>Sendmail logs can be delivered to Graylog via syslog or Filebeat. Only RFC 5424 compliant syslog messages are
+        accepted for the syslog method.</p>
+        <h3>Syslog Configuration</h3>
+        <p>Configure syslog forwarding for Sendmail logs:</p>
+        <ol>
+            <li>
+                <p>Create a matching syslog input in Graylog (UDP or TCP)</p>
+            </li>
+            <li>
+                <p>Configure the syslog server (e.g. rsyslog) to forward mail facility logs to the Graylog input</p>
+            </li>
+            <li>
+                <p>Ensure logs are RFC 5424 compliant</p>
+            </li>
+        </ol>
+        <h3>Filebeat Configuration</h3>
+        <p>Configure Filebeat to ship Sendmail log files:</p>
+        <ol>
+            <li>
+                <p>Create a matching Beats input in Graylog</p>
+            </li>
+            <li>
+                <p>Create an API access token and Linux Filebeat collector</p>
+            </li>
+            <li>
+                <p>Configure the collector to read Sendmail log files (e.g. /var/log/maillog)</p>
+            </li>
+            <li>
+                <p>Set event_source_product to 'sendmail' in the Filebeat fields configuration</p>
+            </li>
+        </ol>
+        <h2 id="stream-configuration">Stream Configuration</h2>
         <p>This technology pack includes 1 stream:</p>
         <ul>
-            <li>"Illuminate:Sendmail Mail Server Messages"
-            </li>
+            <li>"Illuminate:Sendmail Mail Server Messages"</li>
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Note</b>:  If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
+                activation of this pack then it will be created and configured to route messages to this stream and the
+                associated index set. There should not be any stream rules configured for this stream.</span>
+                </div>
             </section>
         </p>
-        <h2>Index Set Configuration</h2>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
         <p>This technology pack includes 1 index set definition:</p>
         <ul>
-            <li>"Sendmail Mail Server Logs"
-            </li>
+            <li>"Sendmail Mail Server Logs"</li>
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Note</b>:  If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
+                nothing will be changed. If this index set does not exist, then it will be created with retention
+                settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
+                installation.</span>
+                </div>
             </section>
         </p>
-        <h2>Log Collection</h2>
+        <h2 id="what-is-provided">What is Provided</h2>
         <ul>
-            <li>Syslog
+            <li>
+                <p>Parsing rules to extract Sendmail logs into Graylog schema compatible fields</p>
             </li>
-            <li>Filebeat (with Sidecar)
+            <li>
+                <p>GIM event type categorization and enforcement fields for supported Sendmail events</p>
+            </li>
+            <li>
+                <p>Illuminate spotlight dashboard with six tabs: Overview, Activity, Delivery Status, Rule Rejection,
+                Authentication, and Processing Statistics</p>
             </li>
         </ul>
-        <h3>Syslog Configuration</h3>
-        <p>Sendmail outputs to syslog under mail facility by default.</p>
-        <ol>
-            <li>
-                <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/syslog_inputs.html">syslog input</a> in Graylog.</p>
-            </li>
-            <li>
-                <p>Configure your syslog server (e.g. rsyslog) to send the logs to Graylog.</p>
-            </li>
-        </ol>
+        <h2 id="log-format-example">Log Format Example</h2>
+        <p><code class="linecode">Receipt log:
+        t1NHIIgY028315: from=&lt;masterchef@outlook.com&gt;, size=496, class=0, nrcpts=5, msgid=&lt;B3BE0AC12425C02A1FB8C9201EE5CB9E@jyvicegy&gt;, proto=ESMTP, daemon=MTA, relay=host-47.55-234-182.cable.dynamic.website.net [182.234.55.47]
+
+        Delivery log:
+        e6BLc7u23822: to=foo@bar.com, ctladdr=foo (1002/1002), delay=00:00:08, xdelay=00:00:00, mailer=esmtp, pri=30025, relay=foo.bar.com., dsn=5.3.5, stat=Local configuration error
+
+        Authentication log:
+        AUTH=server, relay=[11.111.111.111], authid=aussie@foo.bar, mech=LOGIN, bits=0
+
+        STARTTLS log:
+        STARTTLS=server, relay=111-1-111-11-AAAA.aaa.foobarbusiness.net [111.1.111.11], version=TLSv1/SSLv3, verify=NO, cipher=AES128-SHA, bits=128/128
+
+        Connection log:
+        connect from 177-177-rev-placeholder.reverse.foo.net.bar [177.177.11.111] (may be forged)
+
+        Ruleset rejection log:
+        ruleset=check_rcpt, arg1=&lt;jan@foo.bar.com&gt;, relay=foo@odin.bar.com [192.168.1.1], reject=550 5.7.1 &lt;jan@foo.bar.com&gt;... Relaying denied
+
+        Pre-greeting rejection log:
+        rejecting commands from aa.example.com [22.22.22.22] due to pre-greeting traffic
+
+        Daemon status log:
+        starting daemon (8.14.7): queueing@01:00:00
+
+        Milter content filter rejection log:
+        k876hJS0063495: Milter: data, reject=550 5.7.1 Blocked by SpamAssassin
+
+        Lost connection log:
+        k876hJS0063495: lost input channel from host.example.com [10.0.0.1] to MTA after rcpt
+
+        System error log:
+        NOQUEUE: SYSERR(root): daemon: cannot fork: Not enough space
+        </code>
+        </p>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following log types:</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Log Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">AUTH (server-side)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100500</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.credential
+                            validation</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">credential validation</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Connect from (inbound)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network connection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">STARTTLS (server-side)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.network connection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Daemon starting</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">210000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.start</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service started</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Daemon stopping</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">210100</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.stop</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service stopped</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Mail from (receipt)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">219999</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.default</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service event</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mail to (delivery)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">219999</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.default</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service event</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Ruleset rejection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">219999</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.default</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service event</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Lost connection / timeout</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">219999</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.default</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service event</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SYSERR (system error)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">219999</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.default</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service event</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Pre-greeting rejection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">300000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.network_detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">ids_detection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Discovery rejection (VRFY/EXPN)
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">300000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.network_detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">ids_detection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Invalid connection (no commands
+                            issued)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">300000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.network_detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">ids_detection</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Milter content filter rejection
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">300000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">detection.network_detection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">ids_detection</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h3>Fields Extracted by This Pack</h3>
+        <h4>Parsed Fields</h4>
+        <p>These are the fields extracted and mapped by the Sendmail content pack.</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Parsed Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Original Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(syslog)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">sendmail</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Syslog application name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">(syslog)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">23824</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Sendmail process ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">email_uid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">e6BLc7u23822</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Sendmail queue ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">from=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">email_from</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">foo@bar.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Sender email address</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">to=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">email_to</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">foo@bar.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Recipient email address</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">size=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">email_size</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">496</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Message size in bytes</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">msgid=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">email_message_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&lt;B3BE0AC12425...&gt;</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Message ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">class=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_class</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Message class</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">nrcpts=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_nrcpts</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">5</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Number of recipients</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">proto=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">esmtp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Network protocol (lowercased)
+                        </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">daemon=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_daemon</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">MTA</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Sendmail daemon name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">relay=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">182.234.55.47</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client relay IP address</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">relay=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host-47.cable.net</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Client relay hostname</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">relay=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">192.168.1.3</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination relay IP address</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">relay=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">foo.bar.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination relay hostname</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">delay=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_delay</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">00:00:08</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Delivery delay</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(calculated)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_delay_total_seconds</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">8</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Total delay in seconds</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">xdelay=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_xdelay</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">00:00:00</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Transmission delay</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">mailer=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_mailer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">esmtp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Mailer type</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">pri=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_pri</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">30025</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Message priority</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dsn=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_dsn</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">5.3.5</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Delivery Status Notification code
+                        </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">stat=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Sent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Delivery status</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">stat=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_status_text</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Message accepted for delivery
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Delivery status detail</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">AUTH=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_auth</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">server</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Authentication direction</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authid=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_authid</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">aussie@foo.bar</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Authentication user ID</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">mech=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_mech</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">LOGIN</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">SASL authentication mechanism
+                        </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">bits=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_bits</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Authentication encryption bits
+                        </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">STARTTLS=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_starttls</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">server</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">TLS negotiation direction</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">version=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_tls_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">TLSv1/SSLv3</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">TLS protocol version</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">cipher=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_tls_cipher</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">AES128-SHA</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">TLS cipher suite</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">bits=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_tls_cipher_size</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">128/128</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">TLS cipher key size</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">verify=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_starttls_verify</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">NO</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">TLS certificate verification
+                            status</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">connect</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Event action (connect, starting,
+                            stopping, rejecting)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ruleset=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_ruleset</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">check_rcpt</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Sendmail ruleset name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">arg1=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_arg1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">&lt;jan@foo.bar.com&gt;</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Ruleset argument 1</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">reject=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_reject</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">550 5.7.1 Relaying denied</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Rejection reason with SMTP
+                            response</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">smtp_response_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">550</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">SMTP response code</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">(lookup)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">smtp_response_code_description
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Requested action not taken</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">SMTP response description</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">smtp_response_enhanced_class_code
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">5</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Enhanced status class code</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            smtp_response_enhanced_status_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">7.1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Enhanced status code</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Milter:</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_milter_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">data</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Milter filter stage (data, to,
+                            header)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Milter: reject=</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_reject</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">550 5.7.1 Blocked by SpamAssassin
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Milter rejection reason with SMTP
+                            response</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_smtp_phase</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">MTA after rcpt</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">SMTP phase when connection was
+                            lost</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SYSERR()</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_syserr_user</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">root</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">User context for system error
+                        </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">SYSERR</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">daemon: cannot fork</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">System error description</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_subtype</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">milter_reject</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Log subtype (discovery_reject,
+                            invalid_connect, milter_reject, lost_connection, syserr)</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_relay_warning</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">may be forged</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Relay hostname verification
+                            warning</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">8.14.7</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Sendmail daemon version</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_outcome_reason</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">signal</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Daemon stop reason</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Mapped</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">gim_event_type_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">100500</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GIM event type code</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mapped</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">sendmail</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Service name for enforcement</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Mapped</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_signature</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Suspicious SMTP connection:
+                            milter_reject</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Alert signature for detection
+                            events</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mapped</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_category</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">smtp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Alert category for detection
+                            events</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_arg2</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Additional sendmail rejection
+                            argument</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_ctladdr</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">root</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Control address for local
+                            delivery</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_relay_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">192.168.1.50</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Relay IP address</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_relay_user</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alice</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Relay username</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_status_full</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Sent (ok 1234 message accepted)
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Full status message for delivery
+                        </td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_smtp_response_message</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Access denied</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">SMTP response message text</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Mapped</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            smtp_response_enhanced_class_code_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Success</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">SMTP enhanced class code
+                            description</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mapped</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            smtp_response_enhanced_subject_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1.1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">SMTP enhanced subject code</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Mapped</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            smtp_response_enhanced_subject_code_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Other or Undefined Address Status
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">SMTP enhanced subject code
+                            description</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_starttls_errno</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">54</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">STARTTLS error number</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_starttls_error</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">read</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">STARTTLS error type</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_starttls_error_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0x1408F10B</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">STARTTLS SSL error code</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_starttls_error_reason</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">connection reset</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">STARTTLS error reason</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_starttls_retry</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">OK</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">STARTTLS retry status</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">(parsed)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">vendor_starttls_ssl_error</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">SSL_ERROR_SSL</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">STARTTLS SSL error name</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h2 id="spotlight-content-pack">Illuminate:Sendmail Spotlight</h2>
+        <p>This spotlight offers a dashboard with 6 tabs:</p>
+        <h3>Sendmail Mail Server Overview</h3>
         <p>
-            <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Note</b>:  Only <a href="https://www.ietf.org/rfc/rfc5424.txt">RFC 5424</a> compliant syslog messages are accepted.</div>
-            </section>
+            <img src="../Resources/Images/Sendmail Content Pack/overview.png" />
         </p>
-        <h3>Filebeat Configuration</h3>
-        <p>Please refer to the <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">official documentation</a> to setup Graylog Sidecar for filebeat.</p>
-        <ol>
-            <li>
-                <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> in Graylog.</p>
-            </li>
-            <li>
-                <p>Create an API access token and Linux filebeat collector.</p>
-            </li>
-            <li>
-                <p>Configure the collector for Sendmail. See the following example snippet:</p>
-            </li>
-            <MadCap:codeSnippet>
-                <MadCap:codeSnippetCopyButton />
-                <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">filebeat.inputs:
-- input_type: log
-  paths:
-    - /var/log/mail.log
-  type: filestream
-  fields_under_root: true
-  fields:
-    event_source_product: sendmail</MadCap:codeSnippetBody>
-            </MadCap:codeSnippet>
-            <p>
-                <section class="infoBox">
-                    <div class="title"><b>Note:</b><span style="font-weight: normal;"> There must be two spaces in front of <code class="linecode">event_source_product</code> and </span><code class="linecode" style="font-weight: normal;">- /var/log/mail.log</code>.</div>
-                </section>
-            </p>
-            <li>
-                <p>Configure the client with filebeat and Sidecar.</p>
-            </li>
-        </ol>
-        <h2>Log Format Examples</h2>
-        <h4>Receipt Logs</h4>
-        <p><code class="linecode">
-            `qA6KmkmX918730: from=&lt;user@corp.example.com&gt;, size=1286, class=0, nrcpts=1, msgid=&lt;498FC718.7000891@corp.example.com&gt;, proto=ESMTP, daemon=MTA, relay=a.mail.example.com [11.111.11.111]`
-</code><![CDATA[        ]]></p>
-        <h4>Delivery Logs</h4>
-        <p><![CDATA[
-            ]]><code class="linecode">
-            `qABK0GcL913544: to=&lt;user@corp.example.com&gt;, delay=00:00:08, xdelay=00:00:01, mailer=esmtp, pri=1314205, relay=aspmx.l.google.com. [173.194.79.26], dsn=2.0.0, stat=Sent (OK 1234567890 g7zy99885643ion.56)`
-</code><![CDATA[        ]]></p>
-        <h4>Ruleset Rejection Logs</h4>
-        <p><code class="linecode">
-            `e5DHeYC11749: ruleset=check_rcpt, arg1=&lt;user@foo.bar.com&gt;, relay=user@mail.bar.com [11.111.11.111], reject=550 5.7.1 &lt;user@foo.bar.com&gt;... Relaying denied`
-</code><![CDATA[        ]]></p>
-        <h4>Authentication Logs</h4>
-        <p><code class="linecode">
-            `AUTH=server, relay=11-111-11-111.srv.foo.bar.com [11.111.11.111] (may be forged), authid=gooduser, mech=PLAIN, bits=0`
-</code><![CDATA[        ]]></p>
-        <h4>STARTTLS Logs</h4>
-        <p><code class="linecode">
-            `STARTTLS=client, relay=gmail-smtp-in.l.google.com., version=TLSv1/SSLv3, verify=OK, cipher=RC4-SHA, bits=128/128`
-</code><![CDATA[        ]]></p>
-        <h4>Connection Logs</h4>
-        <p><code class="linecode">
-            `c22AJzde908658: SMTP outgoing connect on server1.example.com`
-</code><![CDATA[        ]]></p>
-        <h4>Invalid Connection Logs</h4>
-        <p><code class="linecode">
-            `m12Umdcw998259: [11.111.11.111] did not issue MAIL/EXPN/VRFY/ETRN during connection to SSLMTA`
-</code><![CDATA[        ]]></p>
-        <h4>Pregreet Traffic Logs</h4>
-        <p><code class="linecode">
-            `z1ENNTPj905074: rejecting commands from foo.bar.com [11.111.11.111] due to pre-greeting traffic after 0 seconds`
-</code><![CDATA[        ]]></p>
-        <h4>Rejected Discovery Logs</h4>
-        <p><code class="linecode">
-            `u52CZzhr906425: AAAb9625.ne.foo.bar.com [11.111.11.111]: VRFY user [rejected]`
-</code><![CDATA[        ]]></p>
-        <h4>Service Status Logs</h4>
-        <p><code class="linecode">
-            `starting daemon (8.14.4): SMTP+queueing@00:10:00`
-</code><![CDATA[        ]]></p>
-        <h2>Events Processed by This Technology Pack</h2>
-        <p>The Sendmail content pack supports:</p>
-        <ul>
-            <li>
-                <p>Receipt Logs</p>
-            </li>
-            <li>
-                <p>Delivery Logs</p>
-            </li>
-            <li>
-                <p>Ruleset Rejection Logs</p>
-            </li>
-            <li>
-                <p>Authentication Logs</p>
-            </li>
-            <li>
-                <p>STARTTLS Logs</p>
-            </li>
-            <li>
-                <p>Connection Logs</p>
-            </li>
-            <li>
-                <p>Invalid Connection Logs</p>
-            </li>
-            <li>
-                <p>Pregreet Traffic Logs</p>
-            </li>
-            <li>
-                <p>Rejected Discovery Logs</p>
-            </li>
-            <li>
-                <p>Service Status Logs</p>
-            </li>
-        </ul>
-        <h2>Message Fields Included in this Pack</h2>
-        <table cellspacing="21" style="mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');width: 868px;" class="TableStyle-Alternate-Row-Color">
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 196px;" />
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 372px;" />
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 177px;" />
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" style="width: 277px;" />
-            <thead>
-                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1" style="background-color: #252d47;color: #ffffff;" colspan="4"><b>General Parsing</b>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">application_name
-
-
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">sendmail
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">This field is generated by the syslog input.
-</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">facility</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-mail</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">This field is generated by the syslog input.
-</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">process_id</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">5222</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">This field is generated by the syslog input.
-</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode"><code class="language-shell">source</code></code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p class="table-text">mailsrv1
-</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p>keyword/loweronly</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <p>Hostname or IP of the source system that generated the event.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text"><code class="linecode">email_uid</code>
-                        </p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">qABK0GcL913544
-</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <p>The queue ID unique to each message.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1" style="background-color: #252d47;color: #ffffff;font-weight: bold;" colspan="4">Receipt
-</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">email_from</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user@graylog.com
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Email address of the sender.
-</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">email_size
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">589
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Size of the email message in bytes.
-</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">email_message_id</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p>200046040409.e5EECA205337@foo.bar.com</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <p>Email Message ID.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_class</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p>0</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p class="table-text">long
-</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <p>The queue class (numeric precedence) of the message.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_nrcpts</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">1</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">long
-</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <p>Number of recipients for the email.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_daemon</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p>MTA</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <p>The name of the sender daemon.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_relay_user</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user@graylog.com
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <p>User of the client relay, the host from which a message was received.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_relay_warning</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p>may be forged</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <p>Warning that relay IP or name may be forged.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">source_ip</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p>10.1.2.3</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <p>IP address of the client relay, the host from which a message was received.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_hostname</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p>graylog.com</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <p>Hostname of the client relay, the host from which a message was received.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">network_protocol</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p>esmtp</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <p>The protocol used when the message was received.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1" style="background-color: #252d47;color: #ffffff;font-weight: bold;" colspan="4">Delivery</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">email_to</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p>user@graylog.com&#160;</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Email address of the recipient.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_ctladdr
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">mailadmin
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The controlling user, the name of the user whose credentials are used for delivery.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_delay</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">00:08:52
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The total time the message took to be processed from reception to attempted delivery.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_delay_total_seconds
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">532
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The total message delay described in seconds.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_xdelay</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">00:00:04
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The total time the message took to be transmitted during final delivery.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_mailer
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">esmtp
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The name of the delivery agent used.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_pri</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">30589
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The initial priority assigned to the message.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_dsn
- </code><![CDATA[      ]]></td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2.0.0
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Delivery Status Notification indicating the outcome of an email delivery attempt.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_status_full
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Sent (e6FDCEv13455 Message accepted for delivery)
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The full delivery status of the message.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_status
-</code><![CDATA[      ]]></td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Sent
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The abbreviated delivery status of the message.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_status_text
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">e6FDCEv13455 Message accepted for delivery
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The delivery status information returned by the delivery agent or destination host.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_relay_user
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user@graylog.com
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">User of the destination relay, the host that receives a message.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_relay_warning
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">may be forged</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Warning that relay IP or name may be forged.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">destination_ip
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10.1.2.3</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IP address of the destination relay, the host that receives a message.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">destination_hostname</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">graylog.com</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Hostname of the destination relay, the host that receives a message.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1" style="background-color: #252d47;color: #ffffff;font-weight: bold;" colspan="4">Ruleset Rejection
-</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_ruleset</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">check_rcpt
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The ruleset that was used to screen the rejected message.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_arg1
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">spammer@spammy.com
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The argument to a ruleset check, usually an IP, domain or email address.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_arg2</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">127.0.0.4
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Additional argument to a ruleset check, often the query result from abuse lookup services.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_relay_user
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user@graylog.com
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">User of the client relay, the host from which a message was received.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_relay_warning</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p>may be forged</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <p>Warning that relay IP or name may be forged.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_ip</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p>10.1.2.3</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <p>IP address of the client relay, the host from which a message was received.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">source_hostname</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p>graylog.com</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <p>Hostname of the client relay, the host from which a message was received.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_reject</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p>550 5.7.1 Mail from 11.111.11.111 rejected by SPAMHAUS.</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <p>The reason a message was rejected, often containing the server SMTP response.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_smtp_response_message</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p>&lt;spammer@spammy.com.&gt;... SPAM REJECT</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <p>The information provided in an SMTP response.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">smtp_response_code</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p>550</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <p>SMTP basic status code.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">smtp_response_code_description</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p>Mailbox unavailable</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <p>SMTP basic status code description.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">smtp_response_enhanced_class_code</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p>5</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <p>SMTP enhanced status class code.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">smtp_response_enhanced_class_code_description</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p>Permanent Failure</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <p>SMTP enhanced status class code.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">smtp_response_enhanced_status_code</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p>7.1</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <p>SMTP enhanced status enumerated status code.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">smtp_response_enhanced_subject_code</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p>7</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <p>SMTP enhanced status subject code.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">smtp_response_enhanced_subject_code_description</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p>Security or Policy Status</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <p>SMTP enhanced status subject code description.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2" style="background-color: #252d47;color: #ffffff;font-weight: bold;" colspan="4">Authentication
-</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_auth
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">client
-
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Indicates whether Sendmail acted as the client or server during authentication.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_authid</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-mailadmin</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The authentication identifier, usually a username.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_mech
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">LOGIN</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The authentication mechanism used.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_bits</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The strength of encryption used during authentication, or none used.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p><code class="linecode">vendor_relay_user</code>
-                        </p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p class="table-text">
-user@graylog.com</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <p>User of the client/destination relay depending on the direction of authentication.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_relay_warning</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">may be forged</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <p>Warning that relay IP or name may be forged.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_ip</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p class="table-text">10.1.2.3</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <p>IP address of the client relay, the host authenticating to the server.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">source_hostname</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">graylog.com</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <p>Hostname of the client relay, the host authenticating to the server.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">destination_ip</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p class="table-text">10.1.2.3
-</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <p>IP address of the destination relay, the server being authenticated to by a client.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text"><code class="linecode">destination_hostname</code>
-                        </p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">graylog.com
-</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <p>Hostname of the destination relay, the server being authenticated to by a client.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1" style="background-color: #252d47;color: #ffffff;font-weight: bold;" colspan="4">STARTTLS
-</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_starttls</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">server
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Indicates whether Sendmail acted as the client or server during STARTTLS negotiation.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_tls_version
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">TLSv1/SSLv3
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The TLS version used.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_tls_cipher</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">AES128-SHA
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The cipher suite negotiated for the secure connection.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_tls_cipher_size
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">128/128
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The key size used for encryption.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_starttls_verify
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">OK
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The result of the server certificate verification.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_starttls_error
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">accept failed
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The error that occurred during STARTTLS negotiation.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_starttls_error_code</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">-1
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The result code assigned to a STARTTLS negotiation error.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_starttls_error_reason
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">sslv3 alert bad certificate
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The reason for a STARTTLS negotiation error.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_relay_user
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user@graylog.com
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">User of the client/destination relay depending on the direction of connection.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_relay_warning
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">may be forged
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Warning that relay IP or name may be forged.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">source_ip</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">10.1.2.3
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">IP address of the client relay, the host connecting to the server.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_hostname
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">graylog.com
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Hostname of the client relay, the host connecting to the server.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">destination_ip</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">10.1.2.3
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">IP address of the destination relay, the server receiving the connection.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">destination_hostname
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">graylog.com
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Hostname of the destination relay, the server receiving the connection.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2" style="background-color: #252d47;color: #ffffff;font-weight: bold;" colspan="4">Connection
-</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_event_action
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">connect
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The action taken in the event.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_relay_user</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user@graylog.com
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">User of the client/local relay.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_relay_warning</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p>may be forged</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <p>Warning that relay IP or name may be forged.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_relay_ip</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p>10.1.2.3</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <p>IP address of the local relay used to send a message.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_relay_host</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p>graylog.com</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <p>Hostname of the local relay used to send a message.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">source_ip</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p>10.1.2.3</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <p>IP address of the client relay, the host from which a connection was received.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_hostname</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p>graylog.com</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p class="table-text">keyword</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <p>Hostname of the client relay, the host from which a connection was received.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2" style="background-color: #252d47;color: #ffffff;font-weight: bold;" colspan="4">Invalid Connection
-</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_relay_user
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">suspicious@domain.tld
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">User of the client relay, the host from which the invalid connection was received.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_relay_warning</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">may be forged
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Warning that relay IP or name may be forged.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_ip
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10.1.2.3
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IP address of the client relay, the host from which the invalid connection was received.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">source_hostname
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">domain.tld
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Hostname of the client relay, the host from which the invalid connection was received.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1" style="background-color: #252d47;color: #ffffff;font-weight: bold;" colspan="4">Pre-greet Traffic
-</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_event_action</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">rejecting
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The action taken in the event.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_relay_user</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">suspicious@domain.tld
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">User of the client relay, the host from which the pre-greeting traffic was sent.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_relay_warning</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">may be forged
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Warning that relay IP or name may be forged.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_ip</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10.1.2.3
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IP address of the client relay, the host from which the pre-greeting traffic was sent.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">
-source_hostname</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">domain.tld
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Hostname of the client relay, the host from which the pre-greeting traffic was sent.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1" style="background-color: #252d47;color: #ffffff;font-weight: bold;" colspan="4">Rejected Discovery
-</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_relay_user</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">suspicious@domain.tld
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">User of the client relay, the host potentially scanning the server.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_relay_warning
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">may be forged
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Warning that relay IP or name may be forged.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">source_ip</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p>10.1.2.3</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p class="table-text">keyword
-</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                        <p>IP address of the client relay, the host potentially scanning the server.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_hostname</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p>domain.tld</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                        <p class="table-text">keyword
-</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                        <p>Hostname of the client relay, the host potentially scanning the server.</p>
-                    </td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2" style="background-color: #252d47;color: #ffffff;font-weight: bold;" colspan="4">Service Status
-</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_event_action</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">starting</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The event action indicating the status of the Sendmail daemon.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_version</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-8.14.7</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The Sendmail version running.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><code class="linecode">vendor_event_outcome_reason
-</code>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">signal
-</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">The specific cause for a service status change.</td>
-                </tr>
-            </tbody>
-        </table>
-        <h2>Graylog Illuminate:Sendmail Spotlight Content Pack</h2>
-        <p>The Graylog "Illuminate:Sendmail Spotlight" offers a dashboard with 6 tabs: Sendmail Mail Server Overview, Activity, Delivery Status, Rule Rejection, Authentication, and Processing Statistics.</p>
-        <p>&#160;</p>
-        <img src="../Resources/Images/Sendmail Content Pack/overview.png" />
+        <h3>Activity</h3>
         <p>
             <img src="../Resources/Images/Sendmail Content Pack/activity.png" />
         </p>
+        <h3>Delivery Status</h3>
         <p>
             <img src="../Resources/Images/Sendmail Content Pack/delivery_status.png" />
         </p>
+        <h3>Rule Rejection</h3>
         <p>
             <img src="../Resources/Images/Sendmail Content Pack/rule_rejection.png" />
         </p>
+        <h3>Authentication</h3>
         <p>
-            <img src="../Resources/Images/Sendmail Content Pack/authentication.png" />
+            <img src="../Resources/Images/Sendmail Content Pack//authentication.png" />
         </p>
+        <h3>Processing Statistics</h3>
         <p>
             <img src="../Resources/Images/Sendmail Content Pack/processing_statistics.png" />
         </p>
