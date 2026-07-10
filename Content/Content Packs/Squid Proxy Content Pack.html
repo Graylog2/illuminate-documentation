@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+
+<head>
+    <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
+    <title>Squid Content Pack</title>
+    <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+</head>
+
+<body>
+    <h1>Squid Content Pack</h1>
+    <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+    <p>Squid is an open-source web proxy that caches and forwards HTTP, HTTPS, and FTP traffic to improve performance,
+        reduce bandwidth usage, and enforce access controls.</p>
+    <h2 id="requirements">Requirements</h2>
+    <ul>
+        <li>
+            <p>Squid 7.4</p>
+        </li>
+        <li>
+            <p>Graylog Enterprise version 7.0.3+</p>
+        </li>
+    </ul>
+    <h2 id="stream-configuration">Stream Configuration</h2>
+    <p>This technology pack includes 1 stream:</p>
+    <ul>
+        <li>"Illuminate:Squid Web Proxy Messages"</li>
+    </ul>
+    <p>
+    <section class="infoBox">
+        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
+                activation of this pack then it will be created and configured to route messages to this stream and the
+                associated index set. There should not be any stream rules configured for this stream.</span>
+        </div>
+    </section>
+    </p>
+    <h2 id="index-set-configuration">Index Set Configuration</h2>
+    <p>This technology pack includes 1 index set definition:</p>
+    <ul>
+        <li>"Squid Web Proxy Logs"</li>
+    </ul>
+    <p>
+    <section class="infoBox">
+        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
+                nothing will be changed. If this index set does not exist, then it will be created with retention
+                settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
+                installation.</span>
+        </div>
+    </section>
+    </p>
+    <h2 id="log-format-example">Log Format Example</h2>
+    <p><code class="linecode">1157689312.049   5006 10.105.21.199 TCP_MISS/200 19763 CONNECT login.yahoo.com:443 badeyek DIRECT/175.16.199.115 -
+        </code>
+    </p>
+    <h2 id="what-is-provided">What is Provided</h2>
+    <ul>
+        <li>
+            <p>Rules to normalize and enrich Squid log messages</p>
+        </li>
+    </ul>
+    <h2 id="log-collection">Log Collection and Delivery</h2>
+    <p>This pack was designed to use the Elastic Filebeat agent for log delivery. This can be configured easily using
+        the Graylog Sidecar. The collection of Squid logs should be performed from the manager and all agents.</p>
+    <p>This configuration requires that the account used to run the Graylog Sidecar/Filebeat agent have the necessary
+        permissions to access the Squid log files. When running Sidecar/Filebeat with a non-root service account it will
+        be necessary to grant that service account account access to the log files.</p>
+    <h3>Configuring Squid</h3>
+    <p>Configure Squid to log access logs on /var/log/squid/access.log.</p>
+    <p>
+    <section class="infoBox">
+        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If the logs are stored at a different
+                location (for e.g. Windows systems), make sure to update the filebeat config with your file path.</span>
+        </div>
+    </section>
+    </p>
+    <h3>Configuring Sidecar</h3>
+    <ol>
+        <li>
+            <p>Please refer to the official documentation to <a
+                    href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">set up Graylog
+                    Sidecar for Filebeat</a>.</p>
+        </li>
+        <li>
+            <p>Create a matching <a
+                    href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> in
+                Graylog.</p>
+        </li>
+        <li>
+            <p>Ensure that the option <em>Do not add Beats type as prefix</em> is <strong>disabled</strong>.</p>
+        </li>
+        <li>
+            <p>Add the following example configuration snippet to your Filebeat configuration for Linux systems:</p>
+            <MadCap:codeSnippet>
+                <MadCap:codeSnippetCopyButton />
+                <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False"
+                    xml:space="preserve">- type: filestream
+                    id: squid-filestream
+                    enabled: true
+                    paths:
+                    - /var/log/squid/access.log
+                    fields_under_root: true
+                    fields:
+                    event_source_product: squid_proxy</MadCap:codeSnippetBody>
+            </MadCap:codeSnippet>
+        </li>
+    </ol>
+    <p>
+    <section class="infoBox">
+        <div class="title"><b>Hint: </b><span style="font-weight: normal;">The configuration snippet provided is not a
+                fully functional filebeat configuration, it is only the section that adds Squid log ingestion to an
+                existing filebeat configuration using the default Squid paths.</span>
+        </div>
+    </section>
+    </p>
+    <h3 id="gim-categorization">GIM Categorization</h3>
+    <p>GIM categorization is provided for the following messages:</p>
+    <MadCap:dropDown>
+        <MadCap:dropDownHead>
+            <MadCap:dropDownHotspot>GIM Categorization <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+        </MadCap:dropDownHead>
+        <MadCap:dropDownBody>
+            <table cellspacing="21"
+                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
+                class="TableStyle-Alternate-Row-Color">
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <thead>
+                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Vendor Event Action</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Description</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">TUNNELED</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">HTTP or HTTPS traffic was
+                            tunneled through the proxy without inspection</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TCP_</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">A generic TCP-based web proxy
+                            transaction was observed</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">TCP_AUTH_HIT</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Authenticated request was served
+                            from the proxy cache</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TCP_AUTH_MISS</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Authenticated request was
+                            forwarded to the destination server</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">TCP_AUTH_REDIRECT</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Authenticated request was
+                            redirected by proxy policy</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TCP_CLIENT_REFRESH</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Client requested a refreshed copy
+                            of the resource</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">TCP_DENIED</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Proxy explicitly denied the
+                            client request</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TCP_ERR_MISS</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Request failed after being
+                            forwarded to the destination server</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">TCP_HIT</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Request was successfully served
+                            from the proxy cache</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TCP_LOOP</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Request was blocked due to a
+                            detected proxy routing loop</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">TCP_MEM_HIT</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Request was served from the
+                            in-memory proxy cache</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TCP_MISS</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Request was forwarded to the
+                            destination server and allowed</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">TCP_NC_MISS</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Request was forwarded without
+                            caching and allowed</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TCP_PARTIAL_MISS</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Partial content request was
+                            forwarded to the destination server</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">TCP_POLICY_REDIRECT</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Request was redirected based on
+                            proxy policy rules</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TCP_REFRESH_HIT</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Refreshed request was served from
+                            the proxy cache</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">TCP_REFRESH_MISS</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Refreshed request was forwarded
+                            to the destination server</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TCP_RESCAN_HIT</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Previously scanned content was
+                            served from the cache</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">TCP_SPLASHED</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Request was intercepted and
+                            presented with a splash or warning page</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TCP_SWAPFAIL</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Proxy failed to store or retrieve
+                            cached content</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">TCP_TUNNELED</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">TCP connection was tunneled
+                            through the proxy</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TCP_ACCELERATED</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Request was handled by the proxy
+                            in accelerator mode</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">TCP_MISS_RST</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Forwarded request was reset
+                            during processing</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TCP_NC_MISS_RST</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Non-cached forwarded request was
+                            reset</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">TCP_WEBSOCKET</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">WebSocket connection was proxied
+                            over TCP</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http proxied communication</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">TCP_CLIENT_REFRESH_RST</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Client refresh request was reset
+                            or blocked</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">180300</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">protocol</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">http</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">http.proxied</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">http proxied communication</td>
+                    </tr>
+                </tbody>
+            </table>
+        </MadCap:dropDownBody>
+    </MadCap:dropDown>
+    <h3>Message Fields Included in This Pack</h3>
+    <h4>Parsed Fields</h4>
+    <p>The following fields are extracted and normalized from Squid log messages.</p>
+    <MadCap:dropDown>
+        <MadCap:dropDownHead>
+            <MadCap:dropDownHotspot>Parsed Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+        </MadCap:dropDownHead>
+        <MadCap:dropDownBody>
+            <table cellspacing="21"
+                style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
+                class="TableStyle-Alternate-Row-Color">
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                <thead>
+                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">175.16.199.115</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">IP address of the destination
+                            host the proxy connected to</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_action</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">allowed</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Normalized action describing the
+                            outcome of the event</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_duration</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">5006</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Duration of the event in
+                            milliseconds</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_source_product</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">squid_proxy</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Product that generated the event
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_time_ms</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">49</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Additional event timing value in
+                            milliseconds as reported by the source</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_time_sec</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1157689312</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Event timestamp expressed in
+                            seconds since the Unix epoch</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_request_method</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">CONNECT</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP method used in the client
+                            request</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_path</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">login.yahoo.com:443</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Requested host and port or path
+                            accessed via the proxy</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_response</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">OK</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Textual HTTP response message
+                        </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_response_class</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">successful response</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Normalized HTTP response class
+                            derived from the response code</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_response_code</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">200</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP response status code
+                            returned to the client</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_uri</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">login.yahoo.com:443</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Full URI or authority requested
+                            by the client</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_transport</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">tcp</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Transport protocol used for the
+                            network connection</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">10.105.21.199</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">IP address of the client
+                            initiating the request</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_name</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">badeyek</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Authenticated user associated
+                            with the request</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_action</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TCP_MISS</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Original vendor-specific action
+                            reported by Squid</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_network_mime_type</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">-</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Vendor-reported MIME type of the
+                            transferred content</td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">vendor_peer_type</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">DIRECT</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">string</td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Squid peer selection result
+                            indicating how the request was routed</td>
+                    </tr>
+                </tbody>
+            </table>
+        </MadCap:dropDownBody>
+    </MadCap:dropDown>
+</body>
+
+</html>
