@@ -1,183 +1,479 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd" xml:lang="en-us">
-    <head><title>Apache Tomcat Content Pack</title>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Apache Tomcat Content Pack</title>
         <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
         <h1>
             <MadCap:concept term="Web Servers" />Apache Tomcat Content Pack</h1>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>This content pack is designed for Apache Tomcat servers running on Ubuntu systems. It parses and configures both Apache Tomcat access logs and Catalina logs.</p>
-        <h2 class="Heading2">Supported Version(s)</h2>
+        <p>Apache Tomcat is an open-source Java servlet container developed by the Apache Software Foundation. This pack
+		parses both Apache Tomcat access logs and Catalina server logs shipped via Filebeat with Graylog Sidecar.</p>
+        <h2 id="supported-versions">Supported Version(s)</h2>
         <ul>
             <li>
-                <p class="NormalWeb">Tested with Apache Tomcat version 11.0.5</p>
+                <p>Apache Tomcat 11.0.5</p>
             </li>
         </ul>
-        <h2 class="Heading2">Requirements</h2>
+        <h2 id="requirements">Requirements</h2>
         <ul>
             <li>
-                <p class="NormalWeb">The supported log delivery is via Filebeat with <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">Graylog Sidecar</a>.</p>
+                <p>Log delivery via Filebeat with Graylog Sidecar.</p>
             </li>
             <li>
-                <p class="NormalWeb">The pack only supports Ubuntu and Linux versions with the same path and file structure.</p>
+                <p>Pack supports Ubuntu and Linux versions with the same path and file structure.</p>
             </li>
             <li>
-                <p class="NormalWeb">The pack only supports the standard log folder for Ubuntu.</p>
+                <p>Only the standard Tomcat log folder for Ubuntu is supported.</p>
             </li>
         </ul>
-        <h2 class="Heading2">Stream Configuration</h2>
-        <p class="NormalWeb">This technology pack includes one stream:</p>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
         <ul>
-            <li>
-                <p class="NormalWeb">"Illuminate:Apache Tomcat Device Messages"</p>
-            </li>
-        </ul>
-        <p>
-            <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream. </div>
-            </section>
-        </p>
-        <h2 class="Heading2">Index Set Configuration</h2>
-        <p class="NormalWeb">This technology pack includes one index set definition:</p>
-        <ul>
-            <li>
-                <p class="NormalWeb">“Apache Tomcat Logs”</p>
-            </li>
+            <li>"Illuminate:Apache Tomcat Device Messages"</li>
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Hint</b>:&#160;If this index set is already defined, then nothing will be changed. Index settings can be adjusted as required after installation. </div>
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
+						activation of this pack then it will be created and configured to route messages to this stream and the
+					associated index set. There should not be any stream rules configured for this stream.</span>
+                </div>
             </section>
         </p>
-        <h2 class="Heading2">What is Provided?</h2>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"Apache Tomcat Logs"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
+						nothing will be changed. If this index set does not exist, then it will be created with retention
+						settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
+					installation.</span>
+                </div>
+            </section>
+        </p>
+        <h2 id="log-format-example">Log Format Example</h2>
+        <h4>Access Logs</h4>
+        <p><code class="linecode">34.20.30.15 - - [28/Mar/2025:23:34:30 +0000] "PUT /stefan.session HTTP/1.1" 201 -
+				127.0.0.1 - - [26/Mar/2025:15:45:02 +0000] "GET /index.jsp HTTP/1.1" 200 11235
+				11.20.29.124 - admin [02/Mar/2023:18:58:17 +0530] "POST /host-manager/images/asf-logo.svg HTTP/1.1" 200 20486 X 400 "http://localhost:8080/host-manager/html" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" X-Forwarded-For="127.0.0.1"
+			</code>
+        </p>
+        <h4>Catalina Logs</h4>
+        <p><code class="linecode">26-Mar-2025 15:27:08.188 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]
+				26-Mar-2025 15:27:08.205 INFO [main] org.apache.catalina.core.StandardEngine.startInternal Starting Servlet engine: [Apache Tomcat/11.0.5]
+				26-Mar-2025 15:27:08.290 INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory Deployment of web application directory [/opt/tomcat/webapps/ROOT] has finished in [82] ms
+				26-Mar-2025 15:27:08.312 INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler ["http-nio-8080"]
+				26-Mar-2025 15:30:44.512 INFO [main] org.apache.catalina.core.StandardService.stopInternal Stopping service [Catalina]
+				26-Mar-2025 15:30:44.521 INFO [main] org.apache.coyote.AbstractProtocol.stop Stopping ProtocolHandler ["http-nio-8080"]
+				26-Mar-2025 15:27:10.290 WARNING [Catalina-utility-2] org.apache.catalina.startup.HostConfig.deployDirectory Failed to deploy web application directory [/opt/tomcat/webapps/broken]
+			</code>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
         <ul>
             <li>
-                <p class="NormalWeb">Parsing rules to extract Apache Tomcat logs into Graylog schema-compatible fields. Apache Tomcat logs receive the GIM code <code class="linecode">180200</code> (<code class="linecode">http.communication</code>).</p>
+                <p>Parsing rules to extract Apache Tomcat access logs and Catalina server logs into Graylog
+				schema-compatible fields.</p>
+            </li>
+            <li>
+                <p>Access log events receive GIM code 180200 (http.communication).</p>
+            </li>
+            <li>
+                <p>Catalina service start events receive GIM code 210000 (service started).</p>
+            </li>
+            <li>
+                <p>Catalina service stop events receive GIM code 210100 (service stopped).</p>
             </li>
         </ul>
-        <h2 class="Heading2">Log Format Example</h2>
-        <h3>Access Logs</h3>
-        <p><code class="linecode">"34.20.30.15 - - [28/Mar/2025:23:34:30 +0000] "PUT /stefan.session HTTP/1.1" 201 -"</code>
-        </p>
-        <p><code class="linecode">"11.20.29.124 - admin [02/Mar/2023:18:58:17 +0530] "POST /host-manager/images/asf-logo.svg HTTP/1.1" 200 20486 X 400 "http://localhost:8080/host-manager/html" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36" X-Forwarded-For="127.0.0.1"</code>
-        </p>
-        <h3>Catalina Logs </h3>
-        <p><code class="linecode">26-Mar-2025 15:27:08.188 INFO [main] org.apache.catalina.core.StandardService.startInternal Starting service [Catalina]</code>
-        </p>
-        <h2>Input via Filebeat together with Graylog Sidecar</h2>
-        <p class="NormalWeb">Please use <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">the official Graylog Sidecar documentation</a> to configure your Graylog server and your client(s).</p>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM event type code assignments for Apache Tomcat log events:</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Log Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Event Type Code</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Event Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Access log (all HTTP requests)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180200</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http communication</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Catalina log - service/ProtocolHandler
+					start (Starting)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">210000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service started</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Catalina log - service/ProtocolHandler
+					stop (Stopping)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">210100</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">service stopped</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Field Normalization</h3>
+        <h4>Normalized Fields</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Access Log Field List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gim_event_type_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">GIM event type code. Set to
+							180200 (http communication) for all access log events.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_referrer</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The referrer URL sent by the
+							client (the page that linked to this request), when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_request_method</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The HTTP method used for the
+							request (for example: GET, POST, PUT).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The path requested (for example:
+							/index.jsp or /host-manager/html).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_response_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The HTTP status code the server
+							returned (for example: 200, 404, 500).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_timestamp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Raw timestamp from the access log
+							(for example: 26/Mar/2025:15:45:02 +0000).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_user_agent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The client User-Agent string,
+							when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The HTTP version used in the
+							request (for example: 1.1).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_xff</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The X-Forwarded-For header value,
+							when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ident</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Ident value from the access log
+							(usually -).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_bytes</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Number of bytes sent in the
+							response body (absent when -).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Set to http for all access log
+							events.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Client hostname, when the log
+							records a name instead of an IP address.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client IP address.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Authenticated username for the
+							request, when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_connection_status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Connection status flag from the
+							extended log format, when present.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">vendor_response_time_ms</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Server response time in
+							milliseconds, when present in the extended log format.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>Normalized Fields</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Catalina Log Field List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_created</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Normalized event timestamp parsed
+							from the Catalina log timestamp (for example: 2025-03-26T15:27:08.000Z).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Normalized severity string (for
+							example: informational, medium, critical).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_severity_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Numeric severity level: 1
+							(informational), 3 (medium), 5 (critical).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">gim_event_type_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GIM event type code. Set to
+								210000 (service started) or 210100 (service stopped) for main module service/ProtocolHandler
+							events.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Name of the service or
+							ProtocolHandler extracted from the log (for example: Catalina, http-nio-8080).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_catalina_module</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Thread name or module from the
+							bracketed field in the Catalina log (for example: main, Catalina-utility-2).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_class</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Fully qualified Java class name
+							that produced the log entry.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_component</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Component type extracted from
+							main module events: service or ProtocolHandler.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Action word from main module
+							events: Starting or Stopping.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">vendor_event_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Raw severity level as logged by
+							Tomcat (for example: INFO, WARNING, SEVERE).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h2 id="log-collection">Log Collection</h2>
+        <h3>Input via Filebeat together with Graylog Sidecar</h3>
+        <p>Please use <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">the official
+		Graylog Sidecar documentation</a> to configure your Graylog server and your client(s).</p>
         <ol>
             <li>
-                <p class="NormalWeb">Create an input and an API key and set up Graylog Sidecar.<br /></p>
+                <p>Create an input and an API key and set up Graylog Sidecar.</p>
             </li>
             <li>
-                <p class="NormalWeb">Add your client(s), e.g. web server.</p>
+                <p>Add your client(s), e.g. web server.</p>
             </li>
         </ol>
         <p>
             <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Hint</b>: It is possible to run the Apache Tomcat Server and Graylog on the same machine.</div>
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">It is possible to run the Apache Tomcat
+					server and Graylog on the same machine.</span>
+                </div>
             </section>
         </p>
-        <h2>Graylog Server Settings</h2>
-        <p class="NormalWeb">1. Create <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">a global Beats input</a> in Graylog.</p>
-        <p class="NormalWeb">2. Create <a href="https://go2docs.graylog.org/current/setting_up_graylog/rest_api.html">a Graylog REST API access token</a> and save it.</p>
-        <p class="NormalWeb">3. Create a (Linux) filebeat configuration under <i>Sidercar </i>&gt;<i>&#160;Configuration</i> with a "Filebeat on Linux" collector.</p>
-        <p class="NormalWeb">4. Configure the file and add:</p>
-        <ul class="ul_2">
-            <li class="NormalWeb">
-                <p class="NormalWeb">The correct IP (Graylog server IP) under hosts.</p>
+        <h3>Graylog Server Settings</h3>
+        <ol>
+            <li>
+                <p>Create a global <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats
+				input</a> in Graylog.</p>
             </li>
-            <li class="NormalWeb">
-                <p class="NormalWeb">The log source configured to the desired value and a field <code class="linecode">event_source_product</code> with the value <code class="linecode">apache_tomcat</code>.</p>
+            <li>
+                <p>Create a Graylog <a href="https://go2docs.graylog.org/current/setting_up_graylog/rest_api.html">REST
+				API</a> access token and save it.</p>
             </li>
-        </ul>
-        <MadCap:codeSnippet>
-            <MadCap:codeSnippetCopyButton />
-            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">filebeat.inputs:
-- input_type: log
-  paths:
-    - /opt/tomcat/updated/logs/*
-  type: filestream
-  fields_under_root: true
-  fields:
-    event_source_product: apache_tomcat</MadCap:codeSnippetBody>
-        </MadCap:codeSnippet>
+            <li>
+                <p>Create a (Linux) filebeat configuration under <em>Sidecar &gt; Configuration</em> with a 'Filebeat on
+				Linux' collector.</p>
+            </li>
+            <li>
+                <p>Configure the file and add:</p>
+                <ol>
+                    <li>
+                        <p>The correct IP (Graylog server IP) under <code class="linecode">hosts</code>.</p>
+                    </li>
+                    <li>
+                        <p>The log source configured to the desired value and a field <code class="linecode">event_source_product</code> with the value <code class="linecode">apache_tomcat</code>.</p>
+                    </li>
+                </ol>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">filebeat.inputs:
+						- input_type: log
+						paths:
+						- /opt/tomcat/updated/logs/*
+						type: filestream
+						fields_under_root: true
+						fields:
+					event_source_product: apache_tomcat</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+            <li>
+                <p>This setting will pull all logs in the <code class="linecode">/opt/tomcat/updated/logs/*</code> folder.
+				If needed, adjust the path to match your Tomcat installation.</p>
+            </li>
+            <li>
+                <p>Finally, save the configuration to complete setup.</p>
+            </li>
+        </ol>
         <p>
             <section class="warningBox">
-                <div class="title" style="font-weight: normal;"><b>Warning</b>:&#160;There must be two spaces in front of <code class="linecode">event_source_product</code> and <code class="linecode">- /var... </code>.</div>
+                <div class="content"><b>Warning: </b><span style="font-weight: normal;">There must be two spaces in front of
+						<code class="linecode">event_source_product</code> and <code class="linecode">- /opt/tomcat/...</code>
+					.</span>
+                </div>
             </section>
         </p>
-        <p class="NormalWeb">This setting will pull all logs in the <code class="linecode">- /opt/tomcat/updated/logs/*</code> folder. If needed, only select access logs or Catalina logs.</p>
-        <p class="NormalWeb">5. Finally, save the configuration to complete setup.</p>
-        <h2>Configure a Client with Filebeat and Graylog Sidecar</h2>
-        <p class="NormalWeb">1. Install Sidecar on the remote machine.<br /></p>
-        <MadCap:codeSnippet>
-            <MadCap:codeSnippetCopyButton />
-            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">wget https://packages.graylog2.org/repo/packages/graylog-sidecar-repository_1-5_all.deb
-sudo dpkg -i graylog-sidecar-repository_1-5_all.deb
-sudo apt-get update &amp;&amp; sudo apt-get install graylog-sidecar</MadCap:codeSnippetBody>
-        </MadCap:codeSnippet>
-        <p class="NormalWeb">2. Edit the <code class="linecode">/etc/graylog/sidecar/sidecar.yml</code> file and configure:</p>
-        <ul>
+        <h3>Configure a Client with Filebeat and Graylog Sidecar</h3>
+        <ol>
             <li>
-                <p class="NormalWeb"><code class="linecode">server_url</code>: GraylogServerIP</p>
+                <p>Install Sidecar on the remote machine.</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">wget
+						https://packages.graylog2.org/repo/packages/graylog-sidecar-repository_1-5_all.deb
+						sudo dpkg -i graylog-sidecar-repository_1-5_all.deb
+					sudo apt-get update &amp;&amp; sudo apt-get install graylog-sidecar</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
             </li>
             <li>
-                <p class="NormalWeb"><code class="linecode">server_api_token</code>: Your API token<br /></p>
+                <p>Edit the <code class="linecode">/etc/graylog/sidecar/sidecar.yml</code> file and configure:</p>
+                <ol>
+                    <li>
+                        <p><code class="linecode">server_url</code> GraylogServerIP</p>
+                    </li>
+                    <li>
+                        <p><code class="linecode">server_api_token:</code> Your API token</p>
+                    </li>
+                </ol>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo gedit /etc/graylog/sidecar/sidecar.yml
+						server_url: "http://&lt;GRAYLOG_SERVER_IP&gt;:9000/api/"
+					server_api_token: "&lt;YOUR_API_TOKEN&gt;"</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
             </li>
-        </ul>
-        <MadCap:codeSnippet>
-            <MadCap:codeSnippetCopyButton />
-            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo gedit /etc/graylog/sidecar/sidecar.yml
-server_url: "http://192.168.122.52:9000/api/"
-server_api_token: "65ol7edseo24mub8o7pu86h2rsr8j9fjjpimtrm9nrpbjso7cnv"
-</MadCap:codeSnippetBody>
-        </MadCap:codeSnippet>
-        <p class="NormalWeb">3. Install, enable, and verify the Sidecar service. </p>
-        <MadCap:codeSnippet>
-            <MadCap:codeSnippetCopyButton />
-            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo graylog-sidecar -service install
-sudo systemctl enable graylog-sidecar
-sudo systemctl start graylog-sidecar
-sudo systemctl status graylog-sidecar</MadCap:codeSnippetBody>
-        </MadCap:codeSnippet>
+            <li>
+                <p>Install, enable, and verify the Sidecar service.</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo graylog-sidecar -service install
+						sudo systemctl enable graylog-sidecar
+						sudo systemctl start graylog-sidecar
+					sudo systemctl status graylog-sidecar</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+            <li>
+                <p>Install filebeats <a href="https://www.elastic.co/downloads/beats/filebeat">according to the
+					documentation</a>. Or, here is the <a href="https://www.elastic.co/downloads/beats/filebeat-oss">download link</a> for the OSS version.
+				</p>
+                <ol>
+                    <li>
+                        <p>If you install it manually, install it again under <code class="linecode">/etc/filebeat</code>.
+						</p>
+                    </li>
+                    <li>
+                        <p>If you install it via <code class="linecode">apt-get</code>, then it is in the correct folder.
+						</p>
+                    </li>
+                </ol>
+            </li>
+            <li>
+                <p>Example commands for Ubuntu:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key
+						add -
+						sudo apt-get install apt-transport-https
+						echo "deb https://artifacts.elastic.co/packages/oss-8.x/apt stable main" | sudo tee -a
+						/etc/apt/sources.list.d/elastic-8.x.list
+						sudo apt-get update &amp;&amp; sudo apt-get install filebeat
+						sudo systemctl enable filebeat
+						sudo systemctl start filebeat
+					sudo systemctl status filebeat</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+            <li>
+                <p>(<em>Optional</em>) Edit the <code class="linecode">filebeat.yml</code> file as needed. You do this via
+				the Sidecar configuration in the Graylog interface.</p>
+            </li>
+            <li>
+                <p>Start the daemon.</p>
+            </li>
+            <li>
+                <p>If there is a permission issue, you can resolve with:</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo chown root filebeat.yml</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+            <li>
+                <p>In Graylog, assign a configuration to your machine</p>
+            </li>
+        </ol>
         <p>
             <section class="warningBox">
-                <div class="title" style="font-weight: normal;"><b>Warning</b>:&#160;The provided commands are only examples; please use your IP and API token. For example commands for Ubuntu, refer the <a href="https://go2docs.graylog.org/current/getting_in_log_data/install_sidecar_on_linux.htm">official documentation</a>.</div>
+                <div class="content"><b>Warning: </b><span style="font-weight: normal;">This pack was tested on Ubuntu and may
+					not work as designed with other Linux-based systems due to different path and file names.</span>
+                </div>
             </section>
         </p>
-        <p class="NormalWeb">4. Install filebeats <a href="https://www.elastic.co/downloads/beats/filebeat">according to the documentation</a>. Or, here is <a href="https://www.elastic.co/downloads/beats/filebeat-oss">the download link</a> for the OSS version.</p>
-        <ul>
-            <li>
-                <p class="NormalWeb"> If you install it manually, install it again under <code class="linecode">/etc/filebeat</code>.<br /></p>
-            </li>
-            <li>
-                <p class="NormalWeb">If you install it via apt-get, then it is in the correct folder.</p>
-            </li>
-        </ul>
-        <p class="NormalWeb">Example commands for Ubuntu:</p>
-        <MadCap:codeSnippet>
-            <MadCap:codeSnippetCopyButton />
-            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-sudo apt-get install apt-transport-https
-echo "deb https://artifacts.elastic.co/packages/oss-8.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-8.x.list
-sudo apt-get update &amp;&amp; sudo apt-get install filebeat
-sudo systemctl enable filebeat
-sudo systemctl start filebeat
-sudo systemctl status filebeat</MadCap:codeSnippetBody>
-        </MadCap:codeSnippet>
-        <p class="NormalWeb">5. (Optional) Edit the <code class="linecode">filebeat.ym</code>l file as needed. You do this via the Sidecar configuration in the Graylog interface.<br />6. Start the deamon.<br />7. If there is a permission issue, you can resolve with:</p>
-        <MadCap:codeSnippet>
-            <MadCap:codeSnippetCopyButton />
-            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo chown root filebeat.yml</MadCap:codeSnippetBody>
-        </MadCap:codeSnippet>
-        <p class="NormalWeb">8. In Graylog, assign a configuration to your machine.</p>
+        <h2 id="limitations">Limitations</h2>
+        <p>This pack was tested on Ubuntu and may not work as designed with other Linux-based systems due to different path
+		and file names. Error logs are not parsed.</p>
+        <h2 id="spotlight-content-pack">Apache Tomcat Content Pack</h2>
+        <p>Apache Tomcat offers a dashboard with 2 tabs: Overview and Catalina:</p>
+        <h3>Overview</h3>
         <p>
-            <section class="warningBox">
-                <div class="title" style="font-weight: normal;"><b>Warning</b>:&#160;This pack was tested on Ubuntu and may not work as designed with other Linux-based systems due to different path and file names. Error logs are not parsed.</div>
-            </section>
+            <img src="../Resources/Images/Apache Tomcat/apache_tomcat_overview.png" />
+        </p>
+        <h3>Catalina</h3>
+        <p>
+            <img src="../Resources/Images/Apache Tomcat/apache_tomcat_catalina.png" />
         </p>
     </body>
 </html>

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
     <head>
         <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Microsoft IIS Content Pack</title>
@@ -8,8 +8,11 @@
         <h1>
             <MadCap:concept term="Vendor:Microsoft" />Microsoft IIS Content Pack</h1>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>Microsoft IIS (Internet Information Services) is a flexible, secure, and manageable web server developed by Microsoft for hosting websites, web applications, and services on Windows. It supports HTTP, HTTPS, FTP, FTPS, and more, and integrates tightly with ASP.NET, Windows authentication, and the broader Windows Server ecosystem.</p>
-        <h2 id="supported-versions">Supported Versions</h2>
+        <p>Microsoft IIS (Internet Information Services) is a flexible, secure, and manageable web server developed by
+        Microsoft for hosting websites, web applications, and services on Windows. It supports HTTP, HTTPS, FTP, FTPS,
+        and more, and integrates tightly with ASP.NET, Windows authentication, and the broader Windows Server ecosystem.
+    </p>
+        <h2 id="supported-versions">Supported/Tested Versions</h2>
         <ul>
             <li>
                 <p>Microsoft IIS 10, W3C Log format</p>
@@ -20,12 +23,15 @@
         </ul>
         <p>
             <section class="infoBox">
-                <div class="content"><b>Hint:</b> This pack supports two formats for access logs. The Default W3C fields and all W3C fields in the default order.</div>
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">This pack supports two formats for access
+                logs. The Default W3C fields and all W3C fields in the default order.</span>
+                </div>
             </section>
         </p>
         <p>
             <section class="warningBox">
-                <div class="content"><b>Warning:</b> Custom formats are not supported.</div>
+                <div class="content"><b>Warning: </b><span style="font-weight: normal;">Custom formats are not supported.</span>
+                </div>
             </section>
         </p>
         <h2 id="requirements">Requirements</h2>
@@ -41,7 +47,10 @@
         </ul>
         <p>
             <section class="infoBox">
-                <div class="content"><b>Hint:</b> If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
+                activation of this pack then it will be created and configured to route messages to this stream and the
+                associated index set. There should not be any stream rules configured for this stream.</span>
+                </div>
             </section>
         </p>
         <h2 id="index-set-configuration">Index Set Configuration</h2>
@@ -51,7 +60,11 @@
         </ul>
         <p>
             <section class="infoBox">
-                <div class="content"><b>Hint:</b> If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
+                nothing will be changed. If this index set does not exist, then it will be created with retention
+                settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
+                installation.</span>
+                </div>
             </section>
         </p>
         <h2 id="log-collection">Log Collection</h2>
@@ -64,10 +77,12 @@
         <h3>Filebeat Configuration</h3>
         <ol>
             <li>
-                <p>Refer to the official documentation to <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">set up Graylog Sidecar for Filebeat</a>.</p>
+                <p>Please refer to the official documentation to <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">set up Graylog
+                    Sidecar for Filebeat</a>.</p>
             </li>
             <li>
-                <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> in Graylog.</p>
+                <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> in
+                Graylog.</p>
             </li>
             <li>
                 <p>Ensure that the option <em>Do not add Beats type as prefix</em> is <strong>disabled</strong>.</p>
@@ -76,24 +91,27 @@
                 <p>Create an API access token and custom Windows Filebeat collector.</p>
             </li>
             <li>
-                <p>Configure the collector to ship messages to Graylog (select the right path). The Filebeat input must add the field <code class="linecode">event_source_product: microsoft_iis</code> for the parser to identify the log source as Microsoft IIS.</p>
+                <p>Configure the collector to ship messages to Graylog (select the right path). The Filebeat input must add
+                the field <code class="linecode">event_source_product: microsoft_iis</code> for the parser to identify
+                the log source as Microsoft IIS.</p>
             </li>
             <li>
-                <p>The option <code class="linecode">fields_under_root</code> must be set to <code class="linecode">true</code> for message identification to work. See the following example:</p>
+                <p>In addition, the option <code class="linecode">fields_under_root</code> must be set to <code class="linecode">true</code> for message identification to work. See the following example:</p>
                 <MadCap:codeSnippet>
                     <MadCap:codeSnippetCopyButton />
                     <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">filebeat.inputs:
-- type: log
-enabled: true
-paths:
-- C:\inetpub\logs\LogFiles\W3SVC1\*.log
-fields:
-event_source_product: microsoft_iis
-fields_under_root: true</MadCap:codeSnippetBody>
+                    - type: log
+                    enabled: true
+                    paths:
+                    - C:\inetpub\logs\LogFiles\W3SVC1\*.log
+                    fields:
+                    event_source_product: microsoft_iis
+                    fields_under_root: true</MadCap:codeSnippetBody>
                 </MadCap:codeSnippet>
             </li>
             <li>
-                <p>Adjust the file path in the configuration file if needed.</p>
+                <p>Adjust the file path in the config file if needed. To also collect HTTPERR logs, add a second path entry:
+                <code class="linecode">C:\Windows\System32\LogFiles\HTTPERR\httperr*.log</code>.</p>
             </li>
             <li>
                 <p>Install Graylog Sidecar on the client host.</p>
@@ -119,12 +137,24 @@ fields_under_root: true</MadCap:codeSnippetBody>
             <li>
                 <p>Rules to parse, normalize, and enrich Microsoft IIS messages.</p>
             </li>
+            <li>
+                <p>GIM categorization for W3C access logs and HTTPERR logs as 180200 (http communication) with GIM
+                enforcement fields.</p>
+            </li>
+            <li>
+                <p>HTTPERR (HTTP.sys error) log parsing with source/destination IP and port, HTTP method/path/version,
+                response code, and reason phrase extraction.</p>
+            </li>
         </ul>
         <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
-        <p>The content pack supports the following log types. Generic processing will be provided for log types not listed.</p>
+        <p>The content pack supports the following log types. Generic processing will be provided for log types not listed.
+    </p>
         <ul>
             <li>
-                <p>Access logs</p>
+                <p>W3C Access logs</p>
+            </li>
+            <li>
+                <p>HTTPERR (HTTP.sys error) logs</p>
             </li>
         </ul>
         <h3 id="gim-categorization">GIM Categorization</h3>
@@ -148,12 +178,20 @@ fields_under_root: true</MadCap:codeSnippetBody>
             </thead>
             <tbody>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Access Logs</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">180200</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">http</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">protocol</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">http.communication</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">http communication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Access Logs</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180200</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.communication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http communication</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">HTTPERR Logs</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">180200</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">http</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">protocol</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">http.communication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">http communication</td>
                 </tr>
             </tbody>
         </table>
@@ -171,9 +209,9 @@ fields_under_root: true</MadCap:codeSnippetBody>
                     <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
                     <thead>
                         <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field_Name</th>
-                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example_Value</th>
-                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field_Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
                             <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
                         </tr>
                     </thead>
@@ -182,7 +220,8 @@ fields_under_root: true</MadCap:codeSnippetBody>
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_created</td>
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2025-07-22 17:08:10</td>
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">date</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Date and Time of the event created</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Date and Time of the event
+                            created</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
@@ -228,7 +267,9 @@ fields_under_root: true</MadCap:codeSnippetBody>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_user_agent</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/122.0.0.0+Safari/537.36+Edg/122.0.0.0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/122.0.0.0+Safari/537.36+Edg/122.0.0.0
+                        </td>
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Client user agent</td>
                         </tr>
@@ -279,9 +320,9 @@ fields_under_root: true</MadCap:codeSnippetBody>
                     <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
                     <thead>
                         <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field_Name</th>
-                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example_Value</th>
-                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field_Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
                             <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
                         </tr>
                     </thead>
@@ -290,7 +331,8 @@ fields_under_root: true</MadCap:codeSnippetBody>
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_created</td>
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2025-07-22 17:08:10</td>
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">date</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Date and Time of the event created </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Date and Time of the event
+                            created</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_sitename</td>
@@ -354,7 +396,9 @@ fields_under_root: true</MadCap:codeSnippetBody>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_user_agent</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/122.0.0.0+Safari/537.36+Edg/122.0.0.0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            Mozilla/5.0+(Windows+NT+10.0;+Win64;+x64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/122.0.0.0+Safari/537.36+Edg/122.0.0.0
+                        </td>
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client user agent</td>
                         </tr>
@@ -416,7 +460,7 @@ fields_under_root: true</MadCap:codeSnippetBody>
                 </table>
             </MadCap:dropDownBody>
         </MadCap:dropDown>
-        <h2 id="spotlight-content-pack">Microsoft IIS Content Pack</h2>
+        <h2 id="spotlight-content-pack">Microsoft IIS Spotlight Content Pack</h2>
         <p>This spotlight offers a dashboard with 1 tab:</p>
         <h3>Overview</h3>
         <p>
