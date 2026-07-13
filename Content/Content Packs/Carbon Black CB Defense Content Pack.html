@@ -1,56 +1,174 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<html lang="en" xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" /><title> Carbon Black Defense Content Pack
-</title>
-        <!-- original-url : carbon-black-cb-defense
-## article-id : 6a5e29d6-9a2a-452f-84f3-fe2284a5db93
-## seo-title : Carbon Black / CB Defense
-## description : 
-## Metadata_End -->
-    </head>
-    <body>
-        <h1>
-            <MadCap:concept term="Endpoint Protection &amp; Endpoint Detection and Response" />Carbon Black Defense Content Pack</h1>
-        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>Carbon Black Defense is a next-gen antivirus (NGAV) and an endpoint detection and response solution (EDR) that allows security teams to monitor and detect threats instantly against their companies devices while at the same time giving the user a suite of tools that protects against most attacks including malware, ransomware, zero-day, and non-malware. This technology pack will process Carbon Black Defense logs, providing normalization and enrichment of common events of interest.</p>
-        <h2>Supported Version(s)</h2>
-        <ul>
-            <li>The current version (Oct 2021)--CB Defense does not have version numbers.</li>
-        </ul>
-        <h2>Stream Configuration</h2>
-        <p>This technology pack includes one stream:</p>
-        <ul>
-            <li>“Illuminate:Carbon Black Defense Messages”</li>
-        </ul>
-        <h2>Index Set Configuration</h2>
-        <p>This technology pack includes one index set definition:</p>
-        <ul>
-            <li>“Carbon Black Defense Event Log Messages”</li>
-        </ul>
-        <p>If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</p>
-        <h2>Log Format Example</h2>
-        <p><code data-backticks="1" class="linecode">cbdefense1 CEF:0|CarbonBlack|CbDefense_Syslog_Connector|2.0|Active_Threat|A known virus (iWorm) is actively attempting a network connection.|7|rt="Apr 15 2016 13:11:37" sntdom=mycompany dvchost=iworm_test duser=iworm_test dvc= cs3Label="Link" cs3="https://testserver.company.net/ui#investigate/events/device/2004121/incident/UHMZ3" cs4Label="Threat_ID" cs4="UHMZ3" act=Alert</code>
-        </p>
-        <h2>Requirements</h2>
-        <ul>
-            <li>
-                <p>Configure Carbon Black Defense (CB Defense) to transmit Syslog to your Graylog server Syslog input.</p>
-                <ul>
-                    <li>
-                        <p>(<a href="https://developer.carbonblack.com/reference/cb-defense/connectors/#cb-defense-syslog-connector">https://developer.carbonblack.com/reference/cb-defense/connectors/#cb-defense-syslog-connector</a>).</p>
-                    </li>
-                    <li>
-                        <p>Select CEF format.</p>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-        <h2>What is Provided</h2>
-        <ul>
-            <li>Parsing rules to extract Carbon Black logs into Graylog schema compatible fields</li>
-        </ul>
-    </body>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+
+<head>
+    <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
+    <title>Carbon Black Defense Content Pack</title>
+    <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+</head>
+
+<body>
+    <h1>Carbon Black Defense Content Pack</h1>
+    <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+    <p>VMware Carbon Black Defense (now Broadcom) is a cloud-native endpoint protection platform providing
+        next-generation antivirus, endpoint detection and response (EDR), and device control. This technology pack
+        processes Carbon Black Defense syslog events, providing normalization, enrichment, and GIM categorization.</p>
+    <h2 id="supported-versions">Supported Version(s)</h2>
+    <ul>
+        <li>
+            <p>Carbon Black Cloud with CbDefense Syslog Connector</p>
+        </li>
+    </ul>
+    <h2 id="requirements">Requirements</h2>
+    <ul>
+        <li>
+            <p>Carbon Black Cloud with the CbDefense Syslog Connector configured to forward events.</p>
+        </li>
+        <li>
+            <p>A Syslog input (TCP or UDP) configured in Graylog to receive the CB Defense events.</p>
+        </li>
+    </ul>
+    <h2 id="stream-configuration">Stream Configuration</h2>
+    <p>This technology pack includes 1 stream:</p>
+    <ul>
+        <li>"Illuminate:Carbon Black Defense Messages"</li>
+    </ul>
+    <p>
+    <section class="infoBox">
+        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
+                activation of this pack then it will be created and configured to route messages to this stream and the
+                associated index set. There should not be any stream rules configured for this stream.</span>
+        </div>
+    </section>
+    </p>
+    <h2 id="index-set-configuration">Index Set Configuration</h2>
+    <p>This technology pack includes 1 index set definition:</p>
+    <ul>
+        <li>"Carbon Black Defense Event Log Messages" with daily rotation and 90-day retention (adjustable after
+            installation)</li>
+    </ul>
+    <p>
+    <section class="infoBox">
+        <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
+                nothing will be changed. If this index set does not exist, then it will be created with retention
+                settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
+                installation.</span>
+        </div>
+    </section>
+    </p>
+    <h2 id="what-is-provided">What is Provided</h2>
+    <ul>
+        <li>
+            <p>Parsing rules to extract Carbon Black Defense syslog events into Graylog schema-compatible fields.</p>
+        </li>
+        <li>
+            <p>GIM code 301002 (hips_detection) for security detections: Active_Threat, Malware_Prevention,
+                Terminated_Process, Policy_Action, Device_Control, Host_Based_Firewall.</p>
+        </li>
+        <li>
+            <p>GIM code 300000 (ids_detection) for network intrusion detections: Intrusion_Detection_System.</p>
+        </li>
+        <li>
+            <p>GIM code 309999 (detection_message) for informational detections: Watchlist_Hit.</p>
+        </li>
+        <li>
+            <p>GIM code 229999 (audit event) for administrative events: Audit_Log.</p>
+        </li>
+        <li>
+            <p>Event action mapping and alert severity normalization.</p>
+        </li>
+        <li>
+            <p>Carbon Black Defense Spotlight dashboard.</p>
+        </li>
+    </ul>
+    <h3 id="gim-categorization">GIM Categorization</h3>
+    <p>GIM categorization is provided for the following event types:</p>
+    <table cellspacing="21"
+        style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');"
+        class="TableStyle-Alternate-Row-Color">
+        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Active_Threat</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">301002</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.host_detection</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">hips_detection</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Malware_Prevention</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">301002</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.host_detection</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">hips_detection</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Terminated_Process</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">301002</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.host_detection</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">hips_detection</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Policy_Action</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">301002</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.host_detection</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">hips_detection</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Device_Control</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">301002</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.host_detection</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">hips_detection</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Host_Based_Firewall</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">301002</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.host_detection</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">hips_detection</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Intrusion_Detection_System</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">300000</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.network_detection</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">ids_detection</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Watchlist_Hit</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">309999</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.default</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">detection_message</td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Audit_Log</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">229999</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">audit</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">audit.default</td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">audit event</td>
+            </tr>
+        </tbody>
+    </table>
+    <h2 id="spotlight-content-pack">Carbon Black Defense Spotlight</h2>
+    <p>The Carbon Black Defense Spotlight offers dashboards for monitoring endpoint security events, detections, and
+        policy actions.</p>
+</body>
+
 </html>

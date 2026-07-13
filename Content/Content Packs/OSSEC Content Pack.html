@@ -1,30 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
     <head>
-        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>OSSEC HIDS Content Pack</title>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
+        <title>OSSEC HIDS Content Pack</title>
         <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
-        <h1>OSSEC HIDS Content Pack</h1>
-        <p>
-            <MadCap:concept term="Endpoint Protection &amp; Endpoint Detection and Response" />
-            <MadCap:concept term="New Release" />
-        </p>
+        <h1>
+            <MadCap:concept term="Endpoint Protection &amp; Endpoint Detection and Response" />OSSEC HIDS Content Pack</h1>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>OSSEC HIDS is an open-source security platform that provides comprehensive endpoint security, including file integrity checking, rootkit detection, and policy monitoring, across Linux, Windows, and macOS systems. This content pack is designed to extract, normalize, and enrich OSSEC findings for more effective analysis and monitoring. It parses OSSEC HIDS logs into structured fields and adds useful context such as event categorization (e.g. authentication). This parsing enables faster search, correlation, and dashboard creation across diverse environments.</p>
+        <p>The OSSEC HIDS Processing Pack is designed to extract, normalize, and enrich OSSEC findings for more effective analysis and monitoring. It parses OSSEC HIDS logs into structured fields and adds useful context like event categorization (e.g., authentication). This enables faster search, correlation, and dashboarding across diverse environments.</p>
         <h2 id="requirements">Requirements</h2>
         <ul>
             <li>
-                <p>Graylog 7.0+ with a valid Enterprise license.</p>
+                <p>Graylog 7.0.0+ with a valid Enterprise license</p>
             </li>
             <li>
-                <p>OSSEC manager configured to generate <code class="linecode">alerts.json</code>.</p>
+                <p>OSSEC manager configured to generate alerts.json</p>
             </li>
             <li>
-                <p>Graylog Sidecar or standalone Filebeat agent installed on OSSEC system(s).</p>
+                <p>Graylog Sidecar or stand-alone Filebeat agent installed on OSSEC system(s)</p>
             </li>
             <li>
-                <p>OSSEC manager and agents use default log file names: <code class="linecode">ossec.log</code>, <code class="linecode">alerts.json</code>, <code class="linecode">firewall.log</code>, <code class="linecode">active-responses.log</code>.</p>
+                <p>OSSEC manager and agents use default log file names: ossec.log, alerts.json, firewall.log, active-responses.log</p>
             </li>
         </ul>
         <h2 id="supported-versions">Supported Versions</h2>
@@ -34,19 +32,21 @@
             </li>
         </ul>
         <h2 id="log-collection">Log Collection and Delivery</h2>
-        <p>This pack was designed to use the Elastic Filebeat agent for log delivery. You can configure this agent using the Graylog Sidecar. The collection of OSSEC logs should be performed from the manager and all agents.</p>
-        <p>This configuration requires that the account used to run the Graylog Sidecar/Filebeat agent has the necessary permissions to access the OSSEC log files. When running Sidecar/Filebeat with a non-root service account, you must grant that service account access to the log files.</p>
-        <h3>Configure OSSEC</h3>
+        <p>This pack was designed to use the Elastic Filebeat agent for log delivery. This can be configured easily using the Graylog Sidecar. The collection of OSSEC logs should be performed from the manager and all agents.</p>
+        <p>This configuration requires that the account used to run the Graylog Sidecar/Filebeat agent have the necessary permissions to access the OSSEC log files. When running Sidecar/Filebeat with a non-root service account it will be necessary to grant that service account account access to the log files.</p>
+        <h3>Configuring OSSEC</h3>
         <p>The OSSEC manager must be configured to generate JSON-formatted alerts.</p>
         <ol>
             <li>
-                <p>Edit the ossec.conf file on the OSSEC manager.</p>
+                <p>Edit the ossec.conf file on the OSSEC manager</p>
             </li>
             <li>
-                <p>Locate the <code class="linecode">&lt;global&gt;</code> section in the OSSEC configuration file.</p>
+                <p>locate the<code class="linecode">&lt;global&gt;...&lt;/global&gt;</code>section in the OSSEC configuration</p>
             </li>
             <li>
                 <p>Add the entry <code class="linecode">&lt;jsonout_output&gt;yes&lt;/jsonout_output&gt;</code> inside the OSSEC <code class="linecode">&lt;global&gt;</code> section</p>
+            </li>
+            <li>
                 <p>The result should look like:</p>
                 <MadCap:codeSnippet>
                     <MadCap:codeSnippetCopyButton />
@@ -59,13 +59,16 @@
         </ol>
         <p>
             <section class="infoBox">
-                <div class="content"><b>Hint:</b> OSSEC does not rotate the alerts JSON file. It is important to define a good rotation strategy for this file with logrotate.</div>
+                <div class="title">
+                    <b>Hint:</b>
+                    <span style="font-weight: normal;">OSSEC will not rotate the alerts JSON file, it is important to define a good rotation strategy for this file with logrotate.</span>
+                </div>
             </section>
         </p>
-        <h3>Configure Sidecar</h3>
+        <h3>Configuring Sidecar</h3>
         <ol>
             <li>
-                <p>Refer to the Sidecar documentation for how to <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">set up Graylog Sidecar for Filebeat</a>.</p>
+                <p>Please refer to the official documentation to<a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">set up Graylog Sidecar for Filebeat</a>.</p>
             </li>
             <li>
                 <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> in Graylog.</p>
@@ -92,11 +95,6 @@ event_source_product: ossec</MadCap:codeSnippetBody>
             </li>
             <li>
                 <p>Add the following example configuration snippet to your Filebeat configuration for Windows systems:</p>
-                <p>
-                    <section class="infoBox">
-                        <div class="content"><b>Hint:</b> The configuration snippet provided is not a fully functional Filebeat configuration. The example is only the section that adds OSSEC log ingestion to an existing Filebeat configuration using the default OSSEC paths.</div>
-                    </section>
-                </p>
                 <MadCap:codeSnippet>
                     <MadCap:codeSnippetCopyButton />
                     <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">filebeat.inputs:
@@ -119,8 +117,18 @@ event_source_product: ossec</MadCap:codeSnippetBody>
         </ol>
         <p>
             <section class="infoBox">
-                <div class="content"><b>Hint:</b> Illuminate does not support sending logs to Graylog using the OSSEC Syslog output.
-        OSSEC sends syslog messages using UDP, which can lead to some larger log messages being truncated.</div>
+                <div class="title">
+                    <b>Hint:</b>
+                    <span style="font-weight: normal;">The configuration snippet provided is not a fully functional filebeat configuration, it is only the section that adds OSSEC log ingestion to an existing filebeat configuration using the default OSSEC paths.</span>
+                </div>
+            </section>
+        </p>
+        <p>
+            <section class="infoBox">
+                <div class="title">
+                    <b>Hint:</b>
+                    <span style="font-weight: normal;">Illuminate does not support sending logs to Graylog using the OSSEC Syslog output. OSSEC sends syslog messages using UDP which can lead to some larger log messages being truncated.</span>
+                </div>
             </section>
         </p>
         <h2 id="stream-configuration">Stream Configuration</h2>
@@ -128,63 +136,101 @@ event_source_product: ossec</MadCap:codeSnippetBody>
         <ul>
             <li>Illuminate:OSSEC Log Messages</li>
         </ul>
-        <MadCap:snippetBlock src="../Resources/Snippets/Template Snippets/ConceptKASnippets/Hint-AutoStreamConfig.flsnp" />
+        <p>
+            <section class="infoBox">
+                <div class="title">
+                    <b>Hint:</b>
+                    <span style="font-weight: normal;">If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</span>
+                </div>
+            </section>
+        </p>
         <h2 id="index-set-configuration">Index Set Configuration</h2>
         <p>This technology pack includes 1 index set definition:</p>
         <ul>
             <li>OSSEC Log Messages</li>
         </ul>
-        <MadCap:snippetBlock src="../Resources/Snippets/Template Snippets/ConceptKASnippets/Hint-AuthIndexSetConfig.flsnp" />
-        <h2 id="what-is-provided">What Is Provided</h2>
+        <p>
+            <section class="infoBox">
+                <div class="title">
+                    <b>Hint:</b>
+                    <span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
+                </div>
+            </section>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
         <ul>
             <li>
                 <p>Rules to parse, normalize, and enrich OSSEC log messages.</p>
             </li>
             <li>
-                <p>A Spotlight containing a dashboard that can be used to analyze OSSEC log messages.</p>
+                <p>A Spotlight containing a dashboard which can be used to analyze OSSEC log messages.</p>
+            </li>
+            <li>
+                <p>Graylog Information Model (GIM) categorization for authentication, IAM, network, audit, and detection alert categories.</p>
+            </li>
+            <li>
+                <p>Security Core coverage: 100000 (authentication.logon) for authentication groups with event_outcome distinguishing success/failure; 120000 (network.network_connection) for firewall events; 110000 (iam.object create) for adduser/account_changed alerts; 220500 (audit.policy) for policy_violation alerts; 300001 (detection.network_detection) for web attack, recon, IDS, SQL injection, XSS, and application security alerts; 301000 (detection.host_detection) for rootcheck/rootkit alerts.</p>
+            </li>
+            <li>
+                <p>Field normalization: vendor_srcip to source_ip, vendor_protocol lowercased to network_transport, vendor ports converted to long, host_hostname mapped to destination_reference, vendor_dstuser to user_name for IAM alerts.</p>
+            </li>
+            <li>
+                <p>SSH auth source-log parsing that extracts user_name and source_port from vendor_full_log.</p>
             </li>
         </ul>
         <h2 id="log-format-example">OSSEC Logs Format Examples</h2>
         <p>OSSEC agents and managers generate multiple log files, each serving a distinct operational or security purpose:</p>
         <p>
             <ul>
-                <li><code class="linecode">alerts.json</code>: JSON-formatted alert records generated by the OSSEC analysis engine. These entries represent detections produced by rules and decoders. <strong>Scope:</strong> OSSEC manager only.</li>
+                <li>
+                    <strong>
+                        <code class="linecode">alerts.json</code>:</strong>JSON-formatted alert records generated by the OSSEC analysis engine. These entries represent detections produced by rules and decoders.<strong>Scope:</strong> OSSEC manager only.</li>
             </ul>
         </p>
         <p>
             <ul>
-                <li><code class="linecode">ossec.log</code>: Plain text service log containing messages related to OSSEC component startup, shutdown, internal state changes, errors, and operational warnings. <strong>Scope:</strong> All OSSEC systems (manager and agents).</li>
+                <li>
+                    <strong>
+                        <code class="linecode">ossec.log</code>:</strong>Plain text service log containing messages related to OSSEC component startup, shutdown, internal state changes, errors, and operational warnings.<strong>Scope:</strong> All OSSEC systems (manager and agents).</li>
             </ul>
         </p>
         <p>
             <ul>
-                <li><code class="linecode">active-responses.log</code>: Plain text log recording the execution of active response actions (for example, command invocation, target address, and result). This log reflects what OSSEC attempted to do in response to an alert, not necessarily what the underlying system enforced. <strong>Scope:</strong> Any system with active responses enabled (manager and agents).</li>
+                <li>
+                    <strong>
+                        <code class="linecode">active-responses.log</code>:</strong>Plain text log recording the execution of active response actions (for example, command invocation, target address, and result). This log reflects what OSSEC attempted to do in response to an alert, not necessarily what the underlying system enforced.<strong>Scope:</strong>Any system with active responses enabled (manager and or agents).</li>
             </ul>
         </p>
         <p>
             <ul>
-                <li><code class="linecode">firewall.log</code>: Plain text log recording firewall-related activity associated with OSSEC active responses, such as IP address blocking actions performed via firewall scripts (for example, <code class="linecode">firewall-drop.sh</code>). Entries typically reflect actions taken by OSSEC against the local firewall rather than a complete record of firewall traffic. <strong>Scope:</strong> Systems where firewall-based active responses are executed (typically agents, but can include the manager if configured).</li>
+                <li>
+                    <strong>
+                        <code class="linecode">firewall.log</code>:</strong>Plain text log recording firewall-related activity associated with OSSEC active responses, such as IP blocking actions performed via firewall scripts (for example,<code class="linecode">firewall-drop.sh</code>). Entries typically reflect actions taken by OSSEC against the local firewall rather than a complete record of firewall traffic. <strong>Scope:</strong>Systems where firewall-based active responses are executed (typically agents, but may include the manager if configured).</li>
             </ul>
         </p>
-        <h3>alerts.json</h3>
-        <p><code class="linecode">{"rule":{"level":2,"comment":"Unknown problem somewhere in the system.","sidid":1002,"firedtimes":2,"groups":["syslog","errors"]},"id":"1765569701.46775","TimeStamp":1765569701000,"location":"/var/log/syslog","full_log":"2025-12-12T20:01:41.366698+00:00 ossecmgr01 systemd[1]: Finished update-notifier-download.service - Download data for packages that failed at package install time.","hostname":"ossecmgr01","program_name":"systemd","decoder_desc":{},"agent_name":"ossecmgr01","timestamp":"2025 Dec 12 20:01:41","logfile":"/var/log/syslog"}
+        <h4>alerts.json</h4>
+        <p>
+            <code class="linecode">{"rule":{"level":2,"comment":"Unknown problem somewhere in the system.","sidid":1002,"firedtimes":2,"groups":["syslog","errors"]},"id":"1765569701.46775","TimeStamp":1765569701000,"location":"/var/log/syslog","full_log":"2025-12-12T20:01:41.366698+00:00 ossecmgr01 systemd[1]: Finished update-notifier-download.service - Download data for packages that failed at package install time.","hostname":"ossecmgr01","program_name":"systemd","decoder_desc":{},"agent_name":"ossecmgr01","timestamp":"2025 Dec 12 20:01:41","logfile":"/var/log/syslog"}
         </code>
         </p>
-        <h3>ossec.log</h3>
-        <p><code class="linecode">2025/12/05 23:31:54 INFO: Connected to 203.0.113.100 at address 203.0.113.100:1514, port 1514
+        <h4>ossec.log</h4>
+        <p>
+            <code class="linecode">2025/12/05 23:31:54 INFO: Connected to 203.0.113.100 at address 203.0.113.100:1514, port 1514
         2025/12/05 23:31:54 ossec-syscheckd: INFO: Monitoring directory: 'C:\\Windows/System32/at.exe', with options perm | size | owner | group | md5sum | sha1sum.
         </code>
         </p>
-        <h3>active-responses.log</h3>
-        <p><code class="linecode">Thu Dec  4 08:30:14 PM UTC 2025 /var/ossec/active-response/bin/host-deny.sh add - 198.51.100.53 (from_the_server) (no_rule_id)
+        <h4>active-responses.log</h4>
+        <p>
+            <code class="linecode">Thu Dec  4 08:30:14 PM UTC 2025 /var/ossec/active-response/bin/host-deny.sh add - 198.51.100.53 (from_the_server) (no_rule_id)
         </code>
         </p>
-        <h3>firewall.log</h3>
-        <p><code class="linecode">2025 Dec 05 14:03:47 (osseclabagt02) 198.51.100.254-&gt;/var/log/syslog UNKNOWN TCP 203.0.113.5:54321-&gt;192.0.2.10:22
+        <h4>firewall.log</h4>
+        <p>
+            <code class="linecode">2025 Dec 05 14:03:47 (osseclabagt02) 198.51.100.254-&gt;/var/log/syslog UNKNOWN TCP 203.0.113.5:54321-&gt;192.0.2.10:22
         </code>
         </p>
-        <h3 id="gim-categorization">GIM Categorization for OSSEC Alerts</h3>
-        <p>Categorization is assigned according to the OSSEC alert signature ID that is stored in the <code class="linecode">rule.sidid</code> field in the source message, or <code class="linecode">alert_signature_id</code> in the normalized message. These assignments are based on the default source ruleset included with OSSEC. The default rules can be found on the OSSEC manager, typically in the directory <code class="linecode">/var/ossec/rules/</code>.</p>
+        <h3 id="gim-categorization">GIM Categorization - OSSEC Alerts</h3>
+        <p>Categorization is assigned according to the OSSEC alert signature ID which is stored in the<code class="linecode">rule.sidid</code> field in the source message, or <code class="linecode">alert_signature_id</code> in the normalized message. These assignments are based on the default source ruleset included with OSSEC. The default rules can be found on the OSSEC manager, typically in the directory <code class="linecode">/var/ossec/rules/</code>.</p>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -206,24 +252,40 @@ event_source_product: ossec</MadCap:codeSnippetBody>
             </thead>
             <tbody>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">550-555</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">File Integrity Finding</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">301003</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.host_detection</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">fim_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication_failed/success/failures, invalid_login groups</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Authentication events</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1" />
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">File syscheck events</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">File Integrity Finding</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">301003</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.host_detection</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">fim_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">adduser group</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">New user account created</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">110000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2" />
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object create</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account created</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">account_changed group</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Existing account modified</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1" />
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">account modified</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Firewall log events</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Firewall allow/deny events</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2" />
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.connection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">593, 18118</td>
@@ -235,16 +297,16 @@ event_source_product: ossec</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">audit log cleared</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">594-598</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Windows Registry Integrity Events</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">259999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">policy_violation group</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Policy violation alerts</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">220500</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">registry</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">registry.default</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">registry event</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">audit</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">audit.policy</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">audit policy changed</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Registry syscheck events</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">594-598</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Windows Registry Integrity Events</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">259999</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">endpoint</td>
@@ -253,21 +315,65 @@ event_source_product: ossec</MadCap:codeSnippetBody>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">registry event</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">All other OSSEC SID IDs</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">This is an implicit mapping for all other OSSEC alerts</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">301002</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">detection</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">detection.host_detection</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">hips_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Registry syscheck events</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Windows Registry Integrity Events</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">259999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">endpoint</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">registry</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">registry.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">registry event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Ossec agent * signature</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Agent lifecycle events (started/stopped/disconnected)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">289999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1" />
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">agent default</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">web, attacks, attack, ids, recon groups</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Web attack and recon detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">300001</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2" />
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.network_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network_detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">rootcheck/rootkit groups</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Rootkit and host anomaly detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">301000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1" />
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.host_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">host_malware_detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">550-555, File syscheck events</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">File Integrity Finding</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">301003</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2" />
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.host_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">fim_detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">All other OSSEC SID IDs</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Implicit mapping for all other OSSEC alerts</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">301002</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1" />
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">detection.host_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">hips_detection</td>
                 </tr>
             </tbody>
         </table>
         <h3>Message Fields Included in This Pack</h3>
         <h4>OSSEC Alert Log Field Normalization</h4>
-        <p>OSSEC alerts refer to the messages generated, stored, and collected from the file <code class="linecode">alerts.json</code>. The OSSEC alerts log file is generated only on the OSSEC manager.</p>
-        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <p>OSSEC alerts refer to the messages generated, stored, and collected from the file <code class="linecode">alerts.json</code>. The OSSEC alerts log file will only be generated on the OSSEC manager.</p>
+        <table cellspacing="21" class="TableStyle-Alternate-Row-Color" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');">
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -280,137 +386,207 @@ event_source_product: ossec</MadCap:codeSnippetBody>
             </thead>
             <tbody>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">alert_category</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">alert_category</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">rule.groups</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1" />
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">alert_signature</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">alert_signature</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">rule.comment or rule.description</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The <code class="linecode">alert_signature</code> field is copied from the rule comment or description property, in that order.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The <code class="linecode">alert_signature</code>field will be copied from the rule comment or description property, in that order.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">alert_signature_id</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">alert_signature_id</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">rule.sidid</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1" />
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">file_hash_md5</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">file_hash_md5</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SyscheckFile.md5_after</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">File integrity events only.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">file_hash_md5_previous</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">file_hash_md5_previous</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">SyscheckFile.md5_before</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">File integrity events only.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">file_hash_sha1</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">file_hash_sha1</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SyscheckFile.sha1_after</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">File integrity events only.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">file_hash_sha1_previous</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">file_hash_sha1_previous</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">SyscheckFile.sha1_before</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">File integrity events only.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">file_path</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">file_path</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SyscheckFile.path</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">File integrity events only.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">host_hostname</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">host_hostname</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent_name</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1" />
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">host_ip</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">host_ip</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">agentip</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2" />
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">registry_hash_md5</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">registry_hash_md5</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">SyscheckFile.md5_after</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Registry integrity events only.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">registry_hash_md5_previous</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">registry_hash_md5_previous</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SyscheckFile.md5_before</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Registry integrity events only.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">registry_hash_sha1</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">registry_hash_sha1</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">SyscheckFile.sha1_after</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Registry integrity events only.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">registry_hash_sha1_previous</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">registry_hash_sha1_previous</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SyscheckFile.sha1_before</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Registry integrity events only.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">registry_path</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">registry_path</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">SyscheckFile.path</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Registry integrity events only.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">source_ip</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">source_ip</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">srcip</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2" />
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">user_name</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">user_name</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">various</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">This value is pulled from <code class="linecode">srcuser</code>, <code class="linecode">dstuser</code>, or extracted depending upon the OSSEC source message.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">This will either be pulled from<code class="linecode">srcuser</code>, <code class="linecode">dstuser</code>, or extracted depending upon the OSSEC source message.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_alert_severity_level</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">vendor_alert_severity_level</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">rule.level</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2" />
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_event_description</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">vendor_event_description</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">rule.comment or rule.description</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">For log cleared alerts only.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_full_log</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">vendor_full_log</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">full_log</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">For log-based OSSEC alerts, a copy of the log used for the detection.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><code class="linecode">vendor_rule_firedtimes</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">vendor_rule_firedtimes</code>
                     </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">rule.firedtimes</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">rule.firedtimes</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1" />
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">vendor_source_user</code>
                     </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">(parsed from full_log)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">SSH source log parsing: extracted user name from Failed/Accepted password logs.</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">vendor_source_port</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(parsed from full_log)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">SSH source log parsing: extracted source port.</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">vendor_source_ip</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">(parsed from full_log)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">SSH source log parsing: extracted source IP.</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">vendor_dstuser</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">dstuser</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Target user for IAM events (e.g. user being created).</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">source_user_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">(mapped)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Set to SOURCE_USER_NAME_NOT_DEFINED for IAM events.</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">event_outcome</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(mapped)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Set to failure for authentication_failed alerts and blocked firewall actions.</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">application_name</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">(mapped)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Set to ossec for authentication events.</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">
+                        <code class="linecode">destination_reference</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">(mapped)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Set from host_hostname or host_ip for all alerts.</td>
                 </tr>
             </tbody>
         </table>
@@ -429,37 +605,43 @@ event_source_product: ossec</MadCap:codeSnippetBody>
             </thead>
             <tbody>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">destination_hostname</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">destination_hostname</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ossecmgr01</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Hostname assigned to the target of an action described in the log.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">destination_ip</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">destination_ip</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">203.0.113.24</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Network IP address of the target system of an action described in the log.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">destination_port</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">destination_port</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1514</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Network service port of the target system of an action described in the log.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">service_name</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">service_name</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">OSSEC HIDS</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">OSSEC service name.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_event_action</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">vendor_event_action</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Starting</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">OSSEC-defined action described in the log.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><code class="linecode">vendor_subtype</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">
+                        <code class="linecode">vendor_subtype</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">system</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">The log subtype for system messages.</td>
@@ -467,7 +649,7 @@ event_source_product: ossec</MadCap:codeSnippetBody>
             </tbody>
         </table>
         <h4>OSSEC Firewall Log Field Extraction</h4>
-        <p>The OSSEC firewall log messages are saved to the file <code class="linecode">firewall.log</code> on the OSSEC systems where the activity is observed.</p>
+        <p>The OSSEC firewall log messages are saved to the file <code class="linecode">firewall.log</code>on the OSSEC systems were the activity is observed.</p>
         <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
@@ -479,65 +661,100 @@ event_source_product: ossec</MadCap:codeSnippetBody>
             </thead>
             <tbody>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">destination_ip</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">destination_ip</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The IP address targeted by the network connection recorded in the firewall log entry.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">destination_port</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">destination_port</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The destination port number associated with the recorded network connection.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">event_observer_ip</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">event_observer_ip</code>
                     </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The OSSEC-registered IP address of the OSSEC agent that observed and reported the originating log event.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The OSSEC-registered IP of the OSSEC agent that observed and reported the originating log event.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">source_ip</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">source_ip</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The remote IP address that initiated the network connection.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">source_port</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">source_port</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The source port number used by the initiating host for the connection.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_action</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">vendor_action</code>
                     </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The firewall action classification assigned by OSSEC (e.g. DROP, REJECT, UNKNOWN).</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The firewall action classification assigned by OSSEC (e.g., DROP, REJECT, UNKNOWN).</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_agent_name</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">vendor_agent_name</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The OSSEC agent name reporting the event as recorded in the firewall log.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_logfile</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">vendor_logfile</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The path to the original log file on the agent that triggered the firewall active response.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><code class="linecode">vendor_protocol</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">vendor_protocol</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The transport protocol (e.g., TCP, UDP, ICMP) extracted from the triggering event.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><code class="linecode">vendor_subtype</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">vendor_subtype</code>
                     </td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The log subtype for OSSEC firewall log messages.</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><code class="linecode">vendor_timestamp</code>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">vendor_timestamp</code>
                     </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">The timestamp applied by OSSEC when writing the firewall log entry.</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The timestamp applied by OSSEC when writing the firewall log entry.</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">event_action</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Normalized action: allowed for Allow actions, blocked for Drop/Deny/Block/Reject.</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                        <code class="linecode">event_outcome</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Set to success for allowed actions, failure for blocked actions.</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                        <code class="linecode">network_transport</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Normalized transport protocol (lowercased from vendor_protocol).</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">
+                        <code class="linecode">gim_event_type_code</code>
+                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Set to 120000 (network connection) for all firewall events.</td>
                 </tr>
             </tbody>
         </table>
         <h2 id="spotlight-content-pack">OSSEC Spotlight</h2>
         <p>This spotlight offers a dashboard with 1 tab:</p>
-        <h3>Overview</h3>
+        <h3>overview</h3>
         <p>
             <img src="../Resources/Images/OSSEC/ossec_overview.png" />
         </p>
