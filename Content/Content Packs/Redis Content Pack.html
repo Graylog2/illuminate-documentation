@@ -1,0 +1,483 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Redis Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>
+            <MadCap:concept term="New Releases" />Redis Content Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Redis is an in-memory data structure store used as a database, cache, message broker, and streaming engine. This technology pack processes Redis server log messages from Redis open source, including server lifecycle events, replication, persistence operations, Sentinel monitoring, slow query logging, and ACL authentication. This pack also processes logs from Valkey, the open-source fork of Redis, in all three of its log output modes: legacy (byte-for-byte identical to Redis OSS), logfmt, and JSON.</p>
+        <p>All the ingest variants share a single <code class="linecode">event_source_product</code> value. Therefore, downstream streams, searches, and spotlights cover the entire Redis family seamlessly. This content pack supports log delivery via Filebeat with Graylog Sidecar integration.</p>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>A supported version of Redis or Valkey (see Supported Versions below)</p>
+            </li>
+            <li>
+                <p>Graylog version 7.1.0 or later</p>
+            </li>
+            <li>
+                <p>Redis or Valkey configured to send logs via Filebeat to Graylog</p>
+            </li>
+        </ul>
+        <h2 id="supported-versions">Supported Versions</h2>
+        <ul>
+            <li>
+                <p>Redis 6.x and later (open-source)</p>
+            </li>
+            <li>
+                <p>Redis 7.x and later (open-source)</p>
+            </li>
+            <li>
+                <p>Valkey 7.2.4 and later (legacy, logfmt, and JSON log formats)</p>
+            </li>
+        </ul>
+        <h2 id="log-collection">Log Collection and Delivery</h2>
+        <p>Redis server logs are delivered to Graylog using Filebeat managed by the Graylog Sidecar. Redis must be configured to write to a log file that Filebeat can ship.</p>
+        <h3>Filebeat Configuration</h3>
+        <p>Configure Filebeat to ship Redis log files:</p>
+        <ol>
+            <li>
+                <p>Install Filebeat on the Redis server (typically through Graylog Sidecar).</p>
+            </li>
+            <li>
+                <p>Create a configuration under <i>Sidecar &gt; Configuration</i> with a <strong>filebeat on linux</strong> collector.</p>
+            </li>
+            <li>
+                <p>Set the Graylog server IP address under <code class="linecode">hosts</code> and add the <code class="linecode">event_source_product</code> field with the value <code class="linecode">redis</code>.</p>
+                <MadCap:codeSnippet>
+                    <MadCap:codeSnippetCopyButton />
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">filebeat.inputs:
+- input_type: log
+paths:
+- /var/log/redis/redis-server.log
+- /var/log/redis/redis.log
+type: filestream
+fields_under_root: true
+fields:
+event_source_product: redis</MadCap:codeSnippetBody>
+                </MadCap:codeSnippet>
+            </li>
+            <li>
+                <p>Default log paths vary by OS: Ubuntu/Debian uses /var/log/redis/redis-server.log, RHEL/CentOS uses /var/log/redis/redis.log. Check the redis.conf 'logfile' setting for the actual path on your host.</p>
+            </li>
+            <li>
+                <p>Create a matching Beats input in Graylog and save the configuration.</p>
+            </li>
+        </ol>
+        <p>
+            <section class="warningBox">
+                <div class="content"><b>Warning:</b> <code class="linecode">fields_under_root: true</code> is required so that <code class="linecode">event_source_product</code> lands at the message root where the pack's identification rule looks for it.</div>
+            </section>
+        </p>
+        <h3>Valkey Log Collection</h3>
+        <p>Valkey is the open-source fork of Redis 7.2.4. It ships three log output modes selected via the 'log-format' directive in valkey.conf. The pack identifies and parses all three. Downstream processing is unified with Redis OSS so no separate pipeline is required.</p>
+        <ul>
+            <li>
+                <p>Legacy mode (default, byte-for-byte identical to Redis OSS): Forward via Filebeat. Identification matches on <code class="linecode">application_name</code> starting with 'valkey', the 'valkey[PID]:' message prefix, or the PID:ROLE body pattern.</p>
+            </li>
+            <li>
+                <p>logfmt mode (log-format logfmt in valkey.conf): messages arrive as 'pid=&lt;n&gt; role=&lt;word&gt; timestamp="&lt;ts&gt;" level=&lt;word&gt; message="&lt;text&gt;"'. Roles: primary, replica, sentinel, RDB/AOF. Levels: debug, verbose, notice, warning.</p>
+            </li>
+            <li>
+                <p>JSON mode (log-format json in valkey.conf): messages arrive as '{"pid":&lt;n&gt;,"role":"&lt;word&gt;","timestamp":"&lt;ts&gt;","level":"&lt;word&gt;","message":"&lt;text&gt;"}'. Same role/level vocabulary as logfmt.</p>
+            </li>
+            <li>
+                <p>All three Valkey modes produce <code class="linecode">event_source_product=redis</code> (unified with Redis OSS).</p>
+            </li>
+        </ul>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>Illuminate:Redis Messages</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this stream does not exist prior to the activation of this pack then it is created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>Redis Logs</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this index set is already defined, then nothing is changed. If this index set does not exist, then it is created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
+            </section>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Parsing rules to extract Redis server logs into Graylog schema compatible fields.</p>
+            </li>
+            <li>
+                <p>Graylog Information Model (GIM) message categorization for service lifecycle and authentication events.</p>
+            </li>
+            <li>
+                <p>Support for Redis Sentinel monitoring events.</p>
+            </li>
+            <li>
+                <p>Support for Redis slow query log parsing.</p>
+            </li>
+            <li>
+                <p>Support for Redis signal handler events (SIGTERM, SIGINT).</p>
+            </li>
+            <li>
+                <p>Redis role description mapping (M=master, S=replica, C=child, X=sentinel).</p>
+            </li>
+            <li>
+                <p>Valkey support across all three log output modes: legacy (same format as Redis OSS, handled by existing rules), logfmt (pid=N role=primary|replica|sentinel|RDB/AOF timestamp=... level=... message=...), and JSON ({"pid":N,"role":"...","timestamp":"...","level":"...","message":"..."}). Role words map to the existing role description, and level words (debug, verbose, notice, warning) map through the severity lookup.</p>
+            </li>
+        </ul>
+        <h2 id="log-format-example">Log Format Examples</h2>
+        <p>Representative log lines for Redis open-source and Valkey.</p>
+        <h3>Redis OSS (text log)</h3>
+        <p><code class="linecode">87041:M 10 Apr 2026 14:22:01.234 * Server started, Redis version 7.2.4
+        87041:M 10 Apr 2026 14:22:01.235 * Ready to accept connections tcp
+        87041:M 10 Apr 2026 14:35:12.456 # WARNING: The TCP backlog setting of 511 cannot be enforced
+        87041:M 10 Apr 2026 15:00:00.789 * Background saving started by pid 87150
+        87041:M 10 Apr 2026 15:00:01.012 * Background saving terminated with success
+        45123:X 10 Apr 2026 16:45:30.100 # +sdown master mymaster 10.0.1.50 6379
+        45123:X 10 Apr 2026 16:45:31.200 # +odown master mymaster 10.0.1.50 6379 #quorum 2/2
+        87041:S 10 Apr 2026 17:00:05.300 * MASTER &lt;-&gt; REPLICA sync: Finished with success
+        87041:M 10 Apr 2026 18:30:00.400 * User requested shutdown
+        87041:signal-handler (1744358400) Received SIGTERM scheduling shutdown...
+        </code>
+        </p>
+        <h3>Valkey (legacy, logfmt, and JSON modes)</h3>
+        <p><code class="linecode"># Valkey (open-source Redis fork) -- three log output modes
+        #
+        # Select with 'log-format &lt;legacy|logfmt|json&gt;' in valkey.conf.
+        # Role words: primary, replica, sentinel, RDB/AOF
+        # Level words: debug, verbose, notice, warning
+
+        # Legacy mode (default, byte-for-byte identical to Redis OSS):
+        87041:M 15 Apr 2026 14:22:01.234 * Server started, Valkey version 8.0.1
+        87041:M 15 Apr 2026 14:22:01.235 * Ready to accept connections tcp
+        87041:S 15 Apr 2026 14:35:12.456 # WARNING: Lost connection to primary, will retry
+        87041:X 15 Apr 2026 16:45:30.100 # +sdown master mymaster 10.0.1.50 6379
+
+        # logfmt mode (log-format logfmt):
+        pid=87041 role=primary timestamp="2026-04-15T14:22:01.234Z" level=notice message="Server started, Valkey version 8.0.1"
+        pid=87041 role=primary timestamp="2026-04-15T14:22:01.235Z" level=notice message="Ready to accept connections tcp"
+        pid=87041 role=replica timestamp="2026-04-15T14:35:12.456Z" level=warning message="Lost connection to primary, will retry"
+
+        # JSON mode (log-format json):
+        {"pid":87041,"role":"primary","timestamp":"2026-04-15T14:22:01.234Z","level":"notice","message":"Server started, Valkey version 8.0.1"}
+        {"pid":87041,"role":"replica","timestamp":"2026-04-15T14:35:12.456Z","level":"warning","message":"Lost connection to primary, will retry"}
+        </code>
+        </p>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following event types:</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Authentication (ACL login, auth failure, security attack)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Server startup</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">210000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service started</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Server shutdown</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">210100</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service stopped</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Configuration change</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">211000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service configuration change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Sentinel state transition / failover</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">211504</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Crash report / replica connection loss</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">211504</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Out-of-memory panic</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">211504</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">RDB / AOF persistence failure</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">211504</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Max clients reached (connection-limit DoS / leak)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">211504</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service error</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Module load / unload (supply-chain audit)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">211000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service configuration change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">General events (replication, persistence, notices, warnings, slowlog)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">219999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Valkey (any mode) server startup</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">210000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service started</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Valkey (any mode) server shutdown</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">210100</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service stopped</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Valkey (any mode) general events (replication, persistence, notices, warnings)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">219999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">service event</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Message Fields Included in This Pack</h3>
+        <h4>Parsed Fields</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Redis Parsed Fields <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Description</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Redis server process ID</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">87041</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_redis_role</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Redis instance role (M=Master, S=Slave, C=Child, X=Sentinel)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">M</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_redis_role_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Human-readable Redis role name derived from role character</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">master</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Redis log severity character (.=debug, -=verbose, *=notice, #=warning)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">*</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">The core log message content</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Server started, Redis version 7.2.4</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_time</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Timestamp from the standard Redis log line</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">14:22:01.234</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_epoch</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Unix epoch timestamp from signal handler log events</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1744358400</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_sentinel_event</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Sentinel event type (e.g., +sdown, +odown, +failover)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">+sdown</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_sentinel_target_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Type of the Sentinel target (master, slave, sentinel)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">master</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_sentinel_target_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Name of the monitored instance</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">mymaster</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_sentinel_target_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">IP address of the Sentinel target</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10.0.1.50</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">ip</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_sentinel_target_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Port of the Sentinel target</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">6379</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">int</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_slowlog_key</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Key referenced in a slow query log entry</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user:session:12345</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_replication_backlog_bytes</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Bytes of backlog sent during partial resync</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1234</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">int</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_replication_offset</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Replication offset value</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">56789</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_replication_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Replication ID from full resync</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3e1b5c4a9f2d8e7b6c5a4f3e2d1c0b9a</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_replication_sync_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Sync type when replica times out</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">streaming sync</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Client IP address (from Accepted or Client info logs)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">10.0.2.200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">ip</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Client source port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">55123</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">int</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Redis server IP (from Client info laddr field)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">10.0.1.50</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">ip</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Redis server port (from Client info laddr field)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">6379</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">int</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_client_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Redis client connection ID</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">42</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_client_cmd</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Last command issued by the client</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">client|info</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">db_database_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Redis OSS DB index (0-15) from CLIENT INFO</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">memory_total_bytes</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Total memory consumed by the client connection in bytes</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">22426</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">int</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Username from ACL authentication or client info</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">admin</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Normalized event action verb derived by the pack (started, stopped, module_loaded, module_unloaded, max_clients_reached)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">started</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_error_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Matched failure phrase from the Redis log for persistence, sentinel, crash, or replica-loss events</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Background saving error</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Normalized severity level name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">informational</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Redis or Valkey version captured from the startup banner</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">7.2.4</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Service name, always set to redis</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">redis</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">string</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">application_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Application name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">redis-server</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">string</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h2 id="spotlight-content-pack">Redis Spotlight Content Pack</h2>
+        <p>This spotlight offers a dashboard with 1 tab:</p>
+        <h3>Overview</h3>
+        <p>
+            <img src="../Resources/Images/Redis/redis_overview.png" />
+        </p>
+    </body>
+</html>

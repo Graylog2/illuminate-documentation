@@ -8,12 +8,23 @@
         <h1>
             <MadCap:concept term="Networking" />NetFlow Content Pack</h1>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>NetFlow is a network protocol that collects and monitors IP traffic flow data, providing insights into network usage, security threats, and performance. It helps analyze traffic patterns, detect anomalies, and troubleshoot network issues by capturing details such as source/destination IPs, ports, protocols, and bandwidth usage.</p>
-        <h2 id="requirements">Requirements</h2>
+        <p>NetFlow is a network protocol that collects and monitors IP traffic flow data, providing insights into network
+        usage, security threats, and performance. It helps analyze traffic patterns, detect anomalies, and troubleshoot
+        network issues by capturing details such as source/destination IPs, ports, protocols, and bandwidth usage.</p>
+        <h2 id="supported-versions">Supported Versions</h2>
         <ul>
             <li>
-                <p>NetFlowV5, NetFlowV9, IPFIX</p>
+                <p>NetFlow v5</p>
             </li>
+            <li>
+                <p>NetFlow v9</p>
+            </li>
+            <li>
+                <p>IPFIX</p>
+            </li>
+        </ul>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
             <li>
                 <p>Graylog Enterprise version 6.0.1+</p>
             </li>
@@ -25,7 +36,10 @@
         </ul>
         <p>
             <section class="infoBox">
-                <div class="content"><b>Hint:</b> If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
+                activation of this pack then it will be created and configured to route messages to this stream and the
+                associated index set. There should not be any stream rules configured for this stream.</span>
+                </div>
             </section>
         </p>
         <h2 id="index-set-configuration">Index Set Configuration</h2>
@@ -35,7 +49,11 @@
         </ul>
         <p>
             <section class="infoBox">
-                <div class="content"><b>Hint:</b> If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
+                nothing will be changed. If this index set does not exist, then it will be created with retention
+                settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
+                installation.</span>
+                </div>
             </section>
         </p>
         <h2 id="log-format-example">Log Format Example</h2>
@@ -50,12 +68,20 @@
         <h2 id="what-is-provided">What is Provided</h2>
         <ul>
             <li>
-                <p>Rules to normalize and enrich NetFlow log messages</p>
+                <p>Rules to normalize and enrich NetFlow log messages.</p>
+            </li>
+            <li>
+                <p>Graylog Information Model categorization and enforcement fields for flow record and network connection
+                events.</p>
             </li>
         </ul>
         <h2 id="log-collection">Log Collection</h2>
-        <p>NetFlow utilizies <a href="https://go2docs.graylog.org/current/getting_in_log_data/netflow_input.htm">the NetFlow input</a> that ingests multiple NetFlow product type logs in JSON format.</p>
-        <h3>Configuring a IPFIX Input</h3>
+        <p>NetFlow utilizes <a href="https://go2docs.graylog.org/current/getting_in_log_data/netflow_input.htm">the NetFlow
+            input</a> that ingests multiple NetFlow product type logs in JSON format.</p>
+        <p>The <a href="https://go2docs.graylog.org/current/getting_in_log_data/ipfix_input.html?tocpath=Get%20in%20Logs%7CInputs%7CGraylog%20Inputs%7C_____13">IPFIX
+            UDP input</a> can be configured in Graylog to receive flow data from a Linux-based exporter using PMACCT
+        with NFPROBE support.</p>
+        <h3>Configuring an IPFIX Input</h3>
         <p>For Graylog to receive IPFIX data, you must prepare the Linux source and configure the input:</p>
         <ol>
             <li>
@@ -63,7 +89,7 @@
             </li>
             <li>
                 <p>Create <code class="linecode">/etc/pmacct/pmacctd.conf</code> and specify: </p>
-                <ul>
+                <ol>
                     <li>
                         <p>Interface: The network interface to monitor. </p>
                     </li>
@@ -71,7 +97,7 @@
                         <p>Exporter IP: IP address of the Linux source. </p>
                     </li>
                     <li>
-                        <p>Collector Address: Graylog server IP address. </p>
+                        <p>Collector Address: Graylog server IP. </p>
                     </li>
                     <li>
                         <p>Port Number: Standard IPFIX port (4739). </p>
@@ -79,14 +105,14 @@
                     <li>
                         <p>Format: IPFIX.</p>
                     </li>
-                </ul>
+                </ol>
             </li>
             <li>
                 <p>Start the exporter using: <code class="linecode">sudo /usr/local/sbin/pmacctd -f /etc/pmacct/pmacctd.conf</code></p>
             </li>
             <li>
                 <p>Launch an IPFIX UDP input in Graylog and configure: </p>
-                <ul>
+                <ol>
                     <li>
                         <p>Bind Address: IP address of the Graylog node. </p>
                     </li>
@@ -96,30 +122,47 @@
                     <li>
                         <p>Recv Buffer Size: Adjust as needed based on expected flow volume.</p>
                     </li>
-                </ul>
+                </ol>
             </li>
             <li>
-                <p>Generate network events from the Linux system and confirm that Graylog’s IPFIX input is receiving messages.</p>
+                <p>Generate network events from the Linux system and confirm that Graylog's IPFIX input is receiving
+                messages.</p>
+            </li>
+            <li>
+                <p>Inspect the exported fields to ensure completeness and accuracy.</p>
             </li>
         </ol>
-        <h3 id="gim-categorization">NetFlow Log Message Processing</h3>
-        <p>The Illuminate processing of NetFlow log messages provides the following:</p>
-        <table cellspacing="21" style="width: auto; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following NetFlow log types:</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <thead>
                 <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
                     <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">NetFlow Logtype</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
                     <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">filter</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">network</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">network.flow</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">All flow records</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.flow</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">flow record</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">All flow records</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">network.network connection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">network connection</td>
                 </tr>
             </tbody>
         </table>
