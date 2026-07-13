@@ -1,0 +1,635 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Red Hat Enterprise Linux 10 Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>
+            <MadCap:concept term="New Releases" />Red Hat Enterprise Linux 10 Content Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Red Hat Enterprise Linux (RHEL) is an enterprise-grade Linux distribution widely used on servers and cloud infrastructure.</p>
+        <p>This technology pack provides common log parsing, normalization, and enrichment for Red Hat Enterprise Linux 10 system logs collected via Filebeat.</p>
+        <h2 id="supported-versions">Supported Distributions</h2>
+        <ul>
+            <li>
+                <p>Red Hat Enterprise Linux 10</p>
+            </li>
+        </ul>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>Graylog 7.1.0+ with a valid Enterprise license</p>
+            </li>
+            <li>
+                <p>Filebeat configured to tag RHEL system logs with field filebeat_event_source_product: linux_rhel</p>
+            </li>
+        </ul>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>Illuminate:Linux System Messages</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this stream does not exist prior to the activation of this pack then it is created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>Linux System Logs</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this index set is already defined, then nothing is changed. If this index set does not exist, then it is created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
+            </section>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Rules to parse, normalize, and enrich Red Hat Enterprise Linux 10 system log messages</p>
+            </li>
+        </ul>
+        <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
+        <p>The Red Hat Enterprise Linux 10 content pack supports the following log types. Generic processing is provided for log types not listed.</p>
+        <ul>
+            <li>
+                <p>Systemd Logs (unit lifecycle, slices, targets, scopes, reload, sysusers, hostname, boot timing, detected platform, signals, devices)</p>
+            </li>
+            <li>
+                <p>Systemd-Logind User Sessions (new / logout / removed / seat, session scopes)</p>
+            </li>
+            <li>
+                <p>Kernel and System Messages (USB connect/disconnect with manufacturer/product/serial, PCI/SCSI/ATA/DRM driver events, ACPI, device-mapper, audit)</p>
+            </li>
+            <li>
+                <p>NetworkManager Logs (severity, subsystem, activation, carrier, DHCPv4 lease, link, audit, state change)</p>
+            </li>
+            <li>
+                <p>Authorization and Access Control (PolicyKit auth requests and grants, SELinux access denials via setroubleshoot)</p>
+            </li>
+            <li>
+                <p>Package Management (dnf transactions, packagekit, rhsm-service)</p>
+            </li>
+            <li>
+                <p>Defensive and Threat-Hunting Signals (firewalld configuration, chronyd clock-step / time-sync, ABRT crash dumps, rsyslog imjournal rate-limit drops)</p>
+            </li>
+            <li>
+                <p>Service and Container Activity (systemd-machined, cups requests, dbus-daemon activation, udisks user-initiated mounts)</p>
+            </li>
+            <li>
+                <p>Remote Access (gnome-remote-desktop RDP server lifecycle)</p>
+            </li>
+            <li>
+                <p>Shell Command Execution Errors</p>
+            </li>
+            <li>
+                <p>User Application Launches (systemd transient app-scope units)</p>
+            </li>
+        </ul>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following messages:</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Log Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Vendor Event Description</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Subcategory</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Event Type Code</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Systemd</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Service start/restart</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.start</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">210000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Systemd</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Service stop/completion</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.stop</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">210100</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Systemd</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Service failure</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.state</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">211504</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Systemd</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Service reload</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.configuration</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">211000</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Systemd</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">User application launch (transient scope unit)</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">process</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">process.execute</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">190000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h3>Message Fields Included in This Pack</h3>
+        <h4>General Parsing</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">linux_rhel</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The product identifier for the log source.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_created</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2026-05-27T13:56:33.000Z</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">date</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The normalized timestamp the event was created.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_reporter_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">rhel10</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Hostname of the system that reported the log.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_log_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">/var/log/messages</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source log file path reported by Filebeat.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">systemd</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The application or subsystem that emitted the message.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">process_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Process ID extracted from the syslog header.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>Systemd</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Started</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The systemd unit lifecycle action.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_systemd_unit_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">systemd-journald.service - Journal Service</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The systemd unit name and description.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">systemd-journald</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The systemd unit name (without the .service suffix where applicable). Populated from &lt;unit&gt;.service: &lt;status&gt; lines (22-linux_rhel_systemd_service); transient scope/mount lines (22-linux_rhel_systemd_scope_consumed; 22-linux_rhel_systemd_scope_mount_status); daemon-reload requests (22-linux_rhel_systemd_reload_requested); device-unit messages (22-linux_rhel_systemd_device_event).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">localhost.localdomain</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">New hostname set by systemd-hostnamed (22-linux_rhel_systemd_hostname_set).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">/dev/mapper/rhel-root</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Block-device or mount-target path. Populated from systemd device-unit messages (22-linux_rhel_systemd_device_event) carrying the underlying /dev path the device unit represents.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">rhel-root</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Basename of file_path; derived inside the same grok via a nested named capture.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_systemd_service_status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Deactivated successfully</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The reported systemd service status.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service_state</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">active</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The systemd unit state from a state-change message.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_systemd_result</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">exit-code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The systemd failure result.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_systemd_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">exited</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The systemd process exit code class.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_systemd_status_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">203</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The systemd process exit status code (raw vendor passthrough).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_error_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">203</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">SDM-normalized process exit code; populated alongside vendor_data_systemd_status_code by 22-linux_rhel_systemd_failed_status.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_systemd_status_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">EXEC</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The systemd process exit status description following the status code.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_systemd_restart_counter</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">163056</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The systemd scheduled-restart counter (cumulative restart attempts; useful for flapping-service detection).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_systemd_skip_reason</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">no trigger condition checks were met</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The reason a systemd unit was skipped due to an unmet condition check.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_outcome</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Failed</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The outcome of a systemd start attempt.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">gim_event_type_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">210000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The assigned GIM event type code.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_systemd_scope_originator</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">gnome</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The originator (launcher) of a user-application transient scope unit (gnome / flatpak / glib / etc.).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_systemd_scope_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Application launched by gnome-shell</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The human-readable description portion of a user-application scope log line.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">org.gnome.Settings</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The launched application identifier extracted from a systemd user-application scope unit (SDM-promoted from the scope name).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_parent_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">systemd</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The parent process name for a user-application launch event (preserved from the original systemd syslog source).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">process_parent_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">The parent process PID for a user-application launch event (preserved from the original process_id set by the syslog header bracket extraction).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>Kernel and System</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_kernel_subsystem</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ACPI</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The kernel subsystem that emitted the message.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Using IOAPIC for interrupt routing</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The kernel message text following the subsystem prefix.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_pci_address</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">0000:00:01.0</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The PCI device address from a PCI subsystem message.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_dm_component</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ioctl</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The device-mapper component from a device-mapper message.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_audit_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The kernel audit record type.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_audit_serial</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The kernel audit record serial number.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_audit_timestamp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1779890193.149</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The kernel audit record epoch timestamp.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">vendor_data_audit_message</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">state=initialized audit_enabled=0 res=1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">The kernel audit record payload.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>Shell Command Errors</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">/bin/bash</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Full path of the shell binary that emitted the error.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">bash</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Basename of the shell binary (process_path).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_target_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">/sherpa/dummy/bin/startup.sh</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Full path of the command or file the shell attempted to execute.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_target_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">startup.sh</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Basename of the target (process_target_path).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_error_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">No such file or directory</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The shell's reason for the failure (e.g. No such file or directory; Permission denied; command not found).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_outcome</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">failure</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Normalized event outcome (failure) for shell command execution errors.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">vendor_event_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">Shell command execution error</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">The normalized event description for shell command errors.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>NetworkManager</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">info</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The raw NetworkManager severity tag (trace/debug/info/warn/err) captured from the &lt;severity&gt; log prefix.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_nm_epoch</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1779976236.5413</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The NetworkManager monotonic epoch timestamp with millisecond precision.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_nm_subsystem</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">device</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The NetworkManager internal subsystem that emitted the message (e.g. device; platform; manager; agent-manager; policy; audit; dhcp4). When the subsystem label originally included an interface in parens (device (ens18)) the parens are stripped and the interface is captured into vendor_data_nm_interface.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_nm_interface</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ens18</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The network interface name extracted from NetworkManager messages. Captured as a vendor field because the SDM network entity has no non-direction-bound interface field (network_interface_in / network_interface_out are traffic-flow-scoped).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_nm_state_previous</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">activated</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The previous interface state from a NetworkManager 'state change: &lt;from&gt; -&gt; &lt;to&gt;' message.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_nm_state_current</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">deactivating</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The new interface state from a NetworkManager 'state change: &lt;from&gt; -&gt; &lt;to&gt;' message.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_data_nm_state_reason</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user-requested</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The optional reason from a NetworkManager 'state change' message (parsed from the trailing (reason '&lt;r&gt;'...) clause when present).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_nm_state</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">CONNECTED_GLOBAL</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The global NetworkManager connectivity state extracted from manager-subsystem 'NetworkManager state is now &lt;STATE&gt;' messages.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">device-disconnect</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The raw action verb from a NetworkManager audit message (connection-activate; device-disconnect; etc.) - SDM-aligned vendor name for the action.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_data_nm_ifindex</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The kernel interface index from a NetworkManager audit message.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_outcome</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">success</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The raw result field from a NetworkManager audit message (success / fail / failed) - SDM-aligned vendor name for the outcome.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_outcome</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">success</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Normalized SDM outcome derived from vendor_event_outcome (success -&gt; success; fail / failed -&gt; failure). Set only for known values; unknown vendor results leave event_outcome unset to avoid mis-categorization.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">agent registered</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The NetworkManager message body following the subsystem prefix. May be shortened by the link / state-change follow-up rules.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">informational</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Normalized SDM severity derived from vendor_event_severity (trace/debug/info -&gt; informational; warn -&gt; medium; err -&gt; high).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_severity_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">1</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Numeric SDM severity (1=informational; 2=low; 3=medium; 4=high; 5=critical). Set as a paired field with event_severity since core derives the level only for GIM-categorized events.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">2539</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">SDM process_id promoted from NetworkManager audit pid=N (renamed from vendor_data_nm_pid).</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">user_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">1000</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">SDM user_id promoted from NetworkManager audit uid=N (renamed from vendor_data_nm_uid).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+    </body>
+</html>

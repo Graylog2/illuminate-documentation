@@ -1,22 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
     <head>
-        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>AWS Security Hub Content Pack</title>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
+        <title>AWS Security Hub Pack</title>
         <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
-        <h1>AWS Security Hub Content Pack</h1>
-        <p>
-            <MadCap:concept term="New Release" />
-            <MadCap:concept term="Vendor:Amazon" />
-        </p>
+        <h1>
+            <MadCap:concept term="Vendor:Amazon" />AWS Security Hub Pack</h1>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
         <p>AWS Security Hub is a centralized security and compliance service that aggregates, normalizes,</p>
-        <p>and prioritizes findings from multiple AWS services and third-party tools using the AWS Security Finding Format (ASFF). It provides a unified view of your security posture across your AWS accounts, helping you identify and remediate potential risks efficiently.</p>
+        <p>and prioritizes findings from multiple AWS services and third-party tools using the AWS Security Finding Format (ASFF).</p>
+        <p>It provides a unified view of your security posture across your AWS accounts, helping you identify and remediate</p>
+        <p>potential risks efficiently.</p>
         <h2 id="supported-versions">Supported Version(s)</h2>
         <ul>
             <li>
-                <p>Current version offered by Amazon as of December 2025.</p>
+                <p>Current version offered by Amazon as of December, 2025.</p>
             </li>
         </ul>
         <h2 id="requirements">Requirements</h2>
@@ -30,13 +30,27 @@
         <ul>
             <li>Illuminate:AWS Security Hub Messages</li>
         </ul>
-        <MadCap:snippetBlock src="../Resources/Snippets/Template Snippets/ConceptKASnippets/Hint-AutoSteamCongig.flsnp" />
+        <p>
+            <section class="infoBox">
+                <div class="title">
+                    <b>Hint:</b>
+                    <span style="font-weight: normal;">If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</span>
+                </div>
+            </section>
+        </p>
         <h2 id="index-set-configuration">Index Set Configuration</h2>
         <p>This technology pack includes 1 index set definition:</p>
         <ul>
             <li>AWS Security Hub Logs</li>
         </ul>
-        <MadCap:snippetBlock src="../Resources/Snippets/Template Snippets/ConceptKASnippets/Hint-AuthIndexSetConfig.flsnp" />
+        <p>
+            <section class="infoBox">
+                <div class="title">
+                    <b>Hint:</b>
+                    <span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
+                </div>
+            </section>
+        </p>
         <h2 id="log-collection">Log Collection and Delivery</h2>
         <p>This pack parses logs from the following sources:</p>
         <ul>
@@ -45,28 +59,35 @@
             </li>
         </ul>
         <h3>AWS Kinesis/CloudWatch Input Configuration</h3>
-        <p>Refer to the input documentation to setup the <a href="https://go2docs.graylog.org/current/getting_in_log_data/aws_kinesis_cloudwatch_input.html">AWS Kinesis/CloudWatch input</a>.</p>
-        <h2 id="log-format-example">Log Format Example
-        </h2>
+        <ol>
+            <li>
+                <p>Please refer to the official documentation to setup the<a href="https://go2docs.graylog.org/current/getting_in_log_data/aws_kinesis_cloudwatch_input.html">AWS Kinesis/CloudWatch input</a>.</p>
+            </li>
+        </ol>
+        <h2 id="log-format-example" />
         <p>These are example logs for various processed log types.</p>
-        <h3>GuardDuty</h3>
-        <p><code class="linecode">{"version":"0","id":"1f4fae6e-e5fb-1ea7-4429-115d43a26fb6","detail-type":"Security Hub Findings - Imported","source":"aws.securityhub","account":"517803882956","time":"2025-11-21T14:05:03Z","region":"us-east-1","resources":["arn:aws:securityhub:us-east-1::product/aws/guardduty/arn:aws:guardduty:us-east-1:517803882956:detector/2ccd501f6c1ad78037a84d3fc2c7e8c9/finding/633b4b32bddc4195bffe43c03de41e02"],"detail":{"findings":[{"ProductArn":"arn:aws:securityhub:us-east-1::product/aws/guardduty","Types":["TTPs/Credential Access/CredentialAccess:RDS-AnomalousBehavior.FailedLogin"],"SourceUrl":"https://us-east-1.console.aws.amazon.com/guardduty/home?region=us-east-1#/findings?macros=current&amp;fId=633b4b32bddc4195bffe43c03de41e02","Description":"One or more unusual failed login attempts were observed on an RDS database in your account.","ProductName":"GuardDuty","FirstObservedAt":"2025-11-20T07:51:29.000Z","CreatedAt":"2025-11-20T07:51:29.455Z","LastObservedAt":"2025-11-21T14:01:40.000Z","CompanyName":"Amazon","FindingProviderFields":{"Types":["TTPs/Credential Access/CredentialAccess:RDS-AnomalousBehavior.FailedLogin"],"Severity":{"Normalized":40,"Label":"HIGH","Product":8}},"ProductFields":{"aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulApplicationNamesClusterProfiling.2_/applicationName":"GeneratedFindingApplicationName3","aws/guardduty/service/action/rdsLoginAttemptAction/remoteIpDetails/ipAddressV4":"1.2.3.4","aws/guardduty/service/additionalInfo/unusualBehavior/unusualUserNameClusterProfiling/incompleteConnectionCount":"0","aws/guardduty/service/action/rdsLoginAttemptAction/remoteIpDetails/ipAddressV6":"1234:5678:90ab:cdef:1234:5678:90ab:cde0","aws/guardduty/service/additionalInfo/unusualBehavior/unusualDatabaseNameClusterProfiling/databaseName":"GeneratedFindingDatabaseName","aws/guardduty/service/action/rdsLoginAttemptAction/remoteIpDetails/organization/isp":"GeneratedFindingIsp","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulUserNamesClusterProfiling.1_/userName":"GeneratedFindingUserName2","aws/guardduty/service/action/rdsLoginAttemptAction/remoteIpDetails/geoLocation/lon":"0","aws/guardduty/service/action/rdsLoginAttemptAction/remoteIpDetails/organization/asn":"0","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulApplicationNamesClusterProfiling.1_/count":"1","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulApplicationNamesClusterProfiling.2_/count":"1","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulApplicationNamesClusterProfiling.1_/applicationName":"GeneratedFindingApplicationName2","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulApplicationNamesClusterProfiling.0_/count":"1","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulApplicationNamesClusterProfiling.3_/count":"1","aws/guardduty/service/additionalInfo/unusualBehavior/unusualDatabaseNameClusterProfiling/failedLoginCount":"1","aws/guardduty/service/additionalInfo/unusualBehavior/unusualASNClusterProfiling/incompleteConnectionCount":"0","aws/guardduty/service/action/actionType":"RDS_LOGIN_ATTEMPT","aws/guardduty/service/additionalInfo/unusualBehavior/unusualUserNameClusterProfiling/failedLoginCount":"1","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulUserNamesClusterProfiling.2_/count":"1","aws/guardduty/service/additionalInfo/unusualBehavior/unusualApplicationNameClusterProfiling/incompleteConnectionCount":"0","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulApplicationNamesClusterProfiling.0_/applicationName":"GeneratedFindingApplicationName1","aws/guardduty/service/additionalInfo/unusualBehavior/unusualASNClusterProfiling/failedLoginCount":"1","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulApplicationNamesClusterProfiling.3_/applicationName":"GeneratedFindingApplicationName4","aws/guardduty/service/additionalInfo/unusualBehavior/unusualApplicationNameClusterProfiling/applicationName":"GeneratedFindingApplicationName","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulAsnOrgsClusterProfiling.1_/asnOrg":"GeneratedFindingAsnOrg2","aws/guardduty/service/action/rdsLoginAttemptAction/remoteIpDetails/organization/org":"GeneratedFindingOrg","aws/guardduty/service/action/rdsLoginAttemptAction/remoteIpDetails/geoLocation/lat":"0","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulAsnOrgsClusterProfiling.0_/count":"1","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulAsnOrgsClusterProfiling.2_/count":"1","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulAsnOrgsClusterProfiling.3_/asnOrg":"GeneratedFindingAsnOrg4","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulUserNamesClusterProfiling.0_/count":"1","aws/guardduty/service/action/rdsLoginAttemptAction/remoteIpDetails/city/cityName":"GeneratedFindingCityName","aws/guardduty/service/additionalInfo/unusualBehavior/unusualASNClusterProfiling/asnOrg":"GeneratedFindingAsnOrg","aws/guardduty/service/action/rdsLoginAttemptAction/remoteIpDetails/organization/asnOrg":"GeneratedFindingAsnOrg","aws/guardduty/service/additionalInfo/unusualBehavior/unusualApplicationNameClusterProfiling/failedLoginCount":"1","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulAsnOrgsClusterProfiling.0_/asnOrg":"GeneratedFindingAsnOrg1","aws/guardduty/service/action/rdsLoginAttemptAction/remoteIpDetails/country/countryName":"GeneratedFindingCountryName","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulUserNamesClusterProfiling.2_/userName":"GeneratedFindingUserName3","aws/guardduty/service/additionalInfo/unusualBehavior/unusualASNClusterProfiling/successfulLoginCount":"0","aws/guardduty/service/additionalInfo/unusualBehavior/unusualDatabaseNameClusterProfiling/incompleteConnectionCount":"0","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulUserNamesClusterProfiling.0_/userName":"GeneratedFindingUserName1","aws/guardduty/service/additionalInfo/unusualBehavior/unusualUserNameClusterProfiling/successfulLoginCount":"0","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulUserNamesClusterProfiling.3_/userName":"GeneratedFindingUserName4","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulAsnOrgsClusterProfiling.2_/asnOrg":"GeneratedFindingAsnOrg3","aws/guardduty/service/additionalInfo/unusualBehavior/unusualApplicationNameClusterProfiling/successfulLoginCount":"0","aws/guardduty/service/additionalInfo/unusualBehavior/unusualDatabaseNameClusterProfiling/successfulLoginCount":"0","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulAsnOrgsClusterProfiling.1_/count":"1","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulAsnOrgsClusterProfiling.3_/count":"1","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulUserNamesClusterProfiling.1_/count":"1","aws/guardduty/service/additionalInfo/unusualBehavior/unusualUserNameClusterProfiling/userName":"GeneratedFindingUserName","aws/securityhub/FindingId":"arn:aws:securityhub:us-east-1::product/aws/guardduty/arn:aws:guardduty:us-east-1:517803882956:detector/2ccd501f6c1ad78037a84d3fc2c7e8c9/finding/633b4b32bddc4195bffe43c03de41e02","aws/securityhub/ProductName":"GuardDuty","aws/securityhub/CompanyName":"Amazon"},"SchemaVersion":"2018-10-08","GeneratorId":"arn:aws:guardduty:us-east-1:517803882956:detector/2ccd501f6c1ad78037a84d3fc2c7e8c9","Sample":true,"RecordState":"ACTIVE","Title":"One or more unusual failed login attempts were observed on an RDS database in your account.","Workflow":{"Status":"NEW"},"Severity":{"Normalized":40,"Label":"HIGH","Product":8},"UpdatedAt":"2025-11-21T14:01:40.823Z","WorkflowState":"NEW","AwsAccountId":"517803882956","Region":"us-east-1","Id":"arn:aws:guardduty:us-east-1:517803882956:detector/2ccd501f6c1ad78037a84d3fc2c7e8c9/finding/633b4b32bddc4195bffe43c03de41e02","Resources":[{"Partition":"aws","Type":"AwsRdsDbCluster","Details":{"AwsRdsDbCluster":{"EngineVersion":"13.6","VpcSecurityGroups":[],"DbClusterIdentifier":"GeneratedFindingDBClusterId","Engine":"GeneratedFindingEngine"}},"Region":"us-east-1","Id":"arn:aws:rds:us-east-1:517803882956:cluster:GeneratedFindingDBClusterId"}],"ProcessedAt":"2025-11-21T14:05:01.838Z"}]}}</code>
+        <h4>GuardDuty</h4>
+        <p>
+            <code class="linecode">{"version":"0","id":"1f4fae6e-e5fb-1ea7-4429-115d43a26fb6","detail-type":"Security Hub Findings - Imported","source":"aws.securityhub","account":"517803882956","time":"2025-11-21T14:05:03Z","region":"us-east-1","resources":["arn:aws:securityhub:us-east-1::product/aws/guardduty/arn:aws:guardduty:us-east-1:517803882956:detector/2ccd501f6c1ad78037a84d3fc2c7e8c9/finding/633b4b32bddc4195bffe43c03de41e02"],"detail":{"findings":[{"ProductArn":"arn:aws:securityhub:us-east-1::product/aws/guardduty","Types":["TTPs/Credential Access/CredentialAccess:RDS-AnomalousBehavior.FailedLogin"],"SourceUrl":"https://us-east-1.console.aws.amazon.com/guardduty/home?region=us-east-1#/findings?macros=currentfId=633b4b32bddc4195bffe43c03de41e02","Description":"One or more unusual failed login attempts were observed on an RDS database in your account.","ProductName":"GuardDuty","FirstObservedAt":"2025-11-20T07:51:29.000Z","CreatedAt":"2025-11-20T07:51:29.455Z","LastObservedAt":"2025-11-21T14:01:40.000Z","CompanyName":"Amazon","FindingProviderFields":{"Types":["TTPs/Credential Access/CredentialAccess:RDS-AnomalousBehavior.FailedLogin"],"Severity":{"Normalized":40,"Label":"HIGH","Product":8}},"ProductFields":{"aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulApplicationNamesClusterProfiling.2_/applicationName":"GeneratedFindingApplicationName3","aws/guardduty/service/action/rdsLoginAttemptAction/remoteIpDetails/ipAddressV4":"1.2.3.4","aws/guardduty/service/additionalInfo/unusualBehavior/unusualUserNameClusterProfiling/incompleteConnectionCount":"0","aws/guardduty/service/action/rdsLoginAttemptAction/remoteIpDetails/ipAddressV6":"1234:5678:90ab:cdef:1234:5678:90ab:cde0","aws/guardduty/service/additionalInfo/unusualBehavior/unusualDatabaseNameClusterProfiling/databaseName":"GeneratedFindingDatabaseName","aws/guardduty/service/action/rdsLoginAttemptAction/remoteIpDetails/organization/isp":"GeneratedFindingIsp","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulUserNamesClusterProfiling.1_/userName":"GeneratedFindingUserName2","aws/guardduty/service/action/rdsLoginAttemptAction/remoteIpDetails/geoLocation/lon":"0","aws/guardduty/service/action/rdsLoginAttemptAction/remoteIpDetails/organization/asn":"0","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulApplicationNamesClusterProfiling.1_/count":"1","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulApplicationNamesClusterProfiling.2_/count":"1","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulApplicationNamesClusterProfiling.1_/applicationName":"GeneratedFindingApplicationName2","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulApplicationNamesClusterProfiling.0_/count":"1","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulApplicationNamesClusterProfiling.3_/count":"1","aws/guardduty/service/additionalInfo/unusualBehavior/unusualDatabaseNameClusterProfiling/failedLoginCount":"1","aws/guardduty/service/additionalInfo/unusualBehavior/unusualASNClusterProfiling/incompleteConnectionCount":"0","aws/guardduty/service/action/actionType":"RDS_LOGIN_ATTEMPT","aws/guardduty/service/additionalInfo/unusualBehavior/unusualUserNameClusterProfiling/failedLoginCount":"1","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulUserNamesClusterProfiling.2_/count":"1","aws/guardduty/service/additionalInfo/unusualBehavior/unusualApplicationNameClusterProfiling/incompleteConnectionCount":"0","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulApplicationNamesClusterProfiling.0_/applicationName":"GeneratedFindingApplicationName1","aws/guardduty/service/additionalInfo/unusualBehavior/unusualASNClusterProfiling/failedLoginCount":"1","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulApplicationNamesClusterProfiling.3_/applicationName":"GeneratedFindingApplicationName4","aws/guardduty/service/additionalInfo/unusualBehavior/unusualApplicationNameClusterProfiling/applicationName":"GeneratedFindingApplicationName","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulAsnOrgsClusterProfiling.1_/asnOrg":"GeneratedFindingAsnOrg2","aws/guardduty/service/action/rdsLoginAttemptAction/remoteIpDetails/organization/org":"GeneratedFindingOrg","aws/guardduty/service/action/rdsLoginAttemptAction/remoteIpDetails/geoLocation/lat":"0","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulAsnOrgsClusterProfiling.0_/count":"1","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulAsnOrgsClusterProfiling.2_/count":"1","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulAsnOrgsClusterProfiling.3_/asnOrg":"GeneratedFindingAsnOrg4","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulUserNamesClusterProfiling.0_/count":"1","aws/guardduty/service/action/rdsLoginAttemptAction/remoteIpDetails/city/cityName":"GeneratedFindingCityName","aws/guardduty/service/additionalInfo/unusualBehavior/unusualASNClusterProfiling/asnOrg":"GeneratedFindingAsnOrg","aws/guardduty/service/action/rdsLoginAttemptAction/remoteIpDetails/organization/asnOrg":"GeneratedFindingAsnOrg","aws/guardduty/service/additionalInfo/unusualBehavior/unusualApplicationNameClusterProfiling/failedLoginCount":"1","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulAsnOrgsClusterProfiling.0_/asnOrg":"GeneratedFindingAsnOrg1","aws/guardduty/service/action/rdsLoginAttemptAction/remoteIpDetails/country/countryName":"GeneratedFindingCountryName","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulUserNamesClusterProfiling.2_/userName":"GeneratedFindingUserName3","aws/guardduty/service/additionalInfo/unusualBehavior/unusualASNClusterProfiling/successfulLoginCount":"0","aws/guardduty/service/additionalInfo/unusualBehavior/unusualDatabaseNameClusterProfiling/incompleteConnectionCount":"0","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulUserNamesClusterProfiling.0_/userName":"GeneratedFindingUserName1","aws/guardduty/service/additionalInfo/unusualBehavior/unusualUserNameClusterProfiling/successfulLoginCount":"0","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulUserNamesClusterProfiling.3_/userName":"GeneratedFindingUserName4","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulAsnOrgsClusterProfiling.2_/asnOrg":"GeneratedFindingAsnOrg3","aws/guardduty/service/additionalInfo/unusualBehavior/unusualApplicationNameClusterProfiling/successfulLoginCount":"0","aws/guardduty/service/additionalInfo/unusualBehavior/unusualDatabaseNameClusterProfiling/successfulLoginCount":"0","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulAsnOrgsClusterProfiling.1_/count":"1","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulAsnOrgsClusterProfiling.3_/count":"1","aws/guardduty/service/additionalInfo/profiledBehavior/profiledSuccessfulUserNamesClusterProfiling.1_/count":"1","aws/guardduty/service/additionalInfo/unusualBehavior/unusualUserNameClusterProfiling/userName":"GeneratedFindingUserName","aws/securityhub/FindingId":"arn:aws:securityhub:us-east-1::product/aws/guardduty/arn:aws:guardduty:us-east-1:517803882956:detector/2ccd501f6c1ad78037a84d3fc2c7e8c9/finding/633b4b32bddc4195bffe43c03de41e02","aws/securityhub/ProductName":"GuardDuty","aws/securityhub/CompanyName":"Amazon"},"SchemaVersion":"2018-10-08","GeneratorId":"arn:aws:guardduty:us-east-1:517803882956:detector/2ccd501f6c1ad78037a84d3fc2c7e8c9","Sample":true,"RecordState":"ACTIVE","Title":"One or more unusual failed login attempts were observed on an RDS database in your account.","Workflow":{"Status":"NEW"},"Severity":{"Normalized":40,"Label":"HIGH","Product":8},"UpdatedAt":"2025-11-21T14:01:40.823Z","WorkflowState":"NEW","AwsAccountId":"517803882956","Region":"us-east-1","Id":"arn:aws:guardduty:us-east-1:517803882956:detector/2ccd501f6c1ad78037a84d3fc2c7e8c9/finding/633b4b32bddc4195bffe43c03de41e02","Resources":[{"Partition":"aws","Type":"AwsRdsDbCluster","Details":{"AwsRdsDbCluster":{"EngineVersion":"13.6","VpcSecurityGroups":[],"DbClusterIdentifier":"GeneratedFindingDBClusterId","Engine":"GeneratedFindingEngine"}},"Region":"us-east-1","Id":"arn:aws:rds:us-east-1:517803882956:cluster:GeneratedFindingDBClusterId"}],"ProcessedAt":"2025-11-21T14:05:01.838Z"}]}}</code>
         </p>
-        <h3>Inspector</h3>
-        <p><code class="linecode">{"version":"0","id":"9adcea1c-0fc0-46d8-111b-c6a16612ab16","detail-type":"Security Hub Findings - Imported","source":"aws.securityhub","account":"517803882956","time":"2025-11-21T13:47:31Z","region":"us-east-1","resources":["arn:aws:securityhub:us-east-1::product/aws/inspector/arn:aws:inspector2:us-east-1:517803882956:finding/f1735a6942c98f2ff1b78e59f251b0a3"],"detail":{"findings":[{"ProductArn":"arn:aws:securityhub:us-east-1::product/aws/inspector","Types":["Software and Configuration Checks/Vulnerabilities/CVE"],"Description":"libxml2 before 2.12.10 and 2.13.x before 2.13.6 has a stack-based buffer overflow in xmlSnprintfElements in valid.c. To exploit this, DTD validation must occur for an untrusted document or untrusted DTD. NOTE: this is similar to CVE-2017-9047.","ProductName":"Inspector","FirstObservedAt":"2025-11-20T10:03:10.196Z","CreatedAt":"2025-10-27T10:58:32.876Z","LastObservedAt":"2025-11-21T11:02:08.890Z","Vulnerabilities":[{"ReferenceUrls":["https://alas.aws.amazon.com/AL2/ALAS2-2025-2794.html","https://explore.alas.aws.amazon.com/CVE-2025-24928.html","https://explore.alas.aws.amazon.com/cve/json/v1/CVE-2025-24928.json","https://alas.aws.amazon.com/AL2023/ALAS2023-2025-896.html","https://alas.aws.amazon.com/ALAS-2025-1965.html"],"Cvss":[{"Version":"3.1","BaseScore":7.8,"BaseVector":"CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:N","Source":"AMAZON_CVE"},{"Version":"3.1","BaseScore":7.7,"BaseVector":"CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N","Source":"NVD"},{"Version":"3.1","BaseVector":"CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:N","BaseScore":7.8,"Source":"AMAZON_CVE"}],"FixAvailable":"YES","ExploitAvailable":"NO","VulnerablePackages":[{"Architecture":"X86_64","PackageManager":"OS","Version":"2.10.4","Epoch":"0","FixedInVersion":"0:2.10.4-1.amzn2023.0.9","Remediation":"sudo dnf check-update","Release":"1.amzn2023.0.1","Name":"libxml2"}],"EpssScore":0.00023,"Id":"CVE-2025-24928","RelatedVulnerabilities":["ALAS2023-2025-896","ALAS2-2025-2794","ALAS-2025-1965"],"Vendor":{"VendorCreatedAt":"2025-02-18T00:00:00.000Z","VendorSeverity":"Important","Url":"https://explore.alas.aws.amazon.com/cve/json/v1/CVE-2025-24928.json","Name":"AMAZON_CVE","VendorUpdatedAt":"2025-02-24T00:00:00.000Z"}}],"CompanyName":"Amazon","FindingProviderFields":{"Types":["Software and Configuration Checks/Vulnerabilities/CVE"],"Severity":{"Normalized":70,"Label":"HIGH"}},"ProductFields":{"aws/inspector/ProductVersion":"2","aws/inspector/FindingStatus":"ACTIVE","aws/inspector/inspectorScore":"7.8","aws/inspector/instanceId":"i-0eef60192bcbea98a","aws/inspector/resources/1/resourceDetails/awsEc2InstanceDetails/platform":"AMAZON_LINUX_2023","aws/securityhub/FindingId":"arn:aws:securityhub:us-east-1::product/aws/inspector/arn:aws:inspector2:us-east-1:517803882956:finding/f1735a6942c98f2ff1b78e59f251b0a3","aws/securityhub/ProductName":"Inspector","aws/securityhub/CompanyName":"Amazon"},"Remediation":{"Recommendation":{"Text":"Remediation is available. Please refer to the Fixed version in the vulnerability details section above.For detailed remediation guidance for each of the affected packages, refer to the vulnerabilities section of the detailed finding JSON."}},"SchemaVersion":"2018-10-08","GeneratorId":"AWSInspector","RecordState":"ACTIVE","Title":"CVE-2025-24928 - libxml2","Workflow":{"Status":"NEW"},"Severity":{"Normalized":70,"Label":"HIGH"},"UpdatedAt":"2025-11-21T11:02:08.890Z","WorkflowState":"NEW","AwsAccountId":"517803882956","Region":"us-east-1","Id":"arn:aws:inspector2:us-east-1:517803882956:finding/f1735a6942c98f2ff1b78e59f251b0a3","Resources":[{"Partition":"aws","Type":"AwsEc2Instance","Details":{"AwsEc2Instance":{"KeyName":"webserver","Type":"t2.micro","VpcId":"vpc-073d578d9feb575b0","ImageId":"ami-0715c1897453cabd1","IpV4Addresses":["10.0.17.3","3.94.231.28"],"SubnetId":"subnet-01fcfc376d81dd3d5","LaunchedAt":"2024-03-18T12:52:51.000Z"}},"Region":"us-east-1","Id":"arn:aws:ec2:us-east-1:517803882956:instance/i-0eef60192bcbea98a","Tags":{"Name":"Mywebserver"}}],"ProcessedAt":"2025-11-21T13:47:23.962Z"}]}}
+        <h4>Inspector</h4>
+        <p>
+            <code class="linecode">{"version":"0","id":"9adcea1c-0fc0-46d8-111b-c6a16612ab16","detail-type":"Security Hub Findings - Imported","source":"aws.securityhub","account":"517803882956","time":"2025-11-21T13:47:31Z","region":"us-east-1","resources":["arn:aws:securityhub:us-east-1::product/aws/inspector/arn:aws:inspector2:us-east-1:517803882956:finding/f1735a6942c98f2ff1b78e59f251b0a3"],"detail":{"findings":[{"ProductArn":"arn:aws:securityhub:us-east-1::product/aws/inspector","Types":["Software and Configuration Checks/Vulnerabilities/CVE"],"Description":"libxml2 before 2.12.10 and 2.13.x before 2.13.6 has a stack-based buffer overflow in xmlSnprintfElements in valid.c. To exploit this, DTD validation must occur for an untrusted document or untrusted DTD. NOTE: this is similar to CVE-2017-9047.","ProductName":"Inspector","FirstObservedAt":"2025-11-20T10:03:10.196Z","CreatedAt":"2025-10-27T10:58:32.876Z","LastObservedAt":"2025-11-21T11:02:08.890Z","Vulnerabilities":[{"ReferenceUrls":["https://alas.aws.amazon.com/AL2/ALAS2-2025-2794.html","https://explore.alas.aws.amazon.com/CVE-2025-24928.html","https://explore.alas.aws.amazon.com/cve/json/v1/CVE-2025-24928.json","https://alas.aws.amazon.com/AL2023/ALAS2023-2025-896.html","https://alas.aws.amazon.com/ALAS-2025-1965.html"],"Cvss":[{"Version":"3.1","BaseScore":7.8,"BaseVector":"CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:N","Source":"AMAZON_CVE"},{"Version":"3.1","BaseScore":7.7,"BaseVector":"CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N","Source":"NVD"},{"Version":"3.1","BaseVector":"CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:N","BaseScore":7.8,"Source":"AMAZON_CVE"}],"FixAvailable":"YES","ExploitAvailable":"NO","VulnerablePackages":[{"Architecture":"X86_64","PackageManager":"OS","Version":"2.10.4","Epoch":"0","FixedInVersion":"0:2.10.4-1.amzn2023.0.9","Remediation":"sudo dnf check-update","Release":"1.amzn2023.0.1","Name":"libxml2"}],"EpssScore":0.00023,"Id":"CVE-2025-24928","RelatedVulnerabilities":["ALAS2023-2025-896","ALAS2-2025-2794","ALAS-2025-1965"],"Vendor":{"VendorCreatedAt":"2025-02-18T00:00:00.000Z","VendorSeverity":"Important","Url":"https://explore.alas.aws.amazon.com/cve/json/v1/CVE-2025-24928.json","Name":"AMAZON_CVE","VendorUpdatedAt":"2025-02-24T00:00:00.000Z"}}],"CompanyName":"Amazon","FindingProviderFields":{"Types":["Software and Configuration Checks/Vulnerabilities/CVE"],"Severity":{"Normalized":70,"Label":"HIGH"}},"ProductFields":{"aws/inspector/ProductVersion":"2","aws/inspector/FindingStatus":"ACTIVE","aws/inspector/inspectorScore":"7.8","aws/inspector/instanceId":"i-0eef60192bcbea98a","aws/inspector/resources/1/resourceDetails/awsEc2InstanceDetails/platform":"AMAZON_LINUX_2023","aws/securityhub/FindingId":"arn:aws:securityhub:us-east-1::product/aws/inspector/arn:aws:inspector2:us-east-1:517803882956:finding/f1735a6942c98f2ff1b78e59f251b0a3","aws/securityhub/ProductName":"Inspector","aws/securityhub/CompanyName":"Amazon"},"Remediation":{"Recommendation":{"Text":"Remediation is available. Please refer to the Fixed version in the vulnerability details section above.For detailed remediation guidance for each of the affected packages, refer to the vulnerabilities section of the detailed finding JSON."}},"SchemaVersion":"2018-10-08","GeneratorId":"AWSInspector","RecordState":"ACTIVE","Title":"CVE-2025-24928 - libxml2","Workflow":{"Status":"NEW"},"Severity":{"Normalized":70,"Label":"HIGH"},"UpdatedAt":"2025-11-21T11:02:08.890Z","WorkflowState":"NEW","AwsAccountId":"517803882956","Region":"us-east-1","Id":"arn:aws:inspector2:us-east-1:517803882956:finding/f1735a6942c98f2ff1b78e59f251b0a3","Resources":[{"Partition":"aws","Type":"AwsEc2Instance","Details":{"AwsEc2Instance":{"KeyName":"webserver","Type":"t2.micro","VpcId":"vpc-073d578d9feb575b0","ImageId":"ami-0715c1897453cabd1","IpV4Addresses":["10.0.17.3","3.94.231.28"],"SubnetId":"subnet-01fcfc376d81dd3d5","LaunchedAt":"2024-03-18T12:52:51.000Z"}},"Region":"us-east-1","Id":"arn:aws:ec2:us-east-1:517803882956:instance/i-0eef60192bcbea98a","Tags":{"Name":"Mywebserver"}}],"ProcessedAt":"2025-11-21T13:47:23.962Z"}]}}
         </code>
         </p>
-        <h3>Macie</h3>
-        <p><code class="linecode">{"version":"0","id":"13ee7309-a1fd-58c8-33dd-55a607f85d67","detail-type":"Security Hub Findings - Imported","source":"aws.securityhub","account":"517803882956","time":"2025-11-21T14:19:22Z","region":"us-east-1","resources":["arn:aws:securityhub:us-east-1::product/aws/macie/44cd501f-8ff0-d324-48fc-d4d801d59957"],"detail":{"findings":[{"ProductArn":"arn:aws:securityhub:us-east-1::product/aws/macie","Types":["Software and Configuration Checks/AWS Security Best Practices/Policy:IAMUser-S3BucketEncryptionDisabled"],"Description":"Default encryption settings for the S3 bucket were reset to default Amazon S3 encryption behavior. Amazon S3 encrypts new objects automatically with an Amazon S3 managed key (SSE-S3).","SchemaVersion":"2018-10-08","ProductName":"Macie","GeneratorId":"aws/macie","Sample":true,"CreatedAt":"2025-11-20T07:51:22.849Z","RecordState":"ACTIVE","Title":"Default encryption settings were reset for the S3 bucket","Workflow":{"Status":"NEW"},"Severity":{"Normalized":1,"Label":"LOW"},"UpdatedAt":"2025-11-21T14:01:29.774Z","CompanyName":"Amazon","FindingProviderFields":{"Types":["Software and Configuration Checks/AWS Security Best Practices/Policy:IAMUser-S3BucketEncryptionDisabled"],"Severity":{"Normalized":1,"Label":"LOW"}},"WorkflowState":"NEW","ProductFields":{"S3Bucket.effectivePermission":"PUBLIC","aws/securityhub/FindingId":"arn:aws:securityhub:us-east-1::product/aws/macie/44cd501f-8ff0-d324-48fc-d4d801d59957","aws/securityhub/ProductName":"Macie","aws/securityhub/CompanyName":"Amazon"},"AwsAccountId":"517803882956","Region":"us-east-1","Id":"44cd501f-8ff0-d324-48fc-d4d801d59957","Resources":[{"Partition":"aws","Type":"AwsS3Bucket","Details":{"AwsS3Bucket":{"PublicAccessBlockConfiguration":{"RestrictPublicBuckets":false,"BlockPublicPolicy":false,"BlockPublicAcls":false,"IgnorePublicAcls":false},"OwnerName":"John Doe","OwnerId":"7009a8971cd538e11f6b6606438875e7c86c5b672f46db45460ddcd087d36c32","CreatedAt":"2025-11-21T14:01:29.774Z","ServerSideEncryptionConfiguration":{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"NONE"}}]},"OwnerAccountId":"517803882956"}},"Region":"us-east-1","Id":"arn:aws:s3:::macie-sample-finding-bucket","Tags":{"Team":"Recruiting","Division":"HR"}}],"ProcessedAt":"2025-11-21T14:19:18.728Z"}]}}
+        <h4>Macie</h4>
+        <p>
+            <code class="linecode">{"version":"0","id":"13ee7309-a1fd-58c8-33dd-55a607f85d67","detail-type":"Security Hub Findings - Imported","source":"aws.securityhub","account":"517803882956","time":"2025-11-21T14:19:22Z","region":"us-east-1","resources":["arn:aws:securityhub:us-east-1::product/aws/macie/44cd501f-8ff0-d324-48fc-d4d801d59957"],"detail":{"findings":[{"ProductArn":"arn:aws:securityhub:us-east-1::product/aws/macie","Types":["Software and Configuration Checks/AWS Security Best Practices/Policy:IAMUser-S3BucketEncryptionDisabled"],"Description":"Default encryption settings for the S3 bucket were reset to default Amazon S3 encryption behavior. Amazon S3 encrypts new objects automatically with an Amazon S3 managed key (SSE-S3).","SchemaVersion":"2018-10-08","ProductName":"Macie","GeneratorId":"aws/macie","Sample":true,"CreatedAt":"2025-11-20T07:51:22.849Z","RecordState":"ACTIVE","Title":"Default encryption settings were reset for the S3 bucket","Workflow":{"Status":"NEW"},"Severity":{"Normalized":1,"Label":"LOW"},"UpdatedAt":"2025-11-21T14:01:29.774Z","CompanyName":"Amazon","FindingProviderFields":{"Types":["Software and Configuration Checks/AWS Security Best Practices/Policy:IAMUser-S3BucketEncryptionDisabled"],"Severity":{"Normalized":1,"Label":"LOW"}},"WorkflowState":"NEW","ProductFields":{"S3Bucket.effectivePermission":"PUBLIC","aws/securityhub/FindingId":"arn:aws:securityhub:us-east-1::product/aws/macie/44cd501f-8ff0-d324-48fc-d4d801d59957","aws/securityhub/ProductName":"Macie","aws/securityhub/CompanyName":"Amazon"},"AwsAccountId":"517803882956","Region":"us-east-1","Id":"44cd501f-8ff0-d324-48fc-d4d801d59957","Resources":[{"Partition":"aws","Type":"AwsS3Bucket","Details":{"AwsS3Bucket":{"PublicAccessBlockConfiguration":{"RestrictPublicBuckets":false,"BlockPublicPolicy":false,"BlockPublicAcls":false,"IgnorePublicAcls":false},"OwnerName":"John Doe","OwnerId":"7009a8971cd538e11f6b6606438875e7c86c5b672f46db45460ddcd087d36c32","CreatedAt":"2025-11-21T14:01:29.774Z","ServerSideEncryptionConfiguration":{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"NONE"}}]},"OwnerAccountId":"517803882956"}},"Region":"us-east-1","Id":"arn:aws:s3:::macie-sample-finding-bucket","Tags":{"Team":"Recruiting","Division":"HR"}}],"ProcessedAt":"2025-11-21T14:19:18.728Z"}]}}
         </code>
         </p>
-        <h3>Security Hub</h3>
-        <p><code class="linecode">{"version":"0","id":"e86883d9-b269-7893-60d6-67d53a1e6dea","detail-type":"Security Hub Findings - Imported","source":"aws.securityhub","account":"517803882956","time":"2025-11-21T08:47:46Z","region":"us-east-1","resources":["arn:aws:securityhub:us-east-1::product/aws/securityhub/arn:aws:securityhub:us-east-1:517803882956:security-control/CloudWatch.1/finding/c2d35028-f2b9-4ecb-8f0c-be15f5f2898b"],"detail":{"findings":[{"ProductArn":"arn:aws:securityhub:us-east-1::product/aws/securityhub","Types":["Software and Configuration Checks/Industry and Regulatory Standards"],"Description":"This control checks for the CloudWatch metric filters using the following pattern { $.userIdentity.type = \"Root\" &amp;&amp; $.userIdentity.invokedBy NOT EXISTS &amp;&amp; $.eventType != \"AwsServiceEvent\" } It checks that the log group name is configured for use with active multi-region CloudTrail, that there is at least one Event Selector for a Trail with IncludeManagementEvents set to true and ReadWriteType set to All, and that there is at least one active subscriber to an SNS topic associated with the alarm.","Compliance":{"Status":"FAILED","StatusReasons":[{"Description":"Multi region CloudTrail with the required configuration does not exist in the account","ReasonCode":"CLOUDTRAIL_MULTI_REGION_NOT_PRESENT"}],"SecurityControlId":"CloudWatch.1","RelatedRequirements":["CIS AWS Foundations Benchmark v1.2.0/1.1","CIS AWS Foundations Benchmark v1.2.0/3.3","CIS AWS Foundations Benchmark v1.4.0/1.7","CIS AWS Foundations Benchmark v1.4.0/4.3","PCI DSS v3.2.1/7.2.1"],"AssociatedStandards":[{"StandardsId":"ruleset/cis-aws-foundations-benchmark/v/1.2.0"},{"StandardsId":"standards/cis-aws-foundations-benchmark/v/1.4.0"},{"StandardsId":"standards/pci-dss/v/3.2.1"}]},"ProductName":"Security Hub","FirstObservedAt":"2023-06-07T16:13:52.356Z","CreatedAt":"2023-06-07T16:13:52.356Z","LastObservedAt":"2025-11-21T08:47:22.958Z","CompanyName":"AWS","FindingProviderFields":{"Types":["Software and Configuration Checks/Industry and Regulatory Standards"],"Severity":{"Normalized":1,"Label":"LOW","Original":"LOW"}},"ProductFields":{"aws/securityhub/ProductName":"Security Hub","aws/securityhub/CompanyName":"AWS","aws/securityhub/annotation":"Multi region CloudTrail with the required configuration does not exist in the account","Resources:0/Id":"arn:aws:iam::517803882956:root","aws/securityhub/FindingId":"arn:aws:securityhub:us-east-1::product/aws/securityhub/arn:aws:securityhub:us-east-1:517803882956:security-control/CloudWatch.1/finding/c2d35028-f2b9-4ecb-8f0c-be15f5f2898b","PreviousComplianceStatus":"FAILED"},"Remediation":{"Recommendation":{"Text":"For information on how to correct this issue, consult the AWS Security Hub controls documentation.","Url":"https://docs.aws.amazon.com/console/securityhub/CloudWatch.1/remediation"}},"SchemaVersion":"2018-10-08","GeneratorId":"security-control/CloudWatch.1","RecordState":"ACTIVE","Title":"A log metric filter and alarm should exist for usage of the \"root\" user","Workflow":{"Status":"NEW"},"Severity":{"Normalized":1,"Label":"LOW","Original":"LOW"},"UpdatedAt":"2025-11-21T08:47:22.958Z","WorkflowState":"NEW","AwsAccountId":"517803882956","Region":"us-east-1","Id":"arn:aws:securityhub:us-east-1:517803882956:security-control/CloudWatch.1/finding/c2d35028-f2b9-4ecb-8f0c-be15f5f2898b","Resources":[{"Partition":"aws","Type":"AwsAccount","Region":"us-east-1","Id":"AWS::::Account:517803882956"}],"ProcessedAt":"2025-11-21T08:47:37.769Z"}]}}</code>
+        <h4>Security Hub</h4>
+        <p>
+            <code class="linecode">{"version":"0","id":"e86883d9-b269-7893-60d6-67d53a1e6dea","detail-type":"Security Hub Findings - Imported","source":"aws.securityhub","account":"517803882956","time":"2025-11-21T08:47:46Z","region":"us-east-1","resources":["arn:aws:securityhub:us-east-1::product/aws/securityhub/arn:aws:securityhub:us-east-1:517803882956:security-control/CloudWatch.1/finding/c2d35028-f2b9-4ecb-8f0c-be15f5f2898b"],"detail":{"findings":[{"ProductArn":"arn:aws:securityhub:us-east-1::product/aws/securityhub","Types":["Software and Configuration Checks/Industry and Regulatory Standards"],"Description":"This control checks for the CloudWatch metric filters using the following pattern { $.userIdentity.type = \"Root\" &amp;&amp; $.userIdentity.invokedBy NOT EXISTS &amp;&amp; $.eventType != \"AwsServiceEvent\" } It checks that the log group name is configured for use with active multi-region CloudTrail, that there is at least one Event Selector for a Trail with IncludeManagementEvents set to true and ReadWriteType set to All, and that there is at least one active subscriber to an SNS topic associated with the alarm.","Compliance":{"Status":"FAILED","StatusReasons":[{"Description":"Multi region CloudTrail with the required configuration does not exist in the account","ReasonCode":"CLOUDTRAIL_MULTI_REGION_NOT_PRESENT"}],"SecurityControlId":"CloudWatch.1","RelatedRequirements":["CIS AWS Foundations Benchmark v1.2.0/1.1","CIS AWS Foundations Benchmark v1.2.0/3.3","CIS AWS Foundations Benchmark v1.4.0/1.7","CIS AWS Foundations Benchmark v1.4.0/4.3","PCI DSS v3.2.1/7.2.1"],"AssociatedStandards":[{"StandardsId":"ruleset/cis-aws-foundations-benchmark/v/1.2.0"},{"StandardsId":"standards/cis-aws-foundations-benchmark/v/1.4.0"},{"StandardsId":"standards/pci-dss/v/3.2.1"}]},"ProductName":"Security Hub","FirstObservedAt":"2023-06-07T16:13:52.356Z","CreatedAt":"2023-06-07T16:13:52.356Z","LastObservedAt":"2025-11-21T08:47:22.958Z","CompanyName":"AWS","FindingProviderFields":{"Types":["Software and Configuration Checks/Industry and Regulatory Standards"],"Severity":{"Normalized":1,"Label":"LOW","Original":"LOW"}},"ProductFields":{"aws/securityhub/ProductName":"Security Hub","aws/securityhub/CompanyName":"AWS","aws/securityhub/annotation":"Multi region CloudTrail with the required configuration does not exist in the account","Resources:0/Id":"arn:aws:iam::517803882956:root","aws/securityhub/FindingId":"arn:aws:securityhub:us-east-1::product/aws/securityhub/arn:aws:securityhub:us-east-1:517803882956:security-control/CloudWatch.1/finding/c2d35028-f2b9-4ecb-8f0c-be15f5f2898b","PreviousComplianceStatus":"FAILED"},"Remediation":{"Recommendation":{"Text":"For information on how to correct this issue, consult the AWS Security Hub controls documentation.","Url":"https://docs.aws.amazon.com/console/securityhub/CloudWatch.1/remediation"}},"SchemaVersion":"2018-10-08","GeneratorId":"security-control/CloudWatch.1","RecordState":"ACTIVE","Title":"A log metric filter and alarm should exist for usage of the \"root\" user","Workflow":{"Status":"NEW"},"Severity":{"Normalized":1,"Label":"LOW","Original":"LOW"},"UpdatedAt":"2025-11-21T08:47:22.958Z","WorkflowState":"NEW","AwsAccountId":"517803882956","Region":"us-east-1","Id":"arn:aws:securityhub:us-east-1:517803882956:security-control/CloudWatch.1/finding/c2d35028-f2b9-4ecb-8f0c-be15f5f2898b","Resources":[{"Partition":"aws","Type":"AwsAccount","Region":"us-east-1","Id":"AWS::::Account:517803882956"}],"ProcessedAt":"2025-11-21T08:47:37.769Z"}]}}</code>
         </p>
-        <h2 id="what-is-provided">What Is Provided</h2>
+        <h2 id="what-is-provided">What is Provided</h2>
         <ul>
             <li>
-                <p>Rules to parse, normalize, and enrich AWS Security Hub log messages.</p>
+                <p>Rules to parse, normalize, and enrich AWS Security Hub log messages</p>
             </li>
             <li>
                 <p>A Dashboard that delivers an Overview and details related to GuardDuty, Inspector, and Security Hub logs.</p>
@@ -89,43 +110,70 @@
             </li>
         </ul>
         <h3 id="gim-categorization">GIM Categorization</h3>
-        <p>AWS Security Hub GuardDuty and Inspector logs are always categorized as default detections.</p>
+        <p>AWS Security Hub GuardDuty network-based findings (NETWORK_CONNECTION, PORT_PROBE, DNS_REQUEST) are categorized as network detections.</p>
+        <p>Other GuardDuty and Inspector logs are categorized as default detections.</p>
         <p>Macie logs must have an alert_severity != "INFORMATIONAL" to be categorized as a default detection.</p>
         <p>Security Hub logs must have a compliance_finding_status = "FAILED" to be categorized as a default detection.</p>
-        <table cellspacing="21" style="mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-            <thead>
-                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Vendor Subtype</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Subcategory</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Event Type</th>
-                </tr>
-            </thead>
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead />
             <tbody>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">guardduty</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">NETWORK_CONNECTION</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.network_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network_detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">guardduty</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">PORT_PROBE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.network_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network_detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">guardduty</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DNS_REQUEST</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.network_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network_detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">guardduty</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">AWS_API_CALL</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">detection_message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">guardduty</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(other)</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.default</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">detection_message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">inspector</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">(all)</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.default</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">detection_message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">macie</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">(non-informational)</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.default</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">detection_message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
                     <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">security_hub</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">(FAILED compliance)</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">detection</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">detection.default</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">detection_message</td>
@@ -133,116 +181,117 @@
             </tbody>
         </table>
         <h3>Message Fields Included in This Pack</h3>
-        <h4>General Parsing, Common Fields List </h4>
-        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-            <thead>
-                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_severity</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">high</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The .Severity.Level key in the finding</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_severity_level</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The alert severity level associated with the alert_severity field</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_signature</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Potential credential compromise of IAMUser/john_doe indicated by a sequence of actions</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The .Title of the finding</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">compliance_finding_*</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">compliance_finding_associated_standards</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Specific compliance JSON keys from the finding</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">aws_security_hub</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The default event_source_product for AWS Security Hub processed logs</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_hash_sha256</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
-                        <p>123456789abcdef123456789abcde</p>
-                        <p>f123456789abcdef123456789abcdef1200</p>
-                    </td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The .FilePaths..Hash key in the finding</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_name</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">eicar.com</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The .FilePaths..FileName key in the finding</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_path</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">tmp/eicar.com</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The .Filepaths..FilePath key in the finding</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">resource_*</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">resource_tags</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">mixed</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Specific resource JSON keys in the finding</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">security_finding_*</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">security_finding_id</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">mixed</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Specific finding JSON keys in the finding</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_id</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">AIDA3UBBJ2K3TVEXAMPLE</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">User ID tied to the message pulled from the .AwsIamAccessKey.PrincipalID key in the finding</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_name</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">some.user</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">User name tied to the message pulled from the .AwsIamAccessKey.userName key in the finding</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_type</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">IAMUser</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">User type tied to the message pulled from the .AwsIamAccessKey.PrincipalType key</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_subtype</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">guardduty</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The .Product key in the finding</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">vulnerability_finding_*</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">vulnerability_finding_cvss_base_score</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">keyword</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Specific vulnerability JSON keys in the finding</td>
-                </tr>
-            </tbody>
-        </table>
+        <h4>General Parsing</h4>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Common Fields List<span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" class="TableStyle-Alternate-Row-Color" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">high</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The .Severity.Level key in the finding</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_severity_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">4</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The alert severity level associated with the alert_severity field</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_signature</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Potential credential compromise of IAMUser/john_doe indicated by a sequence of actions</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The .Title of the finding</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">compliance_finding_*</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">aws_security_hub</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The default event_source_product for AWS Security Hub processed logs</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_hash_sha256</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">123456789abcdef123456789abcdef123456789abcdef123456789abcdef1200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The .FilePaths..Hash key in the finding</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">eicar.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">The .FilePaths..FileName key in the finding</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">tmp/eicar.com</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The .Filepaths..FilePath key in the finding</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">resource_*</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">resource_tags</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">mixed</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Specific resource JSON keys in the finding</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">security_finding_*</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">security_finding_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">mixed</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Specific finding JSON keys in the finding</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">AIDA3UBBJ2K3TVEXAMPLE</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">User ID tied to the message pulled from the .AwsIamAccessKey.PrincipalID key in the finding</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">some.user</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">User name tied to the message pulled from the .AwsIamAccessKey.userName key in the finding</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">IAMUser</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">User type tied to the message pulled from the .AwsIamAccessKey.PrincipalType key</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_subtype</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">guardduty</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">The .Product key in the finding</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">vulnerability_finding_*</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">vulnerability_finding_cvss_base_score</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">keyword</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Specific vulnerability JSON keys in the finding</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
         <h2 id="spotlight-content-pack">AWS Security Hub Content Pack</h2>
         <p>This spotlight offers a dashboard with 4 tabs:</p>
         <h3>Overview</h3>

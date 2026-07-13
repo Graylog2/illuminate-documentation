@@ -1,156 +1,155 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-    <head><title>Stormshield Content Pack</title>
-        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Stormshield Firewall Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
         <h1>
             <MadCap:concept term="Firewall" />Stormshield Firewall Content Pack</h1>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>The Stormshield firewall is a security solution that provides real-time protection, control, and supervision and content filtering via IPS, application control, AV, URL filtering, vulnerability detection, anti-spam, etc. This technology pack will process Stormshield log messages, providing normalization and enrichment of common events of interest.</p>
-        <h2>Prerequisite(s)</h2>
+        <p>The Stormshield firewall is a security solution that provides real-time protection, control, and supervision and
+        content filtering via IPS, application control, AV, URL filtering, vulnerability detection, anti-spam, etc. This
+        technology pack processes Stormshield log messages, providing normalization and enrichment of common events
+        of interest.</p>
+        <h2 id="supported-versions">Supported Versions</h2>
         <ul>
             <li>
-                <p>Stormshield Firewall running Stormshield Network Security (SNS) version 2+.</p>
-            </li>
-            <li>
-                <p>Graylog Server with a valid enterprise license, running Graylog version 4.3.0+.</p>
+                <p>Stormshield Network Security (SNS) version 2+</p>
             </li>
         </ul>
-        <p>
-            <section class="warningBox">
-                <div class="title"><b>Warning</b>:<span style="font-weight: normal;"> This spotlight requires a more recent version of Graylog due to a change in functionality. Fields will be improperly processed if using a version earlier than Graylog  4.3.0.</span></div>
-            </section>
-        </p>
-        <h2>Not Supported</h2>
+        <h2 id="requirements">Requirements</h2>
         <ul>
             <li>
-                <p>N/A</p>
+                <p>Graylog Server with a valid Enterprise license, running Graylog version 4.3.0+.</p>
+            </li>
+            <li>
+                <p>Stormshield Firewall running Stormshield Network Security (SNS) version 2+ configured to transmit syslog
+                to your Graylog server syslog input.</p>
             </li>
         </ul>
-        <h2>Stream Configuration</h2>
-        <p>This technology pack includes one stream:</p>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
         <ul>
-            <li>
-                <p>“Illuminate:Stormshield Firewall Messages”</p>
-            </li>
+            <li>"Illuminate:Stormshield Firewall Messages"</li>
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Hint</b>:  If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
+                <div class="content"><b>Hint:</b> If this stream does not exist prior to the
+                activation of this pack then it is created and configured to route messages to this stream and the
+                associated index set. There should not be any stream rules configured for this stream.</div>
             </section>
         </p>
-        <h2>Index Set Configuration</h2>
-        <p>This technology pack includes one index set definition:</p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
         <ul>
-            <li>
-                <p>“Stormshield Firewall Logs”</p>
-            </li>
+            <li>"Stormshield Firewall Logs"</li>
         </ul>
         <p>
             <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Hint</b>:  If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
+                <div class="content"><b>Hint:</b> If this index set is already defined, then
+                nothing is changed. If this index set does not exist, then it is created with retention
+                settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
+                installation.</div>
             </section>
         </p>
-        <h2>Log Format Example</h2>
-        <p><code class="linecode">id=firewall time="2022-11-25 16:30:33" fw="SN710_ABCD" tz=+0100 startime="2022-11-25 16:30:32" pri=5 confid=01 slotlevel=2 ruleid=208 srcif="vlan4" srcifname="20_SOMETHING" ipproto=tcp dstif="vlan3" dstifname="1000_XYZ" proto=http_proxy src=10.10.20.13 srcport=42006 srcportname=ephemeral_fw_tcp srcname=SOMENAME srcmac=xx:6b:8d:9a:da:13 dst=192.168.1.1 dstport=8080 dstportname=http_proxy dstname=Protect-DMZ ipv=4 sent=0 rcvd=0 duration=0.00 action=pass logtype="filter"</code>
+        <h2 id="log-collection">Log Collection</h2>
+        <p>Configure Stormshield Firewall to transmit Syslog to your Graylog server Syslog input.</p>
+        <h2 id="log-format-example">Log Format Example</h2>
+        <p><code class="linecode">id=firewall time="2022-11-25 16:30:33" fw="SN710_ABCD" tz=+0100 startime="2022-11-25 16:30:32" pri=5 confid=01 slotlevel=2 ruleid=208 srcif="vlan4" srcifname="20_SOMETHING" ipproto=tcp dstif="vlan3" dstifname="1000_XYZ" proto=http_proxy src=10.10.20.13 srcport=42006 srcportname=ephemeral_fw_tcp srcname=SOMENAME srcmac=xx:6b:8d:9a:da:13 dst=192.168.1.1 dstport=8080 dstportname=http_proxy dstname=Protect-DMZ ipv=4 sent=0 rcvd=0 duration=0.00 action=pass logtype="filter"
+        </code>
         </p>
-        <h2>Requirements</h2>
-        <ul>
-            <li>
-                <p>Configure Stormshield Firewall to transmit Syslog to your Graylog server Syslog input.</p>
-            </li>
-        </ul>
-        <h2>What is Provided</h2>
+        <h2 id="what-is-provided">What is Provided</h2>
         <ul>
             <li>
                 <p>Rules to normalize and enrich Stormshield firewall log messages.</p>
             </li>
             <li>
+                <p>Field extraction, normalization, and message enrichment for Stormshield Firewall log messages.</p>
+            </li>
+            <li>
+                <p>GIM Categorization for filter, connection, and alarm message types.</p>
+            </li>
+            <li>
                 <p>A Stormshield Spotlight content pack (dashboard and saved search).</p>
             </li>
         </ul>
-        <h2>Stormshield Firewall Log Message Processing</h2>
-        <p>The Illuminate processing of Stormshield Firewall log messages provides the following:</p>
-        <ul>
-            <li>
-                <p>Field extraction and normalization and message enrichment for Stormshield Firewall log messages.</p>
-            </li>
-            <li>
-                <p>GIM Categorization of the following messages:</p>
-            </li>
-        </ul>
-        <table style="width: 100%;mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color" cellspacing="21">
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM event type categorization is provided for the following messages:</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <thead>
                 <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
                     <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Stormshield Firewall Logtype</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM&#160;Category</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM&#160;Subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Subcategory</th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">filter</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><code class="linecode">network.connection</code>
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network.open</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">connection</td>
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><code class="linecode">network.connection</code>
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network.open</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">alarm</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">detection</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1"><code class="linecode">detection.default</code>
-                    </td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alarm</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network.open</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alarm</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">detection.network_detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">smtp</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">messaging</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">messaging.email</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">web</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">http.proxied</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">xvpn (SSL tunnel created)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">authentication.logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">xvpn (SSL tunnel destroyed)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">authentication.logoff</td>
                 </tr>
             </tbody>
         </table>
-        <h2>Stormshield Firewall Spotlight Content Pack</h2>
-        <p>The Stormshield Firewall Spotlight content pack contains:</p>
-        <ul>
-            <li>
-                <p>Dashboard: Stormshield Network Firewall Overview</p>
-            </li>
-            <ul>
-                <li>
-                    <p>Stormshield Overview tab</p>
-                </li>
-                <p>
-                    <img src="../Resources/Images/Stormshield Content Pack/Stormshield Overview 1.png" />
-                </p>
-                <p>
-                    <img src="../Resources/Images/Stormshield Content Pack/Stormshield Overview 2.png" />
-                </p>
-                <li>
-                    <p>Alerts tab</p>
-                </li>
-                <p>
-                    <img src="../Resources/Images/Stormshield Content Pack/Stormshield Alerts 1.png" />
-                </p>
-                <p>
-                    <img src="../Resources/Images/Stormshield Content Pack/Stormshield Alerts 2.png" />
-                </p>
-            </ul>
-            <li>
-                <p>Saved Search:&#160;Stormshield Firewall Log Viewer</p>
-            </li>
-            <ul>
-                <li>
-                    <p>Saved search based on event severity</p>
-                </li>
-            </ul>
-            <ul>
-                <p>
-                    <img src="../Resources/Images/Stormshield Content Pack/Stormshield Saved Search.png" />
-                </p>
-            </ul>
-        </ul>
+        <h2 id="spotlight-content-pack">Stormshield Firewall Spotlight Content Pack</h2>
+        <p>The Stormshield Firewall Spotlight content pack contains a dashboard (Stormshield Network Firewall Overview) and
+        a saved search (Stormshield Firewall Log Viewer).</p>
+        <h3>Stormshield Overview</h3>
+        <p>
+            <img src="../Resources/Images/Stormshield Content Pack/Stormshield Overview 1.png" />
+        </p>
+        <p>
+            <img src="../Resources/Images/Stormshield Content Pack/Stormshield Overview 2.png" />
+        </p>
+        <h3>Alerts</h3>
+        <p>
+            <img src="../Resources/Images/Stormshield Content Pack/Stormshield Alerts 1.png" />
+        </p>
+        <p>
+            <img src="../Resources/Images/Stormshield Content Pack/Stormshield Alerts 2.png" />
+        </p>
+        <h3>Saved Search: Stormshield Firewall Log Viewer</h3>
+        <p>
+            <img src="../Resources/Images/Stormshield Content Pack/Stormshield Saved Search.png" />
+        </p>
     </body>
 </html>

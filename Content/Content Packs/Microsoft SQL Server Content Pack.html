@@ -1,0 +1,313 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Microsoft SQL Server Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>
+            <MadCap:concept term="New Releases" />Microsoft SQL Server Content Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Microsoft SQL Server is a relational database management system (RDBMS) developed by Microsoft. It is used to store, manage, and retrieve data for applications, websites, and enterprise systems. This technology pack processes SQL Server log output, providing parsing, normalization, and enrichment of data.</p>
+        <h2 id="supported-versions">Supported Versions</h2>
+        <ul>
+            <li>
+                <p>Microsoft SQL Server 2017 or later</p>
+            </li>
+        </ul>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>Graylog Server with a valid Enterprise license, running Graylog version 7.0 or later</p>
+            </li>
+        </ul>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>Illuminate:Microsoft SQL Server Messages</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this stream does not exist prior to the activation of this pack then it is created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>Microsoft SQL Server Event Messages</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="content"><b>Hint:</b> If this index set is already defined, then nothing is changed. If this index set does not exist, then it is created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
+            </section>
+        </p>
+        <h2 id="log-collection">Log Collection</h2>
+        <p>Enable SQL Server auditing on the target instance (server-level audit + server/database audit specifications) so that events are written to the Windows Application event log. Forward that application log to Graylog using either NXLog (<code class="linecode">im_msvistalog</code> input to <code class="linecode">om_tcp</code> or <code class="linecode">om_udp</code> output to a GELF or Beats input) or Winlogbeat (<code class="linecode">event_logs: name "Application"</code>, shipped via the Beats input). Messages arrive with <code class="linecode">event_code 33205</code> (MSSQL audit) and are identified by <code class="linecode">SourceName=MSSQLSERVER</code> (NXLog) or <code class="linecode">winlogbeat_event_provider=MSSQLSERVER</code> (Winlogbeat).</p>
+        <h2 id="log-format-example">Log Format Example</h2>
+        <p><code class="linecode">Audit event: audit_schema_version:1
+        event_time:2025-12-20 06:57:56.5583559
+        sequence_number:1
+        action_id:LGIS
+        succeeded:true
+        is_column_permission:false
+        session_id:74
+        server_principal_id:278
+        database_principal_id:0
+        target_server_principal_id:0
+        target_database_principal_id:0
+        object_id:0
+        user_defined_event_id:0
+        transaction_id:0
+        class_type:LX
+        duration_milliseconds:0
+        response_rows:0
+        affected_rows:0
+        client_tls_version:771
+        database_transaction_id:0
+        ledger_start_sequence_number:0
+        is_local_secondary_replica:false
+        client_ip:local machine
+        permission_bitmask:00000000000000000000000000000000
+        sequence_group_id:42E30E6A-78BD-4E21-AAC3-2FAF685B1753
+        session_server_principal_name:Testuser
+        server_principal_name:Testuser
+        server_principal_sid:b2610e1b7b82cf4a995de88f5f2ee716
+        database_principal_name:
+        target_server_principal_name:
+        target_server_principal_sid:
+        target_database_principal_name:
+        server_instance_name:WIN-MOETVK6G9VU
+        database_name:
+        schema_name:
+        object_name:
+        statement:-- network protocol: LPC
+        set quoted_identifier on
+        set arithabort off
+        set numeric_roundabort off
+        set ansi_warnings on
+        set ansi_padding on
+        set ansi_nulls on
+        set concat_null_yields_null on
+        set cursor_close_on_commit off
+        set implicit_transactions off
+        set language us_english
+        set dateformat mdy
+        set datefirst 7
+        set transaction isolation level read committed
+
+        additional_information:&lt;action_info xmlns="http://schemas.microsoft.com/sqlserver/2008/sqlaudit_data"&gt;&lt;pooled_connection&gt;0&lt;/pooled_connection&gt;&lt;client_options&gt;0x28000020&lt;/client_options&gt;&lt;client_options1&gt;0x0001f438&lt;/client_options1&gt;&lt;connect_options&gt;0x00000000&lt;/connect_options&gt;&lt;packet_data_size&gt;8000&lt;/packet_data_size&gt;&lt;address&gt;local machine&lt;/address&gt;&lt;is_dac&gt;0&lt;/is_dac&gt;&lt;/action_info&gt;
+        user_defined_information:
+        application_name:Framework Microsoft SqlClient Data Provider
+        connection_id:03ACF660-09CF-4F4C-B57A-8E57672FE3E7
+        data_sensitivity_information:
+        host_name:WIN-MOETVK6G9VU
+        session_context:
+        client_tls_version_name:1.2
+        external_policy_permissions_checked:
+        obo_middle_tier_app_id:
+        .
+        </code>
+        </p>
+        <h2 id="what-is-provided">What is Provided</h2>
+        <ul>
+            <li>
+                <p>Rules to parse, normalize, and enrich Microsoft SQL Server content pack messages</p>
+            </li>
+        </ul>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following messages:</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">LOGIN SUCCEEDED (LGIS) / CONNECT (CO) / AUTHENTICATE (AUTH) / DATABASE AUTHENTICATION SUCCEEDED (DBAS)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.logon</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">logon</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">IMPERSONATE (IMP)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">100003</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.logon</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">logon with alternate credentials</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">LOGIN FAILED (LGIF) / DATABASE AUTHENTICATION FAILED (DBAF)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">100500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">authentication.credential validation</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">credential validation</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">LOGOUT (LGO) / DATABASE LOGOUT (DBL)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">102500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.logoff</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">logoff</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ALTER (AL) / TAKE OWNERSHIP (TO)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">account modified</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">GRANT (G)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111001</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">privileges assigned</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">REVOKE (R) / DENY (D)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111002</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">privileges removed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">CHANGE OWN PASSWORD (PWCS) / CHANGE PASSWORD (PWC) / MUST CHANGE PASSWORD (PWMC) / CHANGE LOGIN CREDENTIAL (CCLG)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111004</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">password change</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">RESET PASSWORD (PWR)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111005</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">administrative password reset</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ADD MEMBER to role (APRL)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111007</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">group member added</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DROP MEMBER from role (DPRL)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">111008</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object modify</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">group member removed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">LOGIN DISABLED (LGDA)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">111501</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object disable</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account disabled</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">UNLOCK ACCOUNT (PWU)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">112000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.object enable</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">account unlocked</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">LOGIN ENABLED (LGEA)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">112001</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">iam.object enable</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">account enabled</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">PASSWORD POLICY / EXPIRATION (PWPL / PWEX)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">119999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">iam.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">iam message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SELECT (SL) / EXECUTE (EX) / RECEIVE (RC) / SEND (SN)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">150000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database.query</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">database query</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">UPDATE (UP)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">150500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">database.update</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">update rows</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">INSERT (IN)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">151000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database.add</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">insert rows</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DELETE (DL)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">151500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">database.delete</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">delete rows</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">BACKUP (BA) / BACKUP LOG (BAL) / RESTORE (RS)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">159999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">database.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">database message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">SERVER STARTED (SVSR) / SERVER CONTINUE (SVCN)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">210000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.start</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service started</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">SERVER SHUTDOWN (SVSD) / SERVER PAUSED (SVPD)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">210100</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.stop</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service stopped</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">AUDIT SHUTDOWN ON FAILURE (AUSF)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">220000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">audit</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">audit.integrity</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">audit log cleared</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">TRACE AUDIT START/STOP (TASA / TASP) / AUDIT SESSION CHANGED (AUSC) / AUDIT CHANGE (CNAU) / AUDIT POLICY</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">220500</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">audit</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">audit.policy</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">audit policy changed</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">DBCC / OTHER SERVER AUDIT EVENTS</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">229999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">audit</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">audit.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">audit event</td>
+                </tr>
+            </tbody>
+        </table>
+    </body>
+</html>

@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
     <head>
-        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>ProFTPD Server Content Pack</title>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" />
+        <title>ProFTPD Server Content Pack</title>
         <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
-        <h1>ProFTPD Server Content Pack</h1>
-        <p>
-            <MadCap:concept term="Networking" />
-            <MadCap:concept term="New Release" />
-        </p>
+        <h1>
+            <MadCap:concept term="Networking" />ProFTPD Server Content Pack</h1>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>The ProFTPD Server content pack is designed to extract, normalize, and enrich ProFTPD event data for more effective analysis and monitoring. It parses default logs and enhanced logs into structured fields and adds useful context like event categorization (e.g. authentication and file events). This parsing and normalization enables faster search, correlation, and dashboard creation across diverse environments.</p>
+        <p>The ProFTPD Server Pack is designed to extract, normalize, and enrich ProFTPD event data for more effective analysis and monitoring.</p>
+        <p>It parses default logs and enhanced logs into structured fields and adds useful context like event categorization (e.g., authentication and file events).</p>
+        <p>This enables faster search, correlation, and dashboarding across diverse environments.</p>
         <h2 id="supported-versions">Supported Versions</h2>
         <p>This pack was constructed to work with both standard and enhanced logs.</p>
         <p>Custom log formats are not supported.</p>
@@ -24,7 +24,7 @@
             </li>
         </ul>
         <h2 id="log-collection">Log Collection and Delivery</h2>
-        <p>This pack is designed to collect ProFTPD logs delivered via Syslog via the local Rsyslog service. See the ProFTPD <a href="http://www.proftpd.org/docs/">Project Documentation</a> site for configuration details. Fine-tune log types via Syslog Facility or Loglevel, if necessary. The <code class="linecode">application_name</code> has to be <code class="linecode">proftpd</code>.</p>
+        <p>This pack is designed to collect ProFTPD logs delivered via Syslog via the local Rsyslog service, see the ProFTPD How-To website. Fine-tune wanted log types via Syslog Facility or Loglevel if needed. The application_name has to be proftpd.</p>
         <p>Beta support: Filebeat.</p>
         <ul>
             <li>
@@ -34,7 +34,7 @@
                 <p>Filebeat (Beta)</p>
             </li>
         </ul>
-        <h3>Example: Rsyslog Configuration</h3>
+        <h3>(Example) Rsyslog Configuration</h3>
         <ol>
             <li>
                 <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/syslog_inputs.html">Syslog input</a> in Graylog.</p>
@@ -67,7 +67,7 @@
                 <p>Configure the collector to ship messages in syslog and auth.log to Graylog. The Filebeat input must add the field <code class="linecode">event_source_product: proftpd</code> for the parser to identify the log source as ProFTPD.</p>
             </li>
             <li>
-                <p>Set the option <code class="linecode">fields_under_root</code> to <code class="linecode">true</code>. This step is also necessary for message identification to work. See the following example:</p>
+                <p>In addition, the option<code class="linecode">fields_under_root</code>must be set to<code class="linecode">true</code>for message identification to work. See the following example:</p>
                 <MadCap:codeSnippet>
                     <MadCap:codeSnippetCopyButton />
                     <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">- input_type: log
@@ -86,15 +86,16 @@ event_source_product: proftpd</MadCap:codeSnippetBody>
             <li>
                 <p>Edit the Graylog Sidecar client configuration with your Graylog server API URL and API access token.</p>
             </li>
+            <li>
+                <p>Note: Filebeat support is not tested. Only test it if Syslog is not possible.</p>
+            </li>
         </ol>
         <p>
-            <section class="warningBox">
-                <div class="content"><b>Warning</b>: Filebeat support is not tested and is offered only as a beta. You should attempt this method only if Syslog is not possible.</div>
-            </section>
-        </p>
-        <p>
             <section class="infoBox">
-                <div class="content"><b>Hint:</b> If you are already sending logs to your Graylog instance using Rsyslog, be careful to ensure that the changes provided do not interfere with your current configuration.</div>
+                <div class="title">
+                    <b>Hint:</b>
+                    <span style="font-weight: normal;">If you are already sending logs to your Graylog instance using Rsyslog care must be taken to ensure that the changes provided do not interfere with your current configuration.</span>
+                </div>
             </section>
         </p>
         <h2 id="requirements">Requirements</h2>
@@ -108,17 +109,32 @@ event_source_product: proftpd</MadCap:codeSnippetBody>
         <ul>
             <li>Illuminate:ProFTPD FTP Server Messages</li>
         </ul>
-        <MadCap:snippetBlock src="../Resources/Snippets/Template Snippets/ConceptKASnippets/Hint-AutoSteamCongig.flsnp" />
+        <p>
+            <section class="infoBox">
+                <div class="title">
+                    <b>Hint:</b>
+                    <span style="font-weight: normal;">If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</span>
+                </div>
+            </section>
+        </p>
         <h2 id="index-set-configuration">Index Set Configuration</h2>
         <p>This technology pack includes 1 index set definition:</p>
         <ul>
             <li>ProFTPD FTP Server Logs</li>
         </ul>
-        <MadCap:snippetBlock src="../Resources/Snippets/Template Snippets/ConceptKASnippets/Hint-AuthIndexSetConfig.flsnp" />
+        <p>
+            <section class="infoBox">
+                <div class="title">
+                    <b>Hint:</b>
+                    <span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
+                </div>
+            </section>
+        </p>
         <h2 id="log-format-example">Log Format Example</h2>
         <p>These are normal and enhanced ProFTPD example logs.</p>
-        <h3>ProFTPD Logs</h3>
-        <p><code class="linecode">Oct 20 10:06:03 ftp01 proftpd[24523]: 10.0.0.15 (remote01[10.0.0.15]) - USER bob: Login successful.
+        <h4>ProFTPD Logs</h4>
+        <p>
+            <code class="linecode">Oct 20 10:06:03 ftp01 proftpd[24523]: 10.0.0.15 (remote01[10.0.0.15]) - USER bob: Login successful.
         Oct 20 10:06:03 ftp01 proftpd[24523]: USER bob: Login successful.
         Oct 20 10:10:34 ftp01 proftpd[24688]: 192.168.10.55 (client01[192.168.10.55]) - USER alice (Login failed): Incorrect password.
         Oct 20 10:10:34 ftp01 proftpd[24688]: USER alice (Login failed): Incorrect password.
@@ -145,7 +161,7 @@ event_source_product: proftpd</MadCap:codeSnippetBody>
         Oct 20 14:53:50 ftpserver proftpd[24123]: Maximum number of users (200) reached, refusing connection from 203.0.113.22
         </code>
         </p>
-        <h2 id="what-is-provided">What Is Provided</h2>
+        <h2 id="what-is-provided">What is Provided</h2>
         <ul>
             <li>
                 <p>Rules to parse, normalize, and enrich ProFTPD log messages</p>
@@ -155,158 +171,214 @@ event_source_product: proftpd</MadCap:codeSnippetBody>
             </li>
         </ul>
         <h3 id="gim-categorization">GIM Categorization</h3>
-        <p>In most cases, ProFTPD messages are categorized based on the Vendor Event Action field, but some log types are generic and we might use a different method to categorize them.</p>
+        <p>In most cases the ProFTPD Messages will be categorized based on the Vendor Event Action field but some log types are generic and we may use a different way to categorize them.</p>
         <p>GIM categorization is provided for the following messages:</p>
-        <table cellspacing="21" style="mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-            <thead>
-                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Vendor Event Action</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Category</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">GIM Subcategory</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">GIM Event Type</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">STOR</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file.default</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">file event</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">RETR</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file.default</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">file event</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DELE</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file.default</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">file event</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">RNFR</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file.default</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">file event</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">RNTO</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file.default</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">file event</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Login successful</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">authentication.default</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">authentication message</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">(Login failed)</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">authentication</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">authentication.default</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">authentication message</td>
-                </tr>
-            </tbody>
-        </table>
+        <MadCap:dropDown>This pack applies normalization to standard and enhanced ProFTPD logs. Additionally, it shortens the "message." Exiting headers and enhanced headers are parsed but dropped to reduce license utilization.</MadCap:dropDown>
         <h3>Message Fields Included in This Pack</h3>
         <h4>General Parsing</h4>
-        <p>This pack applies normalization to standard and enhanced ProFTPD logs. Additionally, it shortens the "message." Exiting headers and enhanced headers are parsed but dropped to reduce license utilization.</p>
+        <p>This pack will apply normalization to standard and enhanced ProFTPD logs. Additionally, it will shorten the "message". Exiting headers and enhanced headers will be parsed but dropped to reduce license utilization.</p>
         <p>Attached are the most common parsed fields for ProFTPD logs.</p>
-        <table cellspacing="21" style="mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
-            <thead>
-                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Fields</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Example Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application_name</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">proftpd</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_hostname</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">ProFTPD Server DESTINATION_NOT_SET</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_action</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">allowed</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_outcome</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">success</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_source_product</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">proftpd</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_name</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">manual.pdf</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_path</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">/uploads/manual.pdf</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_hostname</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">ftp01</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_bytes</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">1048576</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">process_id</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">24512</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_hostname</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">client01</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">192.168.10.55</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip_inner</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">192.168.10.55</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_name</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">alice</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Login successful</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_created</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Oct 20 10:05:42</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_outcome</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">successful</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_outcome_reason</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Incorrect password.</td>
-                </tr>
-                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">vendor_ftp_status_code</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">226</td>
-                </tr>
-            </tbody>
-        </table>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Parsed Fields<span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" class="TableStyle-Alternate-Row-Color" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Fields</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Example Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1" />
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">10.22.136.85</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">21</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_source_product</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">proftpd</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">file_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">manual.pdf</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">file_path</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">/uploads/manual.pdf</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">ftp01</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_bytes</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">1048576</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">process_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">24512</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">client01</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">192.168.10.55</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip_inner</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">192.168.10.55</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">alice</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_ban_window_seconds</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">60</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Login successful</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_created</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Oct 20 10:05:42</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">no such user found</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_outcome</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">successful</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_outcome_reason</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Incorrect password.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">warning</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_failed_attempts</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">5</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_ftp_status_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">226</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_module_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">mod_ban</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">vendor_module_version</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">0.9.2</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
+        <h4>Event Enrichment</h4>
+        <p>The following fields are added to ProFTPD event messages:</p>
+        <MadCap:dropDown>
+            <MadCap:dropDownHead>
+                <MadCap:dropDownHotspot>Event Enrichment<span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+            </MadCap:dropDownHead>
+            <MadCap:dropDownBody>
+                <table cellspacing="21" class="TableStyle-Alternate-Row-Color" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');">
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <thead>
+                        <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                            <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                            <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">application_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Application name, set to proftpd for authentication events.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Default destination hostname for login events when not present in the log.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination port for network events, cast to long, defaults to 0.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_reference</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination reference for authentication and network events, derived from destination_ip or hostname.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_action</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Normalized event action (allowed/blocked) based on vendor_event_action lookup.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_created</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Parsed and formatted event timestamp from vendor_event_created.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_outcome</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Normalized event outcome (success/failure) based on vendor_event_outcome lookup.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_severity</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Normalized severity level based on vendor_event_severity lookup.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">event_severity_level</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Numeric severity level based on vendor_event_severity lookup.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">gim_event_type_code</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">GIM event type code assigned based on vendor_event_action.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_transport</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Network transport protocol, defaults to tcp for network events.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Service name, set to proftpd.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_hostname</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Default source hostname for login events when not present in the log.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source port for network events, cast to long, defaults to 0.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_reference</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source reference for authentication and network events, derived from source_ip or hostname.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source user name, derived from user_name if not already set.</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">User name, set to default if not parsed from the log.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </MadCap:dropDownBody>
+        </MadCap:dropDown>
         <h2 id="spotlight-content-pack">ProFTPD Server Content Pack</h2>
         <p>This spotlight offers a dashboard with 1 tab:</p>
         <h3>Overview</h3>
