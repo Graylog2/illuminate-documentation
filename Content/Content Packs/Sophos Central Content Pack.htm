@@ -1,149 +1,220 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
-    <head><title>Sophos Central Content Pack</title>
-        <link href="Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    <head>
+        <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>Sophos Central Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
         <h1>
             <MadCap:concept term="Firewall" />Sophos Central Content Pack</h1>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>Sophos Central is a cloud-based unified security management platform that delivers centralized administration, threat detection, and policy enforcement across a range of security services encompassing network, endpoint, server, mobile, and email security. This content pack extracts fields from Sophos Central Endpoint Protection telemetry and event messages and normalizes them to align with the Graylog schema.</p>
-        <h2>Supported Version(s)</h2>
-        <p>Sophos Central is a continuously updated managed service that does not feature version numbers. This pack was built and tested for integration with the Sophos Central SIEM Integration v1 API. In addition, parsing is designed around Sophos Central events sourced from Windows endpoints. Events from other OS platforms such as macOS may be supported, but not fully tested.</p>
-        <h2>Requirements</h2>
+        <p>Sophos Central is a cloud-based unified security management platform. This technology pack extracts and
+        normalizes Endpoint Protection telemetry from Sophos Central to align with Graylog's schema, providing field
+        extraction, normalization, enrichment, and GIM categorization of endpoint security events.</p>
+        <h2 id="supported-versions">Supported Version(s)</h2>
         <ul>
             <li>
-                <p>Graylog 6.2.0+ with a valid Enterprise license</p>
+                <p>Sophos Central is a continuously updated managed service. This pack integrates with the Sophos Central
+                SIEM Integration v1 API.</p>
             </li>
             <li>
-                <p>Sophos Endpoint agent installed on client hosts with Endpoint Protection policies enabled</p>
-            </li>
-            <li>
-                <p>Sophos Central API credentials created for use with the Graylog Sophos Central input</p>
+                <p>Tested for Windows endpoints; other OS platforms may have limited support.</p>
             </li>
         </ul>
+        <h2 id="requirements">Requirements</h2>
+        <ul>
+            <li>
+                <p>Graylog Enterprise version 6.2.0 or later.</p>
+            </li>
+            <li>
+                <p>Sophos Endpoint agent with Endpoint Protection policies enabled.</p>
+            </li>
+            <li>
+                <p>Sophos Central API credentials (Client ID and Client Secret) with read access and query permissions
+                (e.g., Service Principal Super Admin role).</p>
+            </li>
+        </ul>
+        <h2 id="stream-configuration">Stream Configuration</h2>
+        <p>This technology pack includes 1 stream:</p>
+        <ul>
+            <li>"Illuminate:Sophos Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
+                activation of this pack then it will be created and configured to route messages to this stream and the
+                associated index set. There should not be any stream rules configured for this stream.</span>
+                </div>
+            </section>
+        </p>
+        <h2 id="index-set-configuration">Index Set Configuration</h2>
+        <p>This technology pack includes 1 index set definition:</p>
+        <ul>
+            <li>"Sophos Device Log Messages"</li>
+        </ul>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
+                nothing will be changed. If this index set does not exist, then it will be created with retention
+                settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
+                installation.</span>
+                </div>
+            </section>
+        </p>
+        <h2 id="log-collection">Log Collection</h2>
+        <p>Sophos Central events are collected via Graylog's built-in Sophos Central input.</p>
+        <h3>Sophos Central API Configuration</h3>
+        <ol>
+            <li>
+                <p>Create API credentials in Sophos Central Admin with read access and query permissions (e.g., Service
+                Principal Super Admin role).</p>
+            </li>
+            <li>
+                <p>Store the Client ID and Client Secret securely.</p>
+            </li>
+            <li>
+                <p>Launch the Sophos Central input in Graylog and provide the API credentials.</p>
+            </li>
+            <li>
+                <p>Configure optional parameters: Ingest Alerts toggle, Polling Interval (default 5 minutes recommended),
+                and Enable Throttling option.</p>
+            </li>
+            <li>
+                <p>Save and start the input.</p>
+            </li>
+        </ol>
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">This pack rewrites the message field to
+                reduce license utilization. Enable full message storage in settings if needed.</span>
+                </div>
+            </section>
+        </p>
+        <h2 id="log-format-example">Log Format Example</h2>
+        <p>Sophos Central delivers events in JSON format.</p>
+        <h4>Malware Detection Event</h4>
+        <p><code class="linecode">{"type":"Event::Endpoint::CoreDetection","origin":"SAV","created_at":"2025-01-24T11:32:22.544Z","threat":"Mal/Kryptik-DL","group":"MALWARE","name":"Malware detected: 'Mal/Kryptik-DL' at 'C:\\Users\\testuser\\Downloads\\suspicious.exe'","severity":"medium","endpoint_id":"abc123","endpoint_type":"computer","when":"2025-01-24T11:32:22.544Z","location":"DESKTOP-JDVP7LN","id":"event-12345","customer_id":"cust-xyz","source_info":{"ip":"192.168.1.50"}}
+        </code>
+        </p>
         <h2 id="what-is-provided">What is Provided</h2>
         <ul>
             <li>
-                <p>Extraction of fields, normalization, and enrichment of Sophos Central Endpoint Protection event logs</p>
+                <p>Field extraction, normalization, and enrichment of Sophos Central Endpoint Protection logs.</p>
             </li>
             <li>
-                <p>A dashboard for monitoring threat detections and affected endpoints</p>
+                <p>GIM code 301000 (host_malware_detection) for MALWARE events.</p>
+            </li>
+            <li>
+                <p>GIM code 301002 (hips_detection) for PUA, APPLICATION_CONTROL, PERIPHERALS, DATA_LOSS_PREVENTION, and WEB
+                events.</p>
+            </li>
+            <li>
+                <p>GIM code 219999 (service event) for PROTECTION, UPDATING, DENC, and SYSTEM_HEALTH events.</p>
+            </li>
+            <li>
+                <p>Event severity normalization (low/medium/high/critical to numeric 2-5 scale).</p>
+            </li>
+            <li>
+                <p>Core remedy items extraction for malware and PUA events.</p>
+            </li>
+            <li>
+                <p>Monitoring dashboard for threat detections and affected endpoints.</p>
             </li>
         </ul>
-        <h2>Stream Configuration</h2>
-        <p>This technology pack includes one stream:</p>
-        <ul>
-            <li>
-                <p>"Illuminate:Sophos Messages"</p>
-            </li>
-        </ul>
-        <p>
-            <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Hint</b>:  If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
-            </section>
-        </p>
-        <h2>Index Set Configuration</h2>
-        <p>This technology pack includes one index set definition:</p>
-        <ul>
-            <li>
-                <p>"Sophos Device Log Messages"</p>
-            </li>
-        </ul>
-        <p>
-            <section class="infoBox">
-                <div class="title" style="font-weight: normal;"><b>Hint</b>:  If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
-            </section>
-        </p>
-        <h2>Log Collection</h2>
-        <p>The <a href="https://go2docs.graylog.org/current/getting_in_log_data/sophos_central_input.htm">Sophos Central input</a>  can be configured to securely access the Sophos Central SIEM Integration API for log data retrieval.</p>
-        <h3>Configuring a Sophos Central Input</h3>
-        <p>For Graylog to access Sophos Central logs via API, it needs API credentials:</p>
-        <ol>
-            <li>
-                <p>Create API credentials in Sophos Central Admin. The assigned role should have read capabilities and access to queries, such as <i>Service Principal Super Admin</i>. A guide can be found <a href="https://docs.sophos.com/central/customer/help/en-us/ManageYourProducts/GlobalSettings/APICredentials/index.html">here</a>.</p>
-            </li>
-            <li>
-                <p>Copy the generated Client ID and Client Secret and store them securely.</p>
-            </li>
-            <li>
-                <p>Launch a Sophos Central input in Graylog. When prompted, provide the previously obtained Sophos Client ID and Secret.</p>
-            </li>
-            <li>
-                <p>Optionally configure the following input options:</p>
-                <ul>
-                    <li>
-                        <p><b>Ingest Alerts</b>: Whether to ingest Sophos alerts in addition to events.</p>
-                    </li>
-                    <li>
-                        <p><b>Polling Interval</b>: How often (in minutes) the input will check for new log data, recommended to leave at default 5 minutes.</p>
-                    </li>
-                    <li>
-                        <p><b>Enable Throttling</b>: If enabled, it will stop reading new data for this input whenever the system falls behind on message processing and needs to catch up.</p>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <p>Save the input settings.</p>
-            </li>
-        </ol>
-        <p>If the input does not start automatically, select <i>Start Input</i> to begin retrieving and processing messages from the configured Sophos Central server.</p>
-        <p>
-            <section class="infoBox">
-                <div class="content"><b>Hint:</b> This pack rewrites the message field to reduce license utilization. To get the full message, set <i>Store full message</i> in the input settings to <code class="linecode">true</code>.</div>
-            </section>
-        </p>
-        <h2>Log Format Example</h2>
-        <MadCap:codeSnippet>
-            <MadCap:codeSnippetCopyButton />
-            <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">{"type":"Event::Endpoint::CoreDetection","origin":"SAV","created_at":"2025-01-24T11:32:22.544Z","source_info":{"ip":"192.168.40.176"},"customer_id":"aabbccdd-1234-5678-abcd-ef1234567890","severity":"medium","endpoint_id":"10a1a0aa-aa10-10aa-1010-a01a1aaa01a0","endpoint_type":"computer","user_id":"671565c8eeddce2b21c52a24","threat":"Mal/Kryptik-DL","when":"2025-01-24T11:32:11.870Z","appSha256":"43670ae43df9e361fa15f09f611da32db104ee207ed5af3e7e7f098ad82a68e0","source":"DESKTOP-JDVP7LN\Test234","location":"DESKTOP-JDVP7LN","id":"cc29ad5d-3e42-20da-8790-03f87f291fa6","group":"MALWARE","name":"Malware detected: 'Mal/Kryptik-DL' at 'C:\Users\Test234\Downloads\43670ae43df9e361fa15f09f611da32db104ee207ed5af3e7e7f098ad82a68e0'"}
-            </MadCap:codeSnippetBody>
-        </MadCap:codeSnippet>
-        <h2 id="events-processed-by-this-technology-pack">Event Groups Processed</h2>
-        <p>Logs from event groups not included will have generic processing applied:</p>
-        <ul>
-            <li>
-                <p><code class="linecode">APPLICATION_CONTROL</code>
-                </p>
-            </li>
-            <li>
-                <p><code class="linecode">DATA_LOSS_PREVENTION</code>
-                </p>
-            </li>
-            <li>
-                <p><code class="linecode">DENC</code>
-                </p>
-            </li>
-            <li>
-                <p><code class="linecode">MALWARE</code>
-                </p>
-            </li>
-            <li>
-                <p><code class="linecode">PERIPHERALS</code>
-                </p>
-            </li>
-            <li>
-                <p><code class="linecode">PROTECTION</code>
-                </p>
-            </li>
-            <li>
-                <p><code class="linecode">PUA</code>
-                </p>
-            </li>
-            <li>
-                <p><code class="linecode">SYSTEM_HEALTH</code>
-                </p>
-            </li>
-            <li>
-                <p><code class="linecode">UPDATING</code>
-                </p>
-            </li>
-            <li>
-                <p><code class="linecode">WEB</code>
-                </p>
-            </li>
-        </ul>
-        <h2>Sophos Central Spotlight Content Pack</h2>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following event groups: APPLICATION_CONTROL, DATA_LOSS_PREVENTION, DENC,
+        MALWARE, PERIPHERALS, PROTECTION, PUA, SYSTEM_HEALTH, UPDATING, WEB.</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Event Group</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">MALWARE</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">301000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.host_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">host_malware_detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">PUA</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">301002</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.host_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">hips_detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">APPLICATION_CONTROL</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">301002</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.host_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">hips_detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">PERIPHERALS</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">301002</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.host_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">hips_detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DATA_LOSS_PREVENTION</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">301002</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">detection.host_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">hips_detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">WEB</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">301002</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">detection.host_detection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">hips_detection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">PROTECTION</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">219999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">UPDATING</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">219999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DENC</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">219999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">service.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">service event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">SYSTEM_HEALTH</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">219999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">service.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">service event</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2 id="spotlight-content-pack">Sophos Central Spotlight</h2>
+        <p>The Sophos Central Spotlight offers dashboards with two tabs: Overview and Threat Events, providing visibility
+        into threat detections and affected endpoint identification.</p>
         <h3>Overview</h3>
         <p>
             <img src="../Resources/Images/Sophos Central Content Pack/overview.png" />
