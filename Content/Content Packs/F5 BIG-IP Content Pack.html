@@ -1,36 +1,30 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
     <head>
         <link href="../Resources/TableStyles/Alternate-Row-Color.css" rel="stylesheet" MadCap:stylesheetType="table" /><title>F5 BIG-IP Content Pack</title>
         <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
-        <h1>
-            <MadCap:concept term="Networking" />F5 BIG-IP Content Pack</h1>
+        <h1>F5 BIG-IP Content Pack</h1>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>F5 BIG-IP is an application delivery controller platform that combines load balancing, traffic management, and security services to optimize, secure, and scale networked applications.</p>
-        <h2 id="supported-versions">Supported Versions</h2>
+        <p>F5 BIG-IP is an application delivery controller platform that combines load balancing,</p>
+        <p>traffic management, and security services to optimize, secure, and scale networked applications.</p>
+        <h2 id="supported-versions">Supported Version(s)</h2>
         <ul>
             <li>
-                <p>F5 BIG-IP ASM 17.5.1</p>
+                <p>Tested with F5 BIG-IP ASM 17.5.1 and legacy syslog format</p>
             </li>
             <li>
-                <p>F5 BIG-IP AFM 17.5.1</p>
-            </li>
-        </ul>
-        <h2 id="events-processed-by-this-technology-pack">Supported Log Types</h2>
-        <ul>
-            <li>
-                <p><code class="linecode">ASM</code>, <code class="linecode">AFM</code></p>
-            </li>
-            <li>
-                <p>For TMM logs: <code class="linecode">HTTP_RESPONSE</code>, <code class="linecode">HTTP_REQUEST</code></p>
+                <p>Tested with F5 BIG-IP AFM 17.5.1 and legacy syslog format</p>
             </li>
         </ul>
         <h2 id="requirements">Requirements</h2>
         <ul>
             <li>
-                <p>Configure F5 BIG-IP to transmit Syslog to your Graylog server <a href="https://go2docs.graylog.org/current/getting_in_log_data/syslog_inputs.html">Syslog input</a>.</p>
+                <p>Graylog 6.3.7+</p>
+            </li>
+            <li>
+                <p>Configure F5 BIG-IP to transmit Syslog to your Graylog server Syslog input or use Filebeat.</p>
             </li>
         </ul>
         <h2 id="stream-configuration">Stream Configuration</h2>
@@ -40,7 +34,8 @@
         </ul>
         <p>
             <section class="infoBox">
-                <div class="content"><b>Hint:</b> If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</div>
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</span>
+                </div>
             </section>
         </p>
         <h2 id="index-set-configuration">Index Set Configuration</h2>
@@ -50,26 +45,27 @@
         </ul>
         <p>
             <section class="infoBox">
-                <div class="content"><b>Hint:</b>If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</div>
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
+                </div>
             </section>
         </p>
-        <h2 id="log-collection">Log Collection</h2>
+        <h2 id="log-collection">Log Collection and Delivery</h2>
         <p>This pack parses logs from the following sources:</p>
         <ul>
             <li>
                 <p>Filebeat</p>
             </li>
             <li>
-                <p>Syslog (beta support)</p>
+                <p>Legacy and RFC 5424 Syslog format - Beta support</p>
             </li>
             <li>
-                <p>CEF (beta support)</p>
+                <p>CEF - Beta support</p>
             </li>
         </ul>
         <h3>Filebeat Configuration</h3>
         <ol>
             <li>
-                <p>Refer to the official documentation to <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">set up Graylog Sidecar for Filebeat</a>.</p>
+                <p>Please refer to the official documentation to <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">set up Graylog Sidecar for Filebeat</a>.</p>
             </li>
             <li>
                 <p>Create a matching <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> in Graylog.</p>
@@ -84,7 +80,7 @@
                 <p>Configure the collector to ship messages to Graylog (select the right path). The Filebeat input must add the field <code class="linecode">event_source_product: f5_bigip</code> for the parser to identify the log source as F5 BIG-IP.</p>
             </li>
             <li>
-                <p>The option <code class="linecode">fields_under_root</code> must be set to <code class="linecode">true</code> for message identification to work. See the following example:</p>
+                <p>In addition, the option <code class="linecode">fields_under_root</code> must be set to <code class="linecode">true</code> for message identification to work. See the following example:</p>
                 <MadCap:codeSnippet>
                     <MadCap:codeSnippetCopyButton />
                     <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">filebeat.inputs:
@@ -98,7 +94,7 @@ fields_under_root: true</MadCap:codeSnippetBody>
                 </MadCap:codeSnippet>
             </li>
             <li>
-                <p>Adjust the file path in the configuration file if needed.</p>
+                <p>Adjust the file path in the config file if needed.</p>
             </li>
             <li>
                 <p>Install Graylog Sidecar on the client host.</p>
@@ -107,45 +103,124 @@ fields_under_root: true</MadCap:codeSnippetBody>
                 <p>Edit the Graylog Sidecar client configuration with your Graylog server API URL and API access token.</p>
             </li>
         </ol>
-        <h2 id="1">Sending Logs via Syslog</h2>
-        <p>F5 BIG-IP supports Syslog. This content pack may support F5-BIG-IP Syslog for the modules ASM, and AFM.</p>
-        <h2 id="2">Sending Logs in CEF Format</h2>
-        <p>F5 BIG-IP supports the CEF format. This content pack may work with CEF and Graylog's <a href="https://go2docs.graylog.org/current/getting_in_log_data/cef_inputs.htm">CEF Input</a>, but due to a lack of example logs, the full function cannot be guaranteed. If you want to use CEF and you have test logs, please provide us with some sanitized samples.</p>
-        <h2 id="log-format-example">Log Format Examples</h2>
-        <p><code class="linecode">Apr 10 09:25:46 172.16.1.2 ASM:unit_hostname="f5_01",management_ip_address="192.168.1.10",management_ip_address_2="N/A",http_class_name="/Common/App_WAF",web_application_name="/Common/App_WAF",policy_name="/Common/App_WAF",policy_apply_date="2025-04-08 2:29:51",violations="N/A",support_id="142371702665",request_status="passed",response_code="200",ip_client="11.10.5.46",route_domain="0",method="GET",protocol="HTTPS",query_string="",x_forwarded_for_header_value="11.10.5.2",sig_ids="N/A",sig_names="N/A",date_time="2025-04-10 2:25:46",severity="Informational",attack_type="N/A",geo_location="RO",ip_address_intelligence="N/A",username="N/A",session_id="C3c1eaf29ce05e59",src_port="51124",dest_port="443",dest_ip="172.16.1.11",sub_violations="N/A",virus_name="N/A",violation_rating="0",websocket_direction="N/A",websocket_message_type="N/A",device_id="N/A",staged_sig_ids="",staged_sig_names="",threat_campaign_names="N/A",staged_threat_campaign_names="N/A",blocking_exception_reason="N/A",captcha_result="not_received",microservice="N/A",tap_event_id="N/A",tap_vid="N/A",vs_name="/Common/vs-443-2021-apptest1.dom.ro-bkp",sig_cves="N/A",staged_sig_cves="N/A",uri="/notif/summary",fragment="",request="GET /notif/summary HTTP/1.1\r\nHost: apptest.dom.ro\r\nConnection: keep-alive\r\nsec-ch-ua-platform: %22Windows%22\r\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36\r\nsec-ch-ua: %22Google Chrome%22;v=%22135%22, %22Not-A.Brand%22;v=%228%22, %22Chromium%22;v=%22135%22\r\nsec-ch-ua-mobile: ?0\r\nAccept: */*\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\nAccept-Encoding: gzip, deflate, br, zstd\r\nAccept-Language: en-US,en;q=0.9,ro;q=0.8\r\nCookie: _ga=GA1.1.845057894.1744101172; SESSION=6dceff56-9d1e-421c-ab0e-820e91591bf8; _ga_X2KD43T4E2=GS1.1.1744263.4.1.14265953.0.0.0; TS67d45652027=08fbd28c49065a7bf1423084f5cc3e81130007f7d872e9d324682b29696</code>
+        <h3>Sending logs via Syslog in the legacy key-value format</h3>
+        <ol>
+            <li>
+                <p>F5 BIG-IP supports Syslog. This content pack may support F5 BIG-IP Syslog for the modules ASM and AFM.</p>
+            </li>
+        </ol>
+        <h3>Sending logs via Syslog in the modern RFC-5424 format for v13.x+</h3>
+        <ol>
+            <li>
+                <p>F5 BIG-IP supports Syslog. This content pack may support F5 BIG-IP Syslog for the modules ASM and AFM. This format might need a special flag.</p>
+            </li>
+        </ol>
+        <h3>Sending logs in CEF Format</h3>
+        <ol>
+            <li>
+                <p>F5 BIG-IP supports the CEF format. This content pack may work with CEF and Graylog's CEF Input, but due to a lack of example logs, full functionality cannot be guaranteed. If you want to use CEF and you have test logs, please provide us with some sanitized samples.</p>
+            </li>
+        </ol>
+        <h2 id="log-format-example"></h2>
+        <p>These are example logs for various processed log types.</p>
+        <h4>F5 Log Example 1</h4>
+        <p><code class="linecode">Apr 10 09:25:46 172.16.1.2 ASM:unit_hostname="f5_01",management_ip_address="192.168.1.10",management_ip_address_2="N/A",http_class_name="/Common/App_WAF",web_application_name="/Common/App_WAF",policy_name="/Common/App_WAF",policy_apply_date="2025-04-08 2:29:51",violations="N/A",support_id="142371702665",request_status="passed",response_code="200",ip_client="11.10.5.46",route_domain="0",method="GET",protocol="HTTPS",query_string="",x_forwarded_for_header_value="11.10.5.2",sig_ids="N/A",sig_names="N/A",date_time="2025-04-10 2:25:46",severity="Informational",attack_type="N/A",geo_location="RO",ip_address_intelligence="N/A",username="N/A",session_id="C3c1eaf29ce05e59",src_port="51124",dest_port="443",dest_ip="172.16.1.11",sub_violations="N/A",virus_name="N/A",violation_rating="0",websocket_direction="N/A",websocket_message_type="N/A",device_id="N/A",staged_sig_ids="",staged_sig_names="",threat_campaign_names="N/A",staged_threat_campaign_names="N/A",blocking_exception_reason="N/A",captcha_result="not_received",microservice="N/A",tap_event_id="N/A",tap_vid="N/A",vs_name="/Common/vs-443-2021-apptest1.dom.ro-bkp",sig_cves="N/A",staged_sig_cves="N/A",uri="/notif/summary",fragment="",request="GET /notif/summary HTTP/1.1\r\nHost: apptest.dom.ro\r\nConnection: keep-alive\r\nsec-ch-ua-platform: %22Windows%22\r\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36\r\nsec-ch-ua: %22Google Chrome%22;v=%22135%22, %22Not-A.Brand%22;v=%228%22, %22Chromium%22;v=%22135%22\r\nsec-ch-ua-mobile: ?0\r\nAccept: */*\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\nAccept-Encoding: gzip, deflate, br, zstd\r\nAccept-Language: en-US,en;q=0.9,ro;q=0.8\r\nCookie: _ga=GA1.1.845057894.1744101172; SESSION=6dceff56-9d1e-421c-ab0e-820e91591bf8; _ga_X2KD43T4E2=GS1.1.1744263.4.1.14265953.0.0.0; TS67d45652027=08fbd28c49065a7bf1423084f5cc3e81130007f7d872e9d324682b29696
+        </code>
         </p>
-        <p><code class="linecode">Apr 10 2:25:46 172.16.1.2 AFM:acl_rule_name="",action="Open",hostname="bigip-3.pme-ds.f5.com",bigip_mgmt_ip="192.168.73.33",context_name="/Common/topaz3-all3",context_type="Virtual Server",date_time="Oct 04 2012 13:18:04",dest_ip="10.3.1.200",dest_port="443",device_product="Advanced Firewall Module",device_vendor="F5",device_version="11.3.0.2095.0",drop_reason="",errdefs_msgno="23003137",errdefs_msg_name="Network Event",ip_protocol="TCP",severity="8",partition_name="Common",route_domain="0",source_ip="10.3.1.101",source_port="39329",vlan="/Common/external"</code>
+        <h4>F5 Log Example 2</h4>
+        <p><code class="linecode">Apr 10 2:25:46 172.16.1.2 AFM:acl_rule_name="",action="Open",hostname="bigip-3.pme-ds.f5.com",bigip_mgmt_ip="192.168.73.33",context_name="/Common/topaz3-all3",context_type="Virtual Server",date_time="Oct 04 2012 13:18:04",dest_ip="10.3.1.200",dest_port="443",device_product="Advanced Firewall Module",device_vendor="F5",device_version="11.3.0.2095.0",drop_reason="",errdefs_msgno="23003137",errdefs_msg_name="Network Event",ip_protocol="TCP",severity="8",partition_name="Common",route_domain="0",source_ip="10.3.1.101",source_port="39329",vlan="/Common/external"
+        </code>
         </p>
-        <p><code class="linecode">Apr 10 2:24:59 172.16.1.2 1 2025-04-10T2:25:46.854685+03:00 f5_short tmm 8545 23003147 [F5@12276 hostname="f5_01" bigip_mgmt_ip="192.168.1.10" bigip_mgmt_ip2="::" client_ip="46.97.34.38" client_ip_geo_location="RO" client_port="28220" client_request_uri="/version.json"]</code>
+        <h4>F5 Log Example 3</h4>
+        <p><code class="linecode">Apr 10 2:24:59 172.16.1.2 1 2025-04-10T2:25:46.854685+03:00 f5_short tmm 8545 23003147 [F5@12276 hostname="f5_01" bigip_mgmt_ip="192.168.1.10" bigip_mgmt_ip2="::" client_ip="46.97.34.38" client_ip_geo_location="RO" client_port="28220" client_request_uri="/version.json"]
+        </code>
+        </p>
+        <h4>F5 Log Example 4</h4>
+        <p><code class="linecode">&lt;134&gt;1 2025-11-18T10:28:07+0100 185.158.193.21 BIG-IP 42 ID42 - client_ip="34.12.45.139" client_port="26807" target_ip="185.22.11.21" target_port="443" nat_source_ip="34.12.45.139" nat_source_port="26807" nat_destination_ip="185.22.11.21" nat_destination_port="443" route_domain="0" vlan="/Common/external" proto="TCP" tcp_flags="SYN,ACK" tcp_seq="12345678" tcp_ack="87654321" bytes_in="512" bytes_out="2048" packets_in="6" packets_out="14" policy_name="/Common/AFM_Policy_Prod" rule_name="/Common/rule_allow_https" rule_action="accept" action="accept" drop_reason="none" event_type="network" session_id="987654321" flow_id="54321" context_type="virtual-server" context_name="/Common/www.example.com_vs" device_vendor="F5" device_product="Advanced Firewall Manager" device_version="17.1.0" hostname="bigip-prod-1.example.com" mgmt_ip="192.168.1.10" severity="info" info="HTTPS traffic allowed by rule"
+        </code>
         </p>
         <h2 id="what-is-provided">What is Provided</h2>
         <ul>
             <li>
-                <p>Parsing rules to extract F5 BIG-IP logs (AFM, ASM) into Graylog schema compatible fields.</p>
+                <p>Rules to parse, normalize, and enrich F5 BIG-IP log messages (ASM, AFM, mcpd, LTM/tmm)</p>
             </li>
             <li>
-                <p>Simple Dashboard with a general Overview and an Overview for ASM logs</p>
+                <p>GIM categorization for DNS events, network events, mcpd service events, and LTM connection-opened events</p>
+            </li>
+            <li>
+                <p>Dashboards that deliver a general Overview and an ASM-focused Overview</p>
+            </li>
+        </ul>
+        <h2 id="events-processed-by-this-technology-pack">Events Processed by This Technology Pack</h2>
+        <p>The content pack supports the following log types.</p>
+        <ul>
+            <li>
+                <p>ASM</p>
+            </li>
+            <li>
+                <p>AFM</p>
+            </li>
+            <li>
+                <p>mcpd</p>
+            </li>
+            <li>
+                <p>LTM/tmm (HTTP_RESPONSE, HTTP_REQUEST)</p>
             </li>
         </ul>
         <h3 id="gim-categorization">GIM Categorization</h3>
-        <p>GIM categorization is provided for the following messages:</p>
-        <table cellspacing="21" style="width: auto; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <p>F5 BIG-IP logs are categorized based on the vendor_event_type field. DNS events map to name resolution,</p>
+        <p>network events map to network connection, mcpd application events map to the service default code,</p>
+        <p>and LTM connection-opened events map to network connection initiated.</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
             <thead>
                 <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
-                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">vendor_event_type</th>
-                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type_code</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Vendor Event Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
                     <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">DNS Event</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">149999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">149999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">name resolution.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">dns message</td>
                 </tr>
                 <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Network Event</td>
-                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Network Event</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network.network connection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">120000</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network.network connection</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network connection</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">mcpd (application_name)</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">219999</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service.default</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">service event</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">LTM Connection opened</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">120200</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">network</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">network.open</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">network connection initiated</td>
                 </tr>
             </tbody>
         </table>
@@ -278,25 +353,151 @@ fields_under_root: true</MadCap:codeSnippetBody>
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source Port</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">username</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">user_name</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Tom</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">username</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">user_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Tom</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">User Name</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">nat_source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_nat_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.12.34.5</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Source NAT IP</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">nat_source_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_nat_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">35</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source NAT port</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">nat_destination_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_nat_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.2.4</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination NAT IP</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">nat_destination_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_nat_port</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">23</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination NAT port</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">bot_signature_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">alert_signature</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">StrixBot</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Name of a detected bot</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">violation_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">alert_signature_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">3455646</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">ID of a violation</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">proto</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">tcp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">network protocol</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_protocol</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">tcp</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">network protocol</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">mgmt_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_bigip_mgmt_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.3.4</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Management IP</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">bytes_in</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_bytes_sent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">324</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Traffic to the device</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">bytes_out</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_bytes_sent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">756</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Outgoing traffic</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">packets_in</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">destination_packets_sent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">324</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Traffic to the device</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">packets_out</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_packets_sent</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">756</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Outgoing traffic</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Derived from source_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_reference</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">10.3.1.101</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source reference for GIM enforcement</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Derived from destination_ip</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_reference</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10.3.1.200</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination reference for GIM enforcement</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Set by mcpd GIM rule</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">service_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">mcpd</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Service name for GIM service enforcement</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">mcpd event description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_pool_member</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">2001:20:5004:1606::89:8790</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Pool member address from mcpd status events</td>
+                        </tr>
+                        <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">mcpd event description</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">vendor_monitor_status</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">down</td>
                             <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">string</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">User Name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">Pool member monitor status (up/down)</td>
                         </tr>
                     </tbody>
                 </table>
             </MadCap:dropDownBody>
         </MadCap:dropDown>
-        <h2 id="spotlight-content-pack">F5 BIG-IP Spotlight Pack</h2>
-        <p>This F5 BIG-IP spotlight has a general overview and an ASM overview dashboard</p>
-        <h3>F5 BIG-IP: Overview Tab</h3>
+        <h2 id="spotlight-content-pack">F5 BIG-IP Content Pack</h2>
+        <p>This F5 BIG-IP spotlight has a general overview and a ASM overview dashboard</p>
+        <h3>Overview</h3>
         <p>
-            <img src="../Resources/Images/F5 BIG-IP/f5_big_ip_overview.png" />
+            <img src="../Resources/Images/resources/f5_bigip/f5_big_ip_overview.png" />
         </p>
-        <h3>F5 BIG-IP ASM Overview Tab</h3>
+        <h3>ASM Overview</h3>
         <p>
-            <img src="../Resources/Images/F5 BIG-IP/f5_big_ip_asm_overview.png" />
+            <img src="../Resources/Images/resources/f5_bigip/f5_big_ip_asm_overview.png" />
         </p>
     </body>
 </html>
