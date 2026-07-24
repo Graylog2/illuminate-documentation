@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head><title>OpenShift Content Pack</title>
+        <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1>OpenShift Content Pack</h1>
+        <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
+        <p>Red Hat OpenShift is a Kubernetes-based application platform that runs across on-premises, cloud, and hybrid environments. This technology pack processes OpenShift/Kubernetes container log messages delivered as JSON. The pack normalizes the JSON envelope and OpenShift/Kubernetes metadata into Graylog schema-compatible fields. This metadata includes container name/ID, namespace, pod, worker node, container image, and cluster ID. It also promotes the human-readable application message to the stored message field and normalizes the log level to a standard event severity. The pack leaves application-specific message bodies (e.g., Spring Boot, Kafka, or Django logs) intact for parsing in a future release.</p>
+        <p>This pack focuses on application logs (container stdout/stderr), identified by <code class="linecode">log_source</code> value container. It does not process OpenShift audit logs (kube-apiserver, openshift-apiserver, OVN, or node auditd) or node and infrastructure logs. These records carry no container metadata, so the pack skips them.</p>
+        <h2 id="supported-versions">Supported Versions</h2>
+        <ul>
+            <li>
+                <p>OpenShift 4.0 and later container logs in the OpenShift Logging (ViaQ) JSON data model, as emitted by a Fluentd or Vector collector.</p>
+                <p>
+                    <section class="importantBox">
+                        <div class="content">
+                            <p><b>Important:</b> You must configure the collector to forward the ViaQ JSON data model. The OpenTelemetry (OTEL) log data model introduced with OpenShift Logging 6.x (resource attributes, severityText, body) is <b>not supported</b>.</p>
+                        </div>
+                    </section>
+                </p>
+            </li>
+        </ul>
+        <div>
+            <h2 id="requirements">Requirements</h2>
+            <ul>
+                <li>
+                    <p>A Red Hat OpenShift or Kubernetes cluster emitting container logs as JSON.</p>
+                </li>
+                <li>
+                    <p>Graylog 7.1 or later.</p>
+                </li>
+                <li>
+                    <p>A log collector (e.g. Fluentd or Vector) shipping container logs to Graylog.</p>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h2 id="stream-configuration">Stream Configuration</h2>
+            <p>This technology pack includes 1 stream:</p>
+            <ul>
+                <li>Illuminate:OpenShift Messages</li>
+            </ul>
+            <MadCap:snippetBlock src="../Resources/Snippets/Template Snippets/ConceptKASnippets/Hint-AutoStreamConfig.flsnp" />
+        </div>
+        <div>
+            <h2 id="index-set-configuration">Index Set Configuration</h2>
+            <p>This technology pack includes 1 index set definition:</p>
+            <ul>
+                <li>OpenShift Logs</li>
+            </ul>
+            <MadCap:snippetBlock src="../Resources/Snippets/Template Snippets/ConceptKASnippets/Hint-AuthIndexSetConfig.flsnp" />
+        </div>
+        <h2 id="log-collection">Log Collection</h2>
+        <p>On each node, a log collector such as Fluentd or Vector gathers OpenShift container logs and ships them to Graylog as JSON, using the OpenShift Logging (ViaQ) data model. Graylog supports delivery over Beats, GELF, or syslog.</p>
+        <p>OpenShift logs are identified by input rather than by payload. Either dedicate a Graylog input to OpenShift and map it to <i>openshift</i> in the core input_routing lookup table, or use a pipeline rule to set a static <code class="linecode">RoutedFrom</code> field instead, as described in <a href="#routing">Input Routing Setup</a> below. When the JSON arrives over syslog with a priority header, Graylog strips the header before parsing.</p>
+        <p>Each record includes:</p>
+        <ul>
+            <li>
+                <p>cluster ID</p>
+            </li>
+            <li>
+                <p>metadata for the Kubernetes pod, namespace, container, and node</p>
+            </li>
+            <li>
+                <p>container stream (stdout or stderr)</p>
+            </li>
+            <li>
+                <p>log level</p>
+            </li>
+        </ul>
+        <p>This information is included alongside the application log line.</p>
+        <p>
+            <section class="importantBox">
+                <div class="content">
+                    <p><b>Important:</b> You must configure the collector to forward the ViaQ JSON data model. The OpenTelemetry (OTEL) log data model introduced with OpenShift Logging 6.x (resource attributes, severityText, body) is <b>not supported</b>.</p>
+                </div>
+            </section>
+        </p>
+        <p><a name="routing"></a>
+        </p>
+        <h3>Input Routing Setup</h3>
+        <p>OpenShift logs are identified by the Graylog input they arrive on rather than by their payload. A dedicated input must be mapped to this pack in the core input_routing lookup table. Map the input ID to <i>openshift</i> so that every message on that input is processed as an OpenShift container log.</p>
+        <ol>
+            <li>
+                <p>Create a dedicated input in Graylog for your OpenShift logs. Use a GELF, Beats, or Syslog input, depending on how your collector ships the logs.</p>
+            </li>
+            <li>
+                <p>Select <i>Show received messages</i> to open a search window on the input.</p>
+            </li>
+            <li>
+                <p>Copy the <code class="linecode">gl2_source_input</code> value from a received message.</p>
+            </li>
+            <li>
+                <p>Navigate to <i>Enterprise &gt; Illuminate</i>, then select the <i>Customization</i> tab.</p>
+            </li>
+            <li>
+                <p>Locate the <i>lookup_adapter_input_routing</i> title, then click <i>Edit</i>.</p>
+            </li>
+            <li>
+                <p>For <i>content_name</i> (key), enter <i>openshift</i> and for <i>input_id</i> (value), enter the <code class="linecode">gl2_source_input</code> ID copied earlier.</p>
+            </li>
+            <li>
+                <p>Select <i>Configure value</i>.</p>
+            </li>
+        </ol>
+        <p>All logs sent to the configured input are now identified as OpenShift container logs and processed by this pack. Repeat these steps for additional OpenShift inputs as needed.</p>
+        <p>Alternatively, use pipeline rules to set or create a static field <code class="linecode">RoutedFrom</code> with the value <i>Route - OpenShift Logs</i> instead of using the input_routing lookup table.</p>
+        <h2 id="forwarding">Configure OpenShift Log Forwarding</h2>
+        <p>This pack processes OpenShift/Kubernetes container logs delivered in the OpenShift Logging (ViaQ) JSON data model. These records have <code class="linecode">log_type</code> set to <code class="linecode">application</code> and <code class="linecode">log_source</code> set to <code class="linecode">container</code>, and carry the <code class="linecode">kubernetes</code> metadata object and the <code class="linecode">openshift.cluster_id</code> field.</p>
+        <p>Configure OpenShift Logging to forward these container (application) logs to the Graylog input you mapped under <a href="#routing">Input Routing Setup</a>. This pack does not process audit logs (kube-apiserver, openshift-apiserver, OVN, node auditd) or node and infrastructure logs. These logs do not need to be forwarded.</p>
+        <h3>Forward Container Logs from OpenShift Logging</h3>
+        <p>Configure the OpenShift Logging collector to forward logs to Graylog. OpenShift Logging 6.x supports Vector as the only collector, while OpenShift Logging 5.x and earlier support Fluentd and Vector. Refer to Red Hat's <a href="https://docs.redhat.com/en/documentation/red_hat_openshift_logging" target="_blank">OpenShift Logging documentation</a> for the exact procedure for your OpenShift version.</p>
+        <ol>
+            <li>
+                <p>Install the Red Hat OpenShift Logging Operator and deploy the collector.</p>
+            </li>
+            <li>
+                <p>Create a Graylog input for the OpenShift logs and map it to <code class="linecode">openshift</code> as described in <a href="#routing">Input Routing Setup</a> above.</p>
+            </li>
+            <li>
+                <p>Create or edit a <code class="linecode">ClusterLogForwarder</code> custom resource.</p>
+                <p>
+                    <section class="importantBox">
+                        <div class="content">
+                            <p><b>Important:</b> Only the ViaQ JSON data model is supported. If the collector forwards the OpenTelemetry (OTEL) data model (resource attributes, severityText, body), the logs will not be parsed by this pack.</p>
+                        </div>
+                    </section>
+                </p>
+            </li>
+            <li>
+                <p>Define an input that selects the <code class="linecode">application</code> log source, which is the container stream (<code class="linecode">stdout</code> or <code class="linecode">stderr</code>) this pack processes. Do not forward the <code class="linecode">audit</code> or <code class="linecode">infrastructure</code> sources.</p>
+            </li>
+            <li>
+                <p>Define an output that points at your Graylog input, using a transport supported by that input.</p>
+            </li>
+            <li>
+                <p>Add a pipeline in the <code class="linecode">ClusterLogForwarder</code> that connects the <code class="linecode">application</code> input to the Graylog output, then apply the resource.</p>
+            </li>
+            <li>
+                <p>Verify that container log records arrive on the Graylog input and that <code class="linecode">event_source_product</code> is set to <code class="linecode">openshift</code>.</p>
+            </li>
+        </ol>
+        <div>
+            <h2 id="log-format-example">Log Format Examples</h2>
+            <p>Representative OpenShift container log line (JSON).</p>
+            <div class="codeOutput">
+                <p>{"hostname":"ocp-worker-0.example.com","kubernetes":{"container_name":"sample-app","namespace_name":"sample-app-dev","pod_name":"sample-app-7c9f8b6d5c-abcde","container_id":"cri-o://1111111111111111111111111111111111111111111111111111111111111111","container_image":"registry.example.com/sample-app/sample-app:1.0.0","labels":{"app":"sample-app"},"pod_owner":"ReplicaSet/sample-app-7c9f8b6d5c"},"level":"info","container_iostream":"stdout","log_type":"application","log_source":"container","openshift":{"cluster_id":"11111111-1111-1111-1111-111111111111"},"message":"2025-04-15T19:09:17.723Z  INFO 1 --- [sample] [           main] com.example.app.SampleApplication    : Started SampleApplication in 7.318 seconds"}
+					{"@timestamp":"2025-03-24T14:39:04.750290671Z","hostname":"ocp-worker-0.example.com","kubernetes":{"annotations":{"openshift.io/scc":"confluent-operator"},"container_id":"cri-o://2222222222222222222222222222222222222222222222222222222222222222","container_image":"registry.example.com/sample-web/sample-web-ui:1.0.0","container_image_id":"registry.example.com/sample-web/sample-web-ui@sha256:2222222222222222222222222222222222222222222222222222222222222222","container_iostream":"stdout","container_name":"ui","labels":{"app":"ui","pod-template-hash":"7f784668b8"},"namespace_id":"44444444-4444-4444-4444-444444444444","namespace_labels":{"kubernetes_io_metadata_name":"sample-web-test"},"namespace_name":"sample-web-test","pod_id":"33333333-3333-3333-3333-333333333333","pod_ip":"10.128.2.43","pod_name":"ui-7f784668b8-njz49","pod_owner":"ReplicaSet/ui-7f784668b8"},"level":"default","log_source":"container","log_type":"application","message":"## CONTACT INFORMATION","openshift":{"cluster_id":"11111111-1111-1111-1111-111111111111","sequence":1744821243330547883},"timestamp":"2025-03-24T14:39:04.750290671Z"}
+					{"@timestamp":"2025-04-15T19:09:06.556825292Z","hostname":"ocp-worker-0.example.com","kubernetes":{"annotations":{"dynakube.dynatrace.com/injected":"true","metadata.dynatrace.com/k8s.workload.kind":"deployment","metadata.dynatrace.com/k8s.workload.name":"sample-docs","oneagent.dynatrace.com/injected":"true","openshift.io/scc":"confluent-operator"},"container_iostream":"stdout","container_name":"dynatrace-operator","labels":{"app":"sample-docs","pod-template-hash":"86dc8c7755"},"namespace_id":"55555555-5555-5555-5555-555555555555","namespace_labels":{"kubernetes_io_metadata_name":"sample-docs-dev"},"namespace_name":"sample-docs-dev","pod_id":"66666666-6666-6666-6666-666666666666","pod_ip":"10.128.9.157","pod_name":"sample-docs-86dc8c7755-xq4rw","pod_owner":"ReplicaSet/sample-docs-86dc8c7755"},"level":"info","log_source":"container","log_type":"application","openshift":{"cluster_id":"11111111-1111-1111-1111-111111111111","sequence":1744821243545406784},"structured":{"content":{"apiUrl":"https://dynatrace.example.com/e/11111111-1111-1111-1111-111111111111/api","skipCertCheck":true,"tenantUUID":"11111111-1111-1111-1111-111111111111"},"level":"info","logger":"injection-startup","msg":"contents of secret config","ts":"2025-04-15T19:09:06.556Z"},"timestamp":"2025-04-15T19:09:06.556825292Z"}
+				{"hostname":"ocp-worker-0.example.com","kubernetes":{"container_id":"cri-o://5555555555555555555555555555555555555555555555555555555555555555","container_image":"registry.example.com/model/model:1.0.0","container_iostream":"stdout","container_name":"model","labels":{"app":"model","pod-template-hash":"597bfcd89b"},"namespace_name":"sample-app-dev","pod_id":"6e15e0ed-a04a-4869-920f-69792a0cb6dd","pod_ip":"10.242.15.16","pod_name":"model-597bfcd89b-8cwlh","pod_owner":"ReplicaSet/model-597bfcd89b"},"level":"info","log_source":"container","log_type":"application","openshift":{"cluster_id":"11111111-1111-1111-1111-111111111111"},"message":"INFO:     10.242.16.2:52266 - \"GET /%5C..%5C..%5C..%5C..%5Cwinnt%5Cwin.ini HTTP/1.1\" 404 Not Found"}</p>
+            </div>
+        </div>
+        <h2 id="what-is-provided">What Is Provided</h2>
+        <ul>
+            <li>
+                <p>Input-based identification of OpenShift/Kubernetes container JSON logs.</p>
+            </li>
+            <li>
+                <p>Normalization of container metadata into the <code class="linecode">container_*</code> schema fields (name, id, namespace).</p>
+            </li>
+            <li>
+                <p>Worker node mapping to <code class="linecode">host_hostname</code>.</p>
+            </li>
+            <li>
+                <p>OpenShift/Kubernetes metadata normalized to the <code class="linecode">container_*</code> schema fields (image, iostream, pod name/uid/ip/owner, cluster id, app).</p>
+            </li>
+            <li>
+                <p>Promotion of the application message to the stored message field, including containers that use structured JSON logging with no top-level message.</p>
+            </li>
+            <li>
+                <p>Log level normalized to <code class="linecode">event_severity</code> and <code class="linecode">event_severity_level</code>.</p>
+            </li>
+            <li>
+                <p>Parsing of Uvicorn and Starlette HTTP access lines into <code class="linecode">http_</code> and <code class="linecode">source_</code> fields (<code class="linecode">source_ip</code>, <code class="linecode">source_port</code>, <code class="linecode">http_request_method</code>, <code class="linecode">http_request_path</code>, <code class="linecode">http_version</code>, <code class="linecode">http_response_code</code>).</p>
+            </li>
+        </ul>
+    </body>
+</html>
