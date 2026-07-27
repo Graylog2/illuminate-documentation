@@ -5,9 +5,11 @@
         <link href="../Resources/Stylesheets/Styles.css" rel="stylesheet" />
     </head>
     <body>
-        <h1>Caddy Web Server Content Pack</h1>
+        <h1>
+            <MadCap:concept term="Web Servers" />Caddy Web Server Content Pack</h1>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>This content pack is designed for Caddy web server running on Ubuntu systems. It parses Caddy web server access logs.</p>
+        <p>This content pack is designed for Caddy web server running on Ubuntu systems. It parses Caddy web server access
+        logs.</p>
         <h2 id="supported-versions">Supported Versions</h2>
         <ul>
             <li>
@@ -17,7 +19,8 @@
         <h2 id="requirements">Requirements</h2>
         <ul>
             <li>
-                <p>The supported log delivery is via Filebeat with <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">Graylog Sidecar</a>.</p>
+                <p>The supported log delivery is via Filebeat with <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">Graylog
+                    Sidecar</a>.</p>
             </li>
             <li>
                 <p>The pack only supports Ubuntu and Linux versions with the same path and file structure.</p>
@@ -31,25 +34,16 @@
         <ul>
             <li>"Illuminate:Caddy Webserver Messages"</li>
         </ul>
-        <p>
-            <section class="infoBox">
-                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the activation of this pack then it will be created and configured to route messages to this stream and the associated index set. There should not be any stream rules configured for this stream.</span>
-                </div>
-            </section>
-        </p>
+        <MadCap:snippetBlock src="../Resources/Snippets/Template Snippets/ConceptKASnippets/Hint-AutoStreamConfig.flsnp" />
         <h2 id="index-set-configuration">Index Set Configuration</h2>
         <p>This technology pack includes 1 index set definition:</p>
         <ul>
             <li>"Caddy Webserver Logs"</li>
         </ul>
-        <p>
-            <section class="infoBox">
-                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then nothing will be changed. If this index set does not exist, then it will be created with retention settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after installation.</span>
-                </div>
-            </section>
-        </p>
-        <h2>Input via Filebeat together with Graylog Sidecar</h2>
-        <p>Please use <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">the official Graylog Sidecar documentation</a> to configure your Graylog server and your client(s).</p>
+        <MadCap:snippetBlock src="../Resources/Snippets/Template Snippets/ConceptKASnippets/Hint-AuthIndexSetConfig.flsnp" />
+        <h3>Input via Filebeat and Graylog Sidecar</h3>
+        <p>Please use <a href="https://go2docs.graylog.org/current/getting_in_log_data/graylog_sidecar.html">the official
+            Graylog Sidecar documentation</a> to configure your Graylog server and your client(s).</p>
         <ol>
             <li>
                 <p>Create an input and an API key and set up Graylog Sidecar.</p>
@@ -60,82 +54,87 @@
         </ol>
         <p>
             <section class="infoBox">
-                <div class="title"><b>Hint: </b><span style="font-weight: normal;">It is possible to run the Caddy web server and Graylog on the same machine.</span>
+                <div class="content">
+                    <p><b>Hint:</b> It is possible to run the Caddy web server
+                and Graylog on the same machine.</p>
                 </div>
             </section>
         </p>
         <h3>Graylog Server Settings</h3>
         <ol>
             <li>
-                <p>Create a global <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats input</a> in Graylog.</p>
+                <p>Create a global <a href="https://go2docs.graylog.org/current/getting_in_log_data/beats_input.html">Beats
+                    input</a> in Graylog.</p>
             </li>
             <li>
-                <p>Create a Graylog <a href="https://go2docs.graylog.org/current/setting_up_graylog/rest_api.html">REST API</a> access token and save it.</p>
+                <p>Create a Graylog <a href="https://go2docs.graylog.org/current/setting_up_graylog/rest_api.html">REST
+                    API</a> access token and save it.</p>
             </li>
             <li>
-                <p>Create a (Linux) filebeat configuration under <em>Sidercar &gt; Configuration</em> with a 'Filebeat on Linux' collector.</p>
+                <p>Create a (Linux) filebeat configuration under <em>Sidercar &gt; Configuration</em> with a <i>Filebeat on Linux</i> collector.</p>
             </li>
             <li>
                 <p>Configure the file and add:</p>
-                <ol>
+                <ul>
                     <li>
-                        <p>The correct IP (Graylog server IP) under <code class="linecode">hosts</code>.</p>
+                        <p>The correct IP address (Graylog server) under <code class="linecode">hosts</code>.</p>
                     </li>
                     <li>
                         <p>The log source configured to the desired value and a field <code class="linecode">event_source_product</code> with the value <code class="linecode">caddy_webserver</code>.</p>
                     </li>
-                </ol>
+                    <li>
+                        <p>This path setting pulls all logs in the <code class="linecode">- /var/log/caddy/*</code> folder. Adjust the Caddy web server configuration file to store the logs locally and choose the required                path, if necessary.</p>
+                    </li>
+                </ul>
                 <MadCap:codeSnippet>
                     <MadCap:codeSnippetCopyButton />
                     <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">filebeat.inputs:
-- input_type: log
-paths:
-- /var/log/caddy/*
-type: filestream
-fields_under_root: true
-fields:
-event_source_product: caddy_webserver</MadCap:codeSnippetBody>
+                    - input_type: log
+                    paths:
+                      - /var/log/caddy/*
+                    type: filestream
+                    fields_under_root: true
+                    fields:
+                      event_source_product: caddy_webserver</MadCap:codeSnippetBody>
                 </MadCap:codeSnippet>
+                <p>
+                    <section class="warningBox">
+                        <div class="content"><b>Warning:</b> There must be two spaces in front of
+                <code class="linecode">event_source_product</code> and <code class="linecode">- /var...</code> .</div>
+                    </section>
+                </p>
             </li>
             <li>
-                <p>This setting will pull all logs in the <code class="linecode">- /var/log/caddy/*</code> folder. If needed, adjust the Caddy web server configuration file to store the logs locally and chose the wanted path.</p>
-            </li>
-            <li>
-                <p>Finally, save the configuration to complete setup.</p>
+                <p>Save the configuration to complete setup.</p>
             </li>
         </ol>
-        <p>
-            <section class="warningBox">
-                <div class="content"><b>Warning: </b><span style="font-weight: normal;">There must be two spaces in front of <code class="linecode">event_source_product</code> and <code class="linecode">- /var...</code> .</span>
-                </div>
-            </section>
-        </p>
-        <h2>Configure a Client with Filebeat and Graylog Sidecar</h2>
+        <h3>Configure a Client with Filebeat and Graylog Sidecar</h3>
         <ol>
             <li>
                 <p>Install Sidecar on the remote machine.</p>
                 <MadCap:codeSnippet>
                     <MadCap:codeSnippetCopyButton />
-                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">wget https://packages.graylog2.org/repo/packages/graylog-sidecar-repository_1-5_all.deb
-sudo dpkg -i graylog-sidecar-repository_1-5_all.deb
-sudo apt-get update &amp;&amp; sudo apt-get install graylog-sidecar</MadCap:codeSnippetBody>
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">wget
+                    https://packages.graylog2.org/repo/packages/graylog-sidecar-repository_1-5_all.deb
+                    sudo dpkg -i graylog-sidecar-repository_1-5_all.deb
+                    sudo apt-get update &amp;&amp; sudo apt-get install graylog-sidecar</MadCap:codeSnippetBody>
                 </MadCap:codeSnippet>
             </li>
             <li>
                 <p>Edit the <code class="linecode">/etc/graylog/sidecar/sidecar.yml</code> file and configure:</p>
-                <ol>
+                <ul>
                     <li>
                         <p><code class="linecode">server_url</code> GraylogServerIP</p>
                     </li>
                     <li>
                         <p><code class="linecode">server_api_token:</code> Your API token</p>
                     </li>
-                </ol>
+                </ul>
                 <MadCap:codeSnippet>
                     <MadCap:codeSnippetCopyButton />
                     <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo gedit /etc/graylog/sidecar/sidecar.yml
-server_url: "http://192.168.122.52:9000/api/"
-server_api_token: "65ol7edseo24mub8o7pu86h2rsr8j9fjjpimtrm9nrpbjso7cnv"</MadCap:codeSnippetBody>
+                    server_url: "http://192.168.122.52:9000/api/"
+                    server_api_token: "65ol7edseo24mub8o7pu86h2rsr8j9fjjpimtrm9nrpbjso7cnv"</MadCap:codeSnippetBody>
                 </MadCap:codeSnippet>
             </li>
             <li>
@@ -143,37 +142,44 @@ server_api_token: "65ol7edseo24mub8o7pu86h2rsr8j9fjjpimtrm9nrpbjso7cnv"</MadCap:
                 <MadCap:codeSnippet>
                     <MadCap:codeSnippetCopyButton />
                     <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">sudo graylog-sidecar -service install
-sudo systemctl enable graylog-sidecar
-sudo systemctl start graylog-sidecar
-sudo systemctl status graylog-sidecar</MadCap:codeSnippetBody>
+                    sudo systemctl enable graylog-sidecar
+                    sudo systemctl start graylog-sidecar
+                    sudo systemctl status graylog-sidecar</MadCap:codeSnippetBody>
                 </MadCap:codeSnippet>
             </li>
             <li>
-                <p>Install filebeats <a href="https://www.elastic.co/downloads/beats/filebeat">according to the documentation</a>. Or, here is the <a href="https://www.elastic.co/downloads/beats/filebeat-oss">download link</a> for the OSS version.</p>
-                <ol>
+                <p>Install Filebeat <a href="https://www.elastic.co/downloads/beats/filebeat">according to the
+                    documentation</a>. Or, here is the <a href="https://www.elastic.co/downloads/beats/filebeat-oss">download link</a> for the OSS version.
+            </p>
+                <ul>
                     <li>
-                        <p>If you install it manually, install it again under <code class="linecode">/etc/filebeat</code>.</p>
+                        <p>If you install it manually, install it again under <code class="linecode">/etc/filebeat</code>.
+                    </p>
                     </li>
                     <li>
-                        <p>If you install it via <code class="linecode">apt-get</code>, then it is in the correct folder.</p>
+                        <p>If you install it via <code class="linecode">apt-get</code>, then it is in the correct folder.
+                    </p>
                     </li>
-                </ol>
+                </ul>
             </li>
             <li>
                 <p>Example commands for Ubuntu:</p>
                 <MadCap:codeSnippet>
                     <MadCap:codeSnippetCopyButton />
-                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-sudo apt-get install apt-transport-https
-echo "deb https://artifacts.elastic.co/packages/oss-8.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-8.x.list
-sudo apt-get update &amp;&amp; sudo apt-get install filebeat
-sudo systemctl enable filebeat
-sudo systemctl start filebeat
-sudo systemctl status filebeat</MadCap:codeSnippetBody>
+                    <MadCap:codeSnippetBody MadCap:useLineNumbers="False" MadCap:lineNumberStart="1" MadCap:continue="False" xml:space="preserve">wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key
+                    add -
+                    sudo apt-get install apt-transport-https
+                    echo "deb https://artifacts.elastic.co/packages/oss-8.x/apt stable main" | sudo tee -a
+                    /etc/apt/sources.list.d/elastic-8.x.list
+                    sudo apt-get update &amp;&amp; sudo apt-get install filebeat
+                    sudo systemctl enable filebeat
+                    sudo systemctl start filebeat
+                    sudo systemctl status filebeat</MadCap:codeSnippetBody>
                 </MadCap:codeSnippet>
             </li>
             <li>
-                <p>(<em>Optional</em>) Edit the <code class="linecode">filebeat.yml</code> file as needed. You do this via the Sidecar configuration in the Graylog interface.</p>
+                <p>(<em>Optional</em>) Edit the <code class="linecode">filebeat.yml</code> file as needed. You do this via
+                the Sidecar configuration in the Graylog interface.</p>
             </li>
             <li>
                 <p>Start the deamon.</p>
@@ -191,8 +197,8 @@ sudo systemctl status filebeat</MadCap:codeSnippetBody>
         </ol>
         <p>
             <section class="warningBox">
-                <div class="content"><b>Warning: </b><span style="font-weight: normal;">This pack was tested on Ubuntu and may not work as designed with other Linux-based systems due to different path and file names.</span>
-                </div>
+                <div class="content"><b>Warning:</b> This pack was tested on Ubuntu and may
+                not work as designed with other Linux-based systems due to different path and file names.</div>
             </section>
         </p>
         <h2 id="log-format-example">Log Format Example</h2>
@@ -200,13 +206,216 @@ sudo systemctl status filebeat</MadCap:codeSnippetBody>
         <p><code class="linecode">"level":"info","ts":1743966522.1211624,"logger":"http.log.access","msg":"handled request","request":{"remote_ip":"192.168.156.55","remote_port":"60128","client_ip":"192.168.156.34","proto":"HTTP/1.1","method":"GET","host":"20.20.232.216:80","uri":"/","headers":{"User-Agent":["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.85 Safari/537.36 Edg/90.0.818.46"],"Accept-Encoding":["gzip, deflate","gzip, deflate"],"Connection":["keep-alive"],"Content-Type":["application/x-www-form-urlencoded; charset=UTF-8"],"Accept":["/"],"X-Requested-With":["XMLHttpRequest"],"Accept-Language":["en US,en;q=0.9,sv;q=0.8"]}},"bytes_read":110,"user_id":"","duration":0.000018081,"size":20,"status":308,"resp_headers":{"Server":["Caddy"],"Connection":["close"],"Location":["https://20.20.222.216/"],"Content-Type":[]}
         </code>
         </p>
-        <h2 id="what-is-provided">What is Provided</h2>
+        <h2 id="what-is-provided">What Is Provided</h2>
         <ul>
             <li>
-                <p>Parsing rules to extract Caddy web server logs into Graylog schema-compatible fields. Caddy web server logs receive the GIM code <code class="linecode">180200 (http.communication)</code>.</p>
+                <p>Parsing rules to extract Caddy web server access and error logs into Graylog schema-compatible fields.
+            </p>
+            </li>
+            <li>
+                <p>GIM categorization for both access and error logs as 180200 (http communication) with Security Core
+                enforcement fields.</p>
             </li>
         </ul>
-        <h3>Field Mapping</h3>
+        <h3 id="gim-categorization">GIM Categorization</h3>
+        <p>GIM categorization is provided for the following messages:</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Message Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_type_code</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_category</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_class</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">gim_event_subcategory</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">gim_event_type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Access Logs</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">180200</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">protocol</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http.communication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">http communication</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">Error Logs</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">180200</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">http</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">protocol</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2">http.communication</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2">http communication</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Message Fields Included in This Pack</h3>
+        <h4>Parsed Fields</h4>
+        <p>The following fields are extracted and normalized from Caddy web server access logs.</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <thead>
+                <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Name</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Example Value</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">Field Type</th>
+                    <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">destination_bytes_sent</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">10</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Bytes read from the client request body
+                </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">event_source_product</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">caddy_webserver</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Illuminate product identifier</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">host_ip</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">20.20.232.216</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ip</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Destination host IP address</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">host_port</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">80</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Destination host port</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_host</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">20.20.232.216:80</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP host header value</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_request_method</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">GET</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP request method</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_request_path</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">/</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP request URI path</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_response</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">Permanent Redirect</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP response status text</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_response_class</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">redirection messages</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP response class category</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_response_code</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">308</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP response status code</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">http_user_agent</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">Mozilla/5.0 ...</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">HTTP User-Agent header</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http_version</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">1.1</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">HTTP protocol version</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">network_forwarded_ip</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">192.168.156.34</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">ip</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Forwarded client IP address</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">network_protocol</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Network protocol</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_bytes_sent</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">20</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Response body size in bytes</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_ip</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">192.168.156.34</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">ip</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Client IP address</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">source_port</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">60128</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">long</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Client source port</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">source_reference</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">192.168.156.34</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Source reference derived from source_ip
+                </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_description</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">handled request</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Caddy log message</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_event_duration</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">0.000018081</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">double</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Request processing duration in seconds
+                </td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_event_severity</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">info</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">Caddy log level</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_logger</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">http.log.access</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">string</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">Caddy logger name</td>
+                </tr>
+                <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">vendor_ts</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">1743966522.121</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1">double</td>
+                    <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1">Caddy event timestamp</td>
+                </tr>
+            </tbody>
+        </table>
+        <h4>Field Mapping</h4>
         <MadCap:dropDown>
             <MadCap:dropDownHead>
                 <MadCap:dropDownHotspot>Fields List <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
@@ -259,11 +468,13 @@ sudo systemctl status filebeat</MadCap:codeSnippetBody>
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">user_id</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_resp_headers_connection</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_resp_headers_connection
+                        </td>
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">resp_headers.Connection</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_resp_headers_content_type</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_resp_headers_content_type
+                        </td>
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">resp_headers.Content-Type</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
@@ -279,35 +490,48 @@ sudo systemctl status filebeat</MadCap:codeSnippetBody>
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">resp_headers.Alt-Svc</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_resp_headers_content_encoding</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">resp_headers.Content-Encoding</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            vendor_resp_headers_content_encoding</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">resp_headers.Content-Encoding
+                        </td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_resp_headers_content_security_policy</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">resp_headers.Content-Security-Policy</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            vendor_resp_headers_content_security_policy</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            resp_headers.Content-Security-Policy</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_resp_headers_xcontent_type_options</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">resp_headers.X-Content-Type-Options</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            vendor_resp_headers_xcontent_type_options</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            resp_headers.X-Content-Type-Options</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_resp_headers_xframe_options</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            vendor_resp_headers_xframe_options</td>
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">resp_headers.X-Frame-Options</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_resp_headers_xgraylog_node_id</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">resp_headers.X-Graylog-Node-Id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            vendor_resp_headers_xgraylog_node_id</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">resp_headers.X-Graylog-Node-Id
+                        </td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_resp_headers_xua_compatible</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            vendor_resp_headers_xua_compatible</td>
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">resp_headers.X-Ua-Compatible</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_resp_headers_xruntime_microseconds</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">resp_headers.X-Runtime-Microseconds</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">
+                            vendor_resp_headers_xruntime_microseconds</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            resp_headers.X-Runtime-Microseconds</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_resp_headers_content_length</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            vendor_resp_headers_content_length</td>
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">resp_headers.Content-Length</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
@@ -343,16 +567,21 @@ sudo systemctl status filebeat</MadCap:codeSnippetBody>
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Accept</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_headers_accept_encoding</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Accept-Encoding</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_headers_accept_encoding
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Accept-Encoding
+                        </td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_headers_accept_language</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Accept-Language</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_headers_accept_language
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Accept-Language
+                        </td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_headers_cache_control</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Cache-Control</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Cache-Control
+                        </td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_headers_connection</td>
@@ -371,32 +600,44 @@ sudo systemctl status filebeat</MadCap:codeSnippetBody>
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Priority</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_headers_xgraylog_no_session_extension</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.X-Graylog-No-Session-Extension</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">
+                            vendor_headers_xgraylog_no_session_extension</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">
+                            request.headers.X-Graylog-No-Session-Extension</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_headers_sec_ch_ua</td>
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Sec-Ch-Ua</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_headers_sec_ch_ua_mobile</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Sec-Ch-Ua-Mobile</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_headers_sec_ch_ua_mobile
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Sec-Ch-Ua-Mobile
+                        </td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_headers_sec_ch_ua_platform</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Sec-Ch-Ua-Platform</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_headers_sec_ch_ua_platform
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">
+                            request.headers.Sec-Ch-Ua-Platform</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_headers_sec_fetch_dest</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Sec-Fetch-Dest</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_headers_sec_fetch_dest
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Sec-Fetch-Dest
+                        </td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_headers_sec_fetch_mode</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Sec-Fetch-Mode</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_headers_sec_fetch_mode
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.Sec-Fetch-Mode
+                        </td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_headers_sec_fetch_site</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Sec-Fetch-Site</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_headers_sec_fetch_site
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.Sec-Fetch-Site
+                        </td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
                             <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_headers_sec_gpc</td>
@@ -411,11 +652,14 @@ sudo systemctl status filebeat</MadCap:codeSnippetBody>
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.headers.User-Agent</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_headers_xrequested_with</td>
-                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.X-Requested-With</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_headers_xrequested_with
+                        </td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.headers.X-Requested-With
+                        </td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_request_tls_cipher_suite</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1">vendor_request_tls_cipher_suite
+                        </td>
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.tls.cipher_suite</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
@@ -427,7 +671,8 @@ sudo systemctl status filebeat</MadCap:codeSnippetBody>
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1">request.tls.resumed</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_request_tls_server_name</td>
+                            <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2">vendor_request_tls_server_name
+                        </td>
                             <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2">request.tls.server_name</td>
                         </tr>
                         <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
@@ -443,8 +688,10 @@ sudo systemctl status filebeat</MadCap:codeSnippetBody>
             </MadCap:dropDownBody>
         </MadCap:dropDown>
         <h2 id="spotlight-content-pack">Caddy Web Server Content Pack</h2>
-        <p>This spotlight offers a dashboard with 1 tab:<img src="../Resources/Images/Caddy Webserver Content Pack/caddy overview.png" /></p>
+        <p>This spotlight offers a dashboard with 1 tab:</p>
         <h3>Overview</h3>
-        <p>&#160;</p>
+        <p>
+            <img src="../Resources/Images/Caddy Webserver Content Pack/caddy overview.png" />
+        </p>
     </body>
 </html>
