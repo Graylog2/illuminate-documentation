@@ -7,10 +7,9 @@
     <body>
         <h1> <MadCap:concept term="Vendor:Microsoft" />Microsoft Windows Security Content Pack</h1>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>This technology pack processes Windows Security event logs, providing normalization and enrichment of common
-        events of interest. In addition, it identifies all Windows logs that have not been processed by any other
-        technology pack, normalizes common event log fields, and indexes these messages in a separate index.</p>
-        <p>This content pack also includes a supplemental processing pack, <a href="#supplemental">Microsoft Windows Security Message Size Reduction</a>, that you can enable to reduce storage requirements for processes Windows Security logs.</p>
+        <p>This technology pack will process Windows Security event logs, providing normalization and enrichment of common
+        events of interest. In addition, it will identify all Windows logs that have not been processed by any other
+        technology pack, normalize common event log fields, and index these messages in a separate index.</p>
         <h2 id="supported-versions">Supported Versions</h2>
         <ul>
             <li>
@@ -29,20 +28,35 @@
         <h2 id="stream-configuration">Stream Configuration</h2>
         <p>This technology pack includes 2 streams:</p>
         <ul>
-            <li>Illuminate:Windows Security Event Log Messages: Contains all messages from the Windows Security event
-            log.</li>
-            <li>Illuminate:Windows Event Log Messages: Contains all event log messages that have not been processed by
-            this or any other technology pack.</li>
+            <li>"Illuminate:Windows Security Event Log Messages" -- contains all messages from the Windows Security event
+            log</li>
+            <li>"Illuminate:Windows Event Log Messages" -- contains all event log messages that have not been processed by
+            this or any other technology pack</li>
         </ul>
-        <MadCap:snippetBlock src="../Resources/Snippets/Template Snippets/ConceptKASnippets/Hint-AutoStreamConfig.flsnp" />
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this stream does not exist prior to the
+                activation of this pack then it will be created and configured to route messages to this stream and the
+                associated index set. There should not be any stream rules configured for this stream.</span>
+                </div>
+            </section>
+        </p>
         <h2 id="index-set-configuration">Index Set Configuration</h2>
         <p>This technology pack includes 2 index set definitions:</p>
         <ul>
-            <li>Windows Security Event Log Messages: Contains all messages from the Windows Security event log.</li>
-            <li>Windows Event Log Messages: Contains all event log messages not processed by this or any other
-            technology pack.</li>
+            <li>"Windows Security Event Log Messages" -- contains all messages from the Windows Security event log</li>
+            <li>"Windows Event Log Messages" -- contains all event log messages not processed by this or any other
+            technology pack</li>
         </ul>
-        <MadCap:snippetBlock src="../Resources/Snippets/Template Snippets/ConceptKASnippets/Hint-AuthIndexSetConfig.flsnp" />
+        <p>
+            <section class="infoBox">
+                <div class="title"><b>Hint: </b><span style="font-weight: normal;">If this index set is already defined, then
+                nothing will be changed. If this index set does not exist, then it will be created with retention
+                settings of a daily rotation and 90 days of retention. These settings can be adjusted as required after
+                installation.</span>
+                </div>
+            </section>
+        </p>
         <h2 id="log-collection">Log Collection</h2>
         <p>The following log delivery agents are supported:</p>
         <ul>
@@ -104,7 +118,7 @@
                 <p>Edit the Graylog Sidecar client configuration with your Graylog server API URL and API access token.</p>
             </li>
         </ol>
-        <h2 id="what-is-provided">What Is Provided</h2>
+        <h2 id="what-is-provided">What is Provided</h2>
         <ul>
             <li>
                 <p>Parsing and normalization to extract Windows event logs into Graylog schema compatible fields</p>
@@ -2019,19 +2033,5 @@
                 </table>
             </MadCap:dropDownBody>
         </MadCap:dropDown>
-        <div>
-            <p><a name="supplemental"></a>
-            </p>
-            <h2>Microsoft Windows Security Message Size Reduction Processing Pack</h2>
-            <p>This supplementary pack reduces storage by removing redundant descriptive text from Windows Security event logs. This pack removes descriptive text commonly appended to the end of certain messages. While such text can be helpful for manual review, it adds unnecessary indexing and storage overhead.</p>
-            <p>Enable this pack to reduce event size and improve storage efficiency. Do not enable it if full event message retention is required. Increased processing load is expected. Therefore, monitor system performance after activation.</p>
-            <p>
-                <section class="importantBox">
-                    <div class="content">
-                        <p><b>Important</b>: This processing pack works only on Microsoft Windows operating systems that are in English.</p>
-                    </div>
-                </section>
-            </p>
-        </div>
     </body>
 </html>
