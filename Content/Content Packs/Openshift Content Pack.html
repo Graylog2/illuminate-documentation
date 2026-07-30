@@ -6,7 +6,7 @@
     <body>
         <h1>OpenShift Content Pack</h1>
         <MadCap:snippetBlock src="../Resources/Snippets/IlluminateBanner.flsnp" />
-        <p>Red Hat OpenShift is a Kubernetes-based application platform that runs across on-premises, cloud, and hybrid environments. This technology pack processes OpenShift/Kubernetes container log messages delivered as JSON. The pack normalizes the JSON envelope and OpenShift/Kubernetes metadata into Graylog schema-compatible fields. This metadata includes container name/ID, namespace, pod, worker node, container image, and cluster ID. It also promotes the human-readable application message to the stored message field and normalizes the log level to a standard event severity. The pack leaves application-specific message bodies (e.g., Spring Boot, Kafka, or Django logs) intact for parsing in a future release.</p>
+        <p>Red Hat OpenShift is a Kubernetes-based application platform that runs across on-premises, cloud, and hybrid environments. This technology pack processes OpenShift/Kubernetes container log messages delivered as JSON. The pack normalizes the JSON envelope and OpenShift/Kubernetes metadata into Graylog schema-compatible fields. This metadata includes container name/ID, namespace, pod, worker node, container image, and cluster ID. It also promotes the human-readable application message to the stored message field and normalizes the log level to a standard event severity. The pack leaves application-specific message bodies (e.g., Spring Boot, Kafka, or Django logs) intact for parsing in a future release, except for Uvicorn HTTP access log lines, which this pack parses now.</p>
         <p>This pack focuses on application logs (container stdout/stderr), identified by <code class="linecode">log_source</code> value container. It does not process OpenShift audit logs (kube-apiserver, openshift-apiserver, OVN, or node auditd) or node and infrastructure logs. These records carry no container metadata, so the pack skips them.</p>
         <h2 id="supported-versions">Supported Versions</h2>
         <ul>
@@ -52,7 +52,7 @@
             <MadCap:snippetBlock src="../Resources/Snippets/Template Snippets/ConceptKASnippets/Hint-AuthIndexSetConfig.flsnp" />
         </div>
         <h2 id="log-collection">Log Collection</h2>
-        <p>On each node, a log collector such as Fluentd or Vector gathers OpenShift container logs and ships them to Graylog as JSON, using the OpenShift Logging (ViaQ) data model. Graylog supports delivery over Beats, GELF, or syslog.</p>
+        <p>On each node, a log collector such as Fluentd or Vector gathers OpenShift container logs and ships them to Graylog as JSON, using the OpenShift Logging (ViaQ) data model. Graylog supports delivery over syslog.</p>
         <p>OpenShift logs are identified by input rather than by payload. Either dedicate a Graylog input to OpenShift and map it to <i>openshift</i> in the core input_routing lookup table, or use a pipeline rule to set a static <code class="linecode">RoutedFrom</code> field instead, as described in <a href="#routing">Input Routing Setup</a> below. When the JSON arrives over syslog with a priority header, Graylog strips the header before parsing.</p>
         <p>Each record includes:</p>
         <ul>
@@ -83,7 +83,7 @@
         <p>OpenShift logs are identified by the Graylog input they arrive on rather than by their payload. A dedicated input must be mapped to this pack in the core input_routing lookup table. Map the input ID to <i>openshift</i> so that every message on that input is processed as an OpenShift container log.</p>
         <ol>
             <li>
-                <p>Create a dedicated input in Graylog for your OpenShift logs. Use a GELF, Beats, or Syslog input, depending on how your collector ships the logs.</p>
+                <p>Create a dedicated Syslog input in Graylog for your OpenShift logs.</p>
             </li>
             <li>
                 <p>Select <i>Show received messages</i> to open a search window on the input.</p>
@@ -157,13 +157,10 @@
                 <p>Input-based identification of OpenShift/Kubernetes container JSON logs.</p>
             </li>
             <li>
-                <p>Normalization of container metadata into the <code class="linecode">container_*</code> schema fields (name, id, namespace).</p>
+                <p>Normalization of container and OpenShift/Kubernetes metadata into the <code class="linecode">container_*</code> schema fields (name, id, namespace, image, iostream, pod name/uid/ip/owner, cluster id, app).</p>
             </li>
             <li>
                 <p>Worker node mapping to <code class="linecode">host_hostname</code>.</p>
-            </li>
-            <li>
-                <p>OpenShift/Kubernetes metadata normalized to the <code class="linecode">container_*</code> schema fields (image, iostream, pod name/uid/ip/owner, cluster id, app).</p>
             </li>
             <li>
                 <p>Promotion of the application message to the stored message field, including containers that use structured JSON logging with no top-level message.</p>
@@ -172,7 +169,7 @@
                 <p>Log level normalized to <code class="linecode">event_severity</code> and <code class="linecode">event_severity_level</code>.</p>
             </li>
             <li>
-                <p>Parsing of Uvicorn and Starlette HTTP access lines into <code class="linecode">http_</code> and <code class="linecode">source_</code> fields (<code class="linecode">source_ip</code>, <code class="linecode">source_port</code>, <code class="linecode">http_request_method</code>, <code class="linecode">http_request_path</code>, <code class="linecode">http_version</code>, <code class="linecode">http_response_code</code>).</p>
+                <p>Parsing of Uvicorn HTTP access lines into <code class="linecode">http_</code> and <code class="linecode">source_</code> fields (<code class="linecode">source_ip</code>, <code class="linecode">source_port</code>, <code class="linecode">http_request_method</code>, <code class="linecode">http_request_path</code>, <code class="linecode">http_version</code>, <code class="linecode">http_response_code</code>).</p>
             </li>
         </ul>
     </body>
