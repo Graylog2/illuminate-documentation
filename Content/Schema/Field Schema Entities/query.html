@@ -44,23 +44,43 @@
     </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>query_record_type</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>query_domain</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Identifies the type of resource information requested during the lookup operation.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Normalized domain name associated with the query: ASCII-lowercased, with any trailing dot stripped, and punycode labels decoded to Unicode. Illuminate Core's domain enrichment pipeline populates this field from query_request when installed; other event sources or pipelines may populate it independently.</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>A, AAAA, MX, SRV</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>www.example.com</p>
     </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>query_record_type_code</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>query_record_type</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Numeric identifier representing the resource record type requested by the lookup.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Identifies the type of resource information requested during the lookup operation.</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>1, 3, 5</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>A, AAAA, MX, SRV</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>query_record_type_code</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Numeric identifier representing the resource record type requested by the lookup.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>1, 3, 5</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>query_registered_domain</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Highest registered domain associated with the query, stripped of any subdomain, determined using the public suffix list. For example, the registered domain of "mail.example.com" is "example.com". Illuminate Core's domain enrichment pipeline populates this field from query_request when installed; other event sources or pipelines may populate it independently.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>example.com</p>
     </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
@@ -114,13 +134,33 @@
     </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>query_result_code</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>query_result_code</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Numeric identifier representing the outcome of the lookup, aligned with standard resolution result codes.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>0, 3</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>query_subdomain</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Subdomain portion associated with the query, containing all labels below query_registered_domain, with no trailing period. For example, the subdomain of "mail.corp.example.com" is "mail.corp". Illuminate Core's domain enrichment pipeline populates this field from query_request when installed; other event sources or pipelines may populate it independently.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>mail</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>query_top_level_domain</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>Numeric identifier representing the outcome of the lookup, aligned with standard resolution result codes.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>Effective top-level domain (eTLD), also known as the domain suffix, associated with the query, determined using the public suffix list. For example, the top-level domain of "example.co.uk" is "co.uk". Illuminate Core's domain enrichment pipeline populates this field from query_request when installed; other event sources or pipelines may populate it independently.</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1"><p>0, 3</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1"><p>com</p>
     </td>
             </tr>
         </tbody>

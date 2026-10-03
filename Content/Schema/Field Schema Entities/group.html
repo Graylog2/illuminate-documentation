@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <title>Group Fields</title>
+    </head>
+    <body>
+        <h1>Group Fields</h1>
+        <h2>Overview</h2>
+        <p>The <strong>group</strong> fields describe logical group constructs used to organize identities, accounts, or principals within an operating system, directory service, or application platform.<br />
+        Groups are commonly used to assign permissions, privileges, or access policies to multiple members collectively.<br />
+        This entity provides a normalized representation of group identifiers, names, membership relationships, and contextual attributes.</p>
+        <h2>Design and Usage</h2>
+        <p>The <code class="linecode">group</code> entity models group objects independently of the specific identity system or directory implementation.<br />
+        It supports representation of both local and directory-based groups and their relationships to member identities.<br />
+        Fields within this entity enable correlation between group membership changes, access evaluations, and privilege assignments across heterogeneous systems.</p>
+        <h2>Common Use Cases</h2>
+        <ul>
+            <li>Tracking group membership and membership changes for auditing and compliance purposes.  </li>
+            <li>Identifying privileged or sensitive groups associated with elevated access.  </li>
+            <li>Correlating authentication or authorization events with group-based access controls.  </li>
+            <li>Normalizing group identifiers across operating systems, directory services, and cloud identity platforms.</li>
+        </ul>
+        <h2>Implementation Notes</h2>
+        <p>As a top-level entity, <code class="linecode">group</code> represents the group object itself rather than the event that references it.<br />
+        Group identifiers may be numeric, string-based, or security identifiers depending on the source system.<br />
+        Membership-related fields should be populated when group membership is explicitly observed or modified.<br />
+        If group context is implied but not explicitly provided, corresponding group fields should be included to maintain relational integrity and clarify access semantics.</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <colgroup>
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        </colgroup>
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">field</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">field_type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">description</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">example_values</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>group_category</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Classification applied to the group to provide contextual metadata about its role or sensitivity.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>privileged</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>group_domain</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Domain, directory, or namespace in which the group is defined.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>CORP</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>group_id</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Unique identifier assigned to the group by the source system.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>100, S-1-5-32-583</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>group_member_id</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Unique identifier of an identity that is a member of the group.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>100, S-1-5-32-583</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>group_member_name</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Name or distinguished identifier of a group member as provided by the source system.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>CN=exampleuser1,OU=Users,OU=Group Policy OU,DC=corp,DC=internal</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>group_name</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>Human-readable name assigned to the group.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2"><p>Users, Domain Admins</p>
+    </td>
+            </tr>
+        </tbody>
+    </table>
+    </body>
+</html>
