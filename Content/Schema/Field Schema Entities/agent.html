@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <title>Agent Fields</title>
+    </head>
+    <body>
+        <h1>Agent Fields</h1>
+        <h2>Overview</h2>
+        <p>The <code class="linecode">agent</code> entity represents the software that collects and ships an event into Graylog - such as Graylog's own collector, Beats, or Fluentd - as distinct from the subject of the event itself. The same fields apply more broadly to other kinds of software agents as well, such as EDR/AV clients or management agents (e.g. SCCM), provided the agent in question is the thing responsible for producing or shipping the event rather than the event's subject.</p>
+        <h2>Design and Usage</h2>
+        <p>Fields describe the identity of the collecting/shipping agent only - never the subject of the event being described. For example, on an event describing an EDR product's own status change, <code class="linecode">agent_*</code> fields identify the software that shipped that event into Graylog, not the EDR product itself; the EDR product's own identity is carried by other fields (such as <code class="linecode">event_source_product</code> or <code class="linecode">vendor_*</code> fields).</p>
+        <p>This entity also carries a small set of fields specific to Graylog's own collector architecture (fleet and source-routing identifiers, and receiver type).</p>
+        <h2>Common Use Cases</h2>
+        <ul>
+            <li>Identifying which collector, and which specific installation of that collector, shipped a given event</li>
+            <li>Associating an event with the managed fleet a collector instance belongs to</li>
+            <li>Associating a collected event with the specific source or receiver configuration within a collector that produced it</li>
+            <li>Distinguishing between multiple instances of the same agent software running across an environment, whether that agent is a log collector or another kind of on-host agent</li>
+        </ul>
+        <h2>Implementation Notes</h2>
+        <p>As a top-level entity, agent defines a coherent object representing a single collecting/shipping agent instance. Its fields should be included whenever the software responsible for collecting or shipping an event needs to be identified, independent of whatever entity fields describe the event's actual subject matter.</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <colgroup>
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        </colgroup>
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">field</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">field_type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">description</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">example_values</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>agent_build_original</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Extended build information for the agent, in whatever format the source provides (build hash, packaging metadata, etc.).</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>agent_ephemeral_id</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Ephemeral identifier of the agent. Unlike agent_id, this value changes across restarts of the same agent installation.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>agent_fleet_id</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Unique identifier of the managed fleet/group this agent instance is assigned to.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>agent_id</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Unique identifier of the agent that collected, shipped, or observed this event (e.g. a Beat's UUID or a custom collector's instance GUID). Persists across restarts of the same agent installation.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>agent_name</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Custom, human-readable name assigned to the agent instance. Useful for distinguishing between multiple instances of the same agent type running in an environment.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>agent_receiver_type</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Type of receiver/input mechanism that collected this specific event within the agent, as reported by the Graylog Collector (e.g. file_log). For other agent types, this maps to the equivalent underlying concept, such as an OpenTelemetry Collector receiver name.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>file_log</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>agent_source_id</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Identifier associating this agent with a source in Graylog Server's architecture (e.g. a Graylog Input ID). This field is generated by the Graylog Collector; other agent types should only populate this field in situations where the Graylog Collector is not being used to collect the logs in question.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>69d91cea0a5d9e8a59ffb24b</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>agent_type</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Type of the agent, constant per product regardless of instance.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>auditbeat</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>agent_version</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>Version of the agent software.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1"><p>1.0.0</p>
+    </td>
+            </tr>
+        </tbody>
+    </table>
+    </body>
+</html>

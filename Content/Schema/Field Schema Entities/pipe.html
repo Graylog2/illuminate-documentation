@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<html xmlns:MadCap="http://www.madcapsoftware.com/Schemas/MadCap.xsd">
+    <head>
+        <title>Pipe Fields</title>
+    </head>
+    <body>
+        <h1>Pipe Fields</h1>
+        <h2>Overview</h2>
+        <p>The <code class="linecode">pipe</code> fields describe named pipes, filesystem-visible interprocess communication (IPC) objects used to exchange data or signal events between processes. They provide a normalized structure for referencing named pipe activity such as creation, removal, and connection state changes.</p>
+        <h2>Design and Usage</h2>
+        <p>The <code class="linecode">pipe</code> entity models the named pipe itself, independent of the process that created, removed, or connected to it. As a top-level entity, <code class="linecode">pipe</code> should be modeled alongside <code class="linecode">process</code> and <code class="linecode">user</code> fields where available to fully describe who created or used the pipe.</p>
+        <h2>Common Use Cases</h2>
+        <ul>
+            <li>Detecting abnormal interprocess communication, such as unauthorized or ad-hoc IPC channels.</li>
+            <li>Identifying named pipes commonly associated with persistence or lateral movement techniques used by malicious software.</li>
+            <li>Correlating pipe creation, connection, and removal events to reconstruct IPC activity over time.</li>
+        </ul>
+        <h2>Implementation Notes</h2>
+        <p>As a top-level entity, <code class="linecode">pipe</code> represents the named pipe object referenced by an event. If the process or user responsible for the activity is known, corresponding <code class="linecode">process</code>/<code class="linecode">user</code> fields should be included to fully describe the event.</p>
+        <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+        <colgroup>
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+            <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+        </colgroup>
+        <thead>
+            <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">field</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">field_type</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">description</th>
+                <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">example_values</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>pipe_name</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>Name or path of the named pipe involved in the event.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1"><p>\Device\NamedPipe\lsass, .\pipe\atsvc</p>
+    </td>
+            </tr>
+        </tbody>
+    </table>
+    </body>
+</html>

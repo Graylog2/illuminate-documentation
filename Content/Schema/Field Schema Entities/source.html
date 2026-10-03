@@ -7,7 +7,7 @@
         <h1>Source Fields</h1>
         <h2>Overview</h2>
         <p>The <code class="linecode">source</code> fields describe the originating system, device, or network endpoint associated with an event. They represent identifying and network-related attributes that characterize where an action, connection, or message was initiated. The entity provides a consistent structure for referencing source-side information across heterogeneous platforms and event types.</p>
-        <p>The <code class="linecode">source</code> fields have the prefix <code class="linecode">source_</code> and describe the originating system or endpoint involved in the event. They are conceptually distinct from the top-level event field named <code class="linecode">source</code> that may represent the system responsible for sending or forwarding the log message.</p>
+        <p>The <code class="linecode">source</code> fields have the prefix <code class="linecode">source_</code> and describe the originating system or endpoint involved in the event. They are conceptually distinct from the top-level event field named <code class="linecode">source</code> that may represent the system responsible for sending or forwarding the log message. See the Reserved Fields documentation for details on that top-level <code class="linecode">source</code> field.</p>
         <h2>Design and Usage</h2>
         <p>The <code class="linecode">source</code> entity models conceptual properties of the system or endpoint responsible for originating activity described in an event. Its fields capture device identifiers, network addresses, operating system metadata, and other attributes commonly associated with source context. As a top-level entity, <code class="linecode">source</code> supports reliable correlation and normalization across diverse logging formats and network environments.</p>
         <h2>Common Use Cases</h2>
@@ -65,113 +65,134 @@
     </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>source_hostname</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>source_domain</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword/lowercase</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Hostname of the source system, represented in lowercase.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Domain name associated with the source system, such as a hostname, fully qualified domain name, or other host naming value. May originate from the original event or be added through enrichment.</p>
+    <p>When Illuminate is installed, this field is processed by the core domain enrichment pipeline: the value is normalized (ASCII-lowercased, with any trailing dot stripped, and punycode labels decoded to Unicode) before source_registered_domain, source_subdomain, and source_top_level_domain are derived from it.</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>corpdc01, corpdc01.local, lab01.corpdomain.com</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>www.example.com, mail.corp.local</p>
     </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>source_id</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>source_hostname</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword/lowercase</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Identifier associated with the source device, such as a serial or hardware ID.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Hostname of the source system, represented in lowercase.</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>09VX93DD</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>corpdc01, corpdc01.local, lab01.corpdomain.com</p>
     </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>source_ip</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>source_id</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>ip</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>IPv4 or IPv6 address assigned to the source.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Identifier associated with the source device, such as a serial or hardware ID.</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>10.1.2.3, fe80:5cc3:11:4::2c</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>09VX93DD</p>
     </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>source_ipv6</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>source_ip</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>ip</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>IPv6 address assigned to the source.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>IPv4 or IPv6 address assigned to the source.</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>fe80:5cc3:11:4::2c</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>10.1.2.3, fe80:5cc3:11:4::2c</p>
     </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>source_nat_ip</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>source_ipv6</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>ip</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Translated IP address assigned to the source by a network address translation mechanism.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>IPv6 address assigned to the source.</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>10.1.2.3, fe80:5cc3:11:4::2c</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>fe80:5cc3:11:4::2c</p>
     </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>source_nat_port</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>source_nat_ip</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>integer</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>ip</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Translated network port assigned to the source by a network address translation mechanism.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Translated IP address assigned to the source by a network address translation mechanism.</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>2384</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>10.1.2.3, fe80:5cc3:11:4::2c</p>
     </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>source_os_name</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>source_nat_port</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>integer</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Name of the operating system running on the source device.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Translated network port assigned to the source by a network address translation mechanism.</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>IOS, Android</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>2384</p>
     </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>source_os_version</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>source_os_name</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Version value associated with the operating system of the source.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Name of the operating system running on the source device.</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>IOS 10.0</p>
-    </td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>source_packets_sent</p>
-    </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>long</p>
-    </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Number of network packets transmitted from the source.</p>
-    </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>23094823</p>
-    </td>
-            </tr>
-            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>source_port</p>
-    </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>integer</p>
-    </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Network port used by the source, represented as a value between 0 and 65535.</p>
-    </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>45392</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>IOS, Android</p>
     </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>source_port_iana_name</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>source_os_version</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>IANA-registered service name associated with the source port.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Version value associated with the operating system of the source.</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>ssh, ftp</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>IOS 10.0</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>source_packets_sent</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>long</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Number of network packets transmitted from the source.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>23094823</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>source_port</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>integer</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Network port used by the source, represented as a value between 0 and 65535.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>45392</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>source_port_iana_name</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>IANA-registered service name associated with the source port.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>ssh, ftp</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>source_reference</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>This is a derived field, added by Illuminate Core, that is selected from a list of fields, in order: source_ip, source_hostname, source_vm_name, source_mac. This can be defined in a parsing pack if a different order, or different fields, are preferred. It is defined to provide a field that can be used in aggregations as a single identifier that should be defined when aggregating over different event log types.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>corpdc01, 192.168.5.25</p>
     </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
@@ -185,11 +206,50 @@
     </td>
             </tr>
             <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>source_type</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>source_registered_domain</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
     </td>
-                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Type or classification of the source device.</p>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Highest registered domain of source_domain, stripped of any subdomain, determined using the public suffix list. For example, the registered domain of "mail.example.com" is "example.com". Illuminate Core's domain enrichment pipeline populates this field from source_domain when installed; other event sources or pipelines may populate it independently.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>example.com</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>source_subdomain</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Subdomain portion of source_domain, containing all labels below source_registered_domain, with no trailing period. For example, the subdomain of "mail.corp.example.com" is "mail.corp". Illuminate Core's domain enrichment pipeline populates this field from source_domain when installed; other event sources or pipelines may populate it independently.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>mail</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>source_top_level_domain</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Effective top-level domain (eTLD), also known as the domain suffix, of source_domain, determined using the public suffix list. For example, the top-level domain of "example.co.uk" is "co.uk". Illuminate Core's domain enrichment pipeline populates this field from source_domain when installed; other event sources or pipelines may populate it independently.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>com</p>
+    </td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>source_type</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Type or classification of the source device.</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
+            </tr>
+            <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>source_user_name</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword/lowercase</p>
+    </td>
+                <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Name of the user or service account that initiated the activity, represented in lowercase. Distinct from <code class="linecode">user_name</code>, which identifies the account being acted upon.</p>
     </td>
                 <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
             </tr>
@@ -213,5 +273,166 @@
             </tr>
         </tbody>
     </table>
+        <h2>Sub-fields</h2>
+        <p>Fields composed from <a href="as.html">as</a>:</p>
+        <MadCap:dropDown>
+        <MadCap:dropDownHead>
+            <MadCap:dropDownHotspot>as <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+        </MadCap:dropDownHead>
+        <MadCap:dropDownBody>
+            <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                <colgroup>
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                </colgroup>
+                <thead>
+                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">field</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">field_type</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">description</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">example_values</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>source_as_domain</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Domain associated with the IP address resolved to this autonomous system.</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"></td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>source_as_isp</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Internet service provider associated with the IP address resolved to this autonomous system.</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"></td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>source_as_number</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Autonomous System Number (ASN) uniquely identifying the network on the internet.</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>15169</p>
+            </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>source_as_organization</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>keyword</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body2"><p>Organization name registered to the autonomous system.</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body2"><p>Graylog</p>
+            </td>
+                    </tr>
+                </tbody>
+            </table>
+        </MadCap:dropDownBody>
+    </MadCap:dropDown>
+        <p>Fields composed from <a href="geo.html">geo</a>:</p>
+        <MadCap:dropDown>
+        <MadCap:dropDownHead>
+            <MadCap:dropDownHotspot>geo <span style="font-size: 8pt;">▼</span></MadCap:dropDownHotspot>
+        </MadCap:dropDownHead>
+        <MadCap:dropDownBody>
+            <table cellspacing="21" style="width: 100%; mc-table-style: url('../../Resources/TableStyles/Alternate-Row-Color.css');" class="TableStyle-Alternate-Row-Color">
+                <colgroup>
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                    <col class="TableStyle-Alternate-Row-Color-Column-Column1" />
+                </colgroup>
+                <thead>
+                    <tr class="TableStyle-Alternate-Row-Color-Head-Header1">
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">field</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">field_type</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadE-Column1-Header1">description</th>
+                        <th class="TableStyle-Alternate-Row-Color-HeadD-Column1-Header1">example_values</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>source_geo_city</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>City name associated with the resolved geolocation.</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>Hamburg, Houston</p>
+            </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>source_geo_continent</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Continent name associated with the resolved geolocation.</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>America</p>
+            </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>source_geo_coordinates</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>Latitude and longitude of the resolved geolocation, expressed as a comma-separated decimal coordinate pair.</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>34.1186,-118.3004</p>
+            </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>source_geo_country</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Full country name associated with the resolved geolocation.</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>USA, Canada</p>
+            </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>source_geo_country_iso</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>keyword</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body1"><p>ISO 3166-1 alpha-2 country code associated with the resolved geolocation.</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body1"><p>US, DE, CA</p>
+            </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body2">
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>source_geo_name</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>keyword</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyE-Column1-Body2"><p>Human-readable location label associated with the resolved geolocation. May be derived by combining other geo field values.</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyD-Column1-Body2"><p>Hamburg, DE</p>
+            </td>
+                    </tr>
+                    <tr class="TableStyle-Alternate-Row-Color-Body-Body1">
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>source_geo_state</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>keyword</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyB-Column1-Body1"><p>State, province, or equivalent administrative subdivision associated with the resolved geolocation.</p>
+            </td>
+                        <td class="TableStyle-Alternate-Row-Color-BodyA-Column1-Body1"><p>Hamburg</p>
+            </td>
+                    </tr>
+                </tbody>
+            </table>
+        </MadCap:dropDownBody>
+    </MadCap:dropDown>
     </body>
 </html>
